@@ -1,34 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AdminController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+Route::get('/products', [ProductController::class, 'showProducts'])->name('showProduct');
+Route::post('/add', [ProductController::class, 'addProduct'])->name('addProduct');
+Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
+Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+Route::view('/', 'dashboards.index')->middleware('admin.auth');
 
-Route::get('/', function () {
-    return view('pages.add-product');
-    return view('dashboards.index');
-});
-
-Route::get('/add-product', function () {
-    return view('pages.add-product');
-});
+Route::view('add-product', 'pages.add-product');
 
 Route::get('/test', function () {
     return view('test');
 });
 
-Route::get('/sign-in', function () {
-    return view('pages.sign-in');
-});
+Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 
 Route::get('/dashboard/bidding', function () {
     return view('dashboards.bidding');

@@ -24,6 +24,7 @@ License: For each use you must have a valid license purchased only from above li
 		<meta property="og:title" content="Metronic - Bootstrap Admin Template, HTML, VueJS, React, Angular. Laravel, Asp.Net Core, Ruby on Rails, Spring Boot, Blazor, Django, Express.js, Node.js, Flask Admin Dashboard Theme & Template" />
 		<meta property="og:url" content="https://keenthemes.com/metronic" />
 		<meta property="og:site_name" content="Keenthemes | Metronic" />
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 		<link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
 		<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
 		<!--begin::Fonts(mandatory for all pages)-->
@@ -4780,7 +4781,10 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end::Menu item-->
 										<!--begin::Menu item-->
 										<div class="menu-item px-5">
-											<a href="../../demo1/dist/authentication/layouts/corporate/sign-in.html" class="menu-link px-5">Sign Out</a>
+											<form action="{{ route('logout') }}" method="POST" class="d-inline">
+												@csrf <!-- CSRF token for security -->
+												<button type="submit" class="menu-link px-5" style="background: transparent; border: none; color: inherit; display: block; width: 100%; text-align: left;">Sign Out</button>
+											</form>
 										</div>
 										<!--end::Menu item-->
 									</div>
