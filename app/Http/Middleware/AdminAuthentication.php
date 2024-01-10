@@ -12,11 +12,7 @@ class AdminAuthentication
     public function handle(Request $request, Closure $next)
     {
         if (session()->has('userId')) {
-            $userId = session('userId');
-            $email = session('email');
-            $adminExists = DB::table('admin')->where('id', $userId)->where('email', $email)->exists();
-
-            if ($adminExists) {
+            if (session('authenticated')) {
                 return $next($request);
             }
         }

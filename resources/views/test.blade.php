@@ -13,7 +13,7 @@ License: For each use you must have a valid license purchased only from above li
 -->
 <html lang="en">
 	<!--begin::Head-->
-	<head><base href="../../../"/>
+	<head><base href="../../"/>
 		<title>Metronic - The World's #1 Selling Bootstrap Admin Template by Keenthemes</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="The most advanced Bootstrap 5 Admin Theme with 40 unique prebuilt layouts on Themeforest trusted by 100,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel versions. Grab your copy now and get life-time updates for free." />
@@ -1771,7 +1771,7 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											<!--end:Menu item-->
 											<!--begin:Menu item-->
-											<div data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item here show menu-lg-down-accordion">
+											<div data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item menu-lg-down-accordion">
 												<!--begin:Menu link-->
 												<span class="menu-link">
 													<span class="menu-icon">
@@ -1784,7 +1784,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--begin:Menu sub-->
 												<div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-active-bg px-lg-2 py-lg-4 w-lg-225px">
 													<!--begin:Menu item-->
-													<div data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item here show menu-lg-down-accordion">
+													<div data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item menu-lg-down-accordion">
 														<!--begin:Menu link-->
 														<span class="menu-link">
 															<span class="menu-bullet">
@@ -1823,7 +1823,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 															<div class="menu-item">
 																<!--begin:Menu link-->
-																<a class="menu-link active" href="../../demo1/dist/apps/ecommerce/catalog/add-product.html">
+																<a class="menu-link" href="../../demo1/dist/apps/ecommerce/catalog/add-product.html">
 																	<span class="menu-bullet">
 																		<span class="bullet bullet-dot"></span>
 																	</span>
@@ -2474,7 +2474,7 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											<!--end:Menu item-->
 											<!--begin:Menu item-->
-											<div data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item menu-lg-down-accordion">
+											<div data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item here show menu-lg-down-accordion">
 												<!--begin:Menu link-->
 												<span class="menu-link">
 													<span class="menu-icon">
@@ -2504,7 +2504,7 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link" href="../../demo1/dist/apps/customers/list.html">
+														<a class="menu-link active" href="../../demo1/dist/apps/customers/list.html">
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>
@@ -6948,7 +6948,7 @@ License: For each use you must have a valid license purchased only from above li
 									</div>
 									<!--end:Menu item-->
 									<!--begin:Menu item-->
-									<div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+									<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 										<!--begin:Menu link-->
 										<span class="menu-link">
 											<span class="menu-icon">
@@ -6966,7 +6966,7 @@ License: For each use you must have a valid license purchased only from above li
 										<!--begin:Menu sub-->
 										<div class="menu-sub menu-sub-accordion">
 											<!--begin:Menu item-->
-											<div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
+											<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 												<!--begin:Menu link-->
 												<span class="menu-link">
 													<span class="menu-bullet">
@@ -7005,7 +7005,7 @@ License: For each use you must have a valid license purchased only from above li
 													<!--begin:Menu item-->
 													<div class="menu-item">
 														<!--begin:Menu link-->
-														<a class="menu-link active" href="../../demo1/dist/apps/ecommerce/catalog/add-product.html">
+														<a class="menu-link" href="../../demo1/dist/apps/ecommerce/catalog/add-product.html">
 															<span class="menu-bullet">
 																<span class="bullet bullet-dot"></span>
 															</span>
@@ -7586,7 +7586,7 @@ License: For each use you must have a valid license purchased only from above li
 									</div>
 									<!--end:Menu item-->
 									<!--begin:Menu item-->
-									<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+									<div data-kt-menu-trigger="click" class="menu-item here show menu-accordion">
 										<!--begin:Menu link-->
 										<span class="menu-link">
 											<span class="menu-icon">
@@ -7616,7 +7616,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/apps/customers/list.html">
+												<a class="menu-link active" href="../../demo1/dist/apps/customers/list.html">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
@@ -8258,7 +8258,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--begin::Page title-->
 									<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
 										<!--begin::Title-->
-										<h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Product Form</h1>
+										<h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Customer List</h1>
 										<!--end::Title-->
 										<!--begin::Breadcrumb-->
 										<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -8273,15 +8273,7 @@ License: For each use you must have a valid license purchased only from above li
 											</li>
 											<!--end::Item-->
 											<!--begin::Item-->
-											<li class="breadcrumb-item text-muted">eCommerce</li>
-											<!--end::Item-->
-											<!--begin::Item-->
-											<li class="breadcrumb-item">
-												<span class="bullet bg-gray-400 w-5px h-2px"></span>
-											</li>
-											<!--end::Item-->
-											<!--begin::Item-->
-											<li class="breadcrumb-item text-muted">Catalog</li>
+											<li class="breadcrumb-item text-muted">Customers</li>
 											<!--end::Item-->
 										</ul>
 										<!--end::Breadcrumb-->
@@ -8299,7 +8291,7 @@ License: For each use you must have a valid license purchased only from above li
 											</i>Filter</a>
 											<!--end::Menu toggle-->
 											<!--begin::Menu 1-->
-											<div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true" id="kt_menu_641d510217861">
+											<div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true" id="kt_menu_641d512351273">
 												<!--begin::Header-->
 												<div class="px-7 py-5">
 													<div class="fs-5 text-dark fw-bold">Filter Options</div>
@@ -8317,7 +8309,7 @@ License: For each use you must have a valid license purchased only from above li
 														<!--end::Label-->
 														<!--begin::Input-->
 														<div>
-															<select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-dropdown-parent="#kt_menu_641d510217861" data-allow-clear="true">
+															<select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-dropdown-parent="#kt_menu_641d512351273" data-allow-clear="true">
 																<option></option>
 																<option value="1">Approved</option>
 																<option value="2">Pending</option>
@@ -8391,762 +8383,2092 @@ License: For each use you must have a valid license purchased only from above li
 							<div id="kt_app_content" class="app-content flex-column-fluid">
 								<!--begin::Content container-->
 								<div id="kt_app_content_container" class="app-container container-xxl">
-									<!--begin::Form-->
-									<form id="kt_ecommerce_add_product_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="../../demo1/dist/apps/ecommerce/catalog/products.html">
-										<!--begin::Aside column-->
-										<div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
-											<!--begin::Thumbnail settings-->
-											<div class="card card-flush py-4">
-												<!--begin::Card header-->
-												<div class="card-header">
-													<!--begin::Card title-->
-													<div class="card-title">
-														<h2>Thumbnail</h2>
-													</div>
-													<!--end::Card title-->
+									<!--begin::Card-->
+									<div class="card">
+										<!--begin::Card header-->
+										<div class="card-header border-0 pt-6">
+											<!--begin::Card title-->
+											<div class="card-title">
+												<!--begin::Search-->
+												<div class="d-flex align-items-center position-relative my-1">
+													<i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+														<span class="path1"></span>
+														<span class="path2"></span>
+													</i>
+													<input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Customers" />
 												</div>
-												<!--end::Card header-->
-												<!--begin::Card body-->
-												<div class="card-body text-center pt-0">
-													<!--begin::Image input-->
-													<!--begin::Image input placeholder-->
-													<style>.image-input-placeholder { background-image: url('assets/media/svg/files/blank-image.svg'); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url('assets/media/svg/files/blank-image-dark.svg'); }</style>
-													<!--end::Image input placeholder-->
-													<div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
-														<!--begin::Preview existing avatar-->
-														<div class="image-input-wrapper w-150px h-150px"></div>
-														<!--end::Preview existing avatar-->
-														<!--begin::Label-->
-														<label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
-															<i class="ki-duotone ki-pencil fs-7">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>
-															<!--begin::Inputs-->
-															<input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
-															<input type="hidden" name="avatar_remove" />
-															<!--end::Inputs-->
-														</label>
-														<!--end::Label-->
-														<!--begin::Cancel-->
-														<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
-															<i class="ki-duotone ki-cross fs-2">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>
-														</span>
-														<!--end::Cancel-->
-														<!--begin::Remove-->
-														<span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
-															<i class="ki-duotone ki-cross fs-2">
-																<span class="path1"></span>
-																<span class="path2"></span>
-															</i>
-														</span>
-														<!--end::Remove-->
-													</div>
-													<!--end::Image input-->
-													<!--begin::Description-->
-													<div class="text-muted fs-7">Set the product thumbnail image. Only *.png, *.jpg and *.jpeg image files are accepted</div>
-													<!--end::Description-->
-												</div>
-												<!--end::Card body-->
+												<!--end::Search-->
 											</div>
-											<!--end::Thumbnail settings-->
-											<!--begin::Status-->
-											<div class="card card-flush py-4">
-												<!--begin::Card header-->
-												<div class="card-header">
-													<!--begin::Card title-->
-													<div class="card-title">
-														<h2>Status</h2>
+											<!--begin::Card title-->
+											<!--begin::Card toolbar-->
+											<div class="card-toolbar">
+												<!--begin::Toolbar-->
+												<div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+													<!--begin::Filter-->
+													<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+													<i class="ki-duotone ki-filter fs-2">
+														<span class="path1"></span>
+														<span class="path2"></span>
+													</i>Filter</button>
+													<!--begin::Menu 1-->
+													<div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
+														<!--begin::Header-->
+														<div class="px-7 py-5">
+															<div class="fs-4 text-dark fw-bold">Filter Options</div>
+														</div>
+														<!--end::Header-->
+														<!--begin::Separator-->
+														<div class="separator border-gray-200"></div>
+														<!--end::Separator-->
+														<!--begin::Content-->
+														<div class="px-7 py-5">
+															<!--begin::Input group-->
+															<div class="mb-10">
+																<!--begin::Label-->
+																<label class="form-label fs-5 fw-semibold mb-3">Month:</label>
+																<!--end::Label-->
+																<!--begin::Input-->
+																<select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-customer-table-filter="month" data-dropdown-parent="#kt-toolbar-filter">
+																	<option></option>
+																	<option value="aug">August</option>
+																	<option value="sep">September</option>
+																	<option value="oct">October</option>
+																	<option value="nov">November</option>
+																	<option value="dec">December</option>
+																</select>
+																<!--end::Input-->
+															</div>
+															<!--end::Input group-->
+															<!--begin::Input group-->
+															<div class="mb-10">
+																<!--begin::Label-->
+																<label class="form-label fs-5 fw-semibold mb-3">Payment Type:</label>
+																<!--end::Label-->
+																<!--begin::Options-->
+																<div class="d-flex flex-column flex-wrap fw-semibold" data-kt-customer-table-filter="payment_type">
+																	<!--begin::Option-->
+																	<label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
+																		<input class="form-check-input" type="radio" name="payment_type" value="all" checked="checked" />
+																		<span class="form-check-label text-gray-600">All</span>
+																	</label>
+																	<!--end::Option-->
+																	<!--begin::Option-->
+																	<label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
+																		<input class="form-check-input" type="radio" name="payment_type" value="visa" />
+																		<span class="form-check-label text-gray-600">Visa</span>
+																	</label>
+																	<!--end::Option-->
+																	<!--begin::Option-->
+																	<label class="form-check form-check-sm form-check-custom form-check-solid mb-3">
+																		<input class="form-check-input" type="radio" name="payment_type" value="mastercard" />
+																		<span class="form-check-label text-gray-600">Mastercard</span>
+																	</label>
+																	<!--end::Option-->
+																	<!--begin::Option-->
+																	<label class="form-check form-check-sm form-check-custom form-check-solid">
+																		<input class="form-check-input" type="radio" name="payment_type" value="american_express" />
+																		<span class="form-check-label text-gray-600">American Express</span>
+																	</label>
+																	<!--end::Option-->
+																</div>
+																<!--end::Options-->
+															</div>
+															<!--end::Input group-->
+															<!--begin::Actions-->
+															<div class="d-flex justify-content-end">
+																<button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
+																<button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+															</div>
+															<!--end::Actions-->
+														</div>
+														<!--end::Content-->
 													</div>
-													<!--end::Card title-->
-													<!--begin::Card toolbar-->
-													<div class="card-toolbar">
-														<div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_product_status"></div>
-													</div>
-													<!--begin::Card toolbar-->
+													<!--end::Menu 1-->
+													<!--end::Filter-->
+													<!--begin::Export-->
+													<button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal">
+													<i class="ki-duotone ki-exit-up fs-2">
+														<span class="path1"></span>
+														<span class="path2"></span>
+													</i>Export</button>
+													<!--end::Export-->
+													<!--begin::Add customer-->
+													<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_customer">Add Customer</button>
+													<!--end::Add customer-->
 												</div>
-												<!--end::Card header-->
-												<!--begin::Card body-->
-												<div class="card-body pt-0">
-													<!--begin::Select2-->
-													<select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select">
-														<option></option>
-														<option value="published" selected="selected">Published</option>
-														<option value="draft">Draft</option>
-														<option value="scheduled">Scheduled</option>
-														<option value="inactive">Inactive</option>
-													</select>
-													<!--end::Select2-->
-													<!--begin::Description-->
-													<div class="text-muted fs-7">Set the product status.</div>
-													<!--end::Description-->
-													<!--begin::Datepicker-->
-													<div class="d-none mt-10">
-														<label for="kt_ecommerce_add_product_status_datepicker" class="form-label">Select publishing date and time</label>
-														<input class="form-control" id="kt_ecommerce_add_product_status_datepicker" placeholder="Pick date & time" />
-													</div>
-													<!--end::Datepicker-->
+												<!--end::Toolbar-->
+												<!--begin::Group actions-->
+												<div class="d-flex justify-content-end align-items-center d-none" data-kt-customer-table-toolbar="selected">
+													<div class="fw-bold me-5">
+													<span class="me-2" data-kt-customer-table-select="selected_count"></span>Selected</div>
+													<button type="button" class="btn btn-danger" data-kt-customer-table-select="delete_selected">Delete Selected</button>
 												</div>
-												<!--end::Card body-->
+												<!--end::Group actions-->
 											</div>
-											<!--end::Status-->
-											<!--begin::Category & tags-->
-											<div class="card card-flush py-4">
-												<!--begin::Card header-->
-												<div class="card-header">
-													<!--begin::Card title-->
-													<div class="card-title">
-														<h2>Product Details</h2>
-													</div>
-													<!--end::Card title-->
-												</div>
-												<!--end::Card header-->
-												<!--begin::Card body-->
-												<div class="card-body pt-0">
-													<!--begin::Input group-->
-													<!--begin::Label-->
-													<label class="form-label">Categories</label>
-													<!--end::Label-->
-													<!--begin::Select2-->
-													<select class="form-select mb-2" data-control="select2" data-placeholder="Select an option" data-allow-clear="true" multiple="multiple">
-														<option></option>
-														<option value="Computers">Computers</option>
-														<option value="Watches">Watches</option>
-														<option value="Headphones">Headphones</option>
-														<option value="Footwear">Footwear</option>
-														<option value="Cameras">Cameras</option>
-														<option value="Shirts">Shirts</option>
-														<option value="Household">Household</option>
-														<option value="Handbags">Handbags</option>
-														<option value="Wines">Wines</option>
-														<option value="Sandals">Sandals</option>
-													</select>
-													<!--end::Select2-->
-													<!--begin::Description-->
-													<div class="text-muted fs-7 mb-7">Add product to a category.</div>
-													<!--end::Description-->
-													<!--end::Input group-->
-													<!--begin::Button-->
-													<a href="../../demo1/dist/apps/ecommerce/catalog/add-category.html" class="btn btn-light-primary btn-sm mb-10">
-													<i class="ki-duotone ki-plus fs-2"></i>Create new category</a>
-													<!--end::Button-->
-													<!--begin::Input group-->
-													<!--begin::Label-->
-													<label class="form-label d-block">Tags</label>
-													<!--end::Label-->
-													<!--begin::Input-->
-													<input id="kt_ecommerce_add_product_tags" name="kt_ecommerce_add_product_tags" class="form-control mb-2" value="" />
-													<!--end::Input-->
-													<!--begin::Description-->
-													<div class="text-muted fs-7">Add tags to a product.</div>
-													<!--end::Description-->
-													<!--end::Input group-->
-												</div>
-												<!--end::Card body-->
-											</div>
-											<!--end::Category & tags-->
-											<!--begin::Weekly sales-->
-											<div class="card card-flush py-4">
-												<!--begin::Card header-->
-												<div class="card-header">
-													<!--begin::Card title-->
-													<div class="card-title">
-														<h2>Weekly Sales</h2>
-													</div>
-													<!--end::Card title-->
-												</div>
-												<!--end::Card header-->
-												<!--begin::Card body-->
-												<div class="card-body pt-0">
-													<span class="text-muted">No data available. Sales data will begin capturing once product has been published.</span>
-												</div>
-												<!--end::Card body-->
-											</div>
-											<!--end::Weekly sales-->
-											<!--begin::Template settings-->
-											<div class="card card-flush py-4">
-												<!--begin::Card header-->
-												<div class="card-header">
-													<!--begin::Card title-->
-													<div class="card-title">
-														<h2>Product Template</h2>
-													</div>
-													<!--end::Card title-->
-												</div>
-												<!--end::Card header-->
-												<!--begin::Card body-->
-												<div class="card-body pt-0">
-													<!--begin::Select store template-->
-													<label for="kt_ecommerce_add_product_store_template" class="form-label">Select a product template</label>
-													<!--end::Select store template-->
-													<!--begin::Select2-->
-													<select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_product_store_template">
-														<option></option>
-														<option value="default" selected="selected">Default template</option>
-														<option value="electronics">Electronics</option>
-														<option value="office">Office stationary</option>
-														<option value="fashion">Fashion</option>
-													</select>
-													<!--end::Select2-->
-													<!--begin::Description-->
-													<div class="text-muted fs-7">Assign a template from your current theme to define how a single product is displayed.</div>
-													<!--end::Description-->
-												</div>
-												<!--end::Card body-->
-											</div>
-											<!--end::Template settings-->
+											<!--end::Card toolbar-->
 										</div>
-										<!--end::Aside column-->
-										<!--begin::Main column-->
-										<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-											<!--begin:::Tabs-->
-											<ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
-												<!--begin:::Tab item-->
-												<li class="nav-item">
-													<a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_ecommerce_add_product_general">General</a>
-												</li>
-												<!--end:::Tab item-->
-												<!--begin:::Tab item-->
-												<li class="nav-item">
-													<a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_ecommerce_add_product_advanced">Advanced</a>
-												</li>
-												<!--end:::Tab item-->
-											</ul>
-											<!--end:::Tabs-->
-											<!--begin::Tab content-->
-											<div class="tab-content">
-												<!--begin::Tab pane-->
-												<div class="tab-pane fade show active" id="kt_ecommerce_add_product_general" role="tab-panel">
-													<div class="d-flex flex-column gap-7 gap-lg-10">
-														<!--begin::General options-->
-														<div class="card card-flush py-4">
-															<!--begin::Card header-->
-															<div class="card-header">
-																<div class="card-title">
-																	<h2>General</h2>
-																</div>
+										<!--end::Card header-->
+										<!--begin::Card body-->
+										<div class="card-body pt-0">
+											<!--begin::Table-->
+											<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_customers_table">
+												<thead>
+													<tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+														<th class="w-10px pe-2">
+															<div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+																<input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_customers_table .form-check-input" value="1" />
 															</div>
-															<!--end::Card header-->
-															<!--begin::Card body-->
-															<div class="card-body pt-0">
-																<!--begin::Input group-->
-																<div class="mb-10 fv-row">
-																	<!--begin::Label-->
-																	<label class="required form-label">Product Name</label>
-																	<!--end::Label-->
-																	<!--begin::Input-->
-																	<input type="text" name="product_name" class="form-control mb-2" placeholder="Product name" value="" />
-																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">A product name is required and recommended to be unique.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Input group-->
-																<div>
-																	<!--begin::Label-->
-																	<label class="form-label">Description</label>
-																	<!--end::Label-->
-																	<!--begin::Editor-->
-																	<div id="kt_ecommerce_add_product_description" name="kt_ecommerce_add_product_description" class="min-h-200px mb-2"></div>
-																	<!--end::Editor-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set a description to the product for better visibility.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
+														</th>
+														<th class="min-w-125px">Customer Name</th>
+														<th class="min-w-125px">Email</th>
+														<th class="min-w-125px">Company</th>
+														<th class="min-w-125px">Payment Method</th>
+														<th class="min-w-125px">Created Date</th>
+														<th class="text-end min-w-70px">Actions</th>
+													</tr>
+												</thead>
+												<tbody class="fw-semibold text-gray-600">
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
 															</div>
-															<!--end::Card header-->
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Emma Smith</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">smith@kpmg.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 3238</td>
+														<td>14 Dec 2020, 8:43 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Melody Macy</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">melody@altbox.com</a>
+														</td>
+														<td>Google</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 7545</td>
+														<td>01 Dec 2020, 10:12 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Max Smith</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">max@kt.com</a>
+														</td>
+														<td>Bistro Union</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 7627</td>
+														<td>12 Nov 2020, 2:01 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Sean Bean</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">sean@dellito.com</a>
+														</td>
+														<td>Astro Limited</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 1031</td>
+														<td>21 Oct 2020, 5:54 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Brian Cox</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">brian@exchange.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 8791</td>
+														<td>19 Oct 2020, 7:32 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Mikaela Collins</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">mik@pex.com</a>
+														</td>
+														<td>Keenthemes</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6603</td>
+														<td>23 Sep 2020, 12:37 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Francis Mitcham</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">f.mit@kpmg.com</a>
+														</td>
+														<td>Paypal</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 7016</td>
+														<td>11 Sep 2020, 3:15 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Olivia Wild</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">olivia@corpmail.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6950</td>
+														<td>03 Sep 2020, 1:08 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Neil Owen</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">owen.neil@gmail.com</a>
+														</td>
+														<td>Paramount</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 6274</td>
+														<td>01 Sep 2020, 4:58 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Dan Wilson</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">dam@consilting.com</a>
+														</td>
+														<td>Trinity Studio</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 6813</td>
+														<td>18 Aug 2020, 3:34 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Emma Bold</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">emma@intenso.com</a>
+														</td>
+														<td>B&T Legal Services</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 4729</td>
+														<td>14 Aug 2020, 1:21 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Ana Crown</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">ana.cf@limtel.com</a>
+														</td>
+														<td>Paysafe Security</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6691</td>
+														<td>11 Aug 2020, 5:13 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Emma Smith</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">smith@kpmg.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 3238</td>
+														<td>14 Dec 2020, 8:43 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Melody Macy</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">melody@altbox.com</a>
+														</td>
+														<td>Google</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 7545</td>
+														<td>01 Dec 2020, 10:12 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Max Smith</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">max@kt.com</a>
+														</td>
+														<td>Bistro Union</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 7627</td>
+														<td>12 Nov 2020, 2:01 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Sean Bean</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">sean@dellito.com</a>
+														</td>
+														<td>Astro Limited</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 1031</td>
+														<td>21 Oct 2020, 5:54 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Brian Cox</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">brian@exchange.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 8791</td>
+														<td>19 Oct 2020, 7:32 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Mikaela Collins</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">mik@pex.com</a>
+														</td>
+														<td>Keenthemes</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6603</td>
+														<td>23 Sep 2020, 12:37 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Francis Mitcham</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">f.mit@kpmg.com</a>
+														</td>
+														<td>Paypal</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 7016</td>
+														<td>11 Sep 2020, 3:15 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Olivia Wild</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">olivia@corpmail.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6950</td>
+														<td>03 Sep 2020, 1:08 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Neil Owen</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">owen.neil@gmail.com</a>
+														</td>
+														<td>Paramount</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 6274</td>
+														<td>01 Sep 2020, 4:58 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Dan Wilson</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">dam@consilting.com</a>
+														</td>
+														<td>Trinity Studio</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 6813</td>
+														<td>18 Aug 2020, 3:34 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Emma Bold</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">emma@intenso.com</a>
+														</td>
+														<td>B&T Legal Services</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 4729</td>
+														<td>14 Aug 2020, 1:21 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Ana Crown</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">ana.cf@limtel.com</a>
+														</td>
+														<td>Paysafe Security</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6691</td>
+														<td>11 Aug 2020, 5:13 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Emma Smith</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">smith@kpmg.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 3238</td>
+														<td>14 Dec 2020, 8:43 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Melody Macy</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">melody@altbox.com</a>
+														</td>
+														<td>Google</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 7545</td>
+														<td>01 Dec 2020, 10:12 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Max Smith</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">max@kt.com</a>
+														</td>
+														<td>Bistro Union</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 7627</td>
+														<td>12 Nov 2020, 2:01 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Sean Bean</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">sean@dellito.com</a>
+														</td>
+														<td>Astro Limited</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 1031</td>
+														<td>21 Oct 2020, 5:54 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Brian Cox</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">brian@exchange.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 8791</td>
+														<td>19 Oct 2020, 7:32 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Mikaela Collins</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">mik@pex.com</a>
+														</td>
+														<td>Keenthemes</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6603</td>
+														<td>23 Sep 2020, 12:37 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Francis Mitcham</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">f.mit@kpmg.com</a>
+														</td>
+														<td>Paypal</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 7016</td>
+														<td>11 Sep 2020, 3:15 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Olivia Wild</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">olivia@corpmail.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6950</td>
+														<td>03 Sep 2020, 1:08 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Neil Owen</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">owen.neil@gmail.com</a>
+														</td>
+														<td>Paramount</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 6274</td>
+														<td>01 Sep 2020, 4:58 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Dan Wilson</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">dam@consilting.com</a>
+														</td>
+														<td>Trinity Studio</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 6813</td>
+														<td>18 Aug 2020, 3:34 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Emma Bold</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">emma@intenso.com</a>
+														</td>
+														<td>B&T Legal Services</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 4729</td>
+														<td>14 Aug 2020, 1:21 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Ana Crown</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">ana.cf@limtel.com</a>
+														</td>
+														<td>Paysafe Security</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 6691</td>
+														<td>11 Aug 2020, 5:13 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Emma Smith</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">smith@kpmg.com</a>
+														</td>
+														<td>-</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 3238</td>
+														<td>14 Dec 2020, 8:43 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Melody Macy</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">melody@altbox.com</a>
+														</td>
+														<td>Google</td>
+														<td data-filter="visa">
+														<img src="assets/media/svg/card-logos/visa.svg" class="w-35px me-3" alt="" />**** 7545</td>
+														<td>01 Dec 2020, 10:12 am</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Max Smith</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">max@kt.com</a>
+														</td>
+														<td>Bistro Union</td>
+														<td data-filter="mastercard">
+														<img src="assets/media/svg/card-logos/mastercard.svg" class="w-35px me-3" alt="" />**** 7627</td>
+														<td>12 Nov 2020, 2:01 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<div class="form-check form-check-sm form-check-custom form-check-solid">
+																<input class="form-check-input" type="checkbox" value="1" />
+															</div>
+														</td>
+														<td>
+															<a href="../../demo1/dist/apps/customers/view.html" class="text-gray-800 text-hover-primary mb-1">Sean Bean</a>
+														</td>
+														<td>
+															<a href="#" class="text-gray-600 text-hover-primary mb-1">sean@dellito.com</a>
+														</td>
+														<td>Astro Limited</td>
+														<td data-filter="american_express">
+														<img src="assets/media/svg/card-logos/american-express.svg" class="w-35px me-3" alt="" />**** 1031</td>
+														<td>21 Oct 2020, 5:54 pm</td>
+														<td class="text-end">
+															<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+															<i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+															<!--begin::Menu-->
+															<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+																</div>
+																<!--end::Menu item-->
+																<!--begin::Menu item-->
+																<div class="menu-item px-3">
+																	<a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+																</div>
+																<!--end::Menu item-->
+															</div>
+															<!--end::Menu-->
+														</td>
+													</tr>
+												</tbody>
+											</table>
+											<!--end::Table-->
+										</div>
+										<!--end::Card body-->
+									</div>
+									<!--end::Card-->
+									<!--begin::Modals-->
+									<!--begin::Modal - Customers - Add-->
+									<div class="modal fade" id="kt_modal_add_customer" tabindex="-1" aria-hidden="true">
+										<!--begin::Modal dialog-->
+										<div class="modal-dialog modal-dialog-centered mw-650px">
+											<!--begin::Modal content-->
+											<div class="modal-content">
+												<!--begin::Form-->
+												<form class="form" action="#" id="kt_modal_add_customer_form" data-kt-redirect="../../demo1/dist/apps/customers/list.html">
+													<!--begin::Modal header-->
+													<div class="modal-header" id="kt_modal_add_customer_header">
+														<!--begin::Modal title-->
+														<h2 class="fw-bold">Add a Customer</h2>
+														<!--end::Modal title-->
+														<!--begin::Close-->
+														<div id="kt_modal_add_customer_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+															<i class="ki-duotone ki-cross fs-1">
+																<span class="path1"></span>
+																<span class="path2"></span>
+															</i>
 														</div>
-														<!--end::General options-->
-														<!--begin::Media-->
-														<div class="card card-flush py-4">
-															<!--begin::Card header-->
-															<div class="card-header">
-																<div class="card-title">
-																	<h2>Media</h2>
-																</div>
+														<!--end::Close-->
+													</div>
+													<!--end::Modal header-->
+													<!--begin::Modal body-->
+													<div class="modal-body py-10 px-lg-17">
+														<!--begin::Scroll-->
+														<div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_customer_header" data-kt-scroll-wrappers="#kt_modal_add_customer_scroll" data-kt-scroll-offset="300px">
+															<!--begin::Input group-->
+															<div class="fv-row mb-7">
+																<!--begin::Label-->
+																<label class="required fs-6 fw-semibold mb-2">Name</label>
+																<!--end::Label-->
+																<!--begin::Input-->
+																<input type="text" class="form-control form-control-solid" placeholder="" name="name" value="Sean Bean" />
+																<!--end::Input-->
 															</div>
-															<!--end::Card header-->
-															<!--begin::Card body-->
-															<div class="card-body pt-0">
-																<!--begin::Input group-->
-																<div class="fv-row mb-2">
-																	<!--begin::Dropzone-->
-																	<div class="dropzone" id="kt_ecommerce_add_product_media">
-																		<!--begin::Message-->
-																		<div class="dz-message needsclick">
-																			<!--begin::Icon-->
-																			<i class="ki-duotone ki-file-up text-primary fs-3x">
-																				<span class="path1"></span>
-																				<span class="path2"></span>
-																			</i>
-																			<!--end::Icon-->
-																			<!--begin::Info-->
-																			<div class="ms-4">
-																				<h3 class="fs-5 fw-bold text-gray-900 mb-1">Drop files here or click to upload.</h3>
-																				<span class="fs-7 fw-semibold text-gray-400">Upload up to 10 files</span>
-																			</div>
-																			<!--end::Info-->
-																		</div>
-																	</div>
-																	<!--end::Dropzone-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Description-->
-																<div class="text-muted fs-7">Set the product media gallery.</div>
-																<!--end::Description-->
-															</div>
-															<!--end::Card header-->
-														</div>
-														<!--end::Media-->
-														<!--begin::Pricing-->
-														<div class="card card-flush py-4">
-															<!--begin::Card header-->
-															<div class="card-header">
-																<div class="card-title">
-																	<h2>Pricing</h2>
-																</div>
-															</div>
-															<!--end::Card header-->
-															<!--begin::Card body-->
-															<div class="card-body pt-0">
-																<!--begin::Input group-->
-																<div class="mb-10 fv-row">
-																	<!--begin::Label-->
-																	<label class="required form-label">Base Price</label>
-																	<!--end::Label-->
-																	<!--begin::Input-->
-																	<input type="text" name="price" class="form-control mb-2" placeholder="Product price" value="" />
-																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set the product price.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Input group-->
-																<div class="fv-row mb-10">
-																	<!--begin::Label-->
-																	<label class="fs-6 fw-semibold mb-2">Discount Type
-																	<span class="ms-1" data-bs-toggle="tooltip" title="Select a discount type that will be applied to this product">
-																		<i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+															<!--end::Input group-->
+															<!--begin::Input group-->
+															<div class="fv-row mb-7">
+																<!--begin::Label-->
+																<label class="fs-6 fw-semibold mb-2">
+																	<span class="required">Email</span>
+																	<span class="ms-1" data-bs-toggle="tooltip" title="Email address must be active">
+																		<i class="ki-duotone ki-information fs-7">
 																			<span class="path1"></span>
 																			<span class="path2"></span>
 																			<span class="path3"></span>
 																		</i>
-																	</span></label>
-																	<!--End::Label-->
-																	<!--begin::Row-->
-																	<div class="row row-cols-1 row-cols-md-3 row-cols-lg-1 row-cols-xl-3 g-9" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button='true']">
-																		<!--begin::Col-->
-																		<div class="col">
-																			<!--begin::Option-->
-																			<label class="btn btn-outline btn-outline-dashed btn-active-light-primary active d-flex text-start p-6" data-kt-button="true">
-																				<!--begin::Radio-->
-																				<span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-																					<input class="form-check-input" type="radio" name="discount_option" value="1" checked="checked" />
-																				</span>
-																				<!--end::Radio-->
-																				<!--begin::Info-->
-																				<span class="ms-5">
-																					<span class="fs-4 fw-bold text-gray-800 d-block">No Discount</span>
-																				</span>
-																				<!--end::Info-->
-																			</label>
-																			<!--end::Option-->
-																		</div>
-																		<!--end::Col-->
-																		<!--begin::Col-->
-																		<div class="col">
-																			<!--begin::Option-->
-																			<label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6" data-kt-button="true">
-																				<!--begin::Radio-->
-																				<span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-																					<input class="form-check-input" type="radio" name="discount_option" value="2" />
-																				</span>
-																				<!--end::Radio-->
-																				<!--begin::Info-->
-																				<span class="ms-5">
-																					<span class="fs-4 fw-bold text-gray-800 d-block">Percentage %</span>
-																				</span>
-																				<!--end::Info-->
-																			</label>
-																			<!--end::Option-->
-																		</div>
-																		<!--end::Col-->
-																		<!--begin::Col-->
-																		<div class="col">
-																			<!--begin::Option-->
-																			<label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6" data-kt-button="true">
-																				<!--begin::Radio-->
-																				<span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-																					<input class="form-check-input" type="radio" name="discount_option" value="3" />
-																				</span>
-																				<!--end::Radio-->
-																				<!--begin::Info-->
-																				<span class="ms-5">
-																					<span class="fs-4 fw-bold text-gray-800 d-block">Fixed Price</span>
-																				</span>
-																				<!--end::Info-->
-																			</label>
-																			<!--end::Option-->
-																		</div>
-																		<!--end::Col-->
-																	</div>
-																	<!--end::Row-->
-																</div>
-																<!--end::Input group-->
+																	</span>
+																</label>
+																<!--end::Label-->
+																<!--begin::Input-->
+																<input type="email" class="form-control form-control-solid" placeholder="" name="email" value="sean@dellito.com" />
+																<!--end::Input-->
+															</div>
+															<!--end::Input group-->
+															<!--begin::Input group-->
+															<div class="fv-row mb-15">
+																<!--begin::Label-->
+																<label class="fs-6 fw-semibold mb-2">Description</label>
+																<!--end::Label-->
+																<!--begin::Input-->
+																<input type="text" class="form-control form-control-solid" placeholder="" name="description" />
+																<!--end::Input-->
+															</div>
+															<!--end::Input group-->
+															<!--begin::Billing toggle-->
+															<div class="fw-bold fs-3 rotate collapsible mb-7" data-bs-toggle="collapse" href="#kt_modal_add_customer_billing_info" role="button" aria-expanded="false" aria-controls="kt_customer_view_details">Shipping Information
+															<span class="ms-2 rotate-180">
+																<i class="ki-duotone ki-down fs-3"></i>
+															</span></div>
+															<!--end::Billing toggle-->
+															<!--begin::Billing form-->
+															<div id="kt_modal_add_customer_billing_info" class="collapse show">
 																<!--begin::Input group-->
-																<div class="d-none mb-10 fv-row" id="kt_ecommerce_add_product_discount_percentage">
+																<div class="d-flex flex-column mb-7 fv-row">
 																	<!--begin::Label-->
-																	<label class="form-label">Set Discount Percentage</label>
-																	<!--end::Label-->
-																	<!--begin::Slider-->
-																	<div class="d-flex flex-column text-center mb-5">
-																		<div class="d-flex align-items-start justify-content-center mb-7">
-																			<span class="fw-bold fs-3x" id="kt_ecommerce_add_product_discount_label">0</span>
-																			<span class="fw-bold fs-4 mt-1 ms-2">%</span>
-																		</div>
-																		<div id="kt_ecommerce_add_product_discount_slider" class="noUi-sm"></div>
-																	</div>
-																	<!--end::Slider-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set a percentage discount to be applied on this product.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Input group-->
-																<div class="d-none mb-10 fv-row" id="kt_ecommerce_add_product_discount_fixed">
-																	<!--begin::Label-->
-																	<label class="form-label">Fixed Discounted Price</label>
+																	<label class="required fs-6 fw-semibold mb-2">Address Line 1</label>
 																	<!--end::Label-->
 																	<!--begin::Input-->
-																	<input type="text" name="dicsounted_price" class="form-control mb-2" placeholder="Discounted price" />
+																	<input class="form-control form-control-solid" placeholder="" name="address1" value="101, Collins Street" />
 																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set the discounted product price. The product will be reduced at the determined fixed price</div>
-																	<!--end::Description-->
 																</div>
 																<!--end::Input group-->
-																<!--begin::Tax-->
-																<div class="d-flex flex-wrap gap-5">
-																	<!--begin::Input group-->
-																	<div class="fv-row w-100 flex-md-root">
+																<!--begin::Input group-->
+																<div class="d-flex flex-column mb-7 fv-row">
+																	<!--begin::Label-->
+																	<label class="fs-6 fw-semibold mb-2">Address Line 2</label>
+																	<!--end::Label-->
+																	<!--begin::Input-->
+																	<input class="form-control form-control-solid" placeholder="" name="address2" value="" />
+																	<!--end::Input-->
+																</div>
+																<!--end::Input group-->
+																<!--begin::Input group-->
+																<div class="d-flex flex-column mb-7 fv-row">
+																	<!--begin::Label-->
+																	<label class="required fs-6 fw-semibold mb-2">Town</label>
+																	<!--end::Label-->
+																	<!--begin::Input-->
+																	<input class="form-control form-control-solid" placeholder="" name="city" value="Melbourne" />
+																	<!--end::Input-->
+																</div>
+																<!--end::Input group-->
+																<!--begin::Input group-->
+																<div class="row g-9 mb-7">
+																	<!--begin::Col-->
+																	<div class="col-md-6 fv-row">
 																		<!--begin::Label-->
-																		<label class="required form-label">Tax Class</label>
-																		<!--end::Label-->
-																		<!--begin::Select2-->
-																		<select class="form-select mb-2" name="tax" data-control="select2" data-hide-search="true" data-placeholder="Select an option">
-																			<option></option>
-																			<option value="0">Tax Free</option>
-																			<option value="1">Taxable Goods</option>
-																			<option value="2">Downloadable Product</option>
-																		</select>
-																		<!--end::Select2-->
-																		<!--begin::Description-->
-																		<div class="text-muted fs-7">Set the product tax class.</div>
-																		<!--end::Description-->
-																	</div>
-																	<!--end::Input group-->
-																	<!--begin::Input group-->
-																	<div class="fv-row w-100 flex-md-root">
-																		<!--begin::Label-->
-																		<label class="form-label">VAT Amount (%)</label>
+																		<label class="required fs-6 fw-semibold mb-2">State / Province</label>
 																		<!--end::Label-->
 																		<!--begin::Input-->
-																		<input type="text" class="form-control mb-2" value="" />
+																		<input class="form-control form-control-solid" placeholder="" name="state" value="Victoria" />
 																		<!--end::Input-->
-																		<!--begin::Description-->
-																		<div class="text-muted fs-7">Set the product VAT about.</div>
-																		<!--end::Description-->
 																	</div>
-																	<!--end::Input group-->
-																</div>
-																<!--end:Tax-->
-															</div>
-															<!--end::Card header-->
-														</div>
-														<!--end::Pricing-->
-													</div>
-												</div>
-												<!--end::Tab pane-->
-												<!--begin::Tab pane-->
-												<div class="tab-pane fade" id="kt_ecommerce_add_product_advanced" role="tab-panel">
-													<div class="d-flex flex-column gap-7 gap-lg-10">
-														<!--begin::Inventory-->
-														<div class="card card-flush py-4">
-															<!--begin::Card header-->
-															<div class="card-header">
-																<div class="card-title">
-																	<h2>Inventory</h2>
-																</div>
-															</div>
-															<!--end::Card header-->
-															<!--begin::Card body-->
-															<div class="card-body pt-0">
-																<!--begin::Input group-->
-																<div class="mb-10 fv-row">
-																	<!--begin::Label-->
-																	<label class="required form-label">SKU</label>
-																	<!--end::Label-->
-																	<!--begin::Input-->
-																	<input type="text" name="sku" class="form-control mb-2" placeholder="SKU Number" value="" />
-																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Enter the product SKU.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Input group-->
-																<div class="mb-10 fv-row">
-																	<!--begin::Label-->
-																	<label class="required form-label">Barcode</label>
-																	<!--end::Label-->
-																	<!--begin::Input-->
-																	<input type="text" name="sku" class="form-control mb-2" placeholder="Barcode Number" value="" />
-																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Enter the product barcode number.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Input group-->
-																<div class="mb-10 fv-row">
-																	<!--begin::Label-->
-																	<label class="required form-label">Quantity</label>
-																	<!--end::Label-->
-																	<!--begin::Input-->
-																	<div class="d-flex gap-3">
-																		<input type="number" name="shelf" class="form-control mb-2" placeholder="On shelf" value="" />
-																		<input type="number" name="warehouse" class="form-control mb-2" placeholder="In warehouse" />
-																	</div>
-																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Enter the product quantity.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Input group-->
-																<div class="fv-row">
-																	<!--begin::Label-->
-																	<label class="form-label">Allow Backorders</label>
-																	<!--end::Label-->
-																	<!--begin::Input-->
-																	<div class="form-check form-check-custom form-check-solid mb-2">
-																		<input class="form-check-input" type="checkbox" value="" />
-																		<label class="form-check-label">Yes</label>
-																	</div>
-																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Allow customers to purchase products that are out of stock.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-															</div>
-															<!--end::Card header-->
-														</div>
-														<!--end::Inventory-->
-														<!--begin::Variations-->
-														<div class="card card-flush py-4">
-															<!--begin::Card header-->
-															<div class="card-header">
-																<div class="card-title">
-																	<h2>Variations</h2>
-																</div>
-															</div>
-															<!--end::Card header-->
-															<!--begin::Card body-->
-															<div class="card-body pt-0">
-																<!--begin::Input group-->
-																<div class="" data-kt-ecommerce-catalog-add-product="auto-options">
-																	<!--begin::Label-->
-																	<label class="form-label">Add Product Variations</label>
-																	<!--end::Label-->
-																	<!--begin::Repeater-->
-																	<div id="kt_ecommerce_add_product_options">
-																		<!--begin::Form group-->
-																		<div class="form-group">
-																			<div data-repeater-list="kt_ecommerce_add_product_options" class="d-flex flex-column gap-3">
-																				<div data-repeater-item="" class="form-group d-flex flex-wrap align-items-center gap-5">
-																					<!--begin::Select2-->
-																					<div class="w-100 w-md-200px">
-																						<select class="form-select" name="product_option" data-placeholder="Select a variation" data-kt-ecommerce-catalog-add-product="product_option">
-																							<option></option>
-																							<option value="color">Color</option>
-																							<option value="size">Size</option>
-																							<option value="material">Material</option>
-																							<option value="style">Style</option>
-																						</select>
-																					</div>
-																					<!--end::Select2-->
-																					<!--begin::Input-->
-																					<input type="text" class="form-control mw-100 w-200px" name="product_option_value" placeholder="Variation" />
-																					<!--end::Input-->
-																					<button type="button" data-repeater-delete="" class="btn btn-sm btn-icon btn-light-danger">
-																						<i class="ki-duotone ki-cross fs-1">
-																							<span class="path1"></span>
-																							<span class="path2"></span>
-																						</i>
-																					</button>
-																				</div>
-																			</div>
-																		</div>
-																		<!--end::Form group-->
-																		<!--begin::Form group-->
-																		<div class="form-group mt-5">
-																			<button type="button" data-repeater-create="" class="btn btn-sm btn-light-primary">
-																			<i class="ki-duotone ki-plus fs-2"></i>Add another variation</button>
-																		</div>
-																		<!--end::Form group-->
-																	</div>
-																	<!--end::Repeater-->
-																</div>
-																<!--end::Input group-->
-															</div>
-															<!--end::Card header-->
-														</div>
-														<!--end::Variations-->
-														<!--begin::Shipping-->
-														<div class="card card-flush py-4">
-															<!--begin::Card header-->
-															<div class="card-header">
-																<div class="card-title">
-																	<h2>Shipping</h2>
-																</div>
-															</div>
-															<!--end::Card header-->
-															<!--begin::Card body-->
-															<div class="card-body pt-0">
-																<!--begin::Input group-->
-																<div class="fv-row">
-																	<!--begin::Input-->
-																	<div class="form-check form-check-custom form-check-solid mb-2">
-																		<input class="form-check-input" type="checkbox" id="kt_ecommerce_add_product_shipping_checkbox" value="1" />
-																		<label class="form-check-label">This is a physical product</label>
-																	</div>
-																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set if the product is a physical or digital item. Physical products may require shipping.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Shipping form-->
-																<div id="kt_ecommerce_add_product_shipping" class="d-none mt-10">
-																	<!--begin::Input group-->
-																	<div class="mb-10 fv-row">
+																	<!--end::Col-->
+																	<!--begin::Col-->
+																	<div class="col-md-6 fv-row">
 																		<!--begin::Label-->
-																		<label class="form-label">Weight</label>
-																		<!--end::Label-->
-																		<!--begin::Editor-->
-																		<input type="text" name="weight" class="form-control mb-2" placeholder="Product weight" value="" />
-																		<!--end::Editor-->
-																		<!--begin::Description-->
-																		<div class="text-muted fs-7">Set a product weight in kilograms (kg).</div>
-																		<!--end::Description-->
-																	</div>
-																	<!--end::Input group-->
-																	<!--begin::Input group-->
-																	<div class="fv-row">
-																		<!--begin::Label-->
-																		<label class="form-label">Dimension</label>
+																		<label class="required fs-6 fw-semibold mb-2">Post Code</label>
 																		<!--end::Label-->
 																		<!--begin::Input-->
-																		<div class="d-flex flex-wrap flex-sm-nowrap gap-3">
-																			<input type="number" name="width" class="form-control mb-2" placeholder="Width (w)" value="" />
-																			<input type="number" name="height" class="form-control mb-2" placeholder="Height (h)" value="" />
-																			<input type="number" name="length" class="form-control mb-2" placeholder="Lengtn (l)" value="" />
-																		</div>
+																		<input class="form-control form-control-solid" placeholder="" name="postcode" value="3000" />
 																		<!--end::Input-->
-																		<!--begin::Description-->
-																		<div class="text-muted fs-7">Enter the product dimensions in centimeters (cm).</div>
-																		<!--end::Description-->
 																	</div>
-																	<!--end::Input group-->
+																	<!--end::Col-->
 																</div>
-																<!--end::Shipping form-->
-															</div>
-															<!--end::Card header-->
-														</div>
-														<!--end::Shipping-->
-														<!--begin::Meta options-->
-														<div class="card card-flush py-4">
-															<!--begin::Card header-->
-															<div class="card-header">
-																<div class="card-title">
-																	<h2>Meta Options</h2>
-																</div>
-															</div>
-															<!--end::Card header-->
-															<!--begin::Card body-->
-															<div class="card-body pt-0">
+																<!--end::Input group-->
 																<!--begin::Input group-->
-																<div class="mb-10">
+																<div class="d-flex flex-column mb-7 fv-row">
 																	<!--begin::Label-->
-																	<label class="form-label">Meta Tag Title</label>
+																	<label class="fs-6 fw-semibold mb-2">
+																		<span class="required">Country</span>
+																		<span class="ms-1" data-bs-toggle="tooltip" title="Country of origination">
+																			<i class="ki-duotone ki-information fs-7">
+																				<span class="path1"></span>
+																				<span class="path2"></span>
+																				<span class="path3"></span>
+																			</i>
+																		</span>
+																	</label>
 																	<!--end::Label-->
 																	<!--begin::Input-->
-																	<input type="text" class="form-control mb-2" name="meta_title" placeholder="Meta tag name" />
+																	<select name="country" aria-label="Select a Country" data-control="select2" data-placeholder="Select a Country..." data-dropdown-parent="#kt_modal_add_customer" class="form-select form-select-solid fw-bold">
+																		<option value="">Select a Country...</option>
+																		<option value="AF">Afghanistan</option>
+																		<option value="AX">Aland Islands</option>
+																		<option value="AL">Albania</option>
+																		<option value="DZ">Algeria</option>
+																		<option value="AS">American Samoa</option>
+																		<option value="AD">Andorra</option>
+																		<option value="AO">Angola</option>
+																		<option value="AI">Anguilla</option>
+																		<option value="AG">Antigua and Barbuda</option>
+																		<option value="AR">Argentina</option>
+																		<option value="AM">Armenia</option>
+																		<option value="AW">Aruba</option>
+																		<option value="AU">Australia</option>
+																		<option value="AT">Austria</option>
+																		<option value="AZ">Azerbaijan</option>
+																		<option value="BS">Bahamas</option>
+																		<option value="BH">Bahrain</option>
+																		<option value="BD">Bangladesh</option>
+																		<option value="BB">Barbados</option>
+																		<option value="BY">Belarus</option>
+																		<option value="BE">Belgium</option>
+																		<option value="BZ">Belize</option>
+																		<option value="BJ">Benin</option>
+																		<option value="BM">Bermuda</option>
+																		<option value="BT">Bhutan</option>
+																		<option value="BO">Bolivia, Plurinational State of</option>
+																		<option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+																		<option value="BA">Bosnia and Herzegovina</option>
+																		<option value="BW">Botswana</option>
+																		<option value="BR">Brazil</option>
+																		<option value="IO">British Indian Ocean Territory</option>
+																		<option value="BN">Brunei Darussalam</option>
+																		<option value="BG">Bulgaria</option>
+																		<option value="BF">Burkina Faso</option>
+																		<option value="BI">Burundi</option>
+																		<option value="KH">Cambodia</option>
+																		<option value="CM">Cameroon</option>
+																		<option value="CA">Canada</option>
+																		<option value="CV">Cape Verde</option>
+																		<option value="KY">Cayman Islands</option>
+																		<option value="CF">Central African Republic</option>
+																		<option value="TD">Chad</option>
+																		<option value="CL">Chile</option>
+																		<option value="CN">China</option>
+																		<option value="CX">Christmas Island</option>
+																		<option value="CC">Cocos (Keeling) Islands</option>
+																		<option value="CO">Colombia</option>
+																		<option value="KM">Comoros</option>
+																		<option value="CK">Cook Islands</option>
+																		<option value="CR">Costa Rica</option>
+																		<option value="CI">Côte d'Ivoire</option>
+																		<option value="HR">Croatia</option>
+																		<option value="CU">Cuba</option>
+																		<option value="CW">Curaçao</option>
+																		<option value="CZ">Czech Republic</option>
+																		<option value="DK">Denmark</option>
+																		<option value="DJ">Djibouti</option>
+																		<option value="DM">Dominica</option>
+																		<option value="DO">Dominican Republic</option>
+																		<option value="EC">Ecuador</option>
+																		<option value="EG">Egypt</option>
+																		<option value="SV">El Salvador</option>
+																		<option value="GQ">Equatorial Guinea</option>
+																		<option value="ER">Eritrea</option>
+																		<option value="EE">Estonia</option>
+																		<option value="ET">Ethiopia</option>
+																		<option value="FK">Falkland Islands (Malvinas)</option>
+																		<option value="FJ">Fiji</option>
+																		<option value="FI">Finland</option>
+																		<option value="FR">France</option>
+																		<option value="PF">French Polynesia</option>
+																		<option value="GA">Gabon</option>
+																		<option value="GM">Gambia</option>
+																		<option value="GE">Georgia</option>
+																		<option value="DE">Germany</option>
+																		<option value="GH">Ghana</option>
+																		<option value="GI">Gibraltar</option>
+																		<option value="GR">Greece</option>
+																		<option value="GL">Greenland</option>
+																		<option value="GD">Grenada</option>
+																		<option value="GU">Guam</option>
+																		<option value="GT">Guatemala</option>
+																		<option value="GG">Guernsey</option>
+																		<option value="GN">Guinea</option>
+																		<option value="GW">Guinea-Bissau</option>
+																		<option value="HT">Haiti</option>
+																		<option value="VA">Holy See (Vatican City State)</option>
+																		<option value="HN">Honduras</option>
+																		<option value="HK">Hong Kong</option>
+																		<option value="HU">Hungary</option>
+																		<option value="IS">Iceland</option>
+																		<option value="IN">India</option>
+																		<option value="ID">Indonesia</option>
+																		<option value="IR">Iran, Islamic Republic of</option>
+																		<option value="IQ">Iraq</option>
+																		<option value="IE">Ireland</option>
+																		<option value="IM">Isle of Man</option>
+																		<option value="IL">Israel</option>
+																		<option value="IT">Italy</option>
+																		<option value="JM">Jamaica</option>
+																		<option value="JP">Japan</option>
+																		<option value="JE">Jersey</option>
+																		<option value="JO">Jordan</option>
+																		<option value="KZ">Kazakhstan</option>
+																		<option value="KE">Kenya</option>
+																		<option value="KI">Kiribati</option>
+																		<option value="KP">Korea, Democratic People's Republic of</option>
+																		<option value="KW">Kuwait</option>
+																		<option value="KG">Kyrgyzstan</option>
+																		<option value="LA">Lao People's Democratic Republic</option>
+																		<option value="LV">Latvia</option>
+																		<option value="LB">Lebanon</option>
+																		<option value="LS">Lesotho</option>
+																		<option value="LR">Liberia</option>
+																		<option value="LY">Libya</option>
+																		<option value="LI">Liechtenstein</option>
+																		<option value="LT">Lithuania</option>
+																		<option value="LU">Luxembourg</option>
+																		<option value="MO">Macao</option>
+																		<option value="MG">Madagascar</option>
+																		<option value="MW">Malawi</option>
+																		<option value="MY">Malaysia</option>
+																		<option value="MV">Maldives</option>
+																		<option value="ML">Mali</option>
+																		<option value="MT">Malta</option>
+																		<option value="MH">Marshall Islands</option>
+																		<option value="MQ">Martinique</option>
+																		<option value="MR">Mauritania</option>
+																		<option value="MU">Mauritius</option>
+																		<option value="MX">Mexico</option>
+																		<option value="FM">Micronesia, Federated States of</option>
+																		<option value="MD">Moldova, Republic of</option>
+																		<option value="MC">Monaco</option>
+																		<option value="MN">Mongolia</option>
+																		<option value="ME">Montenegro</option>
+																		<option value="MS">Montserrat</option>
+																		<option value="MA">Morocco</option>
+																		<option value="MZ">Mozambique</option>
+																		<option value="MM">Myanmar</option>
+																		<option value="NA">Namibia</option>
+																		<option value="NR">Nauru</option>
+																		<option value="NP">Nepal</option>
+																		<option value="NL">Netherlands</option>
+																		<option value="NZ">New Zealand</option>
+																		<option value="NI">Nicaragua</option>
+																		<option value="NE">Niger</option>
+																		<option value="NG">Nigeria</option>
+																		<option value="NU">Niue</option>
+																		<option value="NF">Norfolk Island</option>
+																		<option value="MP">Northern Mariana Islands</option>
+																		<option value="NO">Norway</option>
+																		<option value="OM">Oman</option>
+																		<option value="PK">Pakistan</option>
+																		<option value="PW">Palau</option>
+																		<option value="PS">Palestinian Territory, Occupied</option>
+																		<option value="PA">Panama</option>
+																		<option value="PG">Papua New Guinea</option>
+																		<option value="PY">Paraguay</option>
+																		<option value="PE">Peru</option>
+																		<option value="PH">Philippines</option>
+																		<option value="PL">Poland</option>
+																		<option value="PT">Portugal</option>
+																		<option value="PR">Puerto Rico</option>
+																		<option value="QA">Qatar</option>
+																		<option value="RO">Romania</option>
+																		<option value="RU">Russian Federation</option>
+																		<option value="RW">Rwanda</option>
+																		<option value="BL">Saint Barthélemy</option>
+																		<option value="KN">Saint Kitts and Nevis</option>
+																		<option value="LC">Saint Lucia</option>
+																		<option value="MF">Saint Martin (French part)</option>
+																		<option value="VC">Saint Vincent and the Grenadines</option>
+																		<option value="WS">Samoa</option>
+																		<option value="SM">San Marino</option>
+																		<option value="ST">Sao Tome and Principe</option>
+																		<option value="SA">Saudi Arabia</option>
+																		<option value="SN">Senegal</option>
+																		<option value="RS">Serbia</option>
+																		<option value="SC">Seychelles</option>
+																		<option value="SL">Sierra Leone</option>
+																		<option value="SG">Singapore</option>
+																		<option value="SX">Sint Maarten (Dutch part)</option>
+																		<option value="SK">Slovakia</option>
+																		<option value="SI">Slovenia</option>
+																		<option value="SB">Solomon Islands</option>
+																		<option value="SO">Somalia</option>
+																		<option value="ZA">South Africa</option>
+																		<option value="KR">South Korea</option>
+																		<option value="SS">South Sudan</option>
+																		<option value="ES">Spain</option>
+																		<option value="LK">Sri Lanka</option>
+																		<option value="SD">Sudan</option>
+																		<option value="SR">Suriname</option>
+																		<option value="SZ">Swaziland</option>
+																		<option value="SE">Sweden</option>
+																		<option value="CH">Switzerland</option>
+																		<option value="SY">Syrian Arab Republic</option>
+																		<option value="TW">Taiwan, Province of China</option>
+																		<option value="TJ">Tajikistan</option>
+																		<option value="TZ">Tanzania, United Republic of</option>
+																		<option value="TH">Thailand</option>
+																		<option value="TG">Togo</option>
+																		<option value="TK">Tokelau</option>
+																		<option value="TO">Tonga</option>
+																		<option value="TT">Trinidad and Tobago</option>
+																		<option value="TN">Tunisia</option>
+																		<option value="TR">Turkey</option>
+																		<option value="TM">Turkmenistan</option>
+																		<option value="TC">Turks and Caicos Islands</option>
+																		<option value="TV">Tuvalu</option>
+																		<option value="UG">Uganda</option>
+																		<option value="UA">Ukraine</option>
+																		<option value="AE">United Arab Emirates</option>
+																		<option value="GB">United Kingdom</option>
+																		<option value="US" selected="selected">United States</option>
+																		<option value="UY">Uruguay</option>
+																		<option value="UZ">Uzbekistan</option>
+																		<option value="VU">Vanuatu</option>
+																		<option value="VE">Venezuela, Bolivarian Republic of</option>
+																		<option value="VN">Vietnam</option>
+																		<option value="VI">Virgin Islands</option>
+																		<option value="YE">Yemen</option>
+																		<option value="ZM">Zambia</option>
+																		<option value="ZW">Zimbabwe</option>
+																	</select>
 																	<!--end::Input-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>
-																	<!--end::Description-->
 																</div>
 																<!--end::Input group-->
 																<!--begin::Input group-->
-																<div class="mb-10">
-																	<!--begin::Label-->
-																	<label class="form-label">Meta Tag Description</label>
-																	<!--end::Label-->
-																	<!--begin::Editor-->
-																	<div id="kt_ecommerce_add_product_meta_description" name="kt_ecommerce_add_product_meta_description" class="min-h-100px mb-2"></div>
-																	<!--end::Editor-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set a meta tag description to the product for increased SEO ranking.</div>
-																	<!--end::Description-->
-																</div>
-																<!--end::Input group-->
-																<!--begin::Input group-->
-																<div>
-																	<!--begin::Label-->
-																	<label class="form-label">Meta Tag Keywords</label>
-																	<!--end::Label-->
-																	<!--begin::Editor-->
-																	<input id="kt_ecommerce_add_product_meta_keywords" name="kt_ecommerce_add_product_meta_keywords" class="form-control mb-2" />
-																	<!--end::Editor-->
-																	<!--begin::Description-->
-																	<div class="text-muted fs-7">Set a list of keywords that the product is related to. Separate the keywords by adding a comma
-																	<code>,</code>between each keyword.</div>
-																	<!--end::Description-->
+																<div class="fv-row mb-7">
+																	<!--begin::Wrapper-->
+																	<div class="d-flex flex-stack">
+																		<!--begin::Label-->
+																		<div class="me-5">
+																			<!--begin::Label-->
+																			<label class="fs-6 fw-semibold">Use as a billing adderess?</label>
+																			<!--end::Label-->
+																			<!--begin::Input-->
+																			<div class="fs-7 fw-semibold text-muted">If you need more info, please check budget planning</div>
+																			<!--end::Input-->
+																		</div>
+																		<!--end::Label-->
+																		<!--begin::Switch-->
+																		<label class="form-check form-switch form-check-custom form-check-solid">
+																			<!--begin::Input-->
+																			<input class="form-check-input" name="billing" type="checkbox" value="1" id="kt_modal_add_customer_billing" checked="checked" />
+																			<!--end::Input-->
+																			<!--begin::Label-->
+																			<span class="form-check-label fw-semibold text-muted" for="kt_modal_add_customer_billing">Yes</span>
+																			<!--end::Label-->
+																		</label>
+																		<!--end::Switch-->
+																	</div>
+																	<!--begin::Wrapper-->
 																</div>
 																<!--end::Input group-->
 															</div>
-															<!--end::Card header-->
+															<!--end::Billing form-->
 														</div>
-														<!--end::Meta options-->
+														<!--end::Scroll-->
 													</div>
-												</div>
-												<!--end::Tab pane-->
-											</div>
-											<!--end::Tab content-->
-											<div class="d-flex justify-content-end">
-												<!--begin::Button-->
-												<a href="../../demo1/dist/apps/ecommerce/catalog/products.html" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
-												<!--end::Button-->
-												<!--begin::Button-->
-												<button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
-													<span class="indicator-label">Save Changes</span>
-													<span class="indicator-progress">Please wait...
-													<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-												</button>
-												<!--end::Button-->
+													<!--end::Modal body-->
+													<!--begin::Modal footer-->
+													<div class="modal-footer flex-center">
+														<!--begin::Button-->
+														<button type="reset" id="kt_modal_add_customer_cancel" class="btn btn-light me-3">Discard</button>
+														<!--end::Button-->
+														<!--begin::Button-->
+														<button type="submit" id="kt_modal_add_customer_submit" class="btn btn-primary">
+															<span class="indicator-label">Submit</span>
+															<span class="indicator-progress">Please wait...
+															<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+														</button>
+														<!--end::Button-->
+													</div>
+													<!--end::Modal footer-->
+												</form>
+												<!--end::Form-->
 											</div>
 										</div>
-										<!--end::Main column-->
-									</form>
-									<!--end::Form-->
+									</div>
+									<!--end::Modal - Customers - Add-->
+									<!--begin::Modal - Adjust Balance-->
+									<div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
+										<!--begin::Modal dialog-->
+										<div class="modal-dialog modal-dialog-centered mw-650px">
+											<!--begin::Modal content-->
+											<div class="modal-content">
+												<!--begin::Modal header-->
+												<div class="modal-header">
+													<!--begin::Modal title-->
+													<h2 class="fw-bold">Export Customers</h2>
+													<!--end::Modal title-->
+													<!--begin::Close-->
+													<div id="kt_customers_export_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+														<i class="ki-duotone ki-cross fs-1">
+															<span class="path1"></span>
+															<span class="path2"></span>
+														</i>
+													</div>
+													<!--end::Close-->
+												</div>
+												<!--end::Modal header-->
+												<!--begin::Modal body-->
+												<div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+													<!--begin::Form-->
+													<form id="kt_customers_export_form" class="form" action="#">
+														<!--begin::Input group-->
+														<div class="fv-row mb-10">
+															<!--begin::Label-->
+															<label class="fs-5 fw-semibold form-label mb-5">Select Export Format:</label>
+															<!--end::Label-->
+															<!--begin::Input-->
+															<select data-control="select2" data-placeholder="Select a format" data-hide-search="true" name="format" class="form-select form-select-solid">
+																<option value="excell">Excel</option>
+																<option value="pdf">PDF</option>
+																<option value="cvs">CVS</option>
+																<option value="zip">ZIP</option>
+															</select>
+															<!--end::Input-->
+														</div>
+														<!--end::Input group-->
+														<!--begin::Input group-->
+														<div class="fv-row mb-10">
+															<!--begin::Label-->
+															<label class="fs-5 fw-semibold form-label mb-5">Select Date Range:</label>
+															<!--end::Label-->
+															<!--begin::Input-->
+															<input class="form-control form-control-solid" placeholder="Pick a date" name="date" />
+															<!--end::Input-->
+														</div>
+														<!--end::Input group-->
+														<!--begin::Row-->
+														<div class="row fv-row mb-15">
+															<!--begin::Label-->
+															<label class="fs-5 fw-semibold form-label mb-5">Payment Type:</label>
+															<!--end::Label-->
+															<!--begin::Radio group-->
+															<div class="d-flex flex-column">
+																<!--begin::Radio button-->
+																<label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
+																	<input class="form-check-input" type="checkbox" value="1" checked="checked" name="payment_type" />
+																	<span class="form-check-label text-gray-600 fw-semibold">All</span>
+																</label>
+																<!--end::Radio button-->
+																<!--begin::Radio button-->
+																<label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
+																	<input class="form-check-input" type="checkbox" value="2" checked="checked" name="payment_type" />
+																	<span class="form-check-label text-gray-600 fw-semibold">Visa</span>
+																</label>
+																<!--end::Radio button-->
+																<!--begin::Radio button-->
+																<label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
+																	<input class="form-check-input" type="checkbox" value="3" name="payment_type" />
+																	<span class="form-check-label text-gray-600 fw-semibold">Mastercard</span>
+																</label>
+																<!--end::Radio button-->
+																<!--begin::Radio button-->
+																<label class="form-check form-check-custom form-check-sm form-check-solid">
+																	<input class="form-check-input" type="checkbox" value="4" name="payment_type" />
+																	<span class="form-check-label text-gray-600 fw-semibold">American Express</span>
+																</label>
+																<!--end::Radio button-->
+															</div>
+															<!--end::Input group-->
+														</div>
+														<!--end::Row-->
+														<!--begin::Actions-->
+														<div class="text-center">
+															<button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3">Discard</button>
+															<button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
+																<span class="indicator-label">Submit</span>
+																<span class="indicator-progress">Please wait...
+																<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+															</button>
+														</div>
+														<!--end::Actions-->
+													</form>
+													<!--end::Form-->
+												</div>
+												<!--end::Modal body-->
+											</div>
+											<!--end::Modal content-->
+										</div>
+										<!--end::Modal dialog-->
+									</div>
+									<!--end::Modal - New Card-->
+									<!--end::Modals-->
 								</div>
 								<!--end::Content container-->
 							</div>
@@ -12430,13 +13752,13 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="assets/media/avatars/300-1.jpg" />
+													<span class="symbol-label bg-light-danger text-danger fw-semibold">O</span>
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
 												<div class="ms-5">
-													<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max Smith</a>
-													<div class="fw-semibold text-muted">max@kt.com</div>
+													<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Olivia Wild</a>
+													<div class="fw-semibold text-muted">olivia@corpmail.com</div>
 												</div>
 												<!--end::Details-->
 											</div>
@@ -12993,13 +14315,13 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<span class="symbol-label bg-light-info text-info fw-semibold">A</span>
+											<img alt="Pic" src="assets/media/avatars/300-6.jpg" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
 										<div class="ms-5">
-											<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Robert Doe</a>
-											<div class="fw-semibold text-muted">robert@benko.com</div>
+											<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Emma Smith</a>
+											<div class="fw-semibold text-muted">smith@kpmg.com</div>
 										</div>
 										<!--end::Details-->
 									</div>
@@ -13052,10 +14374,11 @@ License: For each use you must have a valid license purchased only from above li
 		<!--end::Global Javascript Bundle-->
 		<!--begin::Vendors Javascript(used for this page only)-->
 		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
-		<script src="assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="assets/js/custom/apps/ecommerce/catalog/save-product.js"></script>
+		<script src="assets/js/custom/apps/customers/list/export.js"></script>
+		<script src="assets/js/custom/apps/customers/list/list.js"></script>
+		<script src="assets/js/custom/apps/customers/add.js"></script>
 		<script src="assets/js/widgets.bundle.js"></script>
 		<script src="assets/js/custom/widgets.js"></script>
 		<script src="assets/js/custom/apps/chat/chat.js"></script>

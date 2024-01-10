@@ -14,7 +14,7 @@ class AdminController extends Controller
         try {
             $admin = DB::table('admin')->where('email', $email)->where('password', $password)->first();
             if ($admin) {
-                session(['userId' => $admin->id, 'email' => $admin->email]);
+                session(['userId' => $admin->id, 'email' => $admin->email, 'authenticated' => TRUE]);
                 return response()->json(['success' => 'Logged in successfully']);
             } else {
                 return response()->json(['error' => 'Invalid credentials'], 401);

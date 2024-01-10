@@ -2,21 +2,32 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 
 Route::get('/products', [ProductController::class, 'showProducts'])->name('showProduct');
-Route::post('/add', [ProductController::class, 'addProduct'])->name('addProduct');
+
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 Route::view('/', 'dashboards.index')->middleware('admin.auth');
+Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 
-Route::view('add-product', 'pages.add-product');
+Route::view('/add-product-form', 'pages.add-product');
+Route::post('/add-product', [ProductController::class, 'addProduct'])->name('addProduct');
+
+Route::view('/add-user-form', 'pages.account-settings');
+Route::post('/add-user', [UserController::class, 'addUser'])->name('addUser');
+Route::post('/delete-user', [UserController::class, 'deleteUser'])->name('deleteUser');
+
+Route::get('/account-settings', function () {
+    return view('pages.account-settings');
+});
 
 Route::get('/test', function () {
     return view('test');
 });
 
-Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
+
 
 Route::get('/dashboard/bidding', function () {
     return view('dashboards.bidding');

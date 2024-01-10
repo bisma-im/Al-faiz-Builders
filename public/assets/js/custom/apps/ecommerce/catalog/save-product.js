@@ -129,7 +129,7 @@ var KTAppEcommerceSaveProduct = (function () {
                                         // console.log("validated!"),
                                             if(e === "Valid"){
                                                 const formData = new FormData(t);
-                                                fetch('/add', {
+                                                fetch('/add-product', {
                                                     method: 'POST',
                                                     body: formData,
                                                     headers: {
