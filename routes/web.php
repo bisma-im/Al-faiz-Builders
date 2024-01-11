@@ -15,19 +15,10 @@ Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 Route::view('/add-product-form', 'pages.add-product');
 Route::post('/add-product', [ProductController::class, 'addProduct'])->name('addProduct');
 
-Route::view('/add-user-form', 'pages.account-settings');
+Route::view('/add-user-form', 'pages.add-user');
 Route::post('/add-user', [UserController::class, 'addUser'])->name('addUser');
 Route::post('/delete-user', [UserController::class, 'deleteUser'])->name('deleteUser');
-
-Route::get('/account-settings', function () {
-    return view('pages.account-settings');
-});
-
-Route::get('/test', function () {
-    return view('test');
-});
-
-
+Route::get('/users', [UserController::class, 'showUsers'])->name('showUsers');
 
 Route::get('/dashboard/bidding', function () {
     return view('dashboards.bidding');

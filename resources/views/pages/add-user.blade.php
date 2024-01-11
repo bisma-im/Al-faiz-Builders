@@ -135,116 +135,6 @@
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-xxl">
-                <!--begin::Navbar-->
-                <div class="card mb-5 mb-xl-10">
-                    <div class="card-body pt-9 pb-0">
-                        <!--begin::Details-->
-                        <div class="d-flex flex-wrap flex-sm-nowrap">
-                            <!--begin: Pic-->
-                            <div class="me-7 mb-4">
-                                <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                                    <img src="assets/media/avatars/300-1.jpg" alt="image" />
-                                    <div class="position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-body h-20px w-20px"></div>
-                                </div>
-                            </div>
-                            <!--end::Pic-->
-                            <!--begin::Info-->
-                            <div class="flex-grow-1">
-                                <!--begin::Title-->
-                                <div class="d-flex justify-content-between align-items-start flex-wrap mb-2">
-                                    <!--begin::User-->
-                                    <div class="d-flex flex-column">
-                                        <!--begin::Name-->
-                                        <div class="d-flex align-items-center mb-2">
-                                            <a href="#" class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">Max Smith</a>
-                                            <a href="#">
-                                                <i class="ki-duotone ki-verify fs-1 text-primary">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                            </a>
-                                        </div>
-                                        <!--end::Name-->
-                                        <!--begin::Info-->
-                                        <div class="d-flex flex-wrap fw-semibold fs-6 mb-4 pe-2">
-                                            <a href="#" class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
-                                            <i class="ki-duotone ki-profile-circle fs-4 me-1">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                                <span class="path3"></span>
-                                            </i>Developer</a>
-                                            <a href="#" class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
-                                            <i class="ki-duotone ki-geolocation fs-4 me-1">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>SF, Bay Area</a>
-                                            <a href="#" class="d-flex align-items-center text-gray-400 text-hover-primary mb-2">
-                                            <i class="ki-duotone ki-sms fs-4 me-1">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>max@kt.com</a>
-                                        </div>
-                                        <!--end::Info-->
-                                    </div>
-                                    <!--end::User-->
-                                </div>
-                                <!--end::Title-->
-                            </div>
-                            <!--end::Info-->
-                        </div>
-                        <!--end::Details-->
-                        <!--begin::Navs-->
-                        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/account/overview.html">Overview</a>
-                            </li>
-                            <!--end::Nav item-->
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="../../demo1/dist/account/settings.html">Settings</a>
-                            </li>
-                            <!--end::Nav item-->
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/account/security.html">Security</a>
-                            </li>
-                            <!--end::Nav item-->
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/account/activity.html">Activity</a>
-                            </li>
-                            <!--end::Nav item-->
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/account/billing.html">Billing</a>
-                            </li>
-                            <!--end::Nav item-->
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/account/statements.html">Statements</a>
-                            </li>
-                            <!--end::Nav item-->
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/account/referrals.html">Referrals</a>
-                            </li>
-                            <!--end::Nav item-->
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/account/api-keys.html">API Keys</a>
-                            </li>
-                            <!--end::Nav item-->
-                            <!--begin::Nav item-->
-                            <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5" href="../../demo1/dist/account/logs.html">Logs</a>
-                            </li>
-                            <!--end::Nav item-->
-                        </ul>
-                        <!--begin::Navs-->
-                    </div>
-                </div>
-                <!--end::Navbar-->
                 <!--begin::Basic info-->
                 <div class="card mb-5 mb-xl-10">
                     <!--begin::Card header-->
@@ -273,7 +163,7 @@
                                         <!--begin::Image input-->
                                         <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
                                             <!--begin::Preview existing avatar-->
-                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url(assets/media/avatars/300-1.jpg)"></div>
+                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url(assets/media/svg/avatars/blank.svg)"></div>
                                             <!--end::Preview existing avatar-->
                                             <!--begin::Label-->
                                             <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
@@ -318,21 +208,8 @@
                                     <label class="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
-                                    <div class="col-lg-8">
-                                        <!--begin::Row-->
-                                        <div class="row">
-                                            <!--begin::Col-->
-                                            <div class="col-lg-6 fv-row">
-                                                <input type="text" name="fname" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="First name" value="Max" />
-                                            </div>
-                                            <!--end::Col-->
-                                            <!--begin::Col-->
-                                            <div class="col-lg-6 fv-row">
-                                                <input type="text" name="lname" class="form-control form-control-lg form-control-solid" placeholder="Last name" value="Smith" />
-                                            </div>
-                                            <!--end::Col-->
-                                        </div>
-                                        <!--end::Row-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="full_name" class="form-control form-control-lg form-control-solid" placeholder="Full Name" value="" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
