@@ -33,7 +33,9 @@ var KTAccountSettingsProfileDetails = (function () {
                             submitButton.disabled = true;
 
                             var formData = new FormData(form);
-                            fetch('/add-user', {
+                            var userId = formData.get('id'); // Get the user ID from the form data
+                            var url = userId ? '/update-user' : '/add-user';
+                            fetch(url, {
                                 method: 'POST',
                                 body: formData,
                                 headers: {
@@ -51,7 +53,7 @@ var KTAccountSettingsProfileDetails = (function () {
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = '/test'; // Replace with your desired path
+                                            window.location.href = form.getAttribute('data-kt-redirect'); // Replace with your desired path
                                         }
                                     });
                                 } else {

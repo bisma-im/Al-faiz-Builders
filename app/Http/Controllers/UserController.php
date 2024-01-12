@@ -14,24 +14,45 @@ class UserController extends Controller
         return view('pages.users', ['data' => $users]);
     }
 
-    public function addUser(Request $req, $userData){
-        $fullName = $req->input('full_name');
-        $username = $req->input('username');
-        $email = $req->input('email');
-        $password = $req->input('password');
-        $mobileNo = $req->input('mobile_no');
-        $userAccessLevel = $req->input('user_access_level');
-        $avatarName = 'default.jpg'; 
+    public function showAddUserForm($email = null) {
+        $userData = null;
+        if ($email) {
+            $userData = DB::table('user')->where('email', $email)->first();
+            // Handle case if user is not found
+        }
+        return view('pages.add-user', ['userData' => $userData]);
+    }
 
+    public function getUserData(Request $req){
+        $userData = [
+            'full_name' => $req->input('full_name'),
+            'username' => $req->input('username'),
+            'email' => $req->input('email'),
+            'password' => $req->input('password'), // Consider hashing this password
+            'mobile_no' => $req->input('mobile_no'),
+            'user_access_level' => $req->input('user_access_level'),
+            'user_image' => 'default.jpg'
+        ];
+    
         if ($req->hasFile('avatar')) {
             $avatar = $req->file('avatar');
             $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
-            $destinationPath = public_path('images/user-avatars'); // Set the destination path
-            $avatar->move($destinationPath, $avatarName); // Move the file to the new directory
-            $avatarName = 'user-avatars/' . $avatarName; // Prepare the path to save in database
+            $destinationPath = public_path('images/user-avatars');
+            $avatar->move($destinationPath, $avatarName);
+            $userData['user_image'] = $avatarName; // Update avatarName in the array
         }
+    
+        return $userData;
+    }
+    
+
+    public function addUser(Request $req){
+        
+        $userData = $this->getUserData($req);
+        
         try 
-        {
+        {   
+            // Insert data into database
             $inserted = DB::table('user')->insert($userData);
             return response()->json(['success' => 'User added successfully']);
         } 
@@ -41,6 +62,27 @@ class UserController extends Controller
         }
     }
 
+    public function updateUser(Request $req) {
+        $userData = $this->getUserData($req);
+    
+        $id = $req->input('id'); // Get the user ID from the request
+    
+        try {
+            $updated = DB::table('user')
+                ->where('id', $id)
+                ->update($userData);
+    
+            if ($updated) {
+                return response()->json(['success' => 'User updated successfully']);
+            } else {
+                return response()->json(['error' => 'User not found or update failed'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
+    
     public function deleteUser(Request $req) {
         $username = $req->input('username');
         $email = $req->input('email');

@@ -149,11 +149,14 @@
                     <!--begin::Content-->
                     <div id="kt_account_settings_profile_details" class="collapse show">
                         <!--begin::Form-->
-                        <form id="kt_account_profile_details_form" class="form" data-kt-redirect="/test" action="{{ route('addUser') }}" method="POST">
+                        <form id="kt_account_profile_details_form" class="form" data-kt-redirect="/users" action="{{ route('addUser') }}" method="POST">
                             @csrf
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
                                 <!--begin::Input group-->
+                                @if (isset($userData) && $userData->id)
+                                    <input type="hidden" name="id" value="{{ $userData->id }}">
+                                @endif
                                 <div class="row mb-6">
                                     <!--begin::Label-->
                                     <label class="col-lg-4 col-form-label fw-semibold fs-6">Avatar</label>
@@ -163,7 +166,7 @@
                                         <!--begin::Image input-->
                                         <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
                                             <!--begin::Preview existing avatar-->
-                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url(assets/media/svg/avatars/blank.svg)"></div>
+                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ asset('images/user-avatars/' . ($userData->user_image ?? 'assets/media/svg/avatars/blank.svg')) }})"></div>
                                             <!--end::Preview existing avatar-->
                                             <!--begin::Label-->
                                             <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
@@ -209,7 +212,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="full_name" class="form-control form-control-lg form-control-solid" placeholder="Full Name" value="" />
+                                        <input type="text" name="full_name" class="form-control form-control-lg form-control-solid" placeholder="Full Name" value="{{ $userData->full_name ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -221,7 +224,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="username" class="form-control form-control-lg form-control-solid" placeholder="Username" value="" />
+                                        <input type="text" name="username" class="form-control form-control-lg form-control-solid" placeholder="Username" value="{{ $userData->username ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -242,7 +245,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="mobile_no" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="" />
+                                        <input type="tel" name="mobile_no" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $userData->mobile_no ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -254,7 +257,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="email" name="email" class="form-control form-control-lg form-control-solid" placeholder="Email" value="" />
+                                        <input type="email" name="email" class="form-control form-control-lg form-control-solid" placeholder="Email" value="{{ $userData->email ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -266,7 +269,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="password" name="password" class="form-control form-control-lg form-control-solid" placeholder="Password" value="" />
+                                        <input type="password" name="password" class="form-control form-control-lg form-control-solid" placeholder="Password" value="{{ $userData->password ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -287,8 +290,8 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <select name="user_access_level" aria-label="Select a Role" data-control="select2" data-placeholder="Select a role..." class="form-select form-select-solid form-select-lg fw-semibold">
-                                            <option value="">Select a Role...</option>
+                                        <select name="user_access_level" aria-label="Select a Role" data-control="select2" placeholder="Select a role..." class="form-select form-select-solid form-select-lg fw-semibold">
+                                            <option value="">{{ $userData->user_access_level ?? 'Select a Role...' }}</option>
                                             <option value="admin">Admin</option>
                                             <option value="sales_agent">Sales Agent</option>
                                             <option value="marketing_agent">Marketing Agent</option>
@@ -410,24 +413,24 @@
 
 @push('scripts')
         <!--begin::Vendors Javascript(used for this page only)-->
-		<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
+		<script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="assets/js/custom/account/settings/signin-methods.js"></script>
-		<script src="assets/js/custom/account/settings/profile-details.js"></script>
-		<script src="assets/js/custom/account/settings/deactivate-account.js"></script>
-		<script src="assets/js/custom/pages/user-profile/general.js"></script>
-		<script src="assets/js/widgets.bundle.js"></script>
-		<script src="assets/js/custom/widgets.js"></script>
-		<script src="assets/js/custom/apps/chat/chat.js"></script>
-		<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-		<script src="assets/js/custom/utilities/modals/create-app.js"></script>
-		<script src="assets/js/custom/utilities/modals/offer-a-deal/type.js"></script>
-		<script src="assets/js/custom/utilities/modals/offer-a-deal/details.js"></script>
-		<script src="assets/js/custom/utilities/modals/offer-a-deal/finance.js"></script>
-		<script src="assets/js/custom/utilities/modals/offer-a-deal/complete.js"></script>
-		<script src="assets/js/custom/utilities/modals/offer-a-deal/main.js"></script>
-		<script src="assets/js/custom/utilities/modals/two-factor-authentication.js"></script>
-		<script src="assets/js/custom/utilities/modals/users-search.js"></script>
+		<script src="{{ URL::asset('assets/js/custom/account/settings/signin-methods.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/account/settings/profile-details.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/account/settings/deactivate-account.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/pages/user-profile/general.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/type.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/details.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/finance.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/complete.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/main.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/two-factor-authentication.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 		<!--end::Custom Javascript-->
 @endpush
