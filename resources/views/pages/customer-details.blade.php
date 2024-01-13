@@ -141,7 +141,7 @@
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
                         <!--begin::Card title-->
                         <div class="card-title m-0">
-                            <h3 class="fw-bold m-0">Profile Details</h3>
+                            <h3 class="fw-bold m-0">Customer Details</h3>
                         </div>
                         <!--end::Card title-->
                     </div>
@@ -149,13 +149,13 @@
                     <!--begin::Content-->
                     <div id="kt_account_settings_profile_details" class="collapse show">
                         <!--begin::Form-->
-                        <form id="kt_account_profile_details_form" class="form" data-kt-redirect="/users" action="{{ route('addUser') }}" method="POST">
+                        <form id="kt_account_profile_details_form" class="form" data-kt-redirect="/customers" action="{{ route('addCustomer') }}" method="POST">
                             @csrf
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
                                 <!--begin::Input group-->
-                                @if (isset($userData) && $userData->id)
-                                    <input type="hidden" id="id" name="id" value="{{ $userData->id }}">
+                                @if (isset($customerData) && $customerData->id)
+                                    <input type="hidden" id="id" name="id" value="{{ $customerData->id }}">
                                 @endif
                                 <div class="row mb-6">
                                     <!--begin::Label-->
@@ -166,7 +166,7 @@
                                         <!--begin::Image input-->
                                         <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
                                             <!--begin::Preview existing avatar-->
-                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ isset($userData->user_image) ? asset('images/user-avatars/'.$userData->user_image) : asset('assets/media/svg/avatars/blank.svg') }})"></div>
+                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ isset($customerData->customer_image) ? asset('images/customer-images/'.$customerData->customer_image) : asset('assets/media/svg/avatars/blank.svg') }})"></div>
 
                                             <!--end::Preview existing avatar-->
                                             <!--begin::Label-->
@@ -206,35 +206,71 @@
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
-                                <!--begin::Input group-->
+                                <!--begin::Input group Full Name-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
                                     <label class="col-lg-4 col-form-label required fw-semibold fs-6">Full Name</label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="full_name" class="form-control form-control-lg form-control-solid" placeholder="Full Name" value="{{ $userData->full_name ?? '' }}" />
+                                        <input type="text" name="full_name" class="form-control form-control-lg form-control-solid" placeholder="Full Name" value="{{ $customerData->name ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
-                                <!--begin::Input group-->
+                                <!--begin::Input group Address-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Username</label>
+                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Address</label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="username" class="form-control form-control-lg form-control-solid" placeholder="Username" value="{{ $userData->username ?? '' }}" />
+                                        <input type="text" name="address" class="form-control form-control-lg form-control-solid" placeholder="Address" value="{{ $customerData->address ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
-                                <!--begin::Input group-->
+                                <!--begin::Input group Area-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Area</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="area" class="form-control form-control-lg form-control-solid" placeholder="Area" value="{{ $customerData->area ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group City-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">City</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="city" class="form-control form-control-lg form-control-solid" placeholder="City" value="{{ $customerData->city ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Country-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Country</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="country" class="form-control form-control-lg form-control-solid" placeholder="Country" value="{{ $customerData->country ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Mobile Number 1-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
                                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                        <span class="required">Contact Phone</span>
+                                        <span class="required">Mobile Number 1</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Phone number must be active">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
@@ -246,41 +282,53 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="mobile_no" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $userData->mobile_no ?? '' }}" />
+                                        <input type="tel" name="mobile_no_1" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $customerData->mobile_number_1 ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
-                                <!--begin::Input group-->
+                                <!--begin::Input group Mobile Number 2-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Email</label>
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Mobile Number 2</label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="email" name="email" class="form-control form-control-lg form-control-solid" placeholder="Email" value="{{ $userData->email ?? '' }}" />
+                                        <input type="tel" name="mobile_no_2" class="form-control form-control-lg form-control-solid" placeholder="Mobile Number 2" value="{{ $customerData->mobile_no_2 ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
-                                <!--begin::Input group-->
+                                <!--begin::Input group Landline Number-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Password</label>
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Landline Number</label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="password" name="password" class="form-control form-control-lg form-control-solid" placeholder="Password" value="{{ $userData->password ?? '' }}" />
+                                        <input type="tel" name="landline" class="form-control form-control-lg form-control-solid" placeholder="Landline Number" value="{{ $customerData->landline ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
-                                <!--begin::Input group-->
+                                <!--begin::Input group Office Phone-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Office Phone</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="tel" name="office_phone" class="form-control form-control-lg form-control-solid" placeholder="Office Phone" value="{{ $customerData->office_phone ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group CNIC-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
                                     <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                        <span class="required">Role</span>
-                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate role">
+                                        <span class="required">CNIC</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="CNIC must be valid">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
@@ -291,20 +339,130 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <select name="user_access_level" aria-label="Select a Role" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select a role...">
-                                            <option value="">Select a Role...</option>
-                                            <option value="admin" {{ (isset($userData) && $userData->user_access_level === 'admin') ? 'selected' : '' }}>Admin</option>
-                                            <option value="sales_agent" {{ (isset($userData) && $userData->user_access_level === 'sales_agent') ? 'selected' : '' }}>Sales Agent</option>
-                                            <option value="marketing_agent" {{ (isset($userData) && $userData->user_access_level === 'marketing_agent') ? 'selected' : '' }}>Marketing Agent</option>
-                                            <option value="dealer" {{ (isset($userData) && $userData->user_access_level === 'dealer') ? 'selected' : '' }}>Dealer</option>
-                                            <option value="recovery_officer" {{ (isset($userData) && $userData->user_access_level === 'recovery_officer') ? 'selected' : '' }}>Recovery Officer</option>
-                                            <option value="accountant" {{ (isset($userData) && $userData->user_access_level === 'accountant') ? 'selected' : '' }}>Accountant</option>
-                                        </select>
-                                    </div>                                 
+                                        <input type="number" name="cnic" class="form-control form-control-lg form-control-solid" placeholder="CNIC" value="{{ $customerData->cnic_number ?? '' }}" />
+                                    </div>
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
-
+                                <!--begin::Input group Next of Kin Name-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin Name</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="nok_name" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Name" value="{{ $customerData->nok_name ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Next of Kin Relation-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin Relation</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="nok_relation" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Relation" value="{{ $customerData->nok_relation ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--begin::Input group Next of Kin Address-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin Address</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="nok_address" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Address" value="{{ $customerData->nok_address ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Next of Kin Area-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin Area</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="nok_area" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Area" value="{{ $customerData->nok_area ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Next of Kin City-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin City</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="nok_city" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin City" value="{{ $customerData->nok_city ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Next of Kin Country-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin Country</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="nok_country" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Country" value="{{ $customerData->nok_country ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Next of Kin Mobile Number 1-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Mobile Number 1</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="tel" name="nok_mobile_no_1" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $customerData->mobile_no_1 ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Next of Kin Mobile Number 2-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin Mobile Number 2</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="tel" name="nok_mobile_no_2" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Mobile Number 2" value="{{ $customerData->nok_mobile_no_2 ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Next of Kin Landline Number-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin Landline Number</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="tel" name="nok_landline" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Landline Number" value="{{ $customerData->nok_landline ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group Next of Kin CNIC-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">Next of Kin CNIC</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="number" name="nok_cnic" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin CNIC" value="{{ $customerData->nok_cnic ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
                             </div>
                             <!--end::Card body-->
                             <!--begin::Actions-->
@@ -418,7 +576,7 @@
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
 		<script src="{{ URL::asset('assets/js/custom/account/settings/signin-methods.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/account/settings/save-user.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/account/settings/save-customer.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/account/settings/deactivate-account.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/pages/user-profile/general.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>

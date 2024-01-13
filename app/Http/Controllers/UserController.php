@@ -51,9 +51,7 @@ class UserController extends Controller
     
 
     public function addUser(Request $req){
-        
         $userData = $this->getUserData($req);
-        
         try 
         {   
             // Insert data into database
@@ -68,9 +66,7 @@ class UserController extends Controller
 
     public function updateUser(Request $req) {
         $userData = $this->getUserData($req);
-    
         $id = $req->input('id'); // Get the user ID from the request
-    
         try {
             $updated = DB::table('user')
                 ->where('id', $id)
@@ -90,7 +86,6 @@ class UserController extends Controller
     public function deleteUser(Request $req) {
         $username = $req->input('username');
         $email = $req->input('email');
-    
         try {
             // The delete method is called directly on the query builder
             $deleted = DB::table('user')

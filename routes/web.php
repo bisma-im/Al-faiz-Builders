@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
 
 Route::get('/products', [ProductController::class, 'showProducts'])->name('showProduct');
 
@@ -20,6 +21,14 @@ Route::get('/add-user-form/{email?}', [UserController::class, 'showAddUserForm']
 Route::post('/update-user', [UserController::class, 'updateUser'])->name('updateUser');
 Route::post('/delete-user', [UserController::class, 'deleteUser'])->name('deleteUser');
 Route::get('/users', [UserController::class, 'showUsers'])->name('showUsers');
+
+
+Route::post('/add-customer', [CustomerController::class, 'addCustomer'])->name('addCustomer');
+Route::get('/add-customer-form/{cnic?}', [CustomerController::class, 'showCustomerDetailsForm'])->name('customerDetailsForm');
+Route::post('/update-customer', [CustomerController::class, 'updateCustomer'])->name('updateCustomer');
+Route::post('/delete-customer', [CustomerController::class, 'deleteCustomer'])->name('deleteCustomer');
+Route::get('/customer', [CustomerController::class, 'showCustomers'])->name('showCustomers');
+
 
 Route::get('/dashboard/bidding', function () {
     return view('dashboards.bidding');
