@@ -48,7 +48,7 @@ var KTAccountSettingsProfileDetails = (function () {
                                 if (data.success) {
                                     Swal.fire({
                                         title: 'Success!',
-                                        text: 'User added successfully',
+                                        text: 'User saved successfully',
                                         icon: 'success',
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
@@ -59,7 +59,7 @@ var KTAccountSettingsProfileDetails = (function () {
                                 } else {
                                     Swal.fire({
                                         title: 'Error!',
-                                        text: 'There was a problem adding the user',
+                                        text: 'There was a problem saving the user',
                                         icon: 'error',
                                         confirmButtonText: 'OK'
                                     });

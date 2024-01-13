@@ -155,7 +155,7 @@
                             <div class="card-body border-top p-9">
                                 <!--begin::Input group-->
                                 @if (isset($userData) && $userData->id)
-                                    <input type="hidden" name="id" value="{{ $userData->id }}">
+                                    <input type="hidden" id="id" name="id" value="{{ $userData->id }}">
                                 @endif
                                 <div class="row mb-6">
                                     <!--begin::Label-->
@@ -166,7 +166,8 @@
                                         <!--begin::Image input-->
                                         <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
                                             <!--begin::Preview existing avatar-->
-                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ asset('images/user-avatars/' . ($userData->user_image ?? 'assets/media/svg/avatars/blank.svg')) }})"></div>
+                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ isset($userData->user_image) ? asset('images/user-avatars/'.$userData->user_image) : asset('assets/media/svg/avatars/blank.svg') }})"></div>
+
                                             <!--end::Preview existing avatar-->
                                             <!--begin::Label-->
                                             <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
@@ -175,7 +176,7 @@
                                                     <span class="path2"></span>
                                                 </i>
                                                 <!--begin::Inputs-->
-                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                                                <input type="file" id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
                                                 <input type="hidden" name="avatar_remove" />
                                                 <!--end::Inputs-->
                                             </label>
@@ -290,16 +291,16 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <select name="user_access_level" aria-label="Select a Role" data-control="select2" placeholder="Select a role..." class="form-select form-select-solid form-select-lg fw-semibold">
-                                            <option value="">{{ $userData->user_access_level ?? 'Select a Role...' }}</option>
-                                            <option value="admin">Admin</option>
-                                            <option value="sales_agent">Sales Agent</option>
-                                            <option value="marketing_agent">Marketing Agent</option>
-                                            <option value="dealer">Dealer</option>
-                                            <option value="recovery_officer">Recovery Officer</option>
-                                            <option value="accountant">Accountant</option>
+                                        <select name="user_access_level" aria-label="Select a Role" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select a role...">
+                                            <option value="">Select a Role...</option>
+                                            <option value="admin" {{ (isset($userData) && $userData->user_access_level === 'admin') ? 'selected' : '' }}>Admin</option>
+                                            <option value="sales_agent" {{ (isset($userData) && $userData->user_access_level === 'sales_agent') ? 'selected' : '' }}>Sales Agent</option>
+                                            <option value="marketing_agent" {{ (isset($userData) && $userData->user_access_level === 'marketing_agent') ? 'selected' : '' }}>Marketing Agent</option>
+                                            <option value="dealer" {{ (isset($userData) && $userData->user_access_level === 'dealer') ? 'selected' : '' }}>Dealer</option>
+                                            <option value="recovery_officer" {{ (isset($userData) && $userData->user_access_level === 'recovery_officer') ? 'selected' : '' }}>Recovery Officer</option>
+                                            <option value="accountant" {{ (isset($userData) && $userData->user_access_level === 'accountant') ? 'selected' : '' }}>Accountant</option>
                                         </select>
-                                    </div>
+                                    </div>                                 
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
@@ -417,7 +418,7 @@
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
 		<script src="{{ URL::asset('assets/js/custom/account/settings/signin-methods.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/account/settings/profile-details.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/account/settings/save-user.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/account/settings/deactivate-account.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/pages/user-profile/general.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>

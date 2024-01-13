@@ -28,20 +28,24 @@ class UserController extends Controller
             'full_name' => $req->input('full_name'),
             'username' => $req->input('username'),
             'email' => $req->input('email'),
-            'password' => $req->input('password'), // Consider hashing this password
+            'password' => $req->input('password'), // Remember to hash passwords
             'mobile_no' => $req->input('mobile_no'),
             'user_access_level' => $req->input('user_access_level'),
-            'user_image' => 'default.jpg'
         ];
+        
+        // Set default avatar only when adding a new user
+        if (!$req->input('id')) {
+            $userData['user_image'] = 'default.jpg';
+        }
     
         if ($req->hasFile('avatar')) {
             $avatar = $req->file('avatar');
             $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
             $destinationPath = public_path('images/user-avatars');
             $avatar->move($destinationPath, $avatarName);
-            $userData['user_image'] = $avatarName; // Update avatarName in the array
+            $userData['user_image'] = $avatarName;
         }
-    
+        
         return $userData;
     }
     
