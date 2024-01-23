@@ -29,6 +29,9 @@ Route::post('/update-customer', [CustomerController::class, 'updateCustomer'])->
 Route::post('/delete-customer', [CustomerController::class, 'deleteCustomer'])->name('deleteCustomer');
 Route::get('/customer', [CustomerController::class, 'showCustomers'])->name('showCustomers');
 
+Route::get('/change-password', function () {
+    return view('pages.change-password');
+});
 
 Route::get('/dashboard/bidding', function () {
     return view('dashboards.bidding');

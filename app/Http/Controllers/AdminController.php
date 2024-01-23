@@ -12,7 +12,11 @@ class AdminController extends Controller
         $password= $req->input('password');
 
         try {
-            $admin = DB::table('admin')->where('email', $email)->where('password', $password)->first();
+            $admin = DB::table('user')
+                ->where('email', $email)
+                ->where('password', $password)
+                ->where('user_access_level', 'admin')
+                ->first();
             if ($admin) {
                 session(['userId' => $admin->id, 'email' => $admin->email, 'authenticated' => TRUE]);
                 return response()->json(['success' => 'Logged in successfully']);
@@ -28,5 +32,9 @@ class AdminController extends Controller
     public function logout(){
         session()->flush();
         return redirect()->route('signInPage');
+    }
+
+    public function changePassword(){
+        
     }
 }

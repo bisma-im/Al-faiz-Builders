@@ -65,7 +65,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::Sidebar mobile toggle-->
 						<!--begin::Mobile logo-->
 						<div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-							<a href="/index" class="d-lg-none">
+							<a href="/" class="d-lg-none">
 								<img alt="Logo" src="{{ URL::asset('assets/media/logos/default-small.svg') }}" class="h-30px" />
 							</a>
 						</div>
@@ -99,7 +99,7 @@ License: For each use you must have a valid license purchased only from above li
 																<!--begin:Menu item-->
 																<div class="menu-item p-0 m-0">
 																	<!--begin:Menu link-->
-																	<a href="/index" class="menu-link active">
+																	<a href="/" class="menu-link active">
 																		<span class="menu-custom-icon d-flex flex-center flex-shrink-0 rounded w-40px h-40px me-3">
 																			<i class="ki-duotone ki-element-11 text-primary fs-1">
 																				<span class="path1"></span>
@@ -109,7 +109,7 @@ License: For each use you must have a valid license purchased only from above li
 																			</i>
 																		</span>
 																		<span class="d-flex flex-column">
-																			<span class="fs-6 fw-bold text-gray-800">Default</span>
+																			<span class="fs-6 fw-bold text-gray-800">Home</span>
 																			<span class="fs-7 fw-semibold text-muted">Reports & statistics</span>
 																		</span>
 																	</a>
@@ -1335,7 +1335,7 @@ License: For each use you must have a valid license purchased only from above li
 																			<!--begin:Menu item-->
 																			<div class="menu-item p-0 m-0">
 																				<!--begin:Menu link-->
-																				<a href="../../demo1/dist/utilities/modals/forms/bidding.html" class="menu-link">
+																				<a href="/dashboard/bidding" class="menu-link">
 																					<span class="menu-title">Bidding</span>
 																				</a>
 																				<!--end:Menu link-->
@@ -1801,7 +1801,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 															<div class="menu-item">
 																<!--begin:Menu link-->
-																<a class="menu-link" href="../../demo1/dist/apps/ecommerce/catalog/products.html">
+																<a class="menu-link" href="/dashboard/ecommerce">
 																	<span class="menu-bullet">
 																		<span class="bullet bullet-dot"></span>
 																	</span>
@@ -1813,7 +1813,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 															<div class="menu-item">
 																<!--begin:Menu link-->
-																<a class="menu-link" href="../../demo1/dist/apps/ecommerce/catalog/categories.html">
+																<a class="menu-link" href="/dashboard/ecommerce">
 																	<span class="menu-bullet">
 																		<span class="bullet bullet-dot"></span>
 																	</span>
@@ -1825,7 +1825,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 															<div class="menu-item">
 																<!--begin:Menu link-->
-																<a class="menu-link" href="../../demo1/dist/apps/ecommerce/catalog/add-product.html">
+																<a class="menu-link" href="/dashboard/ecommerce">
 																	<span class="menu-bullet">
 																		<span class="bullet bullet-dot"></span>
 																	</span>
@@ -1837,7 +1837,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 															<div class="menu-item">
 																<!--begin:Menu link-->
-																<a class="menu-link" href="../../demo1/dist/apps/ecommerce/catalog/edit-product.html">
+																<a class="menu-link" href="/dashboard/ecommerce">
 																	<span class="menu-bullet">
 																		<span class="bullet bullet-dot"></span>
 																	</span>
@@ -1849,7 +1849,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 															<div class="menu-item">
 																<!--begin:Menu link-->
-																<a class="menu-link" href="../../demo1/dist/apps/ecommerce/catalog/add-category.html">
+																<a class="menu-link" href="/dashboard/ecommerce">
 																	<span class="menu-bullet">
 																		<span class="bullet bullet-dot"></span>
 																	</span>
@@ -1861,7 +1861,7 @@ License: For each use you must have a valid license purchased only from above li
 															<!--begin:Menu item-->
 															<div class="menu-item">
 																<!--begin:Menu link-->
-																<a class="menu-link" href="../../demo1/dist/apps/ecommerce/catalog/edit-category.html">
+																<a class="menu-link" href="/dashboard/ecommerce">
 																	<span class="menu-bullet">
 																		<span class="bullet bullet-dot"></span>
 																	</span>
@@ -4817,7 +4817,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--begin::Logo-->
 						<div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
 							<!--begin::Logo image-->
-							<a href="../../demo1/dist/index.html">
+							<a href="/">
 								<img alt="Logo" src="{{ URL::asset('assets/media/logos/default-dark.svg') }}" class="h-25px app-sidebar-logo-default" />
 								<img alt="Logo" src="{{ URL::asset('assets/media/logos/default-small.svg') }}" class="h-20px app-sidebar-logo-minimize" />
 							</a>
@@ -4867,237 +4867,15 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link active" href="/dashboard/index">
+												<a class="menu-link active" href="/">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Default</span>
+													<span class="menu-title">Home</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
 											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="/dashboard/ecommerce">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">eCommerce</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="/dashboard/projects">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Projects</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="/dashboard/online-courses">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Online Courses</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="/dashboard/marketing">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Marketing</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<div class="menu-inner flex-column collapse" id="kt_app_sidebar_menu_dashboards_collapse">
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/bidding">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Bidding</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/pos">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">POS System</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/call-center">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Call Center</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/logistics">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Logistics</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/website-analytics">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Website Analytics</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/finance-performance">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Finance Performance</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/store-analytics">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Store Analytics</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/social">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Social</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/delivery">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Delivery</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/crypto">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Crypto</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/school">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">School</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="/dashboard/podcast">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Podcast</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-												<!--begin:Menu item-->
-												<div class="menu-item">
-													<!--begin:Menu link-->
-													<a class="menu-link" href="../../demo1/dist/landing.html">
-														<span class="menu-bullet">
-															<span class="bullet bullet-dot"></span>
-														</span>
-														<span class="menu-title">Landing</span>
-													</a>
-													<!--end:Menu link-->
-												</div>
-												<!--end:Menu item-->
-											</div>
-											<div class="menu-item">
-												<div class="menu-content">
-													<a class="btn btn-flex btn-color-primary d-flex flex-stack fs-base p-0 ms-2 mb-2 toggle collapsible collapsed" data-bs-toggle="collapse" href="#kt_app_sidebar_menu_dashboards_collapse" data-kt-toggle-text="Show Less">
-														<span data-kt-toggle-text-target="true">Show 12 More</span>
-														<i class="ki-duotone ki-minus-square toggle-on fs-2 me-0">
-															<span class="path1"></span>
-															<span class="path2"></span>
-														</i>
-														<i class="ki-duotone ki-plus-square toggle-off fs-2 me-0">
-															<span class="path1"></span>
-															<span class="path2"></span>
-															<span class="path3"></span>
-														</i>
-													</a>
-												</div>
-											</div>
 										</div>
 										<!--end:Menu sub-->
 									</div>
@@ -5122,24 +4900,12 @@ License: For each use you must have a valid license purchased only from above li
 													<span class="path3"></span>
 												</i>
 											</span>
-											<span class="menu-title">User Profile</span>
+											<span class="menu-title">Listings</span>
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
 										<!--begin:Menu sub-->
 										<div class="menu-sub menu-sub-accordion">
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/overview.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Overview</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
@@ -5155,47 +4921,11 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/campaigns.html">
+												<a class="menu-link" href="/users">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Campaigns</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/documents.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Documents</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/followers.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Followers</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/pages/user-profile/activity.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Activity</span>
+													<span class="menu-title">Users</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
@@ -5217,7 +4947,7 @@ License: For each use you must have a valid license purchased only from above li
 													<span class="path5"></span>
 												</i>
 											</span>
-											<span class="menu-title">Account</span>
+											<span class="menu-title">System</span>
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
@@ -5230,105 +4960,24 @@ License: For each use you must have a valid license purchased only from above li
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
-													<span class="menu-title">Overview</span>
+													<span class="menu-title">Change Password</span>
 												</a>
 												<!--end:Menu link-->
 											</div>
 											<!--end:Menu item-->
 											<!--begin:Menu item-->
 											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/settings.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Settings</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/security.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Security</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/activity.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Activity</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/billing.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Billing</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/statements.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Statements</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/referrals.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Referrals</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/api-keys.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">API Keys</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="../../demo1/dist/account/logs.html">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Logs</span>
-												</a>
-												<!--end:Menu link-->
+												<!-- Menu Form for Sign Out -->
+												<form action="{{ route('logout') }}" method="POST" class="menu-link">
+													@csrf
+													<!-- Menu Link Structure for the Form Button -->
+													<button type="submit" class="menu-link" style="background: none; border: none; width: 100%; padding: 0; margin: 0;">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Sign Out</span>
+													</button>
+												</form>
 											</div>
 											<!--end:Menu item-->
 										</div>
