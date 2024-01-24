@@ -14,7 +14,7 @@ var KTSigninGeneral = (function () {
                 })),
                 t.addEventListener("click", function (n) {
                     n.preventDefault(),
-                        i.validate().then(function (i) {
+                        i && i.validate().then(function (i) {
                             // "Valid" == i
                             if(i === "Valid"){
                                 const formData = new FormData(e);

@@ -10,6 +10,7 @@ Route::get('/products', [ProductController::class, 'showProducts'])->name('showP
 
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
+Route::post('/change-password', [AdminController::class, 'changePassword'])->name('changePassword');
 Route::view('/', 'dashboards.index')->middleware('admin.auth');
 Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 
@@ -29,8 +30,12 @@ Route::post('/update-customer', [CustomerController::class, 'updateCustomer'])->
 Route::post('/delete-customer', [CustomerController::class, 'deleteCustomer'])->name('deleteCustomer');
 Route::get('/customer', [CustomerController::class, 'showCustomers'])->name('showCustomers');
 
-Route::get('/change-password', function () {
+Route::get('/change-password-form', function () {
     return view('pages.change-password');
+});
+
+Route::get('/test', function () {
+    return view('test');
 });
 
 Route::get('/dashboard/bidding', function () {
