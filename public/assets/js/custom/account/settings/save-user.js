@@ -56,7 +56,16 @@ var KTAccountSettingsProfileDetails = (function () {
                                             window.location.href = form.getAttribute('data-kt-redirect'); // Replace with your desired path
                                         }
                                     });
-                                } else {
+                                } else if (data.error === 'Account already exists') {
+                                    // Handle the duplicate email error
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'Email already exists. Please use a different email.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                                else {
                                     Swal.fire({
                                         title: 'Error!',
                                         text: 'There was a problem saving the user',
@@ -67,6 +76,12 @@ var KTAccountSettingsProfileDetails = (function () {
                             })
                             .catch(error => {
                                 // Handle network errors
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'A network error occurred. Please try again.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
                             })
                             .finally(() => {
                                 submitButton.removeAttribute("data-kt-indicator");

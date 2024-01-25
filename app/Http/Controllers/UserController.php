@@ -49,14 +49,19 @@ class UserController extends Controller
         return $userData;
     }
     
-
     public function addUser(Request $req){
         $userData = $this->getUserData($req);
         try 
-        {   
-            // Insert data into database
-            $inserted = DB::table('user')->insert($userData);
-            return response()->json(['success' => 'User added successfully']);
+        {   if(DB::table('user')->where('email', $userData['email'])->first())
+            {
+                return response()->json(['error' => 'Account already exists']);
+            }
+            else
+            {
+                $inserted = DB::table('user')->insert($userData);
+                return response()->json(['success' => 'User added successfully']);
+            }
+            
         } 
         catch (\Exception $e) 
         {
