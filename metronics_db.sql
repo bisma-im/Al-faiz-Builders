@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2024 at 06:08 PM
+-- Generation Time: Jan 27, 2024 at 04:56 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,6 +41,62 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`id`, `name`, `email`, `password`, `phone_number`) VALUES
 (1, 'admin', 'admin@gmail.com', 'admin123', 3402317765);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer`
+--
+
+CREATE TABLE `customer` (
+  `id` int(11) NOT NULL,
+  `customer_image` text DEFAULT NULL,
+  `name` text NOT NULL,
+  `address` text NOT NULL,
+  `area` text DEFAULT NULL,
+  `city` text DEFAULT NULL,
+  `country` text DEFAULT NULL,
+  `mobile_number_1` int(11) NOT NULL,
+  `mobile_number_2` int(11) DEFAULT NULL,
+  `landline_number` int(11) DEFAULT NULL,
+  `office_phone` int(11) DEFAULT NULL,
+  `cnic_number` int(13) NOT NULL,
+  `next_of_kin_name` text DEFAULT NULL,
+  `next_of_kin_relation` text DEFAULT NULL,
+  `next_of_kin_address` text DEFAULT NULL,
+  `next_of_kin_area` text DEFAULT NULL,
+  `next_of_kin_city` text DEFAULT NULL,
+  `next_of_kin_country` text DEFAULT NULL,
+  `next_of_kin_mobile_number_1` int(11) DEFAULT NULL,
+  `next_of_kin_mobile_number_2` int(11) DEFAULT NULL,
+  `next_of_kin_landline_number` int(11) DEFAULT NULL,
+  `next_of_kin_cnic` int(13) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`id`, `customer_image`, `name`, `address`, `area`, `city`, `country`, `mobile_number_1`, `mobile_number_2`, `landline_number`, `office_phone`, `cnic_number`, `next_of_kin_name`, `next_of_kin_relation`, `next_of_kin_address`, `next_of_kin_area`, `next_of_kin_city`, `next_of_kin_country`, `next_of_kin_mobile_number_1`, `next_of_kin_mobile_number_2`, `next_of_kin_landline_number`, `next_of_kin_cnic`) VALUES
+(1, '1705168627.png', 'Shahrukh Ghaffar', 'Esolace Tech Office 4541 182-184 High Street North', NULL, 'East Ham', 'Pakistan', 2032394343, NULL, NULL, NULL, 21424353, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `leads`
+--
+
+CREATE TABLE `leads` (
+  `id` int(11) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `mobile_number_1` int(11) NOT NULL,
+  `mobile_number_2` int(11) DEFAULT NULL,
+  `landline_number_1` int(11) DEFAULT NULL,
+  `landline_number_2` int(11) DEFAULT NULL,
+  `email` varchar(250) DEFAULT NULL,
+  `source_of_information` varchar(50) NOT NULL,
+  `details` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -106,6 +162,49 @@ INSERT INTO `products` (`id`, `product_name`, `SKU`, `quantity`, `price`, `statu
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `projects`
+--
+
+CREATE TABLE `projects` (
+  `id` int(11) NOT NULL,
+  `project_title` varchar(200) NOT NULL,
+  `project_description` text DEFAULT NULL,
+  `project_phase` int(11) NOT NULL,
+  `project_logo` text NOT NULL,
+  `project_area` int(11) NOT NULL,
+  `project_cost` int(11) NOT NULL,
+  `no_of_plots` int(11) NOT NULL,
+  `plot_starting_serial_no` int(11) NOT NULL,
+  `down_payment` decimal(10,0) NOT NULL,
+  `development_charges` decimal(10,0) NOT NULL,
+  `extra_charges` decimal(10,0) NOT NULL,
+  `monthly_installment` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `projects`
+--
+
+INSERT INTO `projects` (`id`, `project_title`, `project_description`, `project_phase`, `project_logo`, `project_area`, `project_cost`, `no_of_plots`, `plot_starting_serial_no`, `down_payment`, `development_charges`, `extra_charges`, `monthly_installment`) VALUES
+(3, 'first', NULL, 1, '1706295783.png', 134, 1334, 4, 44567, 1234, 11, 22, 44),
+(4, 'firstprohj', NULL, 1, '1706295865.PNG', 134, 1334, 4, 44567, 1234, 11, 22, 44),
+(5, 'second', NULL, 1, '1706365394.PNG', 12, 1244, 5, 54321, 120, 12, 33, 44);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project_media`
+--
+
+CREATE TABLE `project_media` (
+  `id` int(11) NOT NULL,
+  `project_title` varchar(255) NOT NULL,
+  `media_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `roles`
 --
 
@@ -147,7 +246,13 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `full_name`, `username`, `email`, `password`, `mobile_no`, `user_image`, `user_access_level`) VALUES
-(1, 'admin one', 'adminone', 'admin@gmail.com', 'admin123', 1234456, 'default.jpg', 'admin');
+(1, 'admin one', 'adminone', 'admin@gmail.com', 'admin123@', 1234456, 'default.jpg', 'admin'),
+(4, 'Ali Haider', 'alih', 'ali11@gmail.com', 'ali123', 123455, '1705157275.png', 'sales_agent'),
+(6, 'admin three', 'adminthree', 'admin3@gmail.com', 'adminthree', 123455, 'default.jpg', 'admin'),
+(7, 'admin three', 'adminthree', 'admin3@gmail.com', 'admin123', 123455, 'default.jpg', 'admin'),
+(8, 'bisma imran', 'bismaim', 'bisma@gmail.com', 'bis122', 1234456, 'default.jpg', 'admin'),
+(11, 'Junaid Sir', 'junaid', 'junaidfaraz@hotmail.com', 'junaid123', 234556, 'default.jpg', 'admin'),
+(12, 'Ali', 'alikhan', 'ali@gmail.com', 'ali123', 12445, 'default.jpg', 'marketing_agent');
 
 --
 -- Indexes for dumped tables
@@ -160,10 +265,37 @@ ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cnic_number` (`cnic_number`);
+
+--
+-- Indexes for table `leads`
+--
+ALTER TABLE `leads`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `projects`
+--
+ALTER TABLE `projects`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `project_title` (`project_title`);
+
+--
+-- Indexes for table `project_media`
+--
+ALTER TABLE `project_media`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_title` (`project_title`);
 
 --
 -- Indexes for table `roles`
@@ -188,10 +320,34 @@ ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `customer`
+--
+ALTER TABLE `customer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `leads`
+--
+ALTER TABLE `leads`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT for table `projects`
+--
+ALTER TABLE `projects`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `project_media`
+--
+ALTER TABLE `project_media`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -203,7 +359,17 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `project_media`
+--
+ALTER TABLE `project_media`
+  ADD CONSTRAINT `project_media_ibfk_1` FOREIGN KEY (`project_title`) REFERENCES `projects` (`project_title`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

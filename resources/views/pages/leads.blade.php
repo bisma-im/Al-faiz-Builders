@@ -271,16 +271,16 @@
                                             <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Full Name</th>
-                                    <th class="min-w-125px">Username</th>
+                                    <th class="min-w-125px">Name</th>
+                                    <th class="min-w-125px">Mobile Number</th>
+                                    <th class="min-w-125px">Landline Number</th>
                                     <th class="min-w-125px">Email</th>
-                                    <th class="min-w-125px">Phone</th>
-                                    <th class="min-w-125px">Role</th>
+                                    <th class="min-w-125px">Source of Information</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
-                                @foreach ($data as $id => $user)
+                                @foreach ($data as $id => $lead)
                                 <tr>
                                     <td>
                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -288,13 +288,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('addUserForm', ['id' => $user->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $user->full_name }}</a>
+                                        <a href="{{ route('addLeadForm', ['id' => $lead->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $lead->name }}</a>
                                     </td>
-                                    <td>{{ $user->username }}</td>
-                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $lead->mobile_number_1 }}</td>
+                                    <td>{{ $lead->landline_number_1 }}</td>
                                     {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $user->mobile_no }}</td>
-                                    <td>{{ $user->user_access_level }}</td>
+                                    <td>{{ $lead->email }}</td>
+                                    <td>{{ $lead->source_of_information }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>

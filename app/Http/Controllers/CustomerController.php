@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 class CustomerController extends Controller
 {
     public function showCustomers(){
-        $users = DB::table('customer')->get();
+        $customers = DB::table('customer')->get();
         return view('pages.customers', ['data' => $customers]);
     }
 

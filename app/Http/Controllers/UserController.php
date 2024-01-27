@@ -14,10 +14,10 @@ class UserController extends Controller
         return view('pages.users', ['data' => $users]);
     }
 
-    public function showAddUserForm($email = null) {
+    public function showAddUserForm($id = null) {
         $userData = null;
-        if ($email) {
-            $userData = DB::table('user')->where('email', $email)->first();
+        if ($id) {
+            $userData = DB::table('user')->where('id', $id)->first();
             // Handle case if user is not found
         }
         return view('pages.add-user', ['userData' => $userData]);

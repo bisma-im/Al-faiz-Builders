@@ -1,7 +1,7 @@
 "use strict";
 var KTAppEcommerceSaveProduct = (function () {
     const e = () => {
-            $("#kt_ecommerce_add_product_options").repeater({
+            $("#kt_ecommerce_add_project_options").repeater({
                 initEmpty: !1,
                 defaultValues: { "text-input": "foo" },
                 show: function () {
@@ -13,18 +13,18 @@ var KTAppEcommerceSaveProduct = (function () {
             });
         },
         t = () => {
-            document.querySelectorAll('[data-kt-ecommerce-catalog-add-product="product_option"]').forEach((e) => {
+            document.querySelectorAll('[data-kt-ecommerce-catalog-add-project="project_option"]').forEach((e) => {
                 $(e).hasClass("select2-hidden-accessible") || $(e).select2({ minimumResultsForSearch: -1 });
             });
         };
     return {
         init: function () {
             var o, a;
-            ["#kt_ecommerce_add_product_description", "#kt_ecommerce_add_product_meta_description"].forEach((e) => {
+            ["#kt_ecommerce_add_project_description", "#kt_ecommerce_add_project_meta_description"].forEach((e) => {
                 let t = document.querySelector(e);
                 t && (t = new Quill(e, { modules: { toolbar: [[{ header: [1, 2, !1] }], ["bold", "italic", "underline"], ["image", "code-block"]] }, placeholder: "Type your text here...", theme: "snow" }));
             }),
-                ["#kt_ecommerce_add_product_category", "#kt_ecommerce_add_product_tags"].forEach((e) => {
+                ["#kt_ecommerce_add_product_category", "#kt_ecommerce_add_project_tags"].forEach((e) => {
                     const t = document.querySelector(e);
                     t && new Tagify(t, { whitelist: ["new", "trending", "sale", "discounted", "selling fast", "last 10"], dropdown: { maxItems: 20, classname: "tagify__inline__suggestions", enabled: 0, closeOnSelect: !1 } });
                 }),
@@ -35,20 +35,18 @@ var KTAppEcommerceSaveProduct = (function () {
                     (a.innerHTML = Math.round(e[t])), t && (a.innerHTML = Math.round(e[t]));
                 }),
                 e(),
-                new Dropzone("#kt_ecommerce_add_product_media", {
+                new Dropzone("#kt_ecommerce_add_project_media", {
                     url: "https://keenthemes.com/scripts/void.php",
+                    autoProcessQueue: false,
                     paramName: "file",
                     maxFiles: 10,
                     maxFilesize: 10,
-                    addRemoveLinks: !0,
-                    accept: function (e, t) {
-                        "wow.jpg" == e.name ? t("Naha, you don't.") : t();
-                    },
+                    addRemoveLinks: true,
                 }),
                 t(),
                 (() => {
-                    const e = document.getElementById("kt_ecommerce_add_product_status"),
-                        t = document.getElementById("kt_ecommerce_add_product_status_select"),
+                    const e = document.getElementById("kt_ecommerce_add_project_status"),
+                        t = document.getElementById("kt_ecommerce_add_project_status_select"),
                         o = ["bg-success", "bg-warning", "bg-danger"];
                     $(t).on("change", function (t) {
                         switch (t.target.value) {
@@ -65,8 +63,8 @@ var KTAppEcommerceSaveProduct = (function () {
                                 e.classList.remove(...o), e.classList.add("bg-primary"), c();
                         }
                     });
-                    const a = document.getElementById("kt_ecommerce_add_product_status_datepicker");
-                    $("#kt_ecommerce_add_product_status_datepicker").flatpickr({ enableTime: !0, dateFormat: "Y-m-d H:i" });
+                    const a = document.getElementById("kt_ecommerce_add_project_status_datepicker");
+                    $("#kt_ecommerce_add_project_status_datepicker").flatpickr({ enableTime: !0, dateFormat: "Y-m-d H:i" });
                     const d = () => {
                             a.parentNode.classList.remove("d-none");
                         },
@@ -111,14 +109,22 @@ var KTAppEcommerceSaveProduct = (function () {
                 })(),
                 (() => {
                     let e;
-                    const t = document.getElementById("kt_ecommerce_add_product_form"),
-                        o = document.getElementById("kt_ecommerce_add_product_submit");
+                    
+                    const t = document.getElementById("kt_ecommerce_add_project_form"),
+                        o = document.getElementById("kt_ecommerce_add_project_submit");
                     (e = FormValidation.formValidation(t, {
                         fields: {
-                            product_name: { validators: { notEmpty: { message: "Product name is required" } } },
-                            sku: { validators: { notEmpty: { message: "SKU is required" } } },
-                            shelf: { validators: { notEmpty: { message: "Shelf quantity is required" } } },
-                            price: { validators: { notEmpty: { message: "Product base price is required" } } },
+                            project_title: { validators: { notEmpty: { message: "Project Title is required" } } },
+                            project_cost: { validators: { notEmpty: { message: "Project Buying Cost is required" } } },
+                            project_description: { validators: { notEmpty: { message: "Project Description is required" } } },
+                            down_payment: { validators: { notEmpty: { message: "Product Down Payment is required" } } },
+                            development_charges: { validators: { notEmpty: { message: "Product Development Charges are required" } } },
+                            extra_charges: { validators: { notEmpty: { message: "Extra Charges are required" } } },
+                            monthly_installment: { validators: { notEmpty: { message: "Monthly Installment Amount is required" } } },
+                            project_phase: { validators: { notEmpty: { message: "Project Phase is required" } } },
+                            project_area: { validators: { notEmpty: { message: "Project Area is required" } } },
+                            no_of_plots: { validators: { notEmpty: { message: "Number of plots are required" } } },
+                            plot_starting_serial_no: { validators: { notEmpty: { message: "Plot Starting Serial No.  is required" } } },
                         },
                         plugins: { trigger: new FormValidation.plugins.Trigger(), bootstrap: new FormValidation.plugins.Bootstrap5({ rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: "" }) },
                     })),
@@ -129,7 +135,14 @@ var KTAppEcommerceSaveProduct = (function () {
                                         // console.log("validated!"),
                                             if(e === "Valid"){
                                                 const formData = new FormData(t);
-                                                fetch('/add-product', {
+                                                const dropzoneElement = document.querySelector('#kt_ecommerce_add_project_media');
+                                                if (dropzoneElement.dropzone) {
+                                                    const files = dropzoneElement.dropzone.files;
+                                                    files.forEach((file) => {
+                                                        formData.append('project_media[]', file, file.name);
+                                                    });
+                                                }
+                                                fetch('/add-project', {
                                                     method: 'POST',
                                                     body: formData,
                                                     headers: {

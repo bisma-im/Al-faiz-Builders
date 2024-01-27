@@ -145,7 +145,7 @@
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-xxl">
                     <!--begin::Form-->
-                    <form id="kt_ecommerce_add_product_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/products" action="{{ route('addProduct') }}" method="POST">
+                    <form id="kt_ecommerce_add_project_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/projects" action="{{ route('addProject') }}" method="POST">
                         @csrf
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -177,7 +177,7 @@
                                                 <span class="path2"></span>
                                             </i>
                                             <!--begin::Inputs-->
-                                            <input type="file" name="avatar" accept=".png, .jpg, .jpeg" />
+                                            <input type="file" name="project_logo" accept=".png, .jpg, .jpeg" />
                                             <input type="hidden" name="avatar_remove" />
                                             <!--end::Inputs-->
                                         </label>
@@ -218,7 +218,7 @@
                                     <!--end::Card title-->
                                     <!--begin::Card toolbar-->
                                     <div class="card-toolbar">
-                                        <div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_product_status"></div>
+                                        <div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_project_status"></div>
                                     </div>
                                     <!--begin::Card toolbar-->
                                 </div>
@@ -226,7 +226,7 @@
                                 <!--begin::Card body-->
                                 <div class="card-body pt-0">
                                     <!--begin::Select2-->
-                                    <select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_product_status_select" name="status">
+                                    <select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_project_status_select" name="status">
                                         <option></option>
                                         <option value="published" selected="selected">Published</option>
                                         <option value="draft">Draft</option>
@@ -239,8 +239,8 @@
                                     <!--end::Description-->
                                     <!--begin::Datepicker-->
                                     <div class="d-none mt-10">
-                                        <label for="kt_ecommerce_add_product_status_datepicker" class="form-label">Select publishing date and time</label>
-                                        <input class="form-control" id="kt_ecommerce_add_product_status_datepicker" placeholder="Pick date & time" />
+                                        <label for="kt_ecommerce_add_project_status_datepicker" class="form-label">Select publishing date and time</label>
+                                        <input class="form-control" id="kt_ecommerce_add_project_status_datepicker" placeholder="Pick date & time" />
                                     </div>
                                     <!--end::Datepicker-->
                                 </div>
@@ -292,7 +292,7 @@
                                     <label class="form-label d-block">Tags</label>
                                     <!--end::Label-->
                                     <!--begin::Input-->
-                                    <input id="kt_ecommerce_add_product_tags" name="kt_ecommerce_add_product_tags" class="form-control mb-2" value="" />
+                                    <input id="kt_ecommerce_add_project_tags" name="kt_ecommerce_add_project_tags" class="form-control mb-2" value="" />
                                     <!--end::Input-->
                                     <!--begin::Description-->
                                     <div class="text-muted fs-7">Add tags to a product.</div>
@@ -413,14 +413,16 @@
                                                 </div>
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
+                                                {{-- <input type="hidden" name="project_description" id="hidden_project_description"> --}}
                                                 <div>
                                                     <!--begin::Label-->
                                                     <label class="form-label">Description</label>
                                                     <!--end::Label-->
                                                     <!--begin::Editor-->
-                                                    <div id="kt_ecommerce_add_product_description" name="kt_ecommerce_add_product_description" class="min-h-200px mb-2"></div>
+                                                    <div id="kt_ecommerce_add_project_description" name="kt_ecommerce_add_project_description" class="min-h-200px mb-2"></div>
                                                     <!--end::Editor-->
                                                     <!--begin::Description-->
+                                                    
                                                     <div class="text-muted fs-7">Set a description to the project for better visibility.</div>
                                                     <!--end::Description-->
                                                 </div>
@@ -443,7 +445,7 @@
                                                 <!--begin::Input group-->
                                                 <div class="fv-row mb-2">
                                                     <!--begin::Dropzone-->
-                                                    <div class="dropzone" id="kt_ecommerce_add_product_media">
+                                                    <div class="dropzone" id="kt_ecommerce_add_project_media">
                                                         <!--begin::Message-->
                                                         <div class="dz-message needsclick">
                                                             <!--begin::Icon-->
@@ -767,19 +769,19 @@
                                             <!--begin::Card body-->
                                             <div class="card-body pt-0">
                                                 <!--begin::Input group-->
-                                                <div class="" data-kt-ecommerce-catalog-add-product="auto-options">
+                                                <div class="" data-kt-ecommerce-catalog-add-project="auto-options">
                                                     <!--begin::Label-->
                                                     <label class="form-label">Add Product Variations</label>
                                                     <!--end::Label-->
                                                     <!--begin::Repeater-->
-                                                    <div id="kt_ecommerce_add_product_options">
+                                                    <div id="kt_ecommerce_add_project_options">
                                                         <!--begin::Form group-->
                                                         <div class="form-group">
-                                                            <div data-repeater-list="kt_ecommerce_add_product_options" class="d-flex flex-column gap-3">
+                                                            <div data-repeater-list="kt_ecommerce_add_project_options" class="d-flex flex-column gap-3">
                                                                 <div data-repeater-item="" class="form-group d-flex flex-wrap align-items-center gap-5">
                                                                     <!--begin::Select2-->
                                                                     <div class="w-100 w-md-200px">
-                                                                        <select class="form-select" name="product_option" data-placeholder="Select a variation" data-kt-ecommerce-catalog-add-product="product_option">
+                                                                        <select class="form-select" name="product_option" data-placeholder="Select a variation" data-kt-ecommerce-catalog-add-project="project_option">
                                                                             <option></option>
                                                                             <option value="color">Color</option>
                                                                             <option value="size">Size</option>
@@ -907,7 +909,7 @@
                                                     <label class="form-label">Meta Tag Description</label>
                                                     <!--end::Label-->
                                                     <!--begin::Editor-->
-                                                    <div id="kt_ecommerce_add_product_meta_description" name="kt_ecommerce_add_product_meta_description" class="min-h-100px mb-2"></div>
+                                                    <div id="kt_ecommerce_add_project_meta_description" name="kt_ecommerce_add_project_meta_description" class="min-h-100px mb-2"></div>
                                                     <!--end::Editor-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set a meta tag description to the product for increased SEO ranking.</div>
@@ -942,7 +944,7 @@
                                 <a href="../../demo1/dist/apps/ecommerce/catalog/products.html" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                 <!--end::Button-->
                                 <!--begin::Button-->
-                                <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
+                                <button type="submit" id="kt_ecommerce_add_project_submit" class="btn btn-primary">
                                     <span class="indicator-label">Save Changes</span>
                                     <span class="indicator-progress">Please wait...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -996,7 +998,7 @@
 	<script src="assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 	<!--end::Vendors Javascript-->
 	<!--begin::Custom Javascript(used for this page only)-->
-	<script src="assets/js/custom/apps/ecommerce/catalog/save-product.js"></script>
+	<script src="assets/js/custom/pages/listings/projects/save-project.js"></script>
 	<script src="assets/js/widgets.bundle.js"></script>
 	<script src="assets/js/custom/widgets.js"></script>
 	<script src="assets/js/custom/apps/chat/chat.js"></script>
