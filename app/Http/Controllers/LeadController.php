@@ -14,14 +14,22 @@ class LeadController extends Controller
         return view('pages.leads', ['data' => $leads]);
     }
     
-    public function showAddLeadForm($id = null)
+    public function showAddLeadForm($id = null, $isView = false)
     {
         $leadData = null;
         if ($id) {
             $leadData = DB::table('leads')->where('id', $id)->first();
             // Handle case if lead is not found
         }
-        return view('pages.add-lead', ['leadData' => $leadData]);
+        return view('pages.add-lead', ['leadData' => $leadData, 'isViewMode' => $isView]);
+    }
+
+    public function showLead($id = null, $isView = true){
+        $leadData = null;
+        if ($id) {
+            $leadData = DB::table('leads')->where('id', $id)->first();
+        }
+        return view('pages.add-lead', ['leadData' => $leadData, 'isViewMode' => $isView]);
     }
 
     public function getLeadData(Request $req){

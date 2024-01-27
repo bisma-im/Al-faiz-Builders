@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2024 at 04:56 PM
+-- Generation Time: Jan 27, 2024 at 07:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,6 +45,22 @@ INSERT INTO `admin` (`id`, `name`, `email`, `password`, `phone_number`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `call_logs`
+--
+
+CREATE TABLE `call_logs` (
+  `id` int(11) NOT NULL,
+  `lead_id` int(11) NOT NULL,
+  `date_of_call` date NOT NULL,
+  `time_of_call` time NOT NULL,
+  `customer_response` text NOT NULL,
+  `next_call_date` date DEFAULT NULL,
+  `next_call_time` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customer`
 --
 
@@ -78,7 +94,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `customer_image`, `name`, `address`, `area`, `city`, `country`, `mobile_number_1`, `mobile_number_2`, `landline_number`, `office_phone`, `cnic_number`, `next_of_kin_name`, `next_of_kin_relation`, `next_of_kin_address`, `next_of_kin_area`, `next_of_kin_city`, `next_of_kin_country`, `next_of_kin_mobile_number_1`, `next_of_kin_mobile_number_2`, `next_of_kin_landline_number`, `next_of_kin_cnic`) VALUES
-(1, '1705168627.png', 'Shahrukh Ghaffar', 'Esolace Tech Office 4541 182-184 High Street North', NULL, 'East Ham', 'Pakistan', 2032394343, NULL, NULL, NULL, 21424353, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(1, '1705168627.png', 'Shahrukh Ghaffar', 'Esolace Tech Office 4541 182-184 High Street North', NULL, 'East Ham', 'UK', 2032394343, NULL, NULL, NULL, 21424353, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -97,6 +113,14 @@ CREATE TABLE `leads` (
   `source_of_information` varchar(50) NOT NULL,
   `details` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `leads`
+--
+
+INSERT INTO `leads` (`id`, `name`, `mobile_number_1`, `mobile_number_2`, `landline_number_1`, `landline_number_2`, `email`, `source_of_information`, `details`) VALUES
+(1, 'Shahrukh Ghaffar', 32394343, NULL, NULL, NULL, 'business@esolacetech.com', 'word_of_mouth', 'ABCDEFGHIJKKL'),
+(2, 'musadiq mustafa', 32394343, NULL, NULL, NULL, 'musadiq.esolacetech@gmail.com', 'tv', 'cbachvcdgvagccbachvcdgvagccbachvcdgvagc');
 
 -- --------------------------------------------------------
 
@@ -265,6 +289,13 @@ ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `call_logs`
+--
+ALTER TABLE `call_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lead_id` (`lead_id`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
@@ -329,7 +360,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `leads`
 --
 ALTER TABLE `leads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -364,6 +395,12 @@ ALTER TABLE `user`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `call_logs`
+--
+ALTER TABLE `call_logs`
+  ADD CONSTRAINT `call_logs_ibfk_1` FOREIGN KEY (`lead_id`) REFERENCES `leads` (`id`);
 
 --
 -- Constraints for table `project_media`

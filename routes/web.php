@@ -19,25 +19,28 @@ Route::post('/add-product', [ProductController::class, 'addProduct'])->name('add
 Route::get('/products', [ProductController::class, 'showProducts'])->name('showProduct');
 
 Route::post('/add-user', [UserController::class, 'addUser'])->name('addUser');
-Route::get('/add-user-form/{id?}', [UserController::class, 'showAddUserForm'])->name('addUserForm');
+Route::get('/add-user-form', [UserController::class, 'showAddUserForm'])->name('addUserForm');
 Route::post('/update-user', [UserController::class, 'updateUser'])->name('updateUser');
 Route::post('/delete-user', [UserController::class, 'deleteUser'])->name('deleteUser');
 Route::get('/users', [UserController::class, 'showUsers'])->name('showUsers');
-
+Route::get('/users/{id}', [UserController::class, 'showAddUserForm'])->name('updateUserForm');
 
 Route::post('/add-customer', [CustomerController::class, 'addCustomer'])->name('addCustomer');
-Route::get('/add-customer-form/{cnic?}', [CustomerController::class, 'showCustomerDetailsForm'])->name('customerDetailsForm');
+Route::get('/add-customer-form', [CustomerController::class, 'showCustomerDetailsForm'])->name('customerDetailsForm');
 Route::post('/update-customer', [CustomerController::class, 'updateCustomer'])->name('updateCustomer');
 Route::post('/delete-customer', [CustomerController::class, 'deleteCustomer'])->name('deleteCustomer');
 Route::get('/customers', [CustomerController::class, 'showCustomers'])->name('showCustomers');
+Route::get('/customers/{id}', [CustomerController::class, 'showCustomerDetailsForm'])->name('updateCustomerDetailsForm');
 
 Route::post('/add-project', [ProjectController::class, 'addProject'])->name('addProject');
 
-Route::get('/add-lead-form/{id?}', [LeadController::class, 'showAddLeadForm'])->name('addLeadForm');
+Route::get('/add-lead-form', [LeadController::class, 'showAddLeadForm'])->name('addLeadForm');
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');
 Route::post('/update-lead', [LeadController::class, 'updateLead'])->name('updateLead');
 Route::post('/delete-lead', [LeadController::class, 'deleteLead'])->name('deleteLead');
 Route::get('/leads', [LeadController::class, 'showLeads'])->name('showLeads');
+Route::get('/leads/{id}', [LeadController::class, 'showAddLeadForm'])->name('updateLeadForm');
+Route::get('/leads/{id}/view', [LeadController::class, 'showLead'])->name('viewLead');
 
 Route::get('/change-password-form', function () {
     return view('pages.change-password');

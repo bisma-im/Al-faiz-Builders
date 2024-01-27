@@ -288,7 +288,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('addUserForm', ['id' => $user->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $user->full_name }}</a>
+                                        <a href="{{ route('updateUserForm', ['id' => $user->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $user->full_name }}</a>
                                     </td>
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->email }}</td>

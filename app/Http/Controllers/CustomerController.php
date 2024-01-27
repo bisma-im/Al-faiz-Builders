@@ -14,10 +14,10 @@ class CustomerController extends Controller
         return view('pages.customers', ['data' => $customers]);
     }
 
-    public function showCustomerDetailsForm($cnic = null) {
+    public function showCustomerDetailsForm($id = null) {
         $customerData = null;
-        if ($cnic) {
-            $customerData = DB::table('customer')->where('cnic_number', $cnic)->first();
+        if ($id) {
+            $customerData = DB::table('customer')->where('id', $id)->first();
             // Handle case if user is not found
         }
         return view('pages.customer-details', ['customerData' => $customerData]);

@@ -288,7 +288,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('addLeadForm', ['id' => $lead->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $lead->name }}</a>
+                                        <a href="{{ route('updateLeadForm', ['id' => $lead->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $lead->name }}</a>
                                     </td>
                                     <td>{{ $lead->mobile_number_1 }}</td>
                                     <td>{{ $lead->landline_number_1 }}</td>
@@ -302,7 +302,7 @@
                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-3">
-                                                <a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+                                                <a href="{{ route('viewLead', ['id' => $lead->id]) }}" class="menu-link px-3">View</a>
                                             </div>
                                             <!--end::Menu item-->
                                             <!--begin::Menu item-->

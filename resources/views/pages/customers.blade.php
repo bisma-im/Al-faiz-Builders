@@ -288,7 +288,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('addLeadForm', ['id' => $customer->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $customer->name }}</a>
+                                        <a href="{{ route('updateCustomerDetailsForm', ['id' => $customer->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $customer->name }}</a>
                                     </td>
                                     <td>{{ $customer->mobile_number_1 }}</td>
                                     <td>{{ $customer->address }}</td>
