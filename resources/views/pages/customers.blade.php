@@ -10,7 +10,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Lead List</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Customer List</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Leads</li>
+                        <li class="breadcrumb-item text-muted">Customers</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -273,14 +273,14 @@
                                     </th>
                                     <th class="min-w-125px">Name</th>
                                     <th class="min-w-125px">Mobile Number</th>
-                                    <th class="min-w-125px">Landline Number</th>
-                                    <th class="min-w-125px">Email</th>
-                                    <th class="min-w-125px">Source of Information</th>
+                                    <th class="min-w-125px">Address</th>
+                                    <th class="min-w-125px">Country</th>
+                                    <th class="min-w-125px">CNIC</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
-                                @foreach ($data as $id => $lead)
+                                @foreach ($data as $id => $customer)
                                 <tr>
                                     <td>
                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -288,13 +288,13 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('addLeadForm', ['id' => $lead->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $lead->name }}</a>
+                                        <a href="{{ route('addLeadForm', ['id' => $customer->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $customer->name }}</a>
                                     </td>
-                                    <td>{{ $lead->mobile_number_1 }}</td>
-                                    <td>{{ $lead->landline_number_1 }}</td>
+                                    <td>{{ $customer->mobile_number_1 }}</td>
+                                    <td>{{ $customer->address }}</td>
                                     {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $lead->email }}</td>
-                                    <td>{{ $lead->source_of_information }}</td>
+                                    <td>{{ $customer->country }}</td>
+                                    <td>{{ $customer->cnic_number }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
