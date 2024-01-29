@@ -8,6 +8,19 @@ use Illuminate\Validation\ValidationException;
 
 class ProjectController extends Controller
 {
+    public function showProjects(){
+        $projects = DB::table('projects')->get();
+        return view('pages.projects', ['data' => $projects]);
+    }
+
+    public function showAddProjectForm($id = null) {
+        $projectData = null;
+        if ($id) {
+            $projectData = DB::table('projects')->where('id', $id)->first();
+            // Handle case if user is not found
+        }
+        return view('pages.add-project', ['projectData' => $projectData]);
+    }
 
     public function getProjectData(Request $req){
 
@@ -62,15 +75,40 @@ class ProjectController extends Controller
                     ]);
                 }
             }
-            
-            
         } 
         catch (\Exception $e) 
         {   
-            
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
+    public function updateProject(Request $req) {
+        $projectData = $this->getProjectData($req);
+        $id = $req->input('id'); // Get the customer ID from the request
+    
+        $updated = DB::table('projects')
+            ->where('id', $id)
+            ->update($projectData);
+    
+        if ($updated) {
+            return response()->json(['success' => 'Customer updated successfully']);
+        } else {
+            return response()->json(['error' => 'Customer not found or update failed'], 404);
+        }
+    }
+
+    public function deleteProject(Request $req, $id) {
+        try {
+            $deleted = DB::table('projects')->where('id', $id)->delete();
+    
+            if ($deleted) {
+                return response()->json(['success' => 'Project deleted successfully']);
+            } else {
+                return response()->json(['error' => 'Project not found or could not be deleted'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
     
 }

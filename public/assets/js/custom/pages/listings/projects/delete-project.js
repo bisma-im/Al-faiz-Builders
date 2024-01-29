@@ -10,6 +10,7 @@ var KTCustomersList = (function () {
                     e.preventDefault();
                     const o = e.target.closest("tr"),
                         n = o.querySelectorAll("td")[1].innerText;
+                    const projectId = this.getAttribute('data-project-id');
                     Swal.fire({
                         text: "Are you sure you want to delete " + n + "?",
                         icon: "warning",
@@ -18,12 +19,35 @@ var KTCustomersList = (function () {
                         confirmButtonText: "Yes, delete!",
                         cancelButtonText: "No, cancel",
                         customClass: { confirmButton: "btn fw-bold btn-danger", cancelButton: "btn fw-bold btn-active-light-primary" },
-                    }).then(function (e) {
-                        e.value
-                            ? Swal.fire({ text: "You have deleted " + n + "!.", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } }).then(function () {
-                                  t.row($(o)).remove().draw();
-                              })
-                            : "cancel" === e.dismiss && Swal.fire({ text: n + " was not deleted.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } });
+                    })
+                    .then(function (result) {
+                        if (result.isConfirmed) {
+                            // Send AJAX request to delete project
+                            fetch(`/delete-project/${projectId}`, { // Use the correct URL pattern as per your routes
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                },
+                                body: JSON.stringify({ id: projectId })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        text: "You have deleted " + n + "!.", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } }).then(function () {
+                                                          t.row($(o)).remove().draw();
+                                    });
+                                } else {
+                                    "cancel" === e.dismiss && 
+                                    Swal.fire({ text: n + " was not deleted.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                        }
                     });
                 });
             });

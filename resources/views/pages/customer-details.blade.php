@@ -10,7 +10,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Account Settings</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Customer Settings</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Account</li>
+                        <li class="breadcrumb-item text-muted">Customer</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -282,7 +282,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="mobile_no_1" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $customerData->mobile_number_1 ?? '' }}" />
+                                        <input type="text" name="mobile_no_1" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $customerData->mobile_number_1 ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -294,7 +294,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="mobile_no_2" class="form-control form-control-lg form-control-solid" placeholder="Mobile Number 2" value="{{ $customerData->mobile_no_2 ?? '' }}" />
+                                        <input type="text" name="mobile_no_2" class="form-control form-control-lg form-control-solid" placeholder="Mobile Number 2" value="{{ $customerData->mobile_no_2 ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -306,7 +306,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="landline" class="form-control form-control-lg form-control-solid" placeholder="Landline Number" value="{{ $customerData->landline ?? '' }}" />
+                                        <input type="text" name="landline" class="form-control form-control-lg form-control-solid" placeholder="Landline Number" value="{{ $customerData->landline ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -318,7 +318,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="office_phone" class="form-control form-control-lg form-control-solid" placeholder="Office Phone" value="{{ $customerData->office_phone ?? '' }}" />
+                                        <input type="text" name="office_phone" class="form-control form-control-lg form-control-solid" placeholder="Office Phone" value="{{ $customerData->office_phone ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -339,7 +339,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" name="cnic" class="form-control form-control-lg form-control-solid" placeholder="CNIC" value="{{ $customerData->cnic_number ?? '' }}" />
+                                        <input type="text" name="cnic" class="form-control form-control-lg form-control-solid" placeholder="CNIC" value="{{ $customerData->cnic_number ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -422,7 +422,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="nok_mobile_no_1" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $customerData->mobile_no_1 ?? '' }}" />
+                                        <input type="text" name="nok_mobile_no_1" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $customerData->mobile_no_1 ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -434,7 +434,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="nok_mobile_no_2" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Mobile Number 2" value="{{ $customerData->nok_mobile_no_2 ?? '' }}" />
+                                        <input type="text" name="nok_mobile_no_2" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Mobile Number 2" value="{{ $customerData->nok_mobile_no_2 ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -446,7 +446,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="nok_landline" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Landline Number" value="{{ $customerData->nok_landline ?? '' }}" />
+                                        <input type="text" name="nok_landline" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin Landline Number" value="{{ $customerData->nok_landline ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -458,7 +458,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" name="nok_cnic" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin CNIC" value="{{ $customerData->nok_cnic ?? '' }}" />
+                                        <input type="text" name="nok_cnic" class="form-control form-control-lg form-control-solid" placeholder="Next of Kin CNIC" value="{{ $customerData->nok_cnic ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -482,14 +482,14 @@
                     <!--begin::Card header-->
                     <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_deactivate" aria-expanded="true" aria-controls="kt_account_deactivate">
                         <div class="card-title m-0">
-                            <h3 class="fw-bold m-0">Delete Account</h3>
+                            <h3 class="fw-bold m-0">Delete Customer</h3>
                         </div>
                     </div>
                     <!--end::Card header-->
                     <!--begin::Content-->
                     <div id="kt_account_settings_deactivate" class="collapse show">
                         <!--begin::Form-->
-                        <form id="kt_account_deactivate_form" class="form">
+                        <form id="kt_account_deactivate_form" class="form" data-kt-redirect="/customers">
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
                                 <!--begin::Notice-->
@@ -525,7 +525,7 @@
                             <!--end::Card body-->
                             <!--begin::Card footer-->
                             <div class="card-footer d-flex justify-content-end py-6 px-9">
-                                <button id="kt_account_deactivate_account_submit" type="submit" class="btn btn-danger fw-semibold">Delete Account</button>
+                                <button id="kt_account_deactivate_account_submit" type="submit" class="btn btn-danger fw-semibold">Delete Customer</button>
                             </div>
                             <!--end::Card footer-->
                         </form>
@@ -577,7 +577,7 @@
 		<!--begin::Custom Javascript(used for this page only)-->
 		<script src="{{ URL::asset('assets/js/custom/account/settings/signin-methods.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/account/settings/save-customer.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/account/settings/deactivate-account.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/account/settings/delete-customer.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/pages/user-profile/general.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>

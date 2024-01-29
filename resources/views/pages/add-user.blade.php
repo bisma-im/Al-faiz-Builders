@@ -246,7 +246,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="tel" name="mobile_no" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $userData->mobile_no ?? '' }}" />
+                                        <input type="text" name="mobile_no" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{ $userData->mobile_no ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -331,7 +331,7 @@
                     <!--begin::Content-->
                     <div id="kt_account_settings_deactivate" class="collapse show">
                         <!--begin::Form-->
-                        <form id="kt_account_deactivate_form" class="form">
+                        <form id="kt_account_deactivate_form" class="form" data-kt-redirect="/users">
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
                                 <!--begin::Notice-->
@@ -419,7 +419,7 @@
 		<!--begin::Custom Javascript(used for this page only)-->
 		<script src="{{ URL::asset('assets/js/custom/account/settings/signin-methods.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/account/settings/save-user.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/account/settings/deactivate-account.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/custom/account/settings/delete-user.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/pages/user-profile/general.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>

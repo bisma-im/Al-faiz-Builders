@@ -10,7 +10,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Customer List</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Project List</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Customers</li>
+                        <li class="breadcrumb-item text-muted">Projects</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -88,7 +88,7 @@
                                         <!--begin::Options-->
                                         <label class="form-check form-check-sm form-check-custom form-check-solid">
                                             <input class="form-check-input" type="checkbox" value="2" checked="checked" />
-                                            <span class="form-check-label">Customer</span>
+                                            <span class="form-check-label">Project</span>
                                         </label>
                                         <!--end::Options-->
                                     </div>
@@ -245,7 +245,7 @@
                                 </i>Export</button>
                                 <!--end::Export-->
                                 <!--begin::Add customer-->
-                                <a href="/add-customer-form" class="btn btn-primary" role="button">Add Customer</a>
+                                <a href="/add-project-form" class="btn btn-primary" role="button">Add Project</a>
                                 <!--end::Add customer-->
                             </div>
                             <!--end::Toolbar-->
@@ -271,16 +271,16 @@
                                             <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Name</th>
-                                    <th class="min-w-125px">Mobile Number</th>
-                                    <th class="min-w-125px">Address</th>
-                                    <th class="min-w-125px">Country</th>
-                                    <th class="min-w-125px">CNIC</th>
+                                    <th class="min-w-125px">Title</th>
+                                    <th class="min-w-125px">Area</th>
+                                    <th class="min-w-125px">Cost</th>
+                                    <th class="min-w-125px">Number of Plots</th>
+                                    <th class="min-w-125px">Monthly Installment</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
-                                @foreach ($data as $id => $customer)
+                                @foreach ($data as $id => $project)
                                 <tr>
                                     <td>
                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -288,13 +288,24 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('updateCustomerDetailsForm', ['id' => $customer->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $customer->name }}</a>
+                                        <div class="d-flex align-items-center">
+                                            <!--begin::Thumbnail-->
+                                            <a href="{{ route('updateProjectForm', ['id' => $project->id]) }}" class="symbol symbol-50px">
+                                                <span class="symbol-label" style="background-image:url({{ isset($project->project_logo) ? asset('images/project-logos/'.$project->project_logo) : asset('assets/media/svg/avatars/blank.svg') }});"></span>
+                                            </a>
+                                            <!--end::Thumbnail-->
+                                            <div class="ms-5">
+                                                <!--begin::Title-->
+                                                <a href="{{ route('updateProjectForm', ['id' => $project->id]) }}" class="text-gray-800 text-hover-primary fs-5 fw-bold" data-kt-ecommerce-product-filter="product_name">{{ $project->project_title }}</a>
+                                                <!--end::Title-->
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td>{{ $customer->mobile_number_1 }}</td>
-                                    <td>{{ $customer->address }}</td>
+                                    <td>{{ $project->project_area }}</td>
+                                    <td>{{ $project->project_cost }}</td>
                                     {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $customer->country }}</td>
-                                    <td>{{ $customer->cnic_number }}</td>
+                                    <td>{{ $project->no_of_plots }}</td>
+                                    <td>{{ $project->monthly_installment }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
@@ -302,12 +313,12 @@
                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-3">
-                                                <a href="../../demo1/dist/apps/customers/view.html" class="menu-link px-3">View</a>
+                                                <a href="#" class="menu-link px-3">View</a>
                                             </div>
                                             <!--end::Menu item-->
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+                                                <a href="javascript:void(0);" class="menu-link px-3" data-project-id="{{ $project->id }}" data-kt-customer-table-filter="delete_row">Delete</a>
                                             </div>
                                             <!--end::Menu item-->
                                         </div>
@@ -334,7 +345,7 @@
                                 <!--begin::Modal header-->
                                 <div class="modal-header" id="kt_modal_add_customer_header">
                                     <!--begin::Modal title-->
-                                    <h2 class="fw-bold">Add a Customer</h2>
+                                    <h2 class="fw-bold">Add a Project</h2>
                                     <!--end::Modal title-->
                                     <!--begin::Close-->
                                     <div id="kt_modal_add_customer_close" class="btn btn-icon btn-sm btn-active-icon-primary">
@@ -898,7 +909,7 @@
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
 		<script src="assets/js/custom/apps/customers/list/export.js"></script>
-		<script src="assets/js/custom/apps/customers/list/list.js"></script>
+        <script src="{{ asset('assets/js/custom/pages/listings/projects/delete-project.js') }}"></script>
 		<script src="assets/js/custom/apps/customers/add.js"></script>
 		<script src="assets/js/widgets.bundle.js"></script>
 		<script src="assets/js/custom/widgets.js"></script>

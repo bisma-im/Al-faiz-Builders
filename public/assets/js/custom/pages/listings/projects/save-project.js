@@ -135,6 +135,8 @@ var KTAppEcommerceSaveProduct = (function () {
                                         // console.log("validated!"),
                                             if(e === "Valid"){
                                                 const formData = new FormData(t);
+                                                var projectId = formData.get('id'); // Get the user ID from the form data
+                                                var url = projectId ? '/update-project' : '/add-project';
                                                 const dropzoneElement = document.querySelector('#kt_ecommerce_add_project_media');
                                                 if (dropzoneElement.dropzone) {
                                                     const files = dropzoneElement.dropzone.files;
@@ -142,7 +144,7 @@ var KTAppEcommerceSaveProduct = (function () {
                                                         formData.append('project_media[]', file, file.name);
                                                     });
                                                 }
-                                                fetch('/add-project', {
+                                                fetch(url, {
                                                     method: 'POST',
                                                     body: formData,
                                                     headers: {

@@ -31,12 +31,11 @@ var KTAccountSettingsDeactivateAccount = (function () {
 
                 submitButton.addEventListener("click", function (event) {
                     event.preventDefault();
-                    var username = document.querySelector('[name="username"]').value;
-                    var email = document.querySelector('[name="email"]').value;
+                    var userId = document.getElementById('id').value;
                     validator.validate().then(function (status) {
                         if (status === 'Valid') {
                             swal.fire({
-                                text: "Are you sure you would like to deactivate your account?",
+                                text: "Are you sure you would like to delete this user?",
                                 icon: "warning",
                                 buttonsStyling: false,
                                 showDenyButton: true,
@@ -56,7 +55,7 @@ var KTAccountSettingsDeactivateAccount = (function () {
                                             'X-Requested-With': 'XMLHttpRequest',
                                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                                         },
-                                        body: JSON.stringify({ username: username, email: email })
+                                        body: JSON.stringify({ id: userId })
                                     })
                                     .then(response => {
                                         if (!response.ok) {
@@ -67,13 +66,17 @@ var KTAccountSettingsDeactivateAccount = (function () {
                                     .then(data => {
                                         if (data.success) {
                                             Swal.fire({ 
-                                                text: "Your account has been deactivated.", 
+                                                text: "User has been deleted.", 
                                                 icon: "success", 
                                                 confirmButtonText: "Ok", 
                                                 buttonsStyling: false, 
                                                 customClass: { 
                                                     confirmButton: "btn btn-light-primary" 
                                                 } 
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    window.location.href = form.getAttribute('data-kt-redirect'); // Replace with your desired path
+                                                }
                                             });
                                         } else {
                                             throw new Error(data.error || 'There was a problem deactivating the account.');
@@ -92,7 +95,7 @@ var KTAccountSettingsDeactivateAccount = (function () {
                                     });
                                 } else if (result.isDenied) {
                                     Swal.fire({ 
-                                        text: "Account not deactivated.", 
+                                        text: "User not deleted.", 
                                         icon: "info", 
                                         confirmButtonText: "Ok", 
                                         buttonsStyling: false, 

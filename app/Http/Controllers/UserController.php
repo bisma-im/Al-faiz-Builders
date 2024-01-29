@@ -89,13 +89,11 @@ class UserController extends Controller
     
     
     public function deleteUser(Request $req) {
-        $username = $req->input('username');
-        $email = $req->input('email');
+        $id = $req->input('id');
         try {
             // The delete method is called directly on the query builder
             $deleted = DB::table('user')
-                ->where('username', $username)
-                ->where('email', $email)
+                ->where('id', $id)
                 ->delete();
     
             if ($deleted) {

@@ -33,6 +33,11 @@ Route::get('/customers', [CustomerController::class, 'showCustomers'])->name('sh
 Route::get('/customers/{id}', [CustomerController::class, 'showCustomerDetailsForm'])->name('updateCustomerDetailsForm');
 
 Route::post('/add-project', [ProjectController::class, 'addProject'])->name('addProject');
+Route::get('/projects', [ProjectController::class, 'showProjects'])->name('showProjects');
+Route::get('/projects/{id}', [ProjectController::class, 'showAddProjectForm'])->name('updateProjectForm');
+Route::get('/add-project-form', [ProjectController::class, 'showAddProjectForm'])->name('showAddProjectForm');
+Route::post('/update-project', [ProjectController::class, 'updateProject'])->name('updateProject');
+Route::post('/delete-project/{id}', [ProjectController::class, 'deleteProject'])->name('deleteProject');
 
 Route::get('/add-lead-form', [LeadController::class, 'showAddLeadForm'])->name('addLeadForm');
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');

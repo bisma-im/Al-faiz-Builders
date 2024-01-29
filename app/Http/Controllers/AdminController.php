@@ -13,13 +13,12 @@ class AdminController extends Controller
         $password= $req->input('password');
 
         try {
-            $admin = DB::table('user')
+            $user = DB::table('user')
                 ->where('email', $email)
                 ->where('password', $password)
-                ->where('user_access_level', 'admin')
                 ->first();
-            if ($admin) {
-                session(['userId' => $admin->id, 'email' => $admin->email, 'authenticated' => TRUE]);
+            if ($user) {
+                session(['userId' => $user->id, 'email' => $user->email, 'authenticated' => TRUE]);
                 return response()->json(['success' => 'Logged in successfully']);
             } else {
                 return response()->json(['error' => 'Invalid credentials']);

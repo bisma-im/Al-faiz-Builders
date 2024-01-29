@@ -88,7 +88,6 @@ class LeadController extends Controller
     public function deleteLead(Request $req) {
         $id = $req->input('id');
         try {
-            // The delete method is called directly on the query builder
             $deleted = DB::table('leads')
                 ->where('id', $id)
                 ->delete();

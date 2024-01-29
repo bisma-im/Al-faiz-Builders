@@ -26,15 +26,12 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-muted">eCommerce</li>
+                            <li class="breadcrumb-item text-muted">Project</li>
                             <!--end::Item-->
                             <!--begin::Item-->
                             <li class="breadcrumb-item">
                                 <span class="bullet bg-gray-400 w-5px h-2px"></span>
                             </li>
-                            <!--end::Item-->
-                            <!--begin::Item-->
-                            <li class="breadcrumb-item text-muted">Catalog</li>
                             <!--end::Item-->
                         </ul>
                         <!--end::Breadcrumb-->
@@ -147,8 +144,12 @@
                     <!--begin::Form-->
                     <form id="kt_ecommerce_add_project_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/projects" action="{{ route('addProject') }}" method="POST">
                         @csrf
+                        @if (isset($projectData) && $projectData->id)
+                            <input type="hidden" id="id" name="id" value="{{ $projectData->id }}">
+                        @endif
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+                            
                             <!--begin::Thumbnail settings-->
                             <div class="card card-flush py-4">
                                 <!--begin::Card header-->
@@ -166,9 +167,9 @@
                                     <!--begin::Image input placeholder-->
                                     <style>.image-input-placeholder { background-image: url('assets/media/svg/files/blank-image.svg'); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url('assets/media/svg/files/blank-image-dark.svg'); }</style>
                                     <!--end::Image input placeholder-->
-                                    <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
+                                    <div class="image-input image-input-outline {{ isset($projectData->project_logo) ? '' : 'image-input-empty' }} image-input-placeholder mb-3" data-kt-image-input="true">
                                         <!--begin::Preview existing avatar-->
-                                        <div class="image-input-wrapper w-150px h-150px"></div>
+                                        <div class="image-input-wrapper w-150px h-150px" style="{{ isset($projectData->project_logo) ? 'background-image: url('.asset('images/project-logos/'.$projectData->project_logo).')' : '' }}"></div>
                                         <!--end::Preview existing avatar-->
                                         <!--begin::Label-->
                                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
@@ -253,7 +254,7 @@
                                 <div class="card-header">
                                     <!--begin::Card title-->
                                     <div class="card-title">
-                                        <h2>Product Details</h2>
+                                        <h2>Project Details</h2>
                                     </div>
                                     <!--end::Card title-->
                                 </div>
@@ -392,7 +393,7 @@
                                                     <label class="required form-label">Project Name</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="project_title" class="form-control mb-2" placeholder="Project name" value="" />
+                                                    <input type="text" name="project_title" class="form-control mb-2" placeholder="Project name" value="{{ $projectData->project_title ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">A project name is required and recommended to be unique.</div>
@@ -405,7 +406,7 @@
                                                     <label class="required form-label">Project Cost</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="project_cost" class="form-control mb-2" placeholder="Project Cost" value="" />
+                                                    <input type="number" step="any" name="project_cost" class="form-control mb-2" placeholder="Project Cost" value="{{ $projectData->project_cost ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the project cost.</div>
@@ -489,7 +490,7 @@
                                                     <label class="required form-label">Down Payment</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="down_payment" class="form-control mb-2" placeholder="Product price" value="" />
+                                                    <input type="number" step="any" name="down_payment" class="form-control mb-2" placeholder="Product price" value="{{ $projectData->down_payment ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the down payment.</div>
@@ -502,7 +503,7 @@
                                                     <label class="required form-label">Development Charges</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="development_charges" class="form-control mb-2" placeholder="Development Charges" value="" />
+                                                    <input type="number" step="any" name="development_charges" class="form-control mb-2" placeholder="Development Charges" value="{{ $projectData->development_charges ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the development charges.</div>
@@ -515,7 +516,7 @@
                                                     <label class="required form-label">Extra Charges</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="extra_charges" class="form-control mb-2" placeholder="Extra Charges" value="" />
+                                                    <input type="number" step="any" name="extra_charges" class="form-control mb-2" placeholder="Extra Charges" value="{{ $projectData->extra_charges ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the extra charges.</div>
@@ -528,7 +529,7 @@
                                                     <label class="required form-label">Monthly Installment</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="monthly_installment" class="form-control mb-2" placeholder="Monthly Installment" value="" />
+                                                    <input type="number" step="any" name="monthly_installment" class="form-control mb-2" placeholder="Monthly Installment" value="{{ $projectData->monthly_installment ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the monthly installment.</div>
@@ -701,7 +702,7 @@
                                                     <label class="required form-label">Project Phase</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="project_phase" class="form-control mb-2" placeholder="Project Phase" value="" />
+                                                    <input type="text" name="project_phase" class="form-control mb-2" placeholder="Project Phase" value="{{ $projectData->project_phase ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Enter the project phase.</div>
@@ -714,7 +715,7 @@
                                                     <label class="required form-label">Project Area</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" name="project_area" step="any" class="form-control mb-2" placeholder="Project Area" value="" />
+                                                    <input type="number" name="project_area" step="any" class="form-control mb-2" placeholder="Project Area" value="{{ $projectData->project_area ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Enter the project area.</div>
@@ -728,8 +729,8 @@
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <div class="d-flex gap-3">
-                                                        <input type="number" name="no_of_plots" class="form-control mb-2" placeholder="Number of Plots" value="" />
-                                                        <input type="number" name="plot_starting_serial_no" class="form-control mb-2" placeholder="Plot Starting Serial No." />
+                                                        <input type="number" name="no_of_plots" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                        <input type="number" name="plot_starting_serial_no" class="form-control mb-2" placeholder="Plot Starting Serial No." value="{{ $projectData->plot_starting_serial_no ?? '' }}" />
                                                     </div>
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
@@ -994,16 +995,17 @@
 
 @push('scripts')
     <!--begin::Vendors Javascript(used for this page only)-->
-	<script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
-	<script src="assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
-	<!--end::Vendors Javascript-->
-	<!--begin::Custom Javascript(used for this page only)-->
-	<script src="assets/js/custom/pages/listings/projects/save-project.js"></script>
-	<script src="assets/js/widgets.bundle.js"></script>
-	<script src="assets/js/custom/widgets.js"></script>
-	<script src="assets/js/custom/apps/chat/chat.js"></script>
-	<script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
-	<script src="assets/js/custom/utilities/modals/create-app.js"></script>
-	<script src="assets/js/custom/utilities/modals/users-search.js"></script>
-	<!--end::Custom Javascript-->
+	<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
+    <!--end::Vendors Javascript-->
+    <!--begin::Custom Javascript(used for this page only)-->
+    <script src="{{ asset('assets/js/custom/pages/listings/projects/save-project.js') }}"></script>
+    <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+    <!--end::Custom Javascript-->
+
 @endpush
