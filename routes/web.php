@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\AccountsController;
 
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
@@ -47,8 +48,10 @@ Route::get('/leads', [LeadController::class, 'showLeads'])->name('showLeads');
 Route::get('/leads/{id}', [LeadController::class, 'showAddLeadForm'])->name('updateLeadForm');
 Route::get('/leads/{id}/view', [LeadController::class, 'showLead'])->name('viewLead');
 
-Route::get('/change-password-form', function () {
-    return view('pages.change-password');
+Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');
+
+Route::get('/add-account-form', function () {
+    return view('pages.add-account');
 });
 
 Route::get('/add-project-form', function () {
