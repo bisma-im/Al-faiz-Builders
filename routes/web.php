@@ -11,7 +11,7 @@ use App\Http\Controllers\AccountsController;
 
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
-Route::post('/change-password', [AdminController::class, 'changePassword'])->name('changePassword');
+Route::post('/change-password', [AdminController::class, 'changePassword'])->name('changePassword')->middleware('admin.auth');
 Route::view('/', 'dashboards.index')->middleware('admin.auth');
 Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 
@@ -45,8 +45,8 @@ Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');
 Route::post('/update-lead', [LeadController::class, 'updateLead'])->name('updateLead');
 Route::post('/delete-lead', [LeadController::class, 'deleteLead'])->name('deleteLead');
 Route::get('/leads', [LeadController::class, 'showLeads'])->name('showLeads');
-Route::get('/leads/{id}', [LeadController::class, 'showAddLeadForm'])->name('updateLeadForm');
-Route::get('/leads/{id}/view', [LeadController::class, 'showLead'])->name('viewLead');
+Route::get('/leads/{id}', [LeadController::class, 'showLeadForm'])->name('updateLeadForm');
+Route::get('/leads/{id}/view', [LeadController::class, 'showLeadForm'])->name('viewLead');
 Route::post('/add-call-log', [LeadController::class, 'addCallLog'])->name('addCallLog');
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');

@@ -12,26 +12,33 @@ class LeadController extends Controller
 {
     public function showLeads(){
         $leads = DB::table('leads')->get();
+        
         return view('pages.leads', ['data' => $leads]);
     }
     
-    public function showAddLeadForm($id = null, $isView = false)
+
+
+    public function showLeadForm($id = null, Request $request)
     {
         $leadData = null;
+        $callLogs = [];
+
         if ($id) {
             $leadData = DB::table('leads')->where('id', $id)->first();
-            // Handle case if lead is not found
+            $isViewMode = $request->is('*/view');
+
+            if ($isViewMode) {
+                $callLogs = DB::table('call_logs')->where('lead_id', $id)->get();
+            }
         }
-        return view('pages.add-lead', ['leadData' => $leadData, 'isViewMode' => $isView]);
+
+        return view('pages.add-lead', [
+            'leadData' => $leadData,
+            'isViewMode' => $isViewMode,
+            'callLogData' => $callLogs
+        ]);
     }
 
-    public function showLead($id = null, $isView = true){
-        $leadData = null;
-        if ($id) {
-            $leadData = DB::table('leads')->where('id', $id)->first();
-        }
-        return view('pages.add-lead', ['leadData' => $leadData, 'isViewMode' => $isView]);
-    }
 
     public function getLeadData(Request $req){
         $leadData = [
