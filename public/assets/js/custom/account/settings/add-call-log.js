@@ -11,13 +11,13 @@ var KTModalLogsAdd = (function () {
     });
     
     // For the next call datepicker
-    // $("#kt_ecommerce_add_next_call_log_datepicker").flatpickr   ({
-    //     enableTime: true,
-    //     dateFormat: "Y-m-d H:i",
-    //     onClose: function(selectedDates, dateStr, instance) {
-    //         // You can handle any actions here after the date is selected
-    //     }
-    // });
+    $("#kt_ecommerce_add_next_call_log_datepicker").flatpickr   ({
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        onClose: function(selectedDates, dateStr, instance) {
+            // You can handle any actions here after the date is selected
+        }
+    });
     return {
         init: function () {
             (i = new bootstrap.Modal(document.querySelector("#kt_modal_add_log"))),
@@ -99,24 +99,24 @@ var KTModalLogsAdd = (function () {
                         });
                     }
                 });
-                // e.addEventListener("click", function (t) {
-                //     t.preventDefault(),
-                //     t.stopPropagation();
-                //     $('input').blur();
-                //         Swal.fire({
-                //             text: "Are you sure you would like to cancel?",
-                //             icon: "warning",
-                //             showCancelButton: !0,
-                //             buttonsStyling: !1,
-                //             confirmButtonText: "Yes, cancel it!",
-                //             cancelButtonText: "No, return",
-                //             customClass: { confirmButton: "btn btn-primary", cancelButton: "btn btn-active-light" },
-                //         }).then(function (t) {
-                //             t.value
-                //                 ? (r.reset(), i.hide())
-                //                 : "cancel" === t.dismiss && Swal.fire({ text: "Your form has not been cancelled!.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn btn-primary" } });
-                //         });
-                // });
+                e.addEventListener("click", function (t) {
+                    t.preventDefault(),
+                    t.stopPropagation();
+                    $('input').blur();
+                        Swal.fire({
+                            text: "Are you sure you would like to cancel?",
+                            icon: "warning",
+                            showCancelButton: !0,
+                            buttonsStyling: !1,
+                            confirmButtonText: "Yes, cancel it!",
+                            cancelButtonText: "No, return",
+                            customClass: { confirmButton: "btn btn-primary", cancelButton: "btn btn-active-light" },
+                        }).then(function (t) {
+                            t.value
+                                ? (r.reset(), i.hide())
+                                : "cancel" === t.dismiss && Swal.fire({ text: "Your form has not been cancelled!.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn btn-primary" } });
+                        });
+                });
                 o.addEventListener("click", function (t) {
                     t.preventDefault(),
                     t.stopPropagation();
