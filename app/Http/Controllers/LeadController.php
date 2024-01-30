@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
 
 class LeadController extends Controller
 {
@@ -103,4 +104,36 @@ class LeadController extends Controller
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }
     }  
+
+    public function addCallLog(Request $req)
+    {
+        $leadId = $req->input('id');
+        $validatedData = $req->validate([
+            'call_date_time' => 'required',
+            'customer_response' => 'required',
+            'next_call_date_time' => 'required',
+        ]);
+
+        $callDateTime = Carbon::createFromFormat('Y-m-d H:i', $req->input('call_date_time'));
+        $nextCallDateTime = Carbon::createFromFormat('Y-m-d H:i', $req->input('next_call_date_time'));
+
+        $logData = [
+            'lead_id' => $leadId,
+            'date_of_call' => $callDateTime->toDateString(),
+            'time_of_call' => $callDateTime->toTimeString(),
+            'customer_response' => $req->input('customer_response'),
+            'next_call_date' => $nextCallDateTime->toDateString(),
+            'next_call_time' => $nextCallDateTime->toTimeString(),
+        ];
+
+        try
+        {
+            $inserted = DB::table('call_logs')->insert($logData);
+            return response()->json(['success' => 'Call log added successfully']);
+        }
+        catch (\Exception $e) 
+        {
+            return new JsonResponse(['error' => $e->getMessage()], 500);
+        }        
+    }
 }

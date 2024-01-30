@@ -266,14 +266,14 @@
                     <!--end::Content-->
                 </div>
                 <!--end::Deactivate Account-->
-                <!--begin::Modal - Customers - Add-->
+                <!--begin::Modal - Log - Add-->
 				<div class="modal fade" id="kt_modal_add_log" tabindex="-1" aria-hidden="true">
 					<!--begin::Modal dialog-->
 					<div class="modal-dialog modal-dialog-centered mw-650px">
 						<!--begin::Modal content-->
 						<div class="modal-content">
 							<!--begin::Form-->
-							<form class="form" action="#" id="kt_modal_add_log_form" data-kt-redirect="../../demo1/dist/apps/customers/list.html">
+							<form class="form" action="#" id="kt_modal_add_log_form" data-kt-redirect="{{ route('viewLead', ['id' => $leadData->id]) }}">
 								<!--begin::Modal header-->
 								<div class="modal-header" id="kt_modal_add_customer_header">
 									<!--begin::Modal title-->
@@ -339,7 +339,7 @@
 						</div>
 					</div>
 				</div>
-				<!--end::Modal - Customers - Add-->
+				<!--end::Modal - Log - Add-->
             </div>
             <!--end::Content container-->
         </div>
@@ -384,18 +384,7 @@
 		<script src="{{ URL::asset('assets/js/custom/account/settings/save-lead.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/account/settings/delete-lead.js') }}"></script>
         <script src="{{ URL::asset('assets/js/custom/account/settings/add-call-log.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/pages/user-profile/general.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/type.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/details.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/finance.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/complete.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/offer-a-deal/main.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/two-factor-authentication.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 		<!--end::Custom Javascript-->
 @endpush

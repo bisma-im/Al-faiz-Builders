@@ -47,6 +47,7 @@ Route::post('/delete-lead', [LeadController::class, 'deleteLead'])->name('delete
 Route::get('/leads', [LeadController::class, 'showLeads'])->name('showLeads');
 Route::get('/leads/{id}', [LeadController::class, 'showAddLeadForm'])->name('updateLeadForm');
 Route::get('/leads/{id}/view', [LeadController::class, 'showLead'])->name('viewLead');
+Route::post('/add-call-log', [LeadController::class, 'addCallLog'])->name('addCallLog');
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');
 

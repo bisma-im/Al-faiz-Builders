@@ -1,7 +1,6 @@
 "use strict";
-var KTModalCustomersAdd = (function () {
+var KTModalLogsAdd = (function () {
     var t, e, o, n, r, i;
-    // const a = document.getElementById("kt_ecommerce_add_call_log_datepicker");
     $("#kt_ecommerce_add_call_log_datepicker").flatpickr({
         enableTime: true,
         dateFormat: "Y-m-d H:i",
@@ -19,12 +18,6 @@ var KTModalCustomersAdd = (function () {
             // You can handle any actions here after the date is selected
         }
     });
-                    // const d = () => {
-                    //         a.parentNode.classList.remove("d-none");
-                    //     },
-                    //     c = () => {
-                    //         a.parentNode.classList.add("d-none");
-                    //     };       
     return {
         init: function () {
             (i = new bootstrap.Modal(document.querySelector("#kt_modal_add_log"))),
@@ -39,32 +32,73 @@ var KTModalCustomersAdd = (function () {
                     },
                     plugins: { trigger: new FormValidation.plugins.Trigger(), bootstrap: new FormValidation.plugins.Bootstrap5({ rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: "" }) },
                 })),
-                
                 t.addEventListener("click", function (e) {
-                    e.preventDefault(),
-                        n &&
-                            n.validate().then(function (e) {
-                                console.log("validated!"),
-                                    "Valid" == e
-                                        ? (t.setAttribute("data-kt-indicator", "on"),
-                                          (t.disabled = !0),
-                                          setTimeout(function () {
-                                              t.removeAttribute("data-kt-indicator"),
-                                                  Swal.fire({ text: "Form has been successfully submitted!", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn btn-primary" } }).then(
-                                                      function (e) {
-                                                          e.isConfirmed && (i.hide(), (t.disabled = !1), (window.location = r.getAttribute("data-kt-redirect")));
-                                                      }
-                                                  );
-                                          }, 2e3))
-                                        : Swal.fire({
-                                              text: "Sorry, looks like there are some errors detected, please try again.",
-                                              icon: "error",
-                                              buttonsStyling: !1,
-                                              confirmButtonText: "Ok, got it!",
-                                              customClass: { confirmButton: "btn btn-primary" },
-                                          });
-                            });
-                }),
+                    e.preventDefault();
+                    if (n) {
+                        n.validate().then(function (status) {
+                            if (status === "Valid") {
+                                var formData = $(r).serialize(); // Serialize form data
+                                var leadId = document.getElementById('id').value;
+                                $.ajax({
+                                    url: '/add-call-log', // Replace with your endpoint URL
+                                    type: 'POST',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({
+                                        call_date_time: $('#kt_ecommerce_add_call_log_datepicker').val(),
+                                        customer_response: $('input[name="customer_response"]').val(),
+                                        next_call_date_time: $('#kt_ecommerce_add_next_call_log_datepicker').val(),
+                                        id: leadId // Assuming you have this variable correctly set
+                                    }),
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                    },
+                                    beforeSend: function () {
+                                        console.log(formData);
+                                        t.setAttribute("data-kt-indicator", "on");
+                                        t.disabled = true;
+                                    },
+                                    success: function (response) {
+                                        // Handle success. For example:
+                                        Swal.fire({ 
+                                            text: "Form has been successfully submitted!", 
+                                            icon: "success", 
+                                            buttonsStyling: !1, 
+                                            confirmButtonText: "Ok, got it!", 
+                                            customClass: { confirmButton: "btn btn-primary" } })
+                                            .then(
+                                            function (e) {
+                                                e.isConfirmed && (i.hide(), 
+                                                (t.disabled = !1), 
+                                                (window.location = r.getAttribute("data-kt-redirect")));
+                                            });
+                                    },
+                                    error: function (error) {
+                                        Swal.fire({
+                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                            icon: "error",
+                                            buttonsStyling: !1,
+                                            confirmButtonText: "Ok, got it!",
+                                            customClass: { confirmButton: "btn btn-primary" },
+                                        });
+                                    },
+                                    complete: function () {
+                                        t.removeAttribute("data-kt-indicator");
+                                        t.disabled = false;
+                                    }
+                                });
+                            } else {
+                                Swal.fire({ 
+                                    text: "Sorry, looks like there are some even more errors detected, please try again.",
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: { confirmButton: "btn btn-primary" },
+                                 });
+                            }
+                        });
+                    }
+                });
                 e.addEventListener("click", function (t) {
                     t.preventDefault(),
                     t.stopPropagation();
@@ -105,5 +139,5 @@ var KTModalCustomersAdd = (function () {
     };
 })();
 KTUtil.onDOMContentLoaded(function () {
-    KTModalCustomersAdd.init();
+    KTModalLogsAdd.init();
 });
