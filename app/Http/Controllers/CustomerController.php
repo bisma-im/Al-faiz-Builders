@@ -92,6 +92,18 @@ class CustomerController extends Controller
         $id = $req->input('id'); // Get the customer ID from the request
     
         try{
+
+            $customer = DB::table('customer')->where('id', $id)->first();
+            $avatar = $customer->customer_image;
+            if($avatar && $avatar != 'default.jpg')
+            {
+                $avatarPath = public_path('images/customer-images/' . $avatar);
+                if(file_exists($avatarPath))
+                {
+                    unlink($avatarPath);
+                }
+            }
+
             $deleted = DB::table('customer')
                 ->where('id', $id)
                 ->delete();

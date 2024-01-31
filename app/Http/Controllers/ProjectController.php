@@ -35,7 +35,7 @@ class ProjectController extends Controller
             'project_phase' => $req->input('project_phase'),
             'project_area' => $req->input('project_area'),
             'no_of_plots' => $req->input('no_of_plots'),
-            'plot_starting_serial_no' => $req->input('plot_starting_serial_no'),
+            'plot_prefix' => $req->input('plot_prefix'),
         ];
     
         if ($req->hasFile('project_logo')) {
@@ -53,16 +53,22 @@ class ProjectController extends Controller
 
     public function addProject(Request $req){
         $projectData = $this->getProjectData($req);
+        $plotPrefix= $projectData['plot_prefix'];
+        $totalPlots = $projectData['no_of_plots'];
+        $plotInventory=[];
+        $projectId=0;
+        DB::beginTransaction();
         try 
         {   
-            if(DB::table('projects')->where('project_title', $projectData['project_title'])->first())
-            {
-                return response()->json(['error' => 'Project Title already exists']);
+            $projectId = DB::table('projects')->insertGetId($projectData);
+            for($i = 1; $i <= $totalPlots; $i++)
+               {
+                $plotInventory[$i-1] = [
+                    'project_id' => $projectId,
+                    'plot_no' => $plotPrefix . $i,
+                ];
             }
-            else{
-                DB::table('projects')->insert($projectData);
-                return response()->json(['success' => 'Project added successfully']);
-            }
+            $insertedPlots = DB::table('plots_inventory')->insert($plotInventory);
             if ($req->hasFile('project_media')) {
                 foreach ($req->file('project_media') as $file) {
                     $filename = time() . '_' . $file->getClientOriginalName();
@@ -70,14 +76,17 @@ class ProjectController extends Controller
                     $file->move($filePath, $filename);
 
                     DB::table('project_media')->insert([
-                        'project_title' => $projectData['project_title'],
+                        'project_id' => $projectId,
                         'media_name' => $filename,
                     ]);
                 }
             }
+            DB::commit();
+            return response()->json(['success' => 'Project added successfully']);
         } 
         catch (\Exception $e) 
         {   
+            DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -98,17 +107,41 @@ class ProjectController extends Controller
     }
 
     public function deleteProject(Request $req, $id) {
+        DB::beginTransaction();
         try {
+            $projectLogo = DB::table('projects')->where('id', $id)->value('project_logo');
+            
+            if ($projectLogo && $projectLogo != 'default.jpg') {
+                $logoPath = public_path('images/project-logos/' . $projectLogo);
+                if (file_exists($logoPath)) {
+                    unlink($logoPath);
+                }
+            }
+    
+            $mediaFiles = DB::table('project_media')->where('project_id', $id)->get();
+            foreach ($mediaFiles as $file) {
+                $filePath = public_path('images/project-media/' . $file->media_name);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+    
+            DB::table('project_media')->where('project_id', $id)->delete();
+            DB::table('plots_inventory')->where('project_id', $id)->delete();
+    
             $deleted = DB::table('projects')->where('id', $id)->delete();
     
             if ($deleted) {
+                DB::commit();
                 return response()->json(['success' => 'Project deleted successfully']);
             } else {
                 return response()->json(['error' => 'Project not found or could not be deleted'], 404);
             }
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    
     
 }

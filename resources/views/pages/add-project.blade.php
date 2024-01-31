@@ -730,7 +730,7 @@
                                                     <!--begin::Input-->
                                                     <div class="d-flex gap-3">
                                                         <input type="number" name="no_of_plots" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
-                                                        <input type="number" name="plot_starting_serial_no" class="form-control mb-2" placeholder="Plot Starting Serial No." value="{{ $projectData->plot_starting_serial_no ?? '' }}" />
+                                                        <input type="text" name="plot_prefix" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
                                                     </div>
                                                     <!--end::Input-->
                                                     <!--begin::Description-->

@@ -23,7 +23,7 @@ var KTModalLogsAdd = (function () {
             (i = new bootstrap.Modal(document.querySelector("#kt_modal_add_log"))),
                 (r = document.querySelector("#kt_modal_add_log_form")),
                 (t = r.querySelector("#kt_modal_add_log_submit")),
-                // (e = r.querySelector("#kt_modal_add_log_cancel")),
+                (e = r.querySelector("#kt_modal_add_log_cancel")),
                 (o = r.querySelector("#kt_modal_add_log_close")),
                 
                 (n = FormValidation.formValidation(r, {

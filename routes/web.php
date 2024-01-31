@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\DocumentController;
 
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
@@ -49,12 +50,17 @@ Route::get('/leads/{id}', [LeadController::class, 'showLeadForm'])->name('update
 Route::get('/leads/{id}/view', [LeadController::class, 'showLeadForm'])->name('viewLead');
 Route::post('/add-call-log', [LeadController::class, 'addCallLog'])->name('addCallLog');
 
+
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');
+
+
+Route::get('/show-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments');
+Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument');
 
 Route::get('/add-account-form', function () {
     return view('pages.add-account');
 });
 
-Route::get('/add-project-form', function () {
-    return view('pages.add-project');
-});
+// Route::get('/show-documents', function () {
+//     return view('pages.documents');
+// });

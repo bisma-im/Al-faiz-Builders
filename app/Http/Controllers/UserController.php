@@ -91,6 +91,17 @@ class UserController extends Controller
     public function deleteUser(Request $req) {
         $id = $req->input('id');
         try {
+
+            $user = DB::table('user')->where('id', $id)->first();
+            $avatar = $user->user_image;
+            if($avatar && $avatar != 'default.jpg')
+            {
+                $avatarPath = public_path('images/user-avatars/' . $avatar);
+                if(file_exists($avatarPath))
+                {
+                    unlink($avatarPath);
+                }
+            }
             // The delete method is called directly on the query builder
             $deleted = DB::table('user')
                 ->where('id', $id)
