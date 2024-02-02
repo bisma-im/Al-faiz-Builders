@@ -4904,9 +4904,11 @@ License: For each use you must have a valid license purchased only from above li
 											<span class="menu-arrow"></span>
 										</span>
 										<!--end:Menu link-->
+										
 										<!--begin:Menu sub-->
 										<div class="menu-sub menu-sub-accordion">
 											<!--begin:Menu item-->
+											@if (session('role') == 'admin')
 											<div class="menu-item">
 												<!--begin:Menu link-->
 												<a class="menu-link" href="/projects">
@@ -4941,11 +4943,14 @@ License: For each use you must have a valid license purchased only from above li
 												</a>
 												<!--end:Menu link-->
 											</div>
+											@endif
 											<!--end:Menu item-->
-											<!--begin:Menu item-->
+											
+											<!--begin:Menu item Leads-->
+											@if (session('role') == 'sales' || session('role') == 'marketing')
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="/leads">
+												<a class="menu-link" href="{{ route('showLeads', ['username' => session('username')]) }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
@@ -4953,6 +4958,7 @@ License: For each use you must have a valid license purchased only from above li
 												</a>
 												<!--end:Menu link-->
 											</div>
+											@endif
 											<!--end:Menu item-->
 										</div>
 										<!--end:Menu sub-->

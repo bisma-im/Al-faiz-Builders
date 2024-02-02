@@ -18,7 +18,7 @@ class AdminController extends Controller
                 ->where('password', $password)
                 ->first();
             if ($user) {
-                session(['userId' => $user->id, 'email' => $user->email, 'authenticated' => TRUE]);
+                session(['userId' => $user->id, 'username' => $user->username, 'role' => $user->user_access_level, 'authenticated' => TRUE]);
                 return response()->json(['success' => 'Logged in successfully']);
             } else {
                 return response()->json(['error' => 'Invalid credentials']);
@@ -35,7 +35,7 @@ class AdminController extends Controller
     }
 
     public function changePassword(Request $req){
-        $email = $req->session()->get('email');
+        $username = $req->session()->get('username');
         $currentPassword = $req->input('current_password');
         $newPassword = $req->input('new_password');
         $confirmPassword = $req->input('confirm_password');
@@ -50,7 +50,7 @@ class AdminController extends Controller
         }
     
         // Fetch user from database
-        $user = DB::table('user')->where('email', $email)->first();
+        $user = DB::table('user')->where('username', $username)->first();
     
         // Check if current password matches
         if ($currentPassword !== $user->password) {
@@ -59,7 +59,7 @@ class AdminController extends Controller
     
         // All checks passed, update the password
         DB::table('user')
-            ->where('email', $email)
+            ->where('username', $username)
             ->update(['password' =>  $newPassword]);
     
         return response()->json(['success' => 'Password changed successfully']);

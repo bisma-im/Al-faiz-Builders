@@ -72,6 +72,7 @@
                                 @if (isset($leadData) && $leadData->id)
                                     <input type="hidden" id="id" name="id" value="{{ $leadData->id }}">
                                 @endif
+                                <input type="hidden" id="session_username" name="session_username" value="{{ session('username') }}">
                                 <!--begin::Input group Name-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->

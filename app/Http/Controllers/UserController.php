@@ -16,11 +16,12 @@ class UserController extends Controller
 
     public function showAddUserForm($id = null) {
         $userData = null;
+        $roles = DB::table('roles')->get();
         if ($id) {
             $userData = DB::table('user')->where('id', $id)->first();
             // Handle case if user is not found
         }
-        return view('pages.add-user', ['userData' => $userData]);
+        return view('pages.add-user', compact('userData','roles'));
     }
 
     public function getUserData(Request $req){
@@ -52,7 +53,11 @@ class UserController extends Controller
     public function addUser(Request $req){
         $userData = $this->getUserData($req);
         try 
-        {   if(DB::table('user')->where('email', $userData['email'])->first())
+        {   
+            // if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', $userData['password'])) {
+            //     return response()->json(['error' => 'Password must be at least 8 characters long and include at least one special character'], 400);
+            // }
+            if(DB::table('user')->where('email', $userData['email'])->first())
             {
                 return response()->json(['error' => 'Account already exists']);
             }

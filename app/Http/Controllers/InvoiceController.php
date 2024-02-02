@@ -10,6 +10,17 @@ use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
+    public function showInvoices(){
+        $invoices = DB::table('invoice')
+            ->join('customer as c', 'c.id', '=', 'invoice.customer_id')
+            ->join('projects as pr', 'pr.id', '=', 'invoice.project_id')
+            ->join('plots_inventory as pl', 'pl.id', '=', 'invoice.plot_id')
+            ->select('invoice.id', 'c.name', 'pr.project_title','pl.plot_no', 'invoice.invoice_date', 'invoice.invoice_time', 'invoice.total_amount')
+            ->get();
+            
+        return view('pages.invoices', ['invoiceData' => $invoices]);
+    }
+
     public function showAddInvoiceForm(Request $req)
     {
         try

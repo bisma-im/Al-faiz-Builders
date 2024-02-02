@@ -10,33 +10,43 @@ use Carbon\Carbon;
 
 class LeadController extends Controller
 {
-    public function showLeads(){
-        $leads = DB::table('leads')->get();
+    public function showLeads(Request $req, $username){
+        $sessionUsername = $req->session()->get('username');
+        if($username == $sessionUsername)
+        {
+            $leads = DB::table('leads')
+            ->where('username', $username)
+            ->get();
         
-        return view('pages.leads', ['data' => $leads]);
+            return view('pages.leads', ['data' => $leads]);
+        }
+        else
+        {
+            return redirect()->back();
+        }
+        
     }
     
-
-
-    public function showLeadForm($id = null, Request $request)
+    public function showLeadForm(Request $request, $id = null)
     {
-        $leadData = null;
-        $callLogs = [];
+        $leadData = $callLogData = null;
+        $isViewMode = $request->is('*/view');
+        $username = session('username');
 
         if ($id) {
-            $leadData = DB::table('leads')->where('id', $id)->first();
-            $isViewMode = $request->is('*/view');
-
-            if ($isViewMode) {
-                $callLogs = DB::table('call_logs')->where('lead_id', $id)->get();
+            $leadData = DB::table('leads')
+                ->where('id', $id)
+                ->where('username', $username)
+                ->first();
+            
+            if (!$leadData) {
+                return redirect()->route('showLeads', ['username' => $username]);
             }
+    
+            $callLogData = $isViewMode ? DB::table('call_logs')->where('lead_id', $id)->get() : [];
         }
-
-        return view('pages.add-lead', [
-            'leadData' => $leadData,
-            'isViewMode' => $isViewMode,
-            'callLogData' => $callLogs
-        ]);
+    
+        return view('pages.add-lead', compact('leadData', 'isViewMode', 'callLogData'));
     }
 
 
@@ -50,6 +60,7 @@ class LeadController extends Controller
             'email' => $req->input('email'),
             'source_of_information' => $req->input('source_of_information'),
             'details' => $req->input('details'),
+            'username' => $req->input('session_username'),
         ];
         
         return $leadData;

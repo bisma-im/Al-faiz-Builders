@@ -42,11 +42,11 @@ Route::get('/add-project-form', [ProjectController::class, 'showAddProjectForm']
 Route::post('/update-project', [ProjectController::class, 'updateProject'])->name('updateProject');
 Route::post('/delete-project/{id}', [ProjectController::class, 'deleteProject'])->name('deleteProject');
 
-Route::get('/add-lead-form', [LeadController::class, 'showAddLeadForm'])->name('addLeadForm');
+Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->name('addLeadForm');
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');
 Route::post('/update-lead', [LeadController::class, 'updateLead'])->name('updateLead');
 Route::post('/delete-lead', [LeadController::class, 'deleteLead'])->name('deleteLead');
-Route::get('/leads', [LeadController::class, 'showLeads'])->name('showLeads');
+Route::get('/{username}/leads', [LeadController::class, 'showLeads'])->name('showLeads');
 Route::get('/leads/{id}', [LeadController::class, 'showLeadForm'])->name('updateLeadForm');
 Route::get('/leads/{id}/view', [LeadController::class, 'showLeadForm'])->name('viewLead');
 Route::post('/add-call-log', [LeadController::class, 'addCallLog'])->name('addCallLog');
@@ -54,13 +54,14 @@ Route::post('/add-call-log', [LeadController::class, 'addCallLog'])->name('addCa
 Route::get('/add-invoice-form', [InvoiceController::class, 'showAddInvoiceForm'])->name('addInvoiceForm');
 Route::post('/get-plots', [InvoiceController::class, 'getPlotsForProject']);
 Route::post('/add-invoice', [InvoiceController::class, 'addInvoice'])->name('addInvoice');
-
+Route::get('/invoices', [InvoiceController::class, 'showInvoices'])->name('showInvoices');
+Route::get('/invoices/{id}', [InvoiceController::class, 'showAddInvoiceForm'])->name('updateInvoiceForm');
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');
 
 Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments');
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument');
 
-Route::get('/add-account-form', function () {
-    return view('pages.add-account');
-});
+// Route::get('/invoices', function () {
+//     return view('pages.invoices');
+// });

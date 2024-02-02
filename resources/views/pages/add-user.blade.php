@@ -293,12 +293,11 @@
                                     <div class="col-lg-8 fv-row">
                                         <select name="user_access_level" aria-label="Select a Role" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select a role...">
                                             <option value="">Select a Role...</option>
-                                            <option value="admin" {{ (isset($userData) && $userData->user_access_level === 'admin') ? 'selected' : '' }}>Admin</option>
-                                            <option value="sales_agent" {{ (isset($userData) && $userData->user_access_level === 'sales_agent') ? 'selected' : '' }}>Sales Agent</option>
-                                            <option value="marketing_agent" {{ (isset($userData) && $userData->user_access_level === 'marketing_agent') ? 'selected' : '' }}>Marketing Agent</option>
-                                            <option value="dealer" {{ (isset($userData) && $userData->user_access_level === 'dealer') ? 'selected' : '' }}>Dealer</option>
-                                            <option value="recovery_officer" {{ (isset($userData) && $userData->user_access_level === 'recovery_officer') ? 'selected' : '' }}>Recovery Officer</option>
-                                            <option value="accountant" {{ (isset($userData) && $userData->user_access_level === 'accountant') ? 'selected' : '' }}>Accountant</option>
+                                            @foreach($roles as $role)
+                                                <option value="{{ $role->role }}" {{ (isset($userData) && $userData->user_access_level == $role->role) ? 'selected' : '' }}>
+                                                    {{ $role->role }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>                                 
                                     <!--end::Col-->

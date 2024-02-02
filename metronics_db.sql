@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2024 at 02:23 AM
+-- Generation Time: Feb 02, 2024 at 06:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -177,17 +177,18 @@ CREATE TABLE `leads` (
   `landline_number_2` varchar(20) DEFAULT NULL,
   `email` varchar(250) DEFAULT NULL,
   `source_of_information` varchar(50) NOT NULL,
-  `details` text DEFAULT NULL
+  `details` text DEFAULT NULL,
+  `username` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `leads`
 --
 
-INSERT INTO `leads` (`id`, `name`, `mobile_number_1`, `mobile_number_2`, `landline_number_1`, `landline_number_2`, `email`, `source_of_information`, `details`) VALUES
-(3, 'bisma imran', '027384734', NULL, NULL, NULL, NULL, 'tv', NULL),
-(4, 'Shahrukh Ghaffar', '02032394343', NULL, NULL, NULL, 'business.esolacetech@gmail.com', 'pamphlet', NULL),
-(5, 'Shahrukh Ghaffar', '02032394343', NULL, NULL, NULL, 'business.esolace@gmail.com', 'pamphlet', NULL);
+INSERT INTO `leads` (`id`, `name`, `mobile_number_1`, `mobile_number_2`, `landline_number_1`, `landline_number_2`, `email`, `source_of_information`, `details`, `username`) VALUES
+(3, 'bisma imran', '027384734', NULL, NULL, NULL, NULL, 'tv', NULL, 'bismaim'),
+(4, 'Shahrukh Ghaffar', '02032394343', NULL, NULL, NULL, 'business.esolacetech@gmail.com', 'pamphlet', NULL, ''),
+(5, 'Shahrukh Ghaffar', '02032394343', NULL, NULL, NULL, 'business.esolace@gmail.com', 'pamphlet', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -329,7 +330,6 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`id`, `project_title`, `project_description`, `project_phase`, `project_logo`, `project_area`, `project_cost`, `no_of_plots`, `plot_prefix`, `down_payment`, `development_charges`, `extra_charges`, `monthly_installment`) VALUES
-(6, 'third', NULL, '3', '1706543351.png', 34234, 12434234, 4, '5424', 3423, 3423, 22, 55),
 (15, 'Saima Residency', NULL, 'B', '1706826703.png', 23454, 25475565, 5, 'B', 12233, 323, 333, 111111),
 (16, 'Ali Residency', NULL, 'C', '1706826787.png', 14515, 1512135151, 3, 'C', 21551, 11, 44, 44);
 
@@ -362,10 +362,11 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`id`, `role`) VALUES
 (1, 'admin'),
-(2, 'marketing'),
+(2, 'sales'),
 (3, 'recovery'),
 (4, 'dealer'),
-(5, 'accounts');
+(5, 'accounts'),
+(6, 'marketing');
 
 -- --------------------------------------------------------
 
@@ -389,7 +390,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `full_name`, `username`, `email`, `password`, `mobile_no`, `user_image`, `user_access_level`) VALUES
-(1, 'admin one', 'adminone', 'admin@gmail.com', 'admin123@', '1234456', 'default.jpg', 'admin');
+(1, 'admin one', 'adminone', 'admin@gmail.com', 'admin123@', '1234456', 'default.jpg', 'admin'),
+(18, 'Bisma Imran', 'bismaim', 'bisma@gmail.com', 'bis123', '13746234', '1706889346.png', 'sales');
 
 --
 -- Indexes for dumped tables
@@ -476,7 +478,9 @@ ALTER TABLE `roles`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`) USING HASH,
+  ADD UNIQUE KEY `email` (`email`,`mobile_no`) USING HASH;
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -552,13 +556,13 @@ ALTER TABLE `project_media`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
