@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2024 at 12:43 AM
+-- Generation Time: Feb 02, 2024 at 02:23 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -78,6 +78,25 @@ CREATE TABLE `call_logs` (
   `next_call_time` time DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `call_logs`
+--
+
+INSERT INTO `call_logs` (`id`, `lead_id`, `date_of_call`, `time_of_call`, `customer_response`, `next_call_date`, `next_call_time`) VALUES
+(1, 3, '2024-01-10', '12:00:00', 'dcbHCDBAHD', '2024-01-10', '12:00:00'),
+(2, 3, '2024-01-12', '09:00:00', 'dcbHCDBAHD', '2024-01-11', '14:00:00'),
+(3, 3, '2024-01-12', '09:00:00', 'dcbHCDBAHD', '2024-01-11', '14:00:00'),
+(4, 3, '2024-01-03', '14:00:00', 'fvsdvgsf', '2024-01-05', '12:00:00'),
+(5, 3, '2024-01-20', '12:00:00', 'dvadvadV', '2024-01-25', '12:00:00'),
+(6, 3, '2024-01-24', '12:00:00', 'cascavc', '2024-01-25', '12:00:00'),
+(7, 3, '2024-01-10', '12:00:00', 'vsvb bfd', '2024-01-31', '16:00:00'),
+(8, 3, '2024-01-11', '12:00:00', 'vszv szd v', '2024-01-18', '12:00:00'),
+(9, 3, '2024-01-17', '12:00:00', 'v sdv sdv', '2024-02-01', '12:00:00'),
+(10, 3, '2024-01-03', '12:00:00', 'vbfgnfh n', '2024-01-26', '12:00:00'),
+(11, 3, '2024-01-13', '12:00:00', 'vdx vsf b', '2024-02-09', '12:00:00'),
+(12, 4, '2024-02-02', '12:00:00', 'njnjnjk', '2024-02-05', '12:00:00'),
+(13, 3, '2024-01-13', '12:00:00', 'ffcvvsfb', '2024-02-03', '12:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -114,7 +133,34 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `customer_image`, `name`, `address`, `area`, `city`, `country`, `mobile_number_1`, `mobile_number_2`, `landline_number`, `office_phone`, `cnic_number`, `next_of_kin_name`, `next_of_kin_relation`, `next_of_kin_address`, `next_of_kin_area`, `next_of_kin_city`, `next_of_kin_country`, `next_of_kin_mobile_number_1`, `next_of_kin_mobile_number_2`, `next_of_kin_landline_number`, `next_of_kin_cnic`) VALUES
-(1, '1705168627.png', 'Shahrukh Ghaffar', 'Esolace Tech Office 4541 182-184 High Street North', NULL, 'East Ham', 'UK', '2032394343', NULL, NULL, NULL, '123456', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(4, '1706826833.png', 'Shahrukh Ghaffar', 'Esolace Tech Office 4541 182-184 High Street North', NULL, 'East Ham', 'Pakistan', '+922032394343', NULL, NULL, NULL, '151514511', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(5, 'default.jpg', 'musadiq mustafa', 'gulshan e iqbal', NULL, 'karachi', 'Pakistan', '02032394343', NULL, NULL, NULL, '15165161', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, '1706826888.png', 'bisma imran', 'Esolace Tech Office 4541 182-184 High Street North', NULL, 'Eastham', 'United Kingdom', '02032394343', NULL, NULL, NULL, '15154131', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice`
+--
+
+CREATE TABLE `invoice` (
+  `id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `plot_id` int(11) NOT NULL,
+  `invoice_date` date DEFAULT NULL,
+  `invoice_time` time DEFAULT NULL,
+  `created_by` varchar(200) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `total_amount` decimal(10,0) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `invoice`
+--
+
+INSERT INTO `invoice` (`id`, `customer_id`, `project_id`, `plot_id`, `invoice_date`, `invoice_time`, `created_by`, `description`, `total_amount`) VALUES
+(1, 4, 15, 12, '2024-02-07', '17:00:00', 'bvvjbh', 'j k  kbkbuib', 15615);
 
 -- --------------------------------------------------------
 
@@ -139,7 +185,9 @@ CREATE TABLE `leads` (
 --
 
 INSERT INTO `leads` (`id`, `name`, `mobile_number_1`, `mobile_number_2`, `landline_number_1`, `landline_number_2`, `email`, `source_of_information`, `details`) VALUES
-(3, 'bisma imran', '027384734', NULL, NULL, NULL, NULL, 'tv', NULL);
+(3, 'bisma imran', '027384734', NULL, NULL, NULL, NULL, 'tv', NULL),
+(4, 'Shahrukh Ghaffar', '02032394343', NULL, NULL, NULL, 'business.esolacetech@gmail.com', 'pamphlet', NULL),
+(5, 'Shahrukh Ghaffar', '02032394343', NULL, NULL, NULL, 'business.esolace@gmail.com', 'pamphlet', NULL);
 
 -- --------------------------------------------------------
 
@@ -162,6 +210,36 @@ INSERT INTO `main_account_heads` (`id`, `account_head_name`) VALUES
 (3, 'Revenue'),
 (4, 'Expenses'),
 (5, 'Equity');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `plots_inventory`
+--
+
+CREATE TABLE `plots_inventory` (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `plot_no` varchar(10) NOT NULL,
+  `plot_size` int(11) DEFAULT NULL,
+  `plot_attribute_1` int(11) DEFAULT NULL,
+  `plot_attribute_2` int(11) DEFAULT NULL,
+  `plot_attribute_3` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `plots_inventory`
+--
+
+INSERT INTO `plots_inventory` (`id`, `project_id`, `plot_no`, `plot_size`, `plot_attribute_1`, `plot_attribute_2`, `plot_attribute_3`) VALUES
+(11, 15, 'B1', NULL, NULL, NULL, NULL),
+(12, 15, 'B2', NULL, NULL, NULL, NULL),
+(13, 15, 'B3', NULL, NULL, NULL, NULL),
+(14, 15, 'B4', NULL, NULL, NULL, NULL),
+(15, 15, 'B5', NULL, NULL, NULL, NULL),
+(16, 16, 'C1', NULL, NULL, NULL, NULL),
+(17, 16, 'C2', NULL, NULL, NULL, NULL),
+(18, 16, 'C3', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -234,12 +312,12 @@ CREATE TABLE `projects` (
   `id` int(11) NOT NULL,
   `project_title` varchar(200) NOT NULL,
   `project_description` text DEFAULT NULL,
-  `project_phase` int(11) NOT NULL,
+  `project_phase` varchar(5) NOT NULL,
   `project_logo` text NOT NULL,
   `project_area` int(11) NOT NULL,
   `project_cost` int(11) NOT NULL,
   `no_of_plots` int(11) NOT NULL,
-  `plot_starting_serial_no` int(11) NOT NULL,
+  `plot_prefix` varchar(5) NOT NULL,
   `down_payment` decimal(10,0) NOT NULL,
   `development_charges` decimal(10,0) NOT NULL,
   `extra_charges` decimal(10,0) NOT NULL,
@@ -250,9 +328,10 @@ CREATE TABLE `projects` (
 -- Dumping data for table `projects`
 --
 
-INSERT INTO `projects` (`id`, `project_title`, `project_description`, `project_phase`, `project_logo`, `project_area`, `project_cost`, `no_of_plots`, `plot_starting_serial_no`, `down_payment`, `development_charges`, `extra_charges`, `monthly_installment`) VALUES
-(5, 'second', NULL, 1, '1706365394.PNG', 12, 1244, 5, 54321, 120, 12, 33, 44),
-(6, 'third', NULL, 3, '1706543351.png', 34234, 12434234, 4, 5424, 3423, 3423, 22, 55);
+INSERT INTO `projects` (`id`, `project_title`, `project_description`, `project_phase`, `project_logo`, `project_area`, `project_cost`, `no_of_plots`, `plot_prefix`, `down_payment`, `development_charges`, `extra_charges`, `monthly_installment`) VALUES
+(6, 'third', NULL, '3', '1706543351.png', 34234, 12434234, 4, '5424', 3423, 3423, 22, 55),
+(15, 'Saima Residency', NULL, 'B', '1706826703.png', 23454, 25475565, 5, 'B', 12233, 323, 333, 111111),
+(16, 'Ali Residency', NULL, 'C', '1706826787.png', 14515, 1512135151, 3, 'C', 21551, 11, 44, 44);
 
 -- --------------------------------------------------------
 
@@ -262,8 +341,8 @@ INSERT INTO `projects` (`id`, `project_title`, `project_description`, `project_p
 
 CREATE TABLE `project_media` (
   `id` int(11) NOT NULL,
-  `project_title` varchar(255) NOT NULL,
-  `media_name` varchar(255) NOT NULL
+  `project_id` int(11) DEFAULT NULL,
+  `media_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -344,6 +423,12 @@ ALTER TABLE `customer`
   ADD UNIQUE KEY `cnic_number` (`cnic_number`);
 
 --
+-- Indexes for table `invoice`
+--
+ALTER TABLE `invoice`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `leads`
 --
 ALTER TABLE `leads`
@@ -356,6 +441,13 @@ ALTER TABLE `main_account_heads`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `plots_inventory`
+--
+ALTER TABLE `plots_inventory`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_id` (`project_id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -365,15 +457,14 @@ ALTER TABLE `products`
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `project_title` (`project_title`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `project_media`
 --
 ALTER TABLE `project_media`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `project_title` (`project_title`);
+  ADD KEY `project_id` (`project_id`);
 
 --
 -- Indexes for table `roles`
@@ -404,22 +495,40 @@ ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `call_logs`
+--
+ALTER TABLE `call_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `invoice`
+--
+ALTER TABLE `invoice`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `leads`
 --
 ALTER TABLE `leads`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `main_account_heads`
 --
 ALTER TABLE `main_account_heads`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `plots_inventory`
+--
+ALTER TABLE `plots_inventory`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -431,7 +540,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `project_media`
@@ -449,7 +558,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
@@ -468,10 +577,16 @@ ALTER TABLE `call_logs`
   ADD CONSTRAINT `call_logs_ibfk_1` FOREIGN KEY (`lead_id`) REFERENCES `leads` (`id`);
 
 --
+-- Constraints for table `plots_inventory`
+--
+ALTER TABLE `plots_inventory`
+  ADD CONSTRAINT `plots_inventory_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`);
+
+--
 -- Constraints for table `project_media`
 --
 ALTER TABLE `project_media`
-  ADD CONSTRAINT `project_media_ibfk_1` FOREIGN KEY (`project_title`) REFERENCES `projects` (`project_title`);
+  ADD CONSTRAINT `project_media_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
