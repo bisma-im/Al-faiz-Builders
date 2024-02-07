@@ -295,7 +295,7 @@
                                             <option value="">Select a Role...</option>
                                             @foreach($roles as $role)
                                                 <option value="{{ $role->role }}" {{ (isset($userData) && $userData->user_access_level == $role->role) ? 'selected' : '' }}>
-                                                    {{ $role->role }}
+                                                    {{ $role->role_name }}
                                                 </option>
                                             @endforeach
                                         </select>

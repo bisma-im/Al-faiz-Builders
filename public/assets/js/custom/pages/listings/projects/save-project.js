@@ -171,7 +171,7 @@ var KTAppEcommerceSaveProduct = (function () {
                                                                     confirmButtonText: "Ok, got it!",
                                                                     customClass: { confirmButton: "btn btn-primary" },
                                                                 }).then(function (e) {
-                                                                    e.isConfirmed && ((o.disabled = !1), (window.location = t.getAttribute("data-kt-redirect")));
+                                                                    e.isConfirmed && ((o.disabled = !1), (window.location.href = t.getAttribute("data-kt-redirect")));
                                                                 });
                                                         }, 2e3))
                                                     }

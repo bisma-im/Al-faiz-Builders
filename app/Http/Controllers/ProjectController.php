@@ -8,16 +8,21 @@ use Illuminate\Validation\ValidationException;
 
 class ProjectController extends Controller
 {
-    public function showProjects(){
+    public function showProjects(Request $req){
         $projects = DB::table('projects')->get();
         return view('pages.projects', ['data' => $projects]);
     }
 
     public function showAddProjectForm($id = null) {
         $projectData = null;
-        if ($id) {
-            $projectData = DB::table('projects')->where('id', $id)->first();
-            // Handle case if user is not found
+        if ($id) 
+        {
+            $projectData = DB::table('projects')
+                ->where('id', $id)
+                ->first();
+            if (!$projectData) {
+                return redirect()->route('showProjects');
+            }
         }
         return view('pages.add-project', ['projectData' => $projectData]);
     }

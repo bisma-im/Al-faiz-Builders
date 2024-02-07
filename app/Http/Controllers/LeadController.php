@@ -12,7 +12,7 @@ class LeadController extends Controller
 {
     public function showLeads(Request $req, $username){
         $sessionUsername = $req->session()->get('username');
-        if($username == $sessionUsername)
+        if($username && $username == $sessionUsername)
         {
             $leads = DB::table('leads')
             ->where('username', $username)
@@ -27,13 +27,13 @@ class LeadController extends Controller
         
     }
     
-    public function showLeadForm(Request $request, $id = null)
+    public function showLeadForm(Request $request, $username, $id = null)
     {
         $leadData = $callLogData = null;
         $isViewMode = $request->is('*/view');
-        $username = session('username');
-
-        if ($id) {
+        $sessionUsername = session('username');
+        if ($id && $sessionUsername == $username) 
+        {
             $leadData = DB::table('leads')
                 ->where('id', $id)
                 ->where('username', $username)

@@ -4911,7 +4911,7 @@ License: For each use you must have a valid license purchased only from above li
 											@if (session('role') == 'admin')
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="/projects">
+												<a class="menu-link" href="{{ route('showProjects') }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
@@ -4947,7 +4947,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end:Menu item-->
 											
 											<!--begin:Menu item Leads-->
-											@if (session('role') == 'sales' || session('role') == 'marketing')
+											@if (session('role') == 'sales-agent' || session('role') == 'marketing-agent')
 											<div class="menu-item">
 												<!--begin:Menu link-->
 												<a class="menu-link" href="{{ route('showLeads', ['username' => session('username')]) }}">

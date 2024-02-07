@@ -30,11 +30,22 @@
                     <!--begin::Content-->
                     <div id="kt_new_account" class="collapse show">
                         <!--begin::Form-->
-                        {{-- <form id="kt_new_invoice_form" class="form" data-kt-redirect="/accounts" action="{{ route('addAccount') }}" method="POST"> --}}
-                        <form id="kt_new_invoice_form" class="form" >
+                        <form id="kt_new_invoice_form" class="form" data-kt-redirect="/invoices" action="{{ route('addInvoice') }}" method="POST">
+                        {{-- <form id="kt_new_invoice_form" class="form" > --}}
                             @csrf
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
+                                @if (isset($invoiceData) && $invoiceData->id)
+                                    <input type="hidden" id="id" name="id" value="{{ $invoiceData->id }}">
+                                    <input type="hidden" id="date_and_time" name="date_and_time" value="{{ $invoiceData->formattedDateTime ?? '' }}"/>
+                                @endif
+                                <!--begin::Input group-->
+                                <div id="invoiceForm" 
+                                data-update-mode="{{ isset($invoiceData) ? 'true' : 'false' }}" 
+                                data-selected-plot="{{ $invoiceData->plot_id ?? '' }}">
+                                <!-- Your form content -->
+                                </div>
+                                <!--end::Input group-->
                                 
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
@@ -55,7 +66,9 @@
                                         <select name="customer_id" aria-label="Select Customer" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select customer...">
                                             <option value="">Select Customer...</option>
                                             @foreach ($customers as $customer)
-                                                <option value="{{ $customer->id }}">{{ $customer->name }} (CNIC {{ $customer->cnic_number }})</option>
+                                                <option value="{{ $customer->id }}" {{ (isset($invoiceData) && $invoiceData->customer_id == $customer->id) ? 'selected' : '' }}>
+                                                    {{ $customer->name }} (CNIC {{ $customer->cnic_number }})
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>    
@@ -80,7 +93,8 @@
                                         <select name="project_id" id="projectDropdown" aria-label="Select Project" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select project...">
                                             <option value="">Select Project...</option>
                                             @foreach ($projects as $project)
-                                                <option value="{{ $project->id }}">{{ $project->project_title }}</option>
+                                                <option value="{{ $project->id }}" {{ (isset($invoiceData) && $invoiceData->project_id == $project->id) ? 'selected' : '' }}>
+                                                    {{ $project->project_title }}</option>
                                             @endforeach
                                         </select>
                                     </div>    
@@ -102,19 +116,21 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <select name="plot_id" id="plotDropdown" aria-label="Select Plot Number" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select plot number...">
-                                            
+                                        <select name="plot_id" id="plotDropdown" aria-label="Select Plot Number" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
                                         </select>
                                     </div>    
                                 </div>
                                 <!--end::Input group-->
+                                
                                 <!--begin::Input group-->
 									<div class="row mb-6">
 										<label for="kt_ecommerce_add_invoice_datepicker" class="col-lg-4 col-form-label fw-semibold fs-6">
                                             <span class="required">Invoice date and time</span>
                                         </label>
+                                        
                                         <div class="col-lg-8 fv-row">
-                                            <input class="form-control" name="invoice_date_time" id="kt_ecommerce_add_invoice_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date & time" />
+                                            <input class="form-control" name="invoice_date_time" id="kt_ecommerce_add_invoice_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date & time"/>
+                                            
                                         </div>
                                     </div>
 								<!--end::Input group-->
@@ -125,7 +141,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="created_by" class="form-control form-control-lg form-control-solid" placeholder="Account Title" value="" />
+                                        <input type="text" name="created_by" class="form-control form-control-lg form-control-solid" placeholder="Created By" value="{{ $invoiceData->created_by ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->
@@ -138,7 +154,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="description" class="form-control form-control-lg form-control-solid" placeholder="Account Title" value="" />
+                                        <input type="text" name="description" class="form-control form-control-lg form-control-solid" placeholder="Description" value="{{ $invoiceData->description ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->
@@ -151,7 +167,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="total_amount" class="form-control form-control-lg form-control-solid" placeholder="Account Title" value="" />
+                                        <input type="number" step="any" name="total_amount" class="form-control form-control-lg form-control-solid" placeholder="Total Amount" value="{{ $invoiceData->total_amount ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->

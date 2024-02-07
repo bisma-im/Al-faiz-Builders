@@ -10,6 +10,7 @@ use App\Http\Controllers\LeadController;
 use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\BookingController;
 
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
@@ -56,12 +57,11 @@ Route::post('/get-plots', [InvoiceController::class, 'getPlotsForProject']);
 Route::post('/add-invoice', [InvoiceController::class, 'addInvoice'])->name('addInvoice');
 Route::get('/invoices', [InvoiceController::class, 'showInvoices'])->name('showInvoices');
 Route::get('/invoices/{id}', [InvoiceController::class, 'showAddInvoiceForm'])->name('updateInvoiceForm');
+Route::post('/update-invoice', [InvoiceController::class, 'updateInvoice'])->name('updateInvoice');
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');
 
+Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm');
+
 Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments');
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument');
-
-// Route::get('/invoices', function () {
-//     return view('pages.invoices');
-// });

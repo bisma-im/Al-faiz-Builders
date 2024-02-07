@@ -4,24 +4,12 @@ var KTNewInvoice = (function () {
     var t, e, r;
     return {
         init: function () {
-            t = document.querySelector("#kt_new_invoice_form");
-            e = document.querySelector("#kt_new_invoice_submit");// Ensure this ID matches your plot dropdown ID
-            var invoiceDateTime = document.getElementById('date_and_time').value;
-        $("#kt_ecommerce_add_invoice_datepicker").flatpickr({
-            enableTime: true,
-            altInput: true,
-            defaultDate: invoiceDateTime,
-            dateFormat: "Y-m-d H:i",
-            onClose: function(selectedDates, dateStr, instance) {
-                // You can handle any actions here after the date is selected
-                console.log('DatePicker closed');
-            }
-        });
-            
+            t = document.querySelector("#kt_new_booking_form");
+            e = document.querySelector("#kt_new_booking_submit");// Ensure this ID matches your plot dropdown ID
+                        
             // Initialize form validation
             r = FormValidation.formValidation(t, {
                 fields: {
-                    customer_id: { validators: { notEmpty: { message: "Customer is required" } } },
                     project_id: { validators: { notEmpty: { message: "Project is required" } } },
                     plot_id: { validators: { notEmpty: { message: "Plot is required" } } },
                     description: { validators: { notEmpty: { message: "Description is required" } } },
