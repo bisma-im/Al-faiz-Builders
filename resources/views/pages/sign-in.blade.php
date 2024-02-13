@@ -58,7 +58,7 @@ License: For each use you must have a valid license purchased only from above li
 						</div>
 						<!--end::Logo-->
 						<!--begin::Title-->
-						<h2 class="text-white fw-normal m-0">Branding tools designed for your business</h2>
+						<h2 class="text-white fw-normal m-0">Residence for everyone</h2>
 						<!--end::Title-->
 					</div>
 					<!--begin::Aside-->

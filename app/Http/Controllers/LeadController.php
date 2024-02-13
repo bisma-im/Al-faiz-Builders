@@ -10,12 +10,12 @@ use Carbon\Carbon;
 
 class LeadController extends Controller
 {
-    public function showLeads(Request $req, $username){
+    public function showLeads(Request $req){
         $sessionUsername = $req->session()->get('username');
-        if($username && $username == $sessionUsername)
+        if($sessionUsername && session('role') == 'sales-agent')
         {
             $leads = DB::table('leads')
-            ->where('username', $username)
+            ->where('username', $sessionUsername)
             ->get();
         
             return view('pages.leads', ['data' => $leads]);
@@ -27,17 +27,18 @@ class LeadController extends Controller
         
     }
     
-    public function showLeadForm(Request $request, $username, $id = null)
+    public function showLeadForm(Request $request, $id = null)
     {
         $leadData = $callLogData = null;
-        $isViewMode = $request->is('*/view');
-        $sessionUsername = session('username');
-        if ($id && $sessionUsername == $username) 
+        $isViewMode = $request->is('leads/view/*');
+        $sessionUsername = $request->session()->get('username');
+        if ($id) 
         {
             $leadData = DB::table('leads')
                 ->where('id', $id)
-                ->where('username', $username)
+                ->where('username', $sessionUsername)
                 ->first();
+
             
             if (!$leadData) {
                 return redirect()->route('showLeads', ['username' => $username]);

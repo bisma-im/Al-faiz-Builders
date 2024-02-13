@@ -15,6 +15,7 @@ use App\Http\Controllers\BookingController;
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 Route::post('/change-password', [AdminController::class, 'changePassword'])->name('changePassword')->middleware('admin.auth');
+Route::view('/change-password-form', 'pages.change-password')->name('changePasswordForm')->middleware('admin.auth');
 Route::view('/', 'dashboards.index')->middleware('admin.auth');
 Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 
@@ -47,9 +48,9 @@ Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->nam
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');
 Route::post('/update-lead', [LeadController::class, 'updateLead'])->name('updateLead');
 Route::post('/delete-lead', [LeadController::class, 'deleteLead'])->name('deleteLead');
-Route::get('/{username}/leads', [LeadController::class, 'showLeads'])->name('showLeads');
+Route::get('/leads', [LeadController::class, 'showLeads'])->name('showLeads');
 Route::get('/leads/{id}', [LeadController::class, 'showLeadForm'])->name('updateLeadForm');
-Route::get('/leads/{id}/view', [LeadController::class, 'showLeadForm'])->name('viewLead');
+Route::get('/leads/view/{id}', [LeadController::class, 'showLeadForm'])->name('viewLead');
 Route::post('/add-call-log', [LeadController::class, 'addCallLog'])->name('addCallLog');
 
 Route::get('/add-invoice-form', [InvoiceController::class, 'showAddInvoiceForm'])->name('addInvoiceForm');
@@ -59,9 +60,15 @@ Route::get('/invoices', [InvoiceController::class, 'showInvoices'])->name('showI
 Route::get('/invoices/{id}', [InvoiceController::class, 'showAddInvoiceForm'])->name('updateInvoiceForm');
 Route::post('/update-invoice', [InvoiceController::class, 'updateInvoice'])->name('updateInvoice');
 
+Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm');
+Route::post('/add-booking', [BookingController::class, 'addBooking'])->name('addBooking');
+Route::get('/bookings', [BookingController::class, 'showBookings'])->name('showBookings');
+Route::get('/bookings/{id}', [BookingController::class, 'showBookingForm'])->name('updateBookingForm');
+Route::post('/update-booking', [BookingController::class, 'updateBooking'])->name('updateBooking');
+Route::post('/get-plots-for-booking', [BookingController::class, 'getPlotsForBooking']);
+
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');
 
-Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm');
 
 Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments');
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument');

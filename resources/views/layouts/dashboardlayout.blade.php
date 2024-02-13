@@ -16,17 +16,17 @@ License: For each use you must have a valid license purchased only from above li
 	<head><base href=""/>
 		<title>Al-Faiz Builders</title>
 		<meta charset="utf-8" />
-		<meta name="description" content="The most advanced Bootstrap 5 Admin Theme with 40 unique prebuilt layouts on Themeforest trusted by 100,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel versions. Grab your copy now and get life-time updates for free." />
-		<meta name="keywords" content="metronic, bootstrap, bootstrap 5, angular, VueJs, React, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel starter kits, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
+		<meta name="description" content="Al-Faiz Builders" />
+		<meta name="keywords" content="alfaiz builders, Al-Faiz Builders" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta property="og:locale" content="en_US" />
 		<meta property="og:type" content="article" />
-		<meta property="og:title" content="Metronic - Bootstrap Admin Template, HTML, VueJS, React, Angular. Laravel, Asp.Net Core, Ruby on Rails, Spring Boot, Blazor, Django, Express.js, Node.js, Flask Admin Dashboard Theme & Template" />
-		<meta property="og:url" content="https://keenthemes.com/metronic" />
-		<meta property="og:site_name" content="Keenthemes | Metronic" />
+		<meta property="og:title" content="Al-Faiz Builders" />
+		<meta property="og:url" content="#" />
+		<meta property="og:site_name" content="Al-Faiz Builders" />
 		<meta name="csrf-token" content="{{ csrf_token() }}">
-		<link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-		<link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico') }}" />
+		<link rel="canonical" href="#" />
+		<link rel="shortcut icon" href="{{ asset('assets/media/logos/al-faiz-logo.png') }}" />
 		<!--begin::Fonts(mandatory for all pages)-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 		<!--end::Fonts-->
@@ -2972,7 +2972,7 @@ License: For each use you must have a valid license purchased only from above li
 																<div class="fs-6 fw-bold text-gray-800">Layout Builder</div>
 																<div class="fs-7 fw-semibold text-muted">Customize, preview and export</div>
 															</div>
-															<a href="https://preview.keenthemes.com/metronic8/demo1/layout-builder.html" class="btn btn-sm btn-primary fw-bold">Try Builder</a>
+															<a href="#" class="btn btn-sm btn-primary fw-bold">Try Builder</a>
 														</div>
 														<!--end:Layout Builder-->
 													</div>
@@ -3003,7 +3003,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/base/utilities" target="_blank" title="Check out over 200 in-house components, plugins and ready for use solutions" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+												<a class="menu-link" href="#" target="_blank" title="Check out over 200 in-house components, plugins and ready for use solutions" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 													<span class="menu-icon">
 														<i class="ki-duotone ki-rocket fs-2">
 															<span class="path1"></span>
@@ -3018,7 +3018,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs" target="_blank" title="Check out the complete documentation" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
+												<a class="menu-link" href="#" target="_blank" title="Check out the complete documentation" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click" data-bs-placement="right">
 													<span class="menu-icon">
 														<i class="ki-duotone ki-abstract-26 fs-2">
 															<span class="path1"></span>
@@ -3033,7 +3033,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="https://preview.keenthemes.com/html/metronic/docs/getting-started/changelog" target="_blank">
+												<a class="menu-link" href="#" target="_blank">
 													<span class="menu-icon">
 														<i class="ki-duotone ki-code fs-2">
 															<span class="path1"></span>
@@ -4818,8 +4818,8 @@ License: For each use you must have a valid license purchased only from above li
 						<div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
 							<!--begin::Logo image-->
 							<a href="/">
-								<img alt="Logo" src="{{ URL::asset('assets/media/logos/default-dark.svg') }}" class="h-25px app-sidebar-logo-default" />
-								<img alt="Logo" src="{{ URL::asset('assets/media/logos/default-small.svg') }}" class="h-20px app-sidebar-logo-minimize" />
+								<img alt="Logo" src="{{ URL::asset('assets/media/logos/al-faiz-logo.png') }}" class="h-25px app-sidebar-logo-default" />
+								<img alt="Logo" src="{{ URL::asset('assets/media/logos/al-faiz-logo.png') }}" class="h-20px app-sidebar-logo-minimize" />
 							</a>
 							<!--end::Logo image-->
 							<!--begin::Sidebar toggle-->
@@ -4945,12 +4945,23 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											@endif
 											<!--end:Menu item-->
-											
+											@if (session('role') == 'booking-agent' || session('role') == 'dealer')
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link" href="{{ route('showBookings') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Bookings</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											@endif
 											<!--begin:Menu item Leads-->
 											@if (session('role') == 'sales-agent' || session('role') == 'marketing-agent')
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="{{ route('showLeads', ['username' => session('username')]) }}">
+												<a class="menu-link" href="{{ route('showLeads') }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
@@ -5057,7 +5068,7 @@ License: For each use you must have a valid license purchased only from above li
 						<!--end::sidebar menu-->
 						<!--begin::Footer-->
 						<div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-							<a href="https://preview.keenthemes.com/html/metronic/docs" class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click" title="200+ in-house components and 3rd-party plugins">
+							<a href="#" class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click" title="200+ in-house components and 3rd-party plugins">
 								<span class="btn-label">Docs & Components</span>
 								<i class="ki-duotone ki-document btn-icon fs-2 m-0">
 									<span class="path1"></span>
@@ -5070,6 +5081,30 @@ License: For each use you must have a valid license purchased only from above li
 					<!--end::Sidebar-->
 					<!--begin::Main-->
 					@yield('content')
+					<!--begin::Footer-->
+					<div id="kt_app_footer" class="app-footer">
+						<!--begin::Footer container-->
+						<div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3">
+							<!--begin::Copyright-->
+							<div class="text-dark order-2 order-md-1">
+								<span class="text-muted fw-semibold me-1">2024&copy;</span>
+								<a href="#" target="_blank" class="text-gray-800 text-hover-primary">AlFaiz Builders</a>
+							</div>
+							<!--end::Copyright-->
+							<!--begin::Menu-->
+							<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
+								<li class="menu-item">
+									<a href="#" target="_blank" class="menu-link px-2">About</a>
+								</li>
+								<li class="menu-item">
+									<a href="#" target="_blank" class="menu-link px-2">Support</a>
+								</li>
+							</ul>
+							<!--end::Menu-->
+						</div>
+						<!--end::Footer container-->
+					</div>
+					<!--end::Footer-->
 					<!--end:::Main-->
 				</div>
 				<!--end::Wrapper-->

@@ -3,6 +3,20 @@
 var KTAccountSettingsProfileDetails = (function () {
     var form, validator, submitButton;
 
+    function passwordValidator() {
+        return {
+            validate: function(input) {
+                var value = input.value;
+                var isValid = value.length >= 8 && /[!@#$%^&*(),.?":{}|<>]/g.test(value);
+                if (isValid) {
+                    return { valid: true };
+                } else {
+                    return { valid: false, message: 'Password must be at least 8 characters long and include at least one special character.' };
+                }
+            }
+        };
+    }
+
     return {
         init: function () {
             form = document.getElementById("kt_account_profile_details_form");
@@ -14,7 +28,26 @@ var KTAccountSettingsProfileDetails = (function () {
                         full_name: { validators: { notEmpty: { message: "Full name is required" } } },
                         username: { validators: { notEmpty: { message: "Username is required" } } },
                         email: { validators: { notEmpty: { message: "Email is required" }, emailAddress: { message: "The value is not a valid email address" } } },
-                        password: { validators: { notEmpty: { message: "Password is required" } } },
+                        password: {
+                            validators: {
+                                notEmpty: { message: "Password is required" },
+                                // The custom validator function should be passed directly, not within an object
+                                passwordValidator: {
+                                    message: 'Password must be at least 8 characters long and include at least one special character.',
+                                    validator: function(value, validator, $field) {
+                                        var isValid = value.length >= 8 && /[!@#$%^&*(),.?":{}|<>]/g.test(value);
+                                        if (isValid) {
+                                            return true;
+                                        } else {
+                                            return {
+                                                valid: false,
+                                                message: 'Password must be at least 8 characters long and include at least one special character.'
+                                            };
+                                        }
+                                    }
+                                }
+                            }
+                        },
                         mobile_no: { validators: { notEmpty: { message: "Mobile number is required" } } },
                         user_access_level: { validators: { notEmpty: { message: "User access level is required" } } },
                     },
@@ -61,6 +94,15 @@ var KTAccountSettingsProfileDetails = (function () {
                                     Swal.fire({
                                         title: 'Error!',
                                         text: 'Email already exists. Please use a different email.',
+                                        icon: 'error',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                                else if (data.error === 'invalid regex') {
+                                    // Handle the duplicate email error
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'Password must be at least 8 characters long and include at least one special character.',
                                         icon: 'error',
                                         confirmButtonText: 'OK'
                                     });

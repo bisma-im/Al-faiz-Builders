@@ -54,9 +54,9 @@ class UserController extends Controller
         $userData = $this->getUserData($req);
         try 
         {   
-            // if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', $userData['password'])) {
-            //     return response()->json(['error' => 'Password must be at least 8 characters long and include at least one special character'], 400);
-            // }
+            if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', $userData['password'])) {
+                return response()->json(['error' => 'invalid regex'], 400);
+            }
             if(DB::table('user')->where('email', $userData['email'])->first())
             {
                 return response()->json(['error' => 'Account already exists']);

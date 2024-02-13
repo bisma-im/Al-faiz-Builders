@@ -10,7 +10,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Lead List</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Booking List</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Leads</li>
+                        <li class="breadcrumb-item text-muted">Bookings</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -245,7 +245,7 @@
                                 </i>Export</button>
                                 <!--end::Export-->
                                 <!--begin::Add customer-->
-                                <a href="{{ route('addLeadForm', ['id' => null]) }}" class="btn btn-primary" role="button">Add Lead</a>
+                                <a href="/add-booking-form" class="btn btn-primary" role="button">Add Booking</a>
                                 <!--end::Add customer-->
                             </div>
                             <!--end::Toolbar-->
@@ -271,16 +271,17 @@
                                             <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Name</th>
-                                    <th class="min-w-125px">Mobile Number</th>
-                                    <th class="min-w-125px">Landline Number</th>
-                                    <th class="min-w-125px">Email</th>
-                                    <th class="min-w-125px">Source of Information</th>
+                                    <th class="min-w-125px">Booking ID</th>
+                                    <th class="min-w-125px">Customer CNIC</th>
+                                    <th class="min-w-125px">Project</th>
+                                    <th class="min-w-125px">Plot No</th>
+                                    <th class="min-w-125px">Base Unit Cost</th>
+                                    <th class="min-w-125px">Monthly Installment</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
-                                @foreach ($data as $id => $lead)
+                                @foreach ($bookingData as $id => $booking)
                                 <tr>
                                     <td>
                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
@@ -288,13 +289,14 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('updateLeadForm', ['id' => $lead->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $lead->name }}</a>
+                                        <a href="{{ route('updateBookingForm', ['id' => $booking->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $booking->id }}</a>
                                     </td>
-                                    <td>{{ $lead->mobile_number_1 }}</td>
-                                    <td>{{ $lead->landline_number_1 }}</td>
+                                    <td>{{ $booking->cnic_number }}</td>
+                                    <td>{{ $booking->project_title }}</td>
+                                    <td>{{ $booking->plot_no }}</td>
                                     {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $lead->email }}</td>
-                                    <td>{{ $lead->source_of_information }}</td>
+                                    <td>{{ $booking->unit_cost }}</td>
+                                    <td>{{ $booking->monthly_installment }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
@@ -302,7 +304,7 @@
                                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-3">
-                                                <a href="{{ route('viewLead', ['id' => $lead->id]) }}" class="menu-link px-3">View</a>
+                                                <a href="#" class="menu-link px-3">View</a>
                                             </div>
                                             <!--end::Menu item-->
                                             <!--begin::Menu item-->
@@ -434,21 +436,22 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
+
 </div>
 @endsection
 
 @push('scripts')
     <!--begin::Vendors Javascript(used for this page only)-->
-    <script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-	<!--end::Vendors Javascript-->
-	<!--begin::Custom Javascript(used for this page only)-->
-    <script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/apps/customers/list/list.js') }}"></script>
-	<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
-	<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-	<!--end::Custom Javascript-->
+        <script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+		<!--end::Vendors Javascript-->
+		<!--begin::Custom Javascript(used for this page only)-->
+		<script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/apps/customers/list/list.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+		<!--end::Custom Javascript-->
 @endpush

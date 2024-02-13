@@ -48,15 +48,25 @@ var KTSigninGeneral = (function () {
                                             });
                                         }, 2e3))
                                     }
+                                    else if (data.error === 'Invalid credentials') {
+                                        // Handle the duplicate email error
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'Invalid credentials.',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
+                                    }
+                                    else{
+                                        Swal.fire({
+                                            text: "Sorry, looks like there are some errors detected, please try again.",
+                                            icon: "error",
+                                            buttonsStyling: !1,
+                                            confirmButtonText: "Ok, got it!",
+                                            customClass: { confirmButton: "btn btn-primary" },
+                                        });
+                                    }
                                 })
-                            } else{
-                                Swal.fire({
-                                    text: "Sorry, looks like there are some errors detected, please try again.",
-                                    icon: "error",
-                                    buttonsStyling: !1,
-                                    confirmButtonText: "Ok, got it!",
-                                    customClass: { confirmButton: "btn btn-primary" },
-                                });
                             }
                         });
                 });

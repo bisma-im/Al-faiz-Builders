@@ -30,17 +30,20 @@
                     <!--begin::Content-->
                     <div id="kt_new_account" class="collapse show">
                         <!--begin::Form-->
-                        <form id="kt_new_booking_form" class="form" data-kt-redirect="/bookings" action="{{ route('addInvoice') }}" method="POST">
+                        <form id="kt_new_booking_form" class="form" data-kt-redirect="{{ route('showBookings', ['username' => session('username')]) }}" action="{{ route('addBooking') }}" method="POST">
                         {{-- <form id="kt_new_booking_form" class="form" > --}}
                             @csrf
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
                                 @if (isset($bookingData) && $bookingData->id)
                                     <input type="hidden" id="id" name="id" value="{{ $bookingData->id }}">
+                                    <input type="hidden" id="customer_id" name="customer_id" value="{{ $bookingData->customer_id }}">
+                                    <input type="hidden" id="isLocked" name="isLocked" value="{{ $isLockedMode ? 'true' : 'false' }}">
                                 @endif
                                 <!--begin::Input group-->
-                                <div id="invoiceForm" 
-                                data-selected-plot="{{ $bookingData->plot_id ?? '' }}">
+                                <div id="bookingForm" 
+                                data-selected-plot="{{ $bookingData->plot_id ?? '' }}"
+                                data-selected-phase="{{ $bookingData->project_phase ?? '' }}">
                                 <!-- Your form content -->
                                 </div>
                                 <!--end::Input group-->
@@ -77,7 +80,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="project_phase" class="form-control form-control-lg form-control-solid" placeholder="Phase" value="{{ $bookingData->plot_phase ?? '' }}" />
+                                        <input type="text" name="project_phase" id="project_phase" class="form-control form-control-lg form-control-solid" placeholder="Phase" value="{{ $bookingData->project_phase ?? '' }}"/>
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -98,11 +101,64 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
+                                        @if ($isLockedMode)
+                                        <select name="selectedPlot" id="selectedPlot" class="form-select form-select-solid form-select-lg fw-semibold" placeholder="Select plot number.." data-control="select2">
+                                            <option value="{{ $bookingData->plot_id }}" selected>
+                                                {{ $bookingData->plot_no }}
+                                            </option>
+                                        </select>
+                                        @else
                                         <select name="plot_id" id="plotDropdown" aria-label="Select Plot Number" class="form-select form-select-solid form-select-lg fw-semibold" placeholder="Select plot number.." data-control="select2">
                                         </select>
+                                        @endif
                                     </div>    
                                 </div>
                                 <!--end::Input group plot id-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Customer Image</label>
+                                    <!--end::Label-->
+                                    <div class="col-lg-8 fv-row">
+                                    <!--begin::Image input-->
+                                        <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url('assets/media/svg/avatars/blank.svg')">
+                                            <!--begin::Preview existing avatar-->
+                                            <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{ isset($bookingData->customer_image) ? URL::asset('images/customer-images/'.$bookingData->customer_image) : URL::asset('assets/media/svg/avatars/blank.svg') }})"></div>
+                                            <!--end::Preview existing avatar-->
+                                            <!--begin::Label-->
+                                            <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                                <i class="ki-duotone ki-pencil fs-7">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                                <!--begin::Inputs-->
+                                                <input type="file" id="avatar" name="avatar" accept=".png, .jpg, .jpeg" />
+                                                <input type="hidden" name="avatar_remove" />
+                                                <!--end::Inputs-->
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Cancel-->
+                                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                                <i class="ki-duotone ki-cross fs-2">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </span>
+                                            <!--end::Cancel-->
+                                            <!--begin::Remove-->
+                                            <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                                <i class="ki-duotone ki-cross fs-2">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                </i>
+                                            </span>
+                                            <!--end::Remove-->
+                                        </div>
+                                    </div>
+                                    <!--end::Image input-->
+                                    <!--begin::Hint-->
+                                    <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                                    <!--end::Hint-->
+                                </div>
                                 <!--begin::Input group customer name-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
@@ -110,7 +166,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="customer_name" class="form-control form-control-lg form-control-solid" placeholder="Customer Name" value="{{ $bookingData->plot_phase ?? '' }}" />
+                                        <input type="text" name="customer_name" class="form-control form-control-lg form-control-solid" placeholder="Customer Name" value="{{ $bookingData->name ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -122,23 +178,35 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="customer_cnic" class="form-control form-control-lg form-control-solid" placeholder="Customer CNIC" value="{{ $bookingData->plot_phase ?? '' }}" />
+                                        <input type="text" name="customer_cnic" class="form-control form-control-lg form-control-solid" placeholder="Customer CNIC" value="{{ $bookingData->cnic_number ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group customer cnic-->
-                                <!--begin::Input group customer cnic-->
+                                <!--begin::Input group customer number-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
                                     <label class="col-lg-4 col-form-label required fw-semibold fs-6">Contact Number</label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="mobile_no" class="form-control form-control-lg form-control-solid" placeholder="Contact Number" value="{{ $bookingData->plot_phase ?? '' }}" />
+                                        <input type="text" name="mobile_no" class="form-control form-control-lg form-control-solid" placeholder="Contact Number" value="{{ $bookingData->mobile_number_1 ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
-                                <!--end::Input group customer cnic-->
+                                <!--end::Input group customer number-->
+                                <!--begin::Input group customer address-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Customer Address</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="text" name="customer_address" class="form-control form-control-lg form-control-solid" placeholder="Customer Address" value="{{ $bookingData->address ?? '' }}" />
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group customer address-->
                                 <!--begin::Input group base unit cost-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
@@ -146,7 +214,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="unit_cost" class="form-control form-control-lg form-control-solid" placeholder="Base Unit Cost" value="{{ $bookingData->plot_phase ?? '' }}" />
+                                        <input type="number" step="any" name="unit_cost" class="form-control form-control-lg form-control-solid" placeholder="Base Unit Cost" value="{{ $bookingData->unit_cost ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -158,7 +226,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="extra_charges" class="form-control form-control-lg form-control-solid" placeholder="Extra Charges" value="{{ $bookingData->plot_phase ?? '' }}" />
+                                        <input type="number" step="any" name="extra_charges" class="form-control form-control-lg form-control-solid" placeholder="Extra Charges" value="{{ $bookingData->extra_charges ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -170,7 +238,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="development_charges" class="form-control form-control-lg form-control-solid" placeholder="Development Charges" value="{{ $bookingData->total_amount ?? '' }}" />
+                                        <input type="number" step="any" name="development_charges" class="form-control form-control-lg form-control-solid" placeholder="Development Charges" value="{{ $bookingData->development_charges ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->
@@ -183,7 +251,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="monthly_installment" class="form-control form-control-lg form-control-solid" placeholder="Monthly Installment" value="{{ $bookingData->total_amount ?? '' }}" />
+                                        <input type="number" step="any" name="monthly_installment" class="form-control form-control-lg form-control-solid" placeholder="Monthly Installment" value="{{ $bookingData->monthly_installment ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->
@@ -196,7 +264,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="token_amount" class="form-control form-control-lg form-control-solid" placeholder="Token Amount" value="{{ $bookingData->total_amount ?? '' }}" />
+                                        <input type="number" step="any" name="token_amount" class="form-control form-control-lg form-control-solid" placeholder="Token Amount" value="{{ $bookingData->token_amount ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->
@@ -209,7 +277,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="advance_amount" class="form-control form-control-lg form-control-solid" placeholder="Advance Amount" value="{{ $bookingData->total_amount ?? '' }}" />
+                                        <input type="number" step="any" name="advance_amount" class="form-control form-control-lg form-control-solid" placeholder="Advance Amount" value="{{ $bookingData->advance_amount ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->
@@ -234,33 +302,6 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
-    <!--begin::Footer-->
-    <div id="kt_app_footer" class="app-footer">
-        <!--begin::Footer container-->
-        <div class="app-container container-fluid d-flex flex-column flex-md-row flex-center flex-md-stack py-3">
-            <!--begin::Copyright-->
-            <div class="text-dark order-2 order-md-1">
-                <span class="text-muted fw-semibold me-1">2023&copy;</span>
-                <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">Keenthemes</a>
-            </div>
-            <!--end::Copyright-->
-            <!--begin::Menu-->
-            <ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
-                <li class="menu-item">
-                    <a href="https://keenthemes.com" target="_blank" class="menu-link px-2">About</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://devs.keenthemes.com" target="_blank" class="menu-link px-2">Support</a>
-                </li>
-                <li class="menu-item">
-                    <a href="https://1.envato.market/EA4JP" target="_blank" class="menu-link px-2">Purchase</a>
-                </li>
-            </ul>
-            <!--end::Menu-->
-        </div>
-        <!--end::Footer container-->
-    </div>
-    <!--end::Footer-->
 </div>
 @endsection
 @push('scripts')
