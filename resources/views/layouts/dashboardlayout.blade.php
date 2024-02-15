@@ -4944,8 +4944,8 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end:Menu link-->
 											</div>
 											@endif
-											<!--end:Menu item-->
-											@if (session('role') == 'booking-agent' || session('role') == 'dealer')
+											<!--end:Menu item Bookings-->
+											@if (in_array('booking', session('permissions', [])))
 											<div class="menu-item">
 												<!--begin:Menu link-->
 												<a class="menu-link" href="{{ route('showBookings') }}">
@@ -4958,7 +4958,7 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											@endif
 											<!--begin:Menu item Leads-->
-											@if (session('role') == 'sales-agent' || session('role') == 'marketing-agent')
+											@if (in_array('leads', session('permissions', [])))
 											<div class="menu-item">
 												<!--begin:Menu link-->
 												<a class="menu-link" href="{{ route('showLeads') }}">
@@ -4970,6 +4970,23 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end:Menu link-->
 											</div>
 											@endif
+											<!--end:Menu item-->
+											<!--begin:Menu item Invoices-->
+											@if (in_array('invoicing', session('permissions', [])))
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link" href="{{ route('showInvoices') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Invoices</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											@endif
+											<!--end:Menu item-->
+											<!--begin:Menu item Accounting-->
+											
 											<!--end:Menu item-->
 										</div>
 										<!--end:Menu sub-->
@@ -4994,6 +5011,20 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end:Menu link-->
 										<!--begin:Menu sub-->
 										<div class="menu-sub menu-sub-accordion">
+											@if (session('role') == 'admin')
+											<!--begin:Menu item-->
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link" href="/access-rights">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Manage Permissions</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<!--end:Menu item-->
+											@endif
 											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->

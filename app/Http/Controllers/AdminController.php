@@ -8,6 +8,39 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
+
+    public function accessRightsTable()
+    {
+        $userData = DB::table('user')->get(['id','username', 'invoicing', 'booking', 'leads', 'accounting']);
+        return view('pages.access-rights', compact('userData'));
+    }
+
+    public function saveAccessRights(Request $request)
+    {
+        $userData = $request->input('userData', []);
+        // dd($userData);
+        try
+        {
+            foreach ($userData as $id => $permissions) 
+            {
+                $newValues = [
+                    'invoicing' => isset($permissions['invoicing']) && $permissions['invoicing'] == "on" ? 1 : 0,
+                    'booking' => isset($permissions['booking']) && $permissions['booking'] == "on" ? 1 : 0,
+                    'leads' => isset($permissions['leads']) && $permissions['leads'] == "on" ? 1 : 0,
+                    'accounting' => isset($permissions['accounting']) && $permissions['accounting'] == "on" ? 1 : 0,
+                ];
+                DB::table('user') 
+                    ->where('id', $id)
+                    ->update($newValues);
+            }
+            return redirect()->to('/')->with('success', 'Permissions updated successfully');
+        } 
+        catch (\Exception $e) 
+        {
+            return back()->with('error', 'Error updating permissions.');
+        }
+    }
+
     public function signInAuth(Request $req){
         $email= $req->input('email');
         $password= $req->input('password');
@@ -18,7 +51,24 @@ class AdminController extends Controller
                 ->where('password', $password)
                 ->first();
             if ($user) {
-                session(['userId' => $user->id, 'username' => $user->username, 'role' => $user->user_access_level, 'authenticated' => TRUE]);
+                $permissions =[];
+                if($user->invoicing == 1)
+                {
+                    $permissions[] = 'invoicing';
+                } 
+                if($user->booking == 1)
+                {
+                    $permissions[] = 'booking';
+                } 
+                if($user->leads == 1)
+                {
+                    $permissions[] = 'leads';
+                } 
+                if($user->accounting == 1)
+                {
+                    $permissions[] = 'accounting';
+                }
+                session(['userId' => $user->id, 'username' => $user->username, 'permissions' => $permissions, 'role' => $user->user_access_level, 'authenticated' => TRUE]);
                 return response()->json(['success' => 'Logged in successfully']);
             } else {
                 return response()->json(['error' => 'Invalid credentials']);

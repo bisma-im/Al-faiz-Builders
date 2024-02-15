@@ -25,6 +25,7 @@ class UserController extends Controller
     }
 
     public function getUserData(Request $req){
+        
         $userData = [
             'full_name' => $req->input('full_name'),
             'username' => $req->input('username'),
@@ -33,6 +34,24 @@ class UserController extends Controller
             'mobile_no' => $req->input('mobile_no'),
             'user_access_level' => $req->input('user_access_level'),
         ];
+
+        switch($req->input('user_access_level'))
+        {
+            case 'sales-agent':
+                $userData['leads'] = 1;
+            case 'sales-manager':
+                $userData['leads'] = 1;
+            case 'accounts-officer':
+                $userData['accounting'] = 1;
+            case 'accounts-officer':
+                $userData['invoicing'] = 1;
+            case 'booking-agent':
+                $userData['booking'] = 1;
+            case 'dealer':
+                $userData['booking'] = 1;
+            case 'marketing-agent':
+                $userData['leads'] = 1;
+        }
         
         // Set default avatar only when adding a new user
         if (!$req->input('id')) {

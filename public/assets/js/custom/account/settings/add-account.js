@@ -26,7 +26,6 @@ var KTNewAccount = (function () {
             
                             // Prepare form data
                             var formData = new FormData(t);
-                            console.log(formData);
                             // AJAX request to server
                             fetch('/add-account', {
                                 method: 'POST',

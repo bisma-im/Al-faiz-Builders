@@ -19,6 +19,9 @@ Route::view('/change-password-form', 'pages.change-password')->name('changePassw
 Route::view('/', 'dashboards.index')->middleware('admin.auth');
 Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 
+Route::get('/access-rights', [AdminController::class, 'accessRightsTable'])->name('accessRightsTable');
+Route::post('/save-access-rights', [AdminController::class, 'saveAccessRights'])->name('saveAccessRights');
+
 Route::view('/add-product-form', 'pages.add-product');
 Route::post('/add-product', [ProductController::class, 'addProduct'])->name('addProduct');
 Route::get('/products', [ProductController::class, 'showProducts'])->name('showProduct');

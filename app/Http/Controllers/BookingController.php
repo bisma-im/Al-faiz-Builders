@@ -83,13 +83,6 @@ class BookingController extends Controller
                             ->get(['id', 'plot_no']);
 
         return response()->json($availablePlots);
-
-        // $project_id = $req->project_id;
-        // $plots = DB::table('plots_inventory')
-        //     ->where('project_id', $project_id)
-        //     ->get(['id', 'plot_no']);
-
-        // return response()->json($plots);
     }
 
     public function getBookingData(Request $req)
