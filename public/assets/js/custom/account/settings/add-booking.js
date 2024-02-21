@@ -23,7 +23,7 @@ var KTNewBooking = (function () {
                     unit_cost: { validators: { notEmpty: { message: "Customer Mobile Number is required" } } },
                     extra_charges: { validators: { notEmpty: { message: "extra_charges is required" } } },
                     development_charges: { validators: { notEmpty: { message: "development_charges is required" } } },
-                    monthly_installment: { validators: { notEmpty: { message: "monthly_installment is required" } } },
+                    total_amount: { validators: { notEmpty: { message: "total_amount is required" } } },
                     token_amount: { validators: { notEmpty: { message: "token_amount is required" } } },
                     advance_amount: { validators: { notEmpty: { message: "advance_amount is required" } } },
                 },
@@ -39,28 +39,52 @@ var KTNewBooking = (function () {
                 var selectedPhase = $('#bookingForm').data('selected-phase');
                 $('#projectDropdown').on('change', function(e){
                     var projectId = e.target.value;
-                    loadPlots(projectId);
+                    loadPhases(projectId);
+                });
+                $('#phaseDropdown').on('change', function(e){
+                    var phaseId = e.target.value;
+                    loadPlots(phaseId);
                 });
                 if ($('#projectDropdown').val() !== "" && isLocked === 'false') {
-                    loadPlots($('#projectDropdown').val());
+                    loadPhases($('#projectDropdown').val());
+                    loadPlots($('#phaseDropdown').val());
                 }
-                else
+                else if(isLocked === 'true')
                 {
                     makeInputsReadonly();
                     return; 
                 }
 
-                // if (parseInt(isLocked, 10) === 1) { 
-                //     makeInputsReadonly();
-                //     return; 
-                // } 
-            
-                function loadPlots(projectId) {
+                function loadPhases(projectId){
+                    $.ajax({
+                        url: '/get-phases-for-booking',
+                        type: "POST",
+                        data: {
+                            project_id: projectId,
+                            _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        dataType: 'json',
+                        success: function(result){
+                            $('#phaseDropdown').html('<option value="">Select phase...</option>');
+                            
+                            $.each(result, function(index, phase){ 
+                                if(phase.id==selectedPhase)
+                                    var option = $('<option>').val(phase.id).text(phase.phase_title).attr('selected','selected');
+                                else
+                                    var option = $('<option>').val(phase.id).text(phase.phase_title);
+                                
+                                $('#phaseDropdown').append(option);
+                            });
+                        }
+                    });
+                }
+
+                function loadPlots(phaseId) {
                     $.ajax({
                         url: '/get-plots-for-booking',
                         type: "POST",
                         data: {
-                            project_id: projectId,
+                            phase_id: phaseId,
                             _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         },
                         dataType: 'json',

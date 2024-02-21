@@ -9,6 +9,12 @@ use Illuminate\Validation\ValidationException;
 
 class AccountsController extends Controller
 {
+    public function showAccounts()
+    {
+        $accountData = DB::table('accounts')->get();
+        return view('pages.accounts', ['accountData' => $accountData]);
+    }
+
     public function getAccountData(Request $req){
         $accountData = [
             'account_head_id' => $req->input('account_head_id'),

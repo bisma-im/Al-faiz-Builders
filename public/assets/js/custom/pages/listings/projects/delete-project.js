@@ -104,18 +104,14 @@ var KTCustomersList = (function () {
     };
     return {
         init: function () {
-            (n = document.querySelector("#kt_users_table")) &&
-                (n.querySelectorAll("tbody tr").forEach((t) => {
-                    const e = t.querySelectorAll("td"),
-                        o = moment(e[5].innerHTML, "DD MMM YYYY, LT").format();
-                    e[5].setAttribute("data-order", o);
-                }),
+            (n = document.querySelector("#kt_users_table")),
+                (
                 (t = $(n).DataTable({
                     info: !1,
                     order: [],
                     columnDefs: [
                         { orderable: !1, targets: 0 },
-                        { orderable: !1, targets: 6 },
+                        { orderable: !1, targets: 3 },
                     ],
                 })).on("draw", function () {
                     r(), c(), l(), KTMenu.init();

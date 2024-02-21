@@ -38,12 +38,12 @@
                                 @if (isset($bookingData) && $bookingData->id)
                                     <input type="hidden" id="id" name="id" value="{{ $bookingData->id }}">
                                     <input type="hidden" id="customer_id" name="customer_id" value="{{ $bookingData->customer_id }}">
-                                    <input type="hidden" id="isLocked" name="isLocked" value="{{ $isLockedMode ? 'true' : 'false' }}">
                                 @endif
+                                <input type="hidden" id="isLocked" name="isLocked" value="{{ $isLockedMode ? 'true' : 'false' }}">
                                 <!--begin::Input group-->
                                 <div id="bookingForm" 
                                 data-selected-plot="{{ $bookingData->plot_id ?? '' }}"
-                                data-selected-phase="{{ $bookingData->project_phase ?? '' }}">
+                                data-selected-phase="{{ $bookingData->phase_id ?? '' }}">
                                 <!-- Your form content -->
                                 </div>
                                 <!--end::Input group-->
@@ -76,11 +76,21 @@
                                 <!--begin::Input group Phase-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Phase</label>
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                        <span class="required">Phase</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate role">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                    </label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="project_phase" id="project_phase" class="form-control form-control-lg form-control-solid" placeholder="Phase" value="{{ $bookingData->project_phase ?? '' }}"/>
+                                        <select name="phase_id" id="phaseDropdown" aria-label="Select Phase" class="form-select form-select-solid form-select-lg fw-semibold" placeholder="Select phase.." data-control="select2">
+                                        </select>
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -251,7 +261,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="monthly_installment" class="form-control form-control-lg form-control-solid" placeholder="Monthly Installment" value="{{ $bookingData->monthly_installment ?? '' }}" />
+                                        <input type="number" step="any" name="total_amount" class="form-control form-control-lg form-control-solid" placeholder="Monthly Installment" value="{{ $bookingData->total_amount ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->

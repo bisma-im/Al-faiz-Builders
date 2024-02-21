@@ -272,10 +272,7 @@
                                         </div>
                                     </th>
                                     <th class="min-w-125px">Title</th>
-                                    <th class="min-w-125px">Area</th>
-                                    <th class="min-w-125px">Cost</th>
-                                    <th class="min-w-125px">Number of Plots</th>
-                                    <th class="min-w-125px">Monthly Installment</th>
+                                    <th class="min-w-125px">ID</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
@@ -291,7 +288,7 @@
                                         <div class="d-flex align-items-center">
                                             <!--begin::Thumbnail-->
                                             <a href="{{ route('updateProjectForm', ['id' => $project->id]) }}" class="symbol symbol-50px">
-                                                <span class="symbol-label" style="background-image:url({{ isset($project->project_logo) ? asset('images/project-logos/'.$project->project_logo) : asset('assets/media/svg/avatars/blank.svg') }});"></span>
+                                                <span class="symbol-label" style="background-image:url({{ isset($project->project_logo) ? asset('images/project-logos/'.$project->project_logo) : asset('images/project-logos/default.svg') }});"></span>
                                             </a>
                                             <!--end::Thumbnail-->
                                             <div class="ms-5">
@@ -301,11 +298,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $project->project_area }}</td>
-                                    <td>{{ $project->project_cost }}</td>
-                                    {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $project->no_of_plots }}</td>
-                                    <td>{{ $project->monthly_installment }}</td>
+                                    <td>{{ $project->id }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>

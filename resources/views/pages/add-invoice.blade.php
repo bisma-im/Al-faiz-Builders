@@ -37,8 +37,8 @@
                             <div class="card-body border-top p-9">
                                 @if (isset($invoiceData) && $invoiceData->id)
                                     <input type="hidden" id="id" name="id" value="{{ $invoiceData->id }}">
-                                    <input type="hidden" id="date_and_time" name="date_and_time" value="{{ $invoiceData->formattedDateTime ?? '' }}"/>
                                 @endif
+                                <input type="hidden" id="date_and_time" name="date_and_time" value="{{ $invoiceData->formattedDateTime ?? '' }}"/>
                                 <!--begin::Input group-->
                                 <div id="invoiceForm" 
                                 data-update-mode="{{ isset($invoiceData) ? 'true' : 'false' }}" 

@@ -45,7 +45,7 @@ var KTNewAccount = (function () {
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = form.getAttribute('data-kt-redirect'); // Replace with your desired path
+                                            window.location.href = t.getAttribute('data-kt-redirect'); // Replace with your desired path
                                         }
                                     });
                                 } else {

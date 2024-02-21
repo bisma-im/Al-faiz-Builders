@@ -11,13 +11,13 @@ class BookingController extends Controller
     public function showBookings(Request $req)
     {
         $sessionUsername = $req->session()->get('username');
-        if($sessionUsername && (session('role') == 'booking-agent' || session('role') == 'dealer'))
+        if(in_array('booking', session('permissions', [])))
         {
             $bookings = DB::table('booking')
             ->join('customer as c', 'c.id', '=', 'booking.customer_id')
             ->join('projects as pr', 'pr.id', '=', 'booking.project_id')
             ->join('plots_inventory as pl', 'pl.id', '=', 'booking.plot_id')
-            ->select('booking.id', 'c.cnic_number', 'pr.project_title','pl.plot_no', 'booking.unit_cost', 'booking.monthly_installment')
+            ->select('booking.id', 'c.cnic_number', 'pr.project_title','pl.plot_no', 'booking.unit_cost', 'booking.total_amount')
             ->where('username', $sessionUsername)
             ->get();
             return view('pages.bookings', ['bookingData' => $bookings]);
@@ -34,7 +34,7 @@ class BookingController extends Controller
         try
         {
             $bookingData = null;
-            $isLockedMode = false;
+            $isLockedMode = null;
             $customers = DB::table('customer')
                 ->select('id', 'name', 'cnic_number')
                 ->get();
@@ -52,7 +52,7 @@ class BookingController extends Controller
                 ->select(
                     'booking.*', 
                     'c.name', 'c.cnic_number', 'c.address', 'c.customer_image', 'c.mobile_number_1', // Alias to avoid column name collision
-                    'pr.project_phase',
+                    // 'pr.project_phase',
                     'pl.plot_no'
                 )
                 ->where('booking.id', $id)
@@ -74,15 +74,27 @@ class BookingController extends Controller
     public function getPlotsForBooking(Request $req)
     {   
         $project_id = $req->project_id;
+        $phase_id = $req->phase_id;
         $bookedPlotIds = DB::table('booking')
-                            ->where('project_id', $project_id)
+                            // ->where('project_id', $project_id)
+                            ->where('phase_id', $phase_id)
                             ->pluck('plot_id');
         $availablePlots = DB::table('plots_inventory')
-                            ->where('project_id', $project_id)
+                            // ->where('project_id', $project_id)
+                            ->where('phase_id', $phase_id)
                             ->whereNotIn('id', $bookedPlotIds)
                             ->get(['id', 'plot_no']);
 
         return response()->json($availablePlots);
+    }
+
+    public function getPhasesForBooking(Request $req)
+    {   
+        $project_id = $req->project_id;
+        $phases = DB::table('phase')
+                    ->where('project_id', $project_id)
+                    ->get(['id', 'phase_title']);
+        return response()->json($phases);
     }
 
     public function getBookingData(Request $req)
@@ -93,7 +105,7 @@ class BookingController extends Controller
             'unit_cost' => $req->input('unit_cost'),
             'extra_charges' => $req->input('extra_charges'),
             'development_charges' => $req->input('development_charges'),
-            'monthly_installment' => $req->input('monthly_installment'),
+            'total_amount' => $req->input('total_amount'),
             'token_amount' => $req->input('token_amount'),
             'advance_amount' => $req->input('advance_amount'),
             'username' => session()->get('username'),

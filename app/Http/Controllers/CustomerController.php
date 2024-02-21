@@ -118,4 +118,44 @@ class CustomerController extends Controller
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function verifyCustomer(Request $req)
+    {
+        $cnic = $req->input('customer_cnic');
+        $name = $req->input('customer_name');
+
+        try
+        {
+            $customer = DB::table('customer')
+                        ->where('cnic_number', $cnic)
+                        ->where('name', $name)
+                        ->first();
+
+            if (!$customer) 
+            {
+                return response()->json(['error' => 'Customer not found'], 404);
+            }
+
+            $plotNum = DB::table('booking')
+                        ->join('plots_inventory as pl', 'pl.id','=','booking.plot_id')
+                        ->select('pl.plot_no', 'pl.id')
+                        ->where('customer_id', $customer->id)
+                        ->get();  
+                        
+            if ($plotNum->isEmpty()) 
+            {
+                return redirect()->back();
+            }
+            return view('pages.booking-verification', compact('cnic','name','plotNum'));
+        }
+        catch (\Exception $e) {
+            return redirect()->back();
+        }
+    }
+
+    public function showBookingVerificationForm()
+    {
+        $plotNum = $cnic = $name = null;
+        return view('pages.booking-verification', compact('cnic','name','plotNum'));
+    }
 }

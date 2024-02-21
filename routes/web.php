@@ -19,6 +19,9 @@ Route::view('/change-password-form', 'pages.change-password')->name('changePassw
 Route::view('/', 'dashboards.index')->middleware('admin.auth');
 Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 
+Route::get('/booking-verification', [CustomerController::class, 'showBookingVerificationForm']);
+Route::post('/customer-verification', [CustomerController::class, 'verifyCustomer'])->name('verifyCustomer');
+
 Route::get('/access-rights', [AdminController::class, 'accessRightsTable'])->name('accessRightsTable');
 Route::post('/save-access-rights', [AdminController::class, 'saveAccessRights'])->name('saveAccessRights');
 
@@ -47,6 +50,11 @@ Route::get('/add-project-form', [ProjectController::class, 'showAddProjectForm']
 Route::post('/update-project', [ProjectController::class, 'updateProject'])->name('updateProject');
 Route::post('/delete-project/{id}', [ProjectController::class, 'deleteProject'])->name('deleteProject');
 
+Route::get('/add-phase-form', [ProjectController::class, 'showAddPhaseForm'])->name('showAddPhaseForm');
+Route::post('/add-phase', [ProjectController::class, 'addPhase'])->name('addPhase');
+Route::get('/projects/{projectId}/phases/{phaseId}', [ProjectController::class, 'showAddPhaseForm'])->name('updatePhaseForm');
+
+
 Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->name('addLeadForm');
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');
 Route::post('/update-lead', [LeadController::class, 'updateLead'])->name('updateLead');
@@ -69,9 +77,11 @@ Route::get('/bookings', [BookingController::class, 'showBookings'])->name('showB
 Route::get('/bookings/{id}', [BookingController::class, 'showBookingForm'])->name('updateBookingForm');
 Route::post('/update-booking', [BookingController::class, 'updateBooking'])->name('updateBooking');
 Route::post('/get-plots-for-booking', [BookingController::class, 'getPlotsForBooking']);
+Route::post('/get-phases-for-booking', [BookingController::class, 'getPhasesForBooking']);
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');
-
+Route::get('/accounts', [AccountsController::class, 'showAccounts'])->name('showAccounts');
+Route::view('/add-account-form', 'pages.add-account')->name('addAccountForm');
 
 Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments');
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument');

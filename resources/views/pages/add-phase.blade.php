@@ -11,7 +11,7 @@
                     <!--begin::Page title-->
                     <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                         <!--begin::Title-->
-                        <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Project Form</h1>
+                        <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Phase Form</h1>
                         <!--end::Title-->
                         <!--begin::Breadcrumb-->
                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -26,7 +26,7 @@
                             </li>
                             <!--end::Item-->
                             <!--begin::Item-->
-                            <li class="breadcrumb-item text-muted">Project</li>
+                            <li class="breadcrumb-item text-muted">Phase</li>
                             <!--end::Item-->
                             <!--begin::Item-->
                             <li class="breadcrumb-item">
@@ -142,11 +142,12 @@
                 <!--begin::Content container-->
                 <div id="kt_app_content_container" class="app-container container-xxl">
                     <!--begin::Form-->
-                    <form id="kt_ecommerce_add_project_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/projects" action="{{ route('addProject') }}" method="POST">
+                    <form id="kt_ecommerce_add_phase_form" class="form d-flex flex-column flex-lg-row" data-kt-redirect="/projects" action="{{ route('addPhase') }}" method="POST">
                         @csrf
-                        @if (isset($projectData) && $projectData->id)
-                            <input type="hidden" id="id" name="id" value="{{ $projectData->id }}">
+                        @if (isset($phaseData) && $phaseData->id)
+                            <input type="hidden" id="id" name="id" value="{{ $phaseData->id }}">
                         @endif
+                        <input type="hidden" id="phase_completion_date" name="phase_completion_date" value="{{ $phaseData->formattedDate ?? '' }}"/>
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
                             
@@ -167,9 +168,9 @@
                                     <!--begin::Image input placeholder-->
                                     <style>.image-input-placeholder { background-image: url('assets/media/svg/files/blank-image.svg'); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url('assets/media/svg/files/blank-image-dark.svg'); }</style>
                                     <!--end::Image input placeholder-->
-                                    <div class="image-input image-input-outline {{ isset($projectData->project_logo) ? '' : 'image-input-empty' }} image-input-placeholder mb-3" data-kt-image-input="true">
+                                    <div class="image-input image-input-outline {{ isset($phaseData->phase_logo) ? '' : 'image-input-empty' }} image-input-placeholder mb-3" data-kt-image-input="true">
                                         <!--begin::Preview existing avatar-->
-                                        <div class="image-input-wrapper w-150px h-150px" style="{{ isset($projectData->project_logo) ? 'background-image: url('.asset('images/project-logos/'.$projectData->project_logo).')' : '' }}"></div>
+                                        <div class="image-input-wrapper w-150px h-150px" style="{{ isset($phaseData->phase_logo) ? 'background-image: url('.asset('images/phase-logos/'.$phaseData->phase_logo).')' : '' }}"></div>
                                         <!--end::Preview existing avatar-->
                                         <!--begin::Label-->
                                         <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
@@ -178,7 +179,7 @@
                                                 <span class="path2"></span>
                                             </i>
                                             <!--begin::Inputs-->
-                                            <input type="file" name="project_logo" accept=".png, .jpg, .jpeg" />
+                                            <input type="file" name="phase_logo" accept=".png, .jpg, .jpeg" />
                                             <input type="hidden" name="avatar_remove" />
                                             <!--end::Inputs-->
                                         </label>
@@ -392,9 +393,13 @@
                                                     <!--begin::Label-->
                                                     <label class="required form-label">Project Name</label>
                                                     <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="text" name="project_title" class="form-control mb-2" placeholder="Project name" value="{{ $projectData->project_title ?? '' }}" />
-                                                    <!--end::Input-->
+                                                    <select name="project_id" id="projectDropdown" aria-label="Select Project" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select project...">
+                                                        <option value="">Select Project...</option>
+                                                        @foreach ($projects as $project)
+                                                            <option value="{{ $project->id }}" {{ (isset($phaseData) && $phaseData->project_id == $project->id) ? 'selected' : '' }}>
+                                                                {{ $project->project_title }}</option>
+                                                        @endforeach
+                                                    </select>
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">A project name is required and recommended to be unique.</div>
                                                     <!--end::Description-->
@@ -403,10 +408,23 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class="form-label">Project Cost</label>
+                                                    <label class="required form-label">Phase Name</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="project_cost" class="form-control mb-2" placeholder="Project Cost" value="{{ $projectData->project_cost ?? '' }}" />
+                                                    <input type="text" name="phase_name" class="form-control mb-2" placeholder="Phase Name" value="{{ $phaseData->phase_name ?? '' }}" />
+                                                    <!--end::Input-->
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7">Enter the project phase.</div>
+                                                    <!--end::Description-->
+                                                </div>
+                                                <!--end::Input group-->
+                                                <!--begin::Input group-->
+                                                <div class="mb-10 fv-row">
+                                                    <!--begin::Label-->
+                                                    <label class="required form-label">Project Cost</label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="number" step="any" name="phase_cost" class="form-control mb-2" placeholder="Project Cost" value="{{ $phaseData->phase_cost ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the project cost.</div>
@@ -414,18 +432,15 @@
                                                 </div>
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
-                                                {{-- <input type="hidden" name="project_description" id="hidden_project_description"> --}}
-                                                <div>
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Description</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Editor-->
-                                                    <div id="kt_ecommerce_add_project_description" name="kt_ecommerce_add_project_description" class="min-h-200px mb-2"></div>
-                                                    <!--end::Editor-->
-                                                    <!--begin::Description-->
+                                                <div class="mb-10 fv-row">
+                                                    <label for="kt_ecommerce_phase_complete_datepicker" class="form-label">
+                                                        <span class="required">Phase Completion Date</span>
+                                                    </label>
                                                     
-                                                    <div class="text-muted fs-7">Set a description to the project for better visibility.</div>
-                                                    <!--end::Description-->
+                                                    <div class="col-lg-8 fv-row">
+                                                        <input class="form-control" name="completion_date" id="kt_ecommerce_phase_complete_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date & time"/>
+                                                        
+                                                    </div>
                                                 </div>
                                                 <!--end::Input group-->
                                             </div>
@@ -446,7 +461,7 @@
                                                 <!--begin::Input group-->
                                                 <div class="fv-row mb-2">
                                                     <!--begin::Dropzone-->
-                                                    <div class="dropzone" id="kt_ecommerce_add_project_media">
+                                                    <div class="dropzone" id="kt_ecommerce_add_phase_media">
                                                         <!--begin::Message-->
                                                         <div class="dz-message needsclick">
                                                             <!--begin::Icon-->
@@ -487,10 +502,10 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class=" form-label">Down Payment</label>
+                                                    <label class="required form-label">Down Payment</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="down_payment" class="form-control mb-2" placeholder="Product price" value="{{ $projectData->down_payment ?? '' }}" />
+                                                    <input type="number" step="any" name="down_payment" class="form-control mb-2" placeholder="Product price" value="{{ $phaseData->down_payment ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the down payment.</div>
@@ -500,10 +515,10 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class=" form-label">Development Charges</label>
+                                                    <label class="required form-label">Development Charges</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="development_charges" class="form-control mb-2" placeholder="Development Charges" value="{{ $projectData->development_charges ?? '' }}" />
+                                                    <input type="number" step="any" name="development_charges" class="form-control mb-2" placeholder="Development Charges" value="{{ $phaseData->development_charges ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the development charges.</div>
@@ -513,10 +528,10 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class=" form-label">Extra Charges</label>
+                                                    <label class="required form-label">Extra Charges</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="extra_charges" class="form-control mb-2" placeholder="Extra Charges" value="{{ $projectData->extra_charges ?? '' }}" />
+                                                    <input type="number" step="any" name="extra_charges" class="form-control mb-2" placeholder="Extra Charges" value="{{ $phaseData->extra_charges ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the extra charges.</div>
@@ -526,10 +541,10 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class=" form-label">Monthly Installment</label>
+                                                    <label class="required form-label">Monthly Installment</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" step="any" name="monthly_installment" class="form-control mb-2" placeholder="Monthly Installment" value="{{ $projectData->monthly_installment ?? '' }}" />
+                                                    <input type="number" step="any" name="monthly_installment" class="form-control mb-2" placeholder="Monthly Installment" value="{{ $phaseData->monthly_installment ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the monthly installment.</div>
@@ -699,23 +714,10 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class="required form-label">Project Phase</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="text" name="project_phase" class="form-control mb-2" placeholder="Project Phase" value="{{ $projectData->project_phase ?? '' }}" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Enter the project phase.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
                                                     <label class="required form-label">Project Area</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" name="project_area" step="any" class="form-control mb-2" placeholder="Project Area" value="{{ $projectData->project_area ?? '' }}" />
+                                                    <input type="number" name="phase_area" step="any" class="form-control mb-2" placeholder="Project Area" value="{{ $projectData->phase_area ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Enter the project area.</div>
@@ -725,12 +727,38 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class="required form-label">Plots</label>
+                                                    <label class="form-label">Plots</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
                                                     <div class="d-flex gap-3">
-                                                        <input type="number" name="no_of_plots" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
-                                                        <input type="text" name="plot_prefix" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                        <input type="text" name="category_1" class="form-control mb-2" value="80 Sq. Yds." {{ 'readonly' }}/>
+                                                        <input type="number" name="no_of_plots_cat_1" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                        <input type="text" name="plot_prefix_cat_1" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                        <input type="number" step="any" name="amount_cat_1" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
+                                                    </div>
+                                                    <!--end::Input-->
+                                                    <!--begin::Input-->
+                                                    <div class="d-flex gap-3">
+                                                        <input type="text" name="category_2" class="form-control mb-2" value="100 Sq. Yds." {{ 'readonly' }}/>
+                                                        <input type="number" name="no_of_plots_cat_2" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                        <input type="text" name="plot_prefix_cat_2" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                        <input type="number" step="any" name="amount_cat_2" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
+                                                    </div>
+                                                    <!--end::Input-->
+                                                    <!--begin::Input-->
+                                                    <div class="d-flex gap-3">
+                                                        <input type="text" name="category_3" class="form-control mb-2" value="120 Sq. Yds." {{ 'readonly' }}/>
+                                                        <input type="number" name="no_of_plots_cat_3" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                        <input type="text" name="plot_prefix_cat_3" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                        <input type="number" step="any" name="amount_cat_3" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
+                                                    </div>
+                                                    <!--end::Input-->
+                                                    <!--begin::Input-->
+                                                    <div class="d-flex gap-3">
+                                                        <input type="text" name="category_4" class="form-control mb-2" value="200 Sq. Yds." {{ 'readonly' }}/>
+                                                        <input type="number" name="no_of_plots_cat_4" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                        <input type="text" name="plot_prefix_cat_4" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                        <input type="number" step="any" name="amount_cat_4" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
                                                     </div>
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
@@ -945,7 +973,7 @@
                                 <a href="../../demo1/dist/apps/ecommerce/catalog/products.html" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">Cancel</a>
                                 <!--end::Button-->
                                 <!--begin::Button-->
-                                <button type="submit" id="kt_ecommerce_add_project_submit" class="btn btn-primary mb-7">
+                                <button type="submit" id="kt_ecommerce_add_phase_submit" class="btn btn-primary">
                                     <span class="indicator-label">Save Changes</span>
                                     <span class="indicator-progress">Please wait...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -956,332 +984,6 @@
                         <!--end::Main column-->
                     </form>
                     <!--end::Form-->
-                </div>
-                <!--end::Content container-->
-                <!--begin::Content container for phases-->
-                <div id="kt_app_content_container" class="app-container container-xxl" >
-                @if(@isset($projectData))
-                <!--begin::Call Logs Table-->
-                <div class="card mb-5 mb-xl-10">
-                    <!--begin::Card header-->
-                    <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_deactivate" aria-expanded="true" aria-controls="kt_account_deactivate">
-                        <div class="card-title m-0">
-                            <h3 class="fw-bold m-0">Phases</h3>
-                        </div>
-                    </div>
-                    <!--end::Card header-->
-                    <!--begin::Content-->
-                    
-                    <div id="kt_app_content_container" class="app-container container-xxl">
-                        <!--begin::Card-->
-                        <div class="card">
-                            <!--begin::Card header-->
-                            <div class="card-header border-0 pt-6">
-                                <!--begin::Card title-->
-                                <div class="card-title">
-                                    <!--begin::Search-->
-                                    <div class="d-flex align-items-center position-relative my-1">
-                                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>
-                                        <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Phases" />
-                                    </div>
-                                    <!--end::Search-->
-                                </div>
-                                <!--begin::Card title-->
-                                <!--begin::Card toolbar-->
-                                <div class="card-toolbar">
-                                    <!--begin::Toolbar-->
-                                    <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                        <!--begin::Filter-->
-                                        <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                        <i class="ki-duotone ki-filter fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>Filter</button>
-                                        <!--begin::Menu 1-->
-                                        <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
-                                            <!--begin::Header-->
-                                            <div class="px-7 py-5">
-                                                <div class="fs-4 text-dark fw-bold">Filter Options</div>
-                                            </div>
-                                            <!--end::Header-->
-                                            <!--begin::Separator-->
-                                            <div class="separator border-gray-200"></div>
-                                            <!--end::Separator-->
-                                            <!--begin::Content-->
-                                            <div class="px-7 py-5">
-                                                <!--begin::Input group-->
-                                                <div class="mb-10">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label fs-5 fw-semibold mb-3">Month:</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-customer-table-filter="month" data-dropdown-parent="#kt-toolbar-filter">
-                                                        <option></option>
-                                                        <option value="aug">August</option>
-                                                        <option value="sep">September</option>
-                                                        <option value="oct">October</option>
-                                                        <option value="nov">November</option>
-                                                        <option value="dec">December</option>
-                                                    </select>
-                                                    <!--end::Input-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label fs-5 fw-semibold mb-3">Payment Type:</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Options-->
-                                                    <div class="d-flex flex-column flex-wrap fw-semibold" data-kt-customer-table-filter="payment_type">
-                                                        <!--begin::Option-->
-                                                        <label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
-                                                            <input class="form-check-input" type="radio" name="payment_type" value="all" checked="checked" />
-                                                            <span class="form-check-label text-gray-600">All</span>
-                                                        </label>
-                                                        <!--end::Option-->
-                                                        <!--begin::Option-->
-                                                        <label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
-                                                            <input class="form-check-input" type="radio" name="payment_type" value="visa" />
-                                                            <span class="form-check-label text-gray-600">Visa</span>
-                                                        </label>
-                                                        <!--end::Option-->
-                                                        <!--begin::Option-->
-                                                        <label class="form-check form-check-sm form-check-custom form-check-solid mb-3">
-                                                            <input class="form-check-input" type="radio" name="payment_type" value="mastercard" />
-                                                            <span class="form-check-label text-gray-600">Mastercard</span>
-                                                        </label>
-                                                        <!--end::Option-->
-                                                        <!--begin::Option-->
-                                                        <label class="form-check form-check-sm form-check-custom form-check-solid">
-                                                            <input class="form-check-input" type="radio" name="payment_type" value="american_express" />
-                                                            <span class="form-check-label text-gray-600">American Express</span>
-                                                        </label>
-                                                        <!--end::Option-->
-                                                    </div>
-                                                    <!--end::Options-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Actions-->
-                                                <div class="d-flex justify-content-end">
-                                                    <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                                    <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
-                                                </div>
-                                                <!--end::Actions-->
-                                            </div>
-                                            <!--end::Content-->
-                                        </div>
-                                        <!--end::Menu 1-->
-                                        <!--end::Filter-->
-                                        <!--begin::Export-->
-                                        <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal">
-                                        <i class="ki-duotone ki-exit-up fs-2">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>Export</button>
-                                        <!--end::Export-->
-                                        <!--begin::Add customer-->
-                                        <a href="/add-phase-form" class="btn btn-primary" role="button">Add Phase</a>
-                                        <!--end::Add customer-->
-                                    </div>
-                                    <!--end::Toolbar-->
-                                    <!--begin::Group actions-->
-                                    <div class="d-flex justify-content-end align-items-center d-none" data-kt-customer-table-toolbar="selected">
-                                        <div class="fw-bold me-5">
-                                        <span class="me-2" data-kt-customer-table-select="selected_count"></span>Selected</div>
-                                        <button type="button" class="btn btn-danger" data-kt-customer-table-select="delete_selected">Delete Selected</button>
-                                    </div>
-                                    <!--end::Group actions-->
-                                </div>
-                                <!--end::Card toolbar-->
-                            </div>
-                            <!--end::Card header-->
-                            <!--begin::Card body-->
-                            <div class="card-body pt-0">
-                                <!--begin::Table-->
-                                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_users_table">
-                                    <thead>
-                                        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="w-10px pe-2">
-                                                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                                    <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
-                                                </div>
-                                            </th>
-                                            <th class="min-w-125px">Phase Title</th>
-                                            <th class="min-w-125px">Project Title</th>
-                                            <th class="min-w-125px">Area</th>
-                                            <th class="min-w-125px">Cost</th>
-                                            <th class="min-w-125px">Monthly Installment</th>
-                                            <th class="text-end min-w-70px">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="fw-semibold text-gray-600">
-                                        @foreach ($phaseData as $id => $phase)
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value="1" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <!--begin::Thumbnail-->
-                                                    <a href="#" class="symbol symbol-50px">
-                                                        <span class="symbol-label" style="background-image:url({{ isset($phase->phase_logo) ? asset('images/phase-logos/'.$phase->phase_logo) : asset('images/project-logos/default.svg') }});"></span>
-                                                    </a>
-                                                    <!--end::Thumbnail-->
-                                                    <div class="ms-5">
-                                                        <!--begin::Title-->
-                                                        <a href="{{ route('updatePhaseForm', ['projectId' => $phase->project_id, 'phaseId' => $phase->id]) }}" class="text-gray-800 text-hover-primary fs-5 fw-bold" data-kt-ecommerce-product-filter="product_name">{{ $phase->phase_title }}</a>
-                                                        <!--end::Title-->
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>{{ $phase->project_title }}</td>
-                                            <td>{{ $phase->phase_area }}</td>
-                                            {{-- <td data-filter="mastercard"> --}}
-                                            <td>{{ $phase->phase_cost }}</td>
-                                            <td>{{ $phase->monthly_installment }}</td>
-                                            <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                                <!--begin::Menu-->
-                                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                                    <!--begin::Menu item-->
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3">View</a>
-                                                    </div>
-                                                    <!--end::Menu item-->
-                                                    <!--begin::Menu item-->
-                                                    <div class="menu-item px-3">
-                                                        <a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
-                                                    </div>
-                                                    <!--end::Menu item-->
-                                                </div>
-                                                <!--end::Menu-->
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <!--end::Table-->
-                            </div>
-                            <!--end::Card body-->
-                        </div>
-                        <!--end::Card-->
-                        <!--begin::Modal - Adjust Balance-->
-                        <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
-                            <!--begin::Modal dialog-->
-                            <div class="modal-dialog modal-dialog-centered mw-650px">
-                                <!--begin::Modal content-->
-                                <div class="modal-content">
-                                    <!--begin::Modal header-->
-                                    <div class="modal-header">
-                                        <!--begin::Modal title-->
-                                        <h2 class="fw-bold">Export Customers</h2>
-                                        <!--end::Modal title-->
-                                        <!--begin::Close-->
-                                        <div id="kt_customers_export_close" class="btn btn-icon btn-sm btn-active-icon-primary">
-                                            <i class="ki-duotone ki-cross fs-1">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                        </div>
-                                        <!--end::Close-->
-                                    </div>
-                                    <!--end::Modal header-->
-                                    <!--begin::Modal body-->
-                                    <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                                        <!--begin::Form-->
-                                        <form id="kt_customers_export_form" class="form" action="#">
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-10">
-                                                <!--begin::Label-->
-                                                <label class="fs-5 fw-semibold form-label mb-5">Select Export Format:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <select data-control="select2" data-placeholder="Select a format" data-hide-search="true" name="format" class="form-select form-select-solid">
-                                                    <option value="excell">Excel</option>
-                                                    <option value="pdf">PDF</option>
-                                                    <option value="cvs">CVS</option>
-                                                    <option value="zip">ZIP</option>
-                                                </select>
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-10">
-                                                <!--begin::Label-->
-                                                <label class="fs-5 fw-semibold form-label mb-5">Select Date Range:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input class="form-control form-control-solid" placeholder="Pick a date" name="date" />
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                            <!--begin::Row-->
-                                            <div class="row fv-row mb-15">
-                                                <!--begin::Label-->
-                                                <label class="fs-5 fw-semibold form-label mb-5">Payment Type:</label>
-                                                <!--end::Label-->
-                                                <!--begin::Radio group-->
-                                                <div class="d-flex flex-column">
-                                                    <!--begin::Radio button-->
-                                                    <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                        <input class="form-check-input" type="checkbox" value="1" checked="checked" name="payment_type" />
-                                                        <span class="form-check-label text-gray-600 fw-semibold">All</span>
-                                                    </label>
-                                                    <!--end::Radio button-->
-                                                    <!--begin::Radio button-->
-                                                    <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                        <input class="form-check-input" type="checkbox" value="2" checked="checked" name="payment_type" />
-                                                        <span class="form-check-label text-gray-600 fw-semibold">Visa</span>
-                                                    </label>
-                                                    <!--end::Radio button-->
-                                                    <!--begin::Radio button-->
-                                                    <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                        <input class="form-check-input" type="checkbox" value="3" name="payment_type" />
-                                                        <span class="form-check-label text-gray-600 fw-semibold">Mastercard</span>
-                                                    </label>
-                                                    <!--end::Radio button-->
-                                                    <!--begin::Radio button-->
-                                                    <label class="form-check form-check-custom form-check-sm form-check-solid">
-                                                        <input class="form-check-input" type="checkbox" value="4" name="payment_type" />
-                                                        <span class="form-check-label text-gray-600 fw-semibold">American Express</span>
-                                                    </label>
-                                                    <!--end::Radio button-->
-                                                </div>
-                                                <!--end::Input group-->
-                                            </div>
-                                            <!--end::Row-->
-                                            <!--begin::Actions-->
-                                            <div class="text-center">
-                                                <button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3">Discard</button>
-                                                <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
-                                                    <span class="indicator-label">Submit</span>
-                                                    <span class="indicator-progress">Please wait...
-                                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                                </button>
-                                            </div>
-                                            <!--end::Actions-->
-                                        </form>
-                                        <!--end::Form-->
-                                    </div>
-                                    <!--end::Modal body-->
-                                </div>
-                                <!--end::Modal content-->
-                            </div>
-                            <!--end::Modal dialog-->
-                        </div>
-                        <!--end::Modal - New Card-->
-                        <!--end::Modals-->
-                    </div>
-                    <!--end::Content-->
-                </div>
-                <!--end::Call Logs Table-->
-                @endif
                 </div>
                 <!--end::Content container-->
             </div>
@@ -1298,7 +1000,7 @@
     <script src="{{ asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="{{ asset('assets/js/custom/pages/listings/projects/save-project.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/pages/listings/projects/save-phase.js') }}"></script>
     <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
     <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>

@@ -4986,7 +4986,18 @@ License: For each use you must have a valid license purchased only from above li
 											@endif
 											<!--end:Menu item-->
 											<!--begin:Menu item Accounting-->
-											
+											@if (in_array('accounting', session('permissions', [])))
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link" href="{{ route('showAccounts') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Accounts</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											@endif
 											<!--end:Menu item-->
 										</div>
 										<!--end:Menu sub-->

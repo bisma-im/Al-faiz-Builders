@@ -30,8 +30,7 @@
                     <!--begin::Content-->
                     <div id="kt_new_account" class="collapse show">
                         <!--begin::Form-->
-                        {{-- <form id="kt_new_account_form" class="form" data-kt-redirect="/accounts" action="{{ route('addAccount') }}" method="POST"> --}}
-                            <form id="kt_new_account_form" class="form" >
+                        <form id="kt_new_account_form" class="form" data-kt-redirect="{{ route('showAccounts') }}" action="{{ route('addAccount') }}" method="POST">
                             @csrf
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
