@@ -40,7 +40,7 @@ class ProjectController extends Controller
         if ($projectId && $phaseId) 
         {
             $phaseData = DB::table('phase')
-                ->where('phase_id', $phaseId)
+                ->where('id', $phaseId)
                 ->first();
             $formattedDateTime = Carbon::createFromFormat('Y-m-d', $phaseData->completion_date)->format('Y-m-d');
             $phaseData->formattedDateTime = $formattedDateTime;
