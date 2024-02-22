@@ -44,6 +44,7 @@
                                 <div id="bookingForm" 
                                 data-selected-plot="{{ $bookingData->plot_id ?? '' }}"
                                 data-selected-phase="{{ $bookingData->phase_id ?? '' }}">
+                                {{-- data-completion-date= "{{ $bookingData->completion_date->format('Y-m-d') ?? '' }}"> --}}
                                 <!-- Your form content -->
                                 </div>
                                 <!--end::Input group-->
@@ -90,6 +91,7 @@
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
                                         <select name="phase_id" id="phaseDropdown" aria-label="Select Phase" class="form-select form-select-solid form-select-lg fw-semibold" placeholder="Select phase.." data-control="select2">
+                                            <option value="" selected disabled>Select phase...</option>
                                         </select>
                                     </div>
                                     <!--end::Col-->
@@ -119,6 +121,7 @@
                                         </select>
                                         @else
                                         <select name="plot_id" id="plotDropdown" aria-label="Select Plot Number" class="form-select form-select-solid form-select-lg fw-semibold" placeholder="Select plot number.." data-control="select2">
+                                            <option value="" selected disabled>Select plot...</option>
                                         </select>
                                         @endif
                                     </div>    
@@ -257,11 +260,11 @@
                                 <!--begin::Input group per month installment-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Monthly Installment</label>
+                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Total Amount</label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="total_amount" class="form-control form-control-lg form-control-solid" placeholder="Monthly Installment" value="{{ $bookingData->total_amount ?? '' }}" />
+                                        <input type="number" step="any" name="total_amount" id="total_amount" class="form-control form-control-lg form-control-solid" placeholder="Total Amount" value="{{ $bookingData->total_amount ?? '' }}" />
                                         
                                     </div>
                                     <!--end::Col-->
@@ -293,6 +296,78 @@
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Input group advance amount-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                        <span class="required">Payment Plan</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate role">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                    </label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <select name="payment_plan" id="paymentPlan" aria-label="Select Payment Plan" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select Payment Plan...">
+                                            <option value="">Select Payment Plan...</option>
+                                            <option value="full_cash">Full Cash</option>
+                                            <option value="installment">Installment</option>
+                                            <option value="part_payment">Part Payment</option>
+                                        </select>
+                                    </div>    
+                                </div>
+
+                                <div id="fullCashInputs" style="display: none;">
+                                    <!-- Full cash specific fields -->
+                                </div>
+
+                                <div class="row mb-6" id="installmentInputs" style="display: none;">
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6 mb-9">Number of Installments</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="number" id="num_of_installments" name="num_of_installments" class="form-control form-control-lg form-control-solid" placeholder="Number of Installment" />
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--begin::Label-->
+                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Installment Amount</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-8 fv-row">
+                                        <input type="number" step="any" name="installment_amount" id="installment_amount" class="form-control form-control-lg form-control-solid" placeholder="Installment Amount" {{ 'readonly' }} />
+                                    </div>
+                                    <!--end::Col-->
+                                    <div class="row">
+                                        <!--begin::Label-->
+                                        <label class="col-lg-4 col-form-label fw-semibold fs-6 mt-10">Installment Table</label>
+                                        <!--end::Label-->
+                                    </div>
+                                </div>
+
+                                <div id="partPaymentInputs" style="display: none;">
+                                    <!-- Part payment specific fields -->
+                                </div>
+                                <div class="card-body pt-0">
+                                    <!-- Installment Table -->
+                                    <table id="installmentTable" class="table align-middle table-row-dashed fs-6 gy-5" style="display: none;">
+                                        <thead>
+                                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 ">
+                                                <th class="min-w-125px">Amount</th>
+                                                <th class="min-w-125px">Due Date</th>
+                                                <th class="min-w-125px">Intimation Date</th>
+                                                <th class="min-w-125px">Status</th>
+                                                <th class="min-w-125px">Mode</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="fw-semibold text-gray-600">
+                                            <!-- Installment rows will be dynamically inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <!--end::Card body-->
                             <!--begin::Actions-->

@@ -1,7 +1,10 @@
 "use strict";
 
 var KTNewBooking = (function () {
-    var t, e, r;
+    var t, e, r, installmentAmount, numberOfInstallments, totalAmount;
+    // var completionDateString = document.querySelector('[data-completion-date]').getAttribute('data-completion-date');
+    // var completionDate = new Date(completionDateString); // Create a Date object
+    var numberOfInstallmentsInput = document.getElementById('num_of_installments');
     return {
         init: function () {
             t = document.querySelector("#kt_new_booking_form");
@@ -65,13 +68,12 @@ var KTNewBooking = (function () {
                         },
                         dataType: 'json',
                         success: function(result){
-                            $('#phaseDropdown').html('<option value="">Select phase...</option>');
-                            
+                            $('#phaseDropdown').find('option:not(:first)').remove();                            
                             $.each(result, function(index, phase){ 
                                 if(phase.id==selectedPhase)
-                                    var option = $('<option>').val(phase.id).text(phase.phase_title).attr('selected','selected');
+                                    var option = $('<option>').val(phase.id).text(phase.phase_title).attr('selected','selected').attr('data-completion-date', phase.completion_date);
                                 else
-                                    var option = $('<option>').val(phase.id).text(phase.phase_title);
+                                    var option = $('<option>').val(phase.id).text(phase.phase_title).attr('data-completion-date', phase.completion_date);
                                 
                                 $('#phaseDropdown').append(option);
                             });
@@ -89,8 +91,7 @@ var KTNewBooking = (function () {
                         },
                         dataType: 'json',
                         success: function(result){
-                            $('#plotDropdown').html('<option value="">Select plot number...</option>');
-                            
+                            $('#plotDropdown').find('option:not(:first)').remove();      
                             $.each(result, function(index, plot){ 
                                 // if(plot.id==selectedPlot)
                                 //     var option = $('<option>').val(plot.id).text(plot.plot_no).attr('selected','selected');
@@ -102,8 +103,93 @@ var KTNewBooking = (function () {
                         }
                     });
                 }
+
+                $('#paymentPlan').on('change', function(){
+                    var paymentPlan = $(this).val();
+                    $('#fullCashInputs, #installmentInputs, #partPaymentInputs, #installmentTable').hide();
+                    if (paymentPlan === 'full_cash') {
+                        $('#fullCashInputs').show();
+                    } else if (paymentPlan === 'installment') {
+                        $('#installmentInputs').show();
+                        $('#installmentTable').show();
+                    } else if (paymentPlan === 'part_payment') {
+                        $('#partPaymentInputs').show();
+                    }
+                });
+
+                numberOfInstallmentsInput.addEventListener('focusout', (e) => {
+                    var projectCompletionDate = new Date($('#phaseDropdown').find('option:selected').attr('data-completion-date'));
+                    var numberOfMonthsUntilCompletion = monthDiff(new Date(), projectCompletionDate);
+                    numberOfInstallments = parseInt(numberOfInstallmentsInput.value, 10);
+
+                    if (numberOfInstallments > numberOfMonthsUntilCompletion) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: `Select less than ${numberOfMonthsUntilCompletion} installments`,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                numberOfInstallmentsInput.value = '';
+                            }
+                        });                        
+                    } else {
+                        totalAmount = parseFloat(document.getElementById('total_amount').value, 10);
+                        installmentAmount = totalAmount/parseFloat(numberOfInstallments,10);
+                        document.getElementById('installment_amount').value = installmentAmount;
+                        generateInstallmentTable(numberOfInstallments, installmentAmount, new Date());
+                    }
+                });                
+                // Function to calculate the difference in full months between two dates
+                function monthDiff(d1, d2) {
+                    var months = (d2.getFullYear() - d1.getFullYear()) * 12;
+                    months -= d1.getMonth();
+                    months += d2.getMonth();
+                    return months <= 0 ? 0 : months;
+                }
                 
             });
+
+            function generateInstallmentTable(numberOfInstallments, installmentAmount, bookingDate) {
+                let tableBody = $('#installmentTable tbody');
+                tableBody.empty(); // Clear existing rows
+            
+                for (let i = 0; i < numberOfInstallments; i++) {
+                    let dueDate = new Date(bookingDate);
+                    dueDate.setMonth(dueDate.getMonth() + i); // Increment month by i
+
+                    let intimationDate = new Date(dueDate.getTime());
+                    intimationDate.setDate(dueDate.getDate() + 5);
+                    
+                    let row = `
+                        <tr>
+                            <td><input class="form-control form-control-lg form-control-solid" type="text" name="amounts[]" value="${installmentAmount.toFixed(2)}" ${i === 0 ? 'readonly' : ''}></td>
+                            <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly></td>
+                            <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly></td>
+                            <td>
+                                <select name="statuses[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
+                                    <option value="pending">Pending</option>
+                                    <option value="paid">Paid</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="payment_modes[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
+                                    <option value="cash">Cash</option>
+                                    <option value="check">Check</option>
+                                    <option value="online">Online</option>
+                                </select>
+                            </td>
+                        </tr>
+                    `;
+                    
+                    tableBody.append(row);
+                }
+            }
+            
+            // Call this function when booking is created/updated
+            // Pass the actual number of installments, total amount, and booking date
+            // generateInstallmentTable(24, 4321434343, new Date());
+            
             
             e.addEventListener("click", function (a) {
                 a.preventDefault();
@@ -132,9 +218,7 @@ var KTNewBooking = (function () {
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            username = document.getElementById('username').value;
-                                            window.location.href = t.getAttribute('data-kt-redirect'); // Replace with your desired path
-                                            
+                                            window.location.href = t.getAttribute('data-kt-redirect');
                                         }
                                     });
                                 }

@@ -48,11 +48,12 @@ class BookingController extends Controller
                 $bookingData = DB::table('booking')
                 ->join('customer as c', 'c.id', '=', 'booking.customer_id')
                 ->join('projects as pr', 'pr.id', '=', 'booking.project_id')
+                ->join('phase as ph', 'ph.id', '=', 'booking.phase_id')
                 ->join('plots_inventory as pl', 'pl.id', '=', 'booking.plot_id')
                 ->select(
                     'booking.*', 
                     'c.name', 'c.cnic_number', 'c.address', 'c.customer_image', 'c.mobile_number_1', // Alias to avoid column name collision
-                    // 'pr.project_phase',
+                    'ph.completion_date',
                     'pl.plot_no'
                 )
                 ->where('booking.id', $id)
@@ -93,7 +94,7 @@ class BookingController extends Controller
         $project_id = $req->project_id;
         $phases = DB::table('phase')
                     ->where('project_id', $project_id)
-                    ->get(['id', 'phase_title']);
+                    ->get(['id', 'phase_title', 'completion_date']);
         return response()->json($phases);
     }
 
@@ -101,6 +102,7 @@ class BookingController extends Controller
     {
         $bookingData = [
             'project_id' => $req->input('project_id'),
+            'phase_id' => $req->input('phase_id'),
             'plot_id' => $req->input('plot_id'),
             'unit_cost' => $req->input('unit_cost'),
             'extra_charges' => $req->input('extra_charges'),
@@ -108,7 +110,9 @@ class BookingController extends Controller
             'total_amount' => $req->input('total_amount'),
             'token_amount' => $req->input('token_amount'),
             'advance_amount' => $req->input('advance_amount'),
+            'payment_plan' => $req->input('payment_plan'),
             'username' => session()->get('username'),
+            'created_on' => now(),
         ];
         return $bookingData; 
     }
@@ -136,6 +140,29 @@ class BookingController extends Controller
         return $customerData;
     }
 
+    public function storeInstallments(Request $request, $bookingId, $customerId)
+    {
+        $installmentsData = [];
+
+        foreach ($request->amounts as $index => $amount) {
+            $installmentsData[] = [
+                'booking_id' => $bookingId,
+                'project_id' => $request->input('project_id'),
+                'phase_id' => $request->input('phase_id'),
+                'plot_id' => $request->input('plot_id'),
+                'customer_id' => $customerId,
+                'amount' => $amount,
+                'due_date' => $request->due_dates[$index],
+                'installment_status' => $request->statuses[$index],
+                'payment_mode' => $request->payment_modes[$index],
+                'intimation_date' => $request->intimation_dates[$index],
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+        DB::table('installment')->insert($installmentsData);
+    }
+
     public function addBooking(Request $req)
     {
         $customerData =$this->getCustomerData($req);
@@ -143,17 +170,19 @@ class BookingController extends Controller
         DB::beginTransaction();
         try
         {
-            // if(DB::table('booking')->where('plot_id', $bookingData['plot_id'])->first())
-            // {
-            //     return response()->json(['error' => 'Plot already booked']);
-            // }
-            // else
-            
+            if(DB::table('booking')->where('plot_id', $bookingData['plot_id'])->first())
+            {
+                return response()->json(['error' => 'Plot already booked']);
+            }
+            else
+            {
                 $customerId = DB::table('customer')->insertGetId($customerData);
                 $bookingData['customer_id'] = $customerId;
-                DB::table('booking')->insert($bookingData);
+                $bookingId = DB::table('booking')->insertGetId($bookingData);
+                $this->storeInstallments($req, $bookingId, $customerId);
                 DB::commit();
                 return response()->json(['success' => 'booking added successfully']);
+            }
             
         }
         catch (\Exception $e) 
@@ -162,6 +191,9 @@ class BookingController extends Controller
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }    
     }
+
+    
+
     public function updateBooking(Request $req)
     {   
         $bookingData = $this->getBookingData($req);
