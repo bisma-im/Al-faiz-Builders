@@ -53,7 +53,7 @@ class BookingController extends Controller
                 ->select(
                     'booking.*', 
                     'c.name', 'c.cnic_number', 'c.address', 'c.customer_image', 'c.mobile_number_1', // Alias to avoid column name collision
-                    'ph.completion_date',
+                    'ph.completion_date', 'ph.phase_title',
                     'pl.plot_no'
                 )
                 ->where('booking.id', $id)
@@ -111,6 +111,8 @@ class BookingController extends Controller
             'token_amount' => $req->input('token_amount'),
             'advance_amount' => $req->input('advance_amount'),
             'payment_plan' => $req->input('payment_plan'),
+            'number_of_installments' => $req->input('num_of_installments'),
+            'installment_amount' => $req->input('installment_amount'),
             'username' => session()->get('username'),
             'created_on' => now(),
         ];
@@ -140,28 +142,76 @@ class BookingController extends Controller
         return $customerData;
     }
 
-    public function storeInstallments(Request $request, $bookingId, $customerId)
-    {
+    public function getInstallmentsData(Request $request, $bookingId, $customerId) {
         $installmentsData = [];
-
-        foreach ($request->amounts as $index => $amount) {
-            $installmentsData[] = [
-                'booking_id' => $bookingId,
-                'project_id' => $request->input('project_id'),
-                'phase_id' => $request->input('phase_id'),
-                'plot_id' => $request->input('plot_id'),
-                'customer_id' => $customerId,
-                'amount' => $amount,
-                'due_date' => $request->due_dates[$index],
-                'installment_status' => $request->statuses[$index],
-                'payment_mode' => $request->payment_modes[$index],
-                'intimation_date' => $request->intimation_dates[$index],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+        $installmentIds = $request->input('installment_ids', []);
+    
+        $amounts = $request->input('amounts', []);
+        $dueDates = $request->input('due_dates', []);
+        $statuses = $request->input('statuses', []);
+        $paymentModes = $request->input('payment_modes', []);
+        $intimationDates = $request->input('intimation_dates', []);
+    
+        foreach ($installmentIds as $key => $installmentId) {
+            // Initialize variables to avoid undefined index error
+            $amount = $amounts[$key];
+            $dueDate = $dueDates[$key];
+            $status = $statuses[$key]; // Default to 'pending' if not set
+            $paymentMode = $paymentModes[$key]; // Default to 'cash' if not set
+            $intimationDate = $intimationDates[$key];
+    
+            if (!empty($installmentId)) {
+                // Update existing installment
+                DB::table('installment')
+                    ->where('id', $installmentId)
+                    ->update([
+                        'amount' => $amount,
+                        'due_date' => $dueDate,
+                        'installment_status' => $status,
+                        'payment_mode' => $paymentMode,
+                        'intimation_date' => $intimationDate,
+                        'updated_at' => now(),
+                    ]);
+            } else {
+                // Prepare data for new installment
+                $installmentsData[] = [
+                    'booking_id' => $bookingId,
+                    'project_id' => $request->input('project_id'),
+                    'phase_id' => $request->input('phase_id'),
+                    'plot_id' => $request->input('plot_id'),
+                    'customer_id' => $customerId,
+                    'amount' => $amount,
+                    'due_date' => $dueDate,
+                    'installment_status' => $status,
+                    'payment_mode' => $paymentMode,
+                    'intimation_date' => $intimationDate,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
         }
-        DB::table('installment')->insert($installmentsData);
+    
+        // Insert any new installments
+        if (!empty($installmentsData)) {
+            DB::table('installment')->insert($installmentsData);
+        }
     }
+    
+    
+
+
+    public function getInstallments($bookingId) {
+        $installments = DB::table('installment')
+            ->where('booking_id', $bookingId)
+            ->orderBy('due_date', 'asc')
+            ->get();
+    
+        return response()->json([
+            'success' => true,
+            'data' => $installments,
+        ]);
+    }
+    
 
     public function addBooking(Request $req)
     {
@@ -179,7 +229,7 @@ class BookingController extends Controller
                 $customerId = DB::table('customer')->insertGetId($customerData);
                 $bookingData['customer_id'] = $customerId;
                 $bookingId = DB::table('booking')->insertGetId($bookingData);
-                $this->storeInstallments($req, $bookingId, $customerId);
+                $installmentsData = $this->getInstallmentsData($req, $bookingId, $customerId);
                 DB::commit();
                 return response()->json(['success' => 'booking added successfully']);
             }
@@ -198,6 +248,7 @@ class BookingController extends Controller
     {   
         $bookingData = $this->getBookingData($req);
         $customerData =$this->getCustomerData($req);
+
         $id = $req->input('id');
         $customerId = $req->input('customer_id');
 
@@ -205,6 +256,7 @@ class BookingController extends Controller
         try {
             DB::table('customer')->where('id', $customerId)->update($customerData);
             DB::table('booking')->where('id', $id)->update($bookingData);
+            $this->getInstallmentsData($req, $id, $customerId);
             DB::commit();
             return response()->json(['success' => 'Booking updated successfully']);
         } catch (\Exception $e) {

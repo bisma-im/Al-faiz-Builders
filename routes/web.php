@@ -78,6 +78,8 @@ Route::get('/bookings/{id}', [BookingController::class, 'showBookingForm'])->nam
 Route::post('/update-booking', [BookingController::class, 'updateBooking'])->name('updateBooking');
 Route::post('/get-plots-for-booking', [BookingController::class, 'getPlotsForBooking']);
 Route::post('/get-phases-for-booking', [BookingController::class, 'getPhasesForBooking']);
+Route::get('/get-installments/{bookingId}', [BookingController::class, 'getInstallments']);
+
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');
 Route::get('/accounts', [AccountsController::class, 'showAccounts'])->name('showAccounts');

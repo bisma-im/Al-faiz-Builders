@@ -1,10 +1,152 @@
 "use strict";
 
 var KTNewBooking = (function () {
-    var t, e, r, installmentAmount, numberOfInstallments, totalAmount;
-    // var completionDateString = document.querySelector('[data-completion-date]').getAttribute('data-completion-date');
-    // var completionDate = new Date(completionDateString); // Create a Date object
+    var t, e, r, installmentAmount, numberOfInstallments, totalAmount, bookingId;
     var numberOfInstallmentsInput = document.getElementById('num_of_installments');
+
+    function updatePaymentPlanDisplay() {
+        var paymentPlan = $('#paymentPlan').val();
+        $('#fullCashInputs, #installmentInputs, #partPaymentInputs, #installmentTable').hide();
+        if (paymentPlan === 'full_cash') {
+            $('#fullCashInputs').show();
+        } else if (paymentPlan === 'installment') {
+            $('#installmentInputs, #installmentTable').show();
+        } else if (paymentPlan === 'part_payment') {
+            $('#partPaymentInputs').show();
+        }
+    }
+
+    function monthDiff(d1, d2) {
+        var months = (d2.getFullYear() - d1.getFullYear()) * 12;
+        months -= d1.getMonth();
+        months += d2.getMonth();
+        return months <= 0 ? 0 : months;
+    }
+
+    function generateInstallmentTable(numberOfInstallments, installmentAmount, bookingDate) {
+        let tableBody = $('#installmentTable tbody');
+        tableBody.empty(); // Clear existing rows
+    
+        for (let i = 0; i < numberOfInstallments; i++) {
+            let dueDate = new Date(bookingDate);
+            dueDate.setMonth(dueDate.getMonth() + i); // Increment month by i
+
+            let intimationDate = new Date(dueDate.getTime());
+            intimationDate.setDate(dueDate.getDate() + 5);
+            
+            let row = `
+                <tr>
+                    <td><input class="form-control form-control-lg form-control-solid" type="text" name="amounts[]" value="${installmentAmount.toFixed(2)}" ${i === 0 ? 'readonly' : ''}></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly></td>
+                    <td>
+                        <select name="statuses[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
+                            <option value="pending">Pending</option>
+                            <option value="paid">Paid</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="payment_modes[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
+                            <option value="cash">Cash</option>
+                            <option value="check">Check</option>
+                            <option value="online">Online</option>
+                        </select>
+                    </td>
+                </tr>
+            `;
+            
+            tableBody.append(row);
+        }
+    }
+
+    function handleInstallments(){
+        var projectCompletionDate = new Date($('#phaseDropdown').find('option:selected').attr('data-completion-date'));
+        var numberOfMonthsUntilCompletion = monthDiff(new Date(), projectCompletionDate);
+        numberOfInstallments = parseInt(numberOfInstallmentsInput.value, 10);
+
+        if (numberOfInstallments > numberOfMonthsUntilCompletion) {
+            Swal.fire({
+                title: 'Error!',
+                text: `Select less than ${numberOfMonthsUntilCompletion} installments`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    numberOfInstallmentsInput.value = '';
+                }
+            });                        
+        } else {
+            totalAmount = parseFloat(document.getElementById('total_amount').value, 10);
+            installmentAmount = totalAmount/parseFloat(numberOfInstallments,10);
+            document.getElementById('installment_amount').value = installmentAmount;
+            generateInstallmentTable(numberOfInstallments, installmentAmount, new Date());
+        }
+    }
+
+    function renderInstallments(installments) {
+        let tableBody = $('#installmentTable tbody');
+        tableBody.empty(); // Clear the table first
+    
+        installments.forEach(installment => {
+            // Determine if dropdowns should be disabled
+            let isPaid = installment.installment_status === 'paid';
+            let statusDropdownDisabledAttribute = isPaid ? 'disabled' : '';
+            let paymentModeDropdownDisabledAttribute = isPaid ? 'disabled' : '';
+
+            // Generate the status and payment mode options with the correct option selected
+            let statusOptions = `
+                <option value="pending" ${installment.installment_status === 'pending' ? 'selected' : ''}>Pending</option>
+                <option value="paid" ${isPaid ? 'selected' : ''}>Paid</option>
+            `;
+            let paymentModeOptions = `
+                <option value="cash" ${installment.payment_mode === 'cash' ? 'selected' : ''}>Cash</option>
+                <option value="check" ${installment.payment_mode === 'check' ? 'selected' : ''}>Check</option>
+                <option value="online" ${installment.payment_mode === 'online' ? 'selected' : ''}>Online</option>
+            `;
+    
+            // Assuming installment is an object with amount, due_date, etc.
+            let row = `
+                <tr>
+                    <input type="hidden" name="installment_ids[]" value="${installment.id || ''}">
+                    <td><input type="text" name="amounts[]" value="${Number(installment.amount).toFixed(2)}" class="form-control"></td>
+                    <td><input type="date" name="due_dates[]" value="${installment.due_date}" class="form-control"></td>
+                    <td><input type="date" name="intimation_dates[]" value="${installment.intimation_date}" class="form-control"></td>
+                    <td>
+                        <select name="statuses[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" ${statusDropdownDisabledAttribute}>
+                            ${statusOptions}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="payment_modes[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" ${paymentModeDropdownDisabledAttribute}>
+                            ${paymentModeOptions}
+                        </select>
+                    </td>
+                </tr>
+            `;
+            tableBody.append(row);
+        });
+    }
+    
+    function fetchInstallments(bookingId) {
+        $.ajax({
+            url: `/get-installments/${bookingId}`,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    renderInstallments(response.data);
+                } else {
+                    // Handle error
+                    console.error('Failed to fetch installments.');
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle request error
+                console.error('Error fetching installments:', error);
+            }
+        });
+    }
+        
+
     return {
         init: function () {
             t = document.querySelector("#kt_new_booking_form");
@@ -12,7 +154,7 @@ var KTNewBooking = (function () {
             var isLocked = document.getElementById('isLocked').value; 
             console.log(isLocked);
             function makeInputsReadonly() {
-                $(t).find('input, select, textarea, button[type=submit]').attr('readonly', true).attr('disabled', 'disabled');
+                $(t).find('input, select, textarea').attr('readonly', true).attr('disabled', 'disabled');
             };
             r = FormValidation.formValidation(t, {
                 fields: {
@@ -40,6 +182,11 @@ var KTNewBooking = (function () {
             $(document).ready(function(){
                 var selectedPlot = parseInt($('#bookingForm').data('selected-plot'), 10);
                 var selectedPhase = $('#bookingForm').data('selected-phase');
+                updatePaymentPlanDisplay();
+                bookingId = $('#id').val(); 
+                if(bookingId) {
+                    fetchInstallments(bookingId);
+                }
                 $('#projectDropdown').on('change', function(e){
                     var projectId = e.target.value;
                     loadPhases(projectId);
@@ -103,93 +250,9 @@ var KTNewBooking = (function () {
                         }
                     });
                 }
-
-                $('#paymentPlan').on('change', function(){
-                    var paymentPlan = $(this).val();
-                    $('#fullCashInputs, #installmentInputs, #partPaymentInputs, #installmentTable').hide();
-                    if (paymentPlan === 'full_cash') {
-                        $('#fullCashInputs').show();
-                    } else if (paymentPlan === 'installment') {
-                        $('#installmentInputs').show();
-                        $('#installmentTable').show();
-                    } else if (paymentPlan === 'part_payment') {
-                        $('#partPaymentInputs').show();
-                    }
-                });
-
-                numberOfInstallmentsInput.addEventListener('focusout', (e) => {
-                    var projectCompletionDate = new Date($('#phaseDropdown').find('option:selected').attr('data-completion-date'));
-                    var numberOfMonthsUntilCompletion = monthDiff(new Date(), projectCompletionDate);
-                    numberOfInstallments = parseInt(numberOfInstallmentsInput.value, 10);
-
-                    if (numberOfInstallments > numberOfMonthsUntilCompletion) {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: `Select less than ${numberOfMonthsUntilCompletion} installments`,
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                numberOfInstallmentsInput.value = '';
-                            }
-                        });                        
-                    } else {
-                        totalAmount = parseFloat(document.getElementById('total_amount').value, 10);
-                        installmentAmount = totalAmount/parseFloat(numberOfInstallments,10);
-                        document.getElementById('installment_amount').value = installmentAmount;
-                        generateInstallmentTable(numberOfInstallments, installmentAmount, new Date());
-                    }
-                });                
-                // Function to calculate the difference in full months between two dates
-                function monthDiff(d1, d2) {
-                    var months = (d2.getFullYear() - d1.getFullYear()) * 12;
-                    months -= d1.getMonth();
-                    months += d2.getMonth();
-                    return months <= 0 ? 0 : months;
-                }
-                
-            });
-
-            function generateInstallmentTable(numberOfInstallments, installmentAmount, bookingDate) {
-                let tableBody = $('#installmentTable tbody');
-                tableBody.empty(); // Clear existing rows
-            
-                for (let i = 0; i < numberOfInstallments; i++) {
-                    let dueDate = new Date(bookingDate);
-                    dueDate.setMonth(dueDate.getMonth() + i); // Increment month by i
-
-                    let intimationDate = new Date(dueDate.getTime());
-                    intimationDate.setDate(dueDate.getDate() + 5);
-                    
-                    let row = `
-                        <tr>
-                            <td><input class="form-control form-control-lg form-control-solid" type="text" name="amounts[]" value="${installmentAmount.toFixed(2)}" ${i === 0 ? 'readonly' : ''}></td>
-                            <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly></td>
-                            <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly></td>
-                            <td>
-                                <select name="statuses[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
-                                    <option value="pending">Pending</option>
-                                    <option value="paid">Paid</option>
-                                </select>
-                            </td>
-                            <td>
-                                <select name="payment_modes[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
-                                    <option value="cash">Cash</option>
-                                    <option value="check">Check</option>
-                                    <option value="online">Online</option>
-                                </select>
-                            </td>
-                        </tr>
-                    `;
-                    
-                    tableBody.append(row);
-                }
-            }
-            
-            // Call this function when booking is created/updated
-            // Pass the actual number of installments, total amount, and booking date
-            // generateInstallmentTable(24, 4321434343, new Date());
-            
+                $('#paymentPlan').on('change', updatePaymentPlanDisplay);
+                numberOfInstallmentsInput.addEventListener('focusout', handleInstallments);                
+            });            
             
             e.addEventListener("click", function (a) {
                 a.preventDefault();
@@ -198,7 +261,7 @@ var KTNewBooking = (function () {
                         e.setAttribute("data-kt-indicator", "on");
                             e.disabled = true;
                             var formData = new FormData(t);
-                            var bookingId = formData.get('id');
+                            bookingId = $('#id').val(); 
                             var url = bookingId ? '/update-booking' : '/add-booking';
                             fetch(url, {
                                 method: 'POST',

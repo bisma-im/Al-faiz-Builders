@@ -276,7 +276,7 @@
                                     <th class="min-w-125px">Project</th>
                                     <th class="min-w-125px">Plot No</th>
                                     <th class="min-w-125px">Base Unit Cost</th>
-                                    <th class="min-w-125px">Monthly Installment</th>
+                                    <th class="min-w-125px">Total Amount</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
@@ -296,7 +296,7 @@
                                     <td>{{ $booking->plot_no }}</td>
                                     {{-- <td data-filter="mastercard"> --}}
                                     <td>{{ $booking->unit_cost }}</td>
-                                    <td>{{ $booking->monthly_installment }}</td>
+                                    <td>{{ $booking->total_amount }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>

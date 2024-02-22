@@ -30,7 +30,7 @@
                     <!--begin::Content-->
                     <div id="kt_new_account" class="collapse show">
                         <!--begin::Form-->
-                        <form id="kt_new_booking_form" class="form" data-kt-redirect="{{ route('showBookings', ['username' => session('username')]) }}" action="{{ route('addBooking') }}" method="POST">
+                        <form id="kt_new_booking_form" class="form" data-kt-redirect="{{ route('showBookings') }}" action="{{ route('addBooking') }}" method="POST">
                         {{-- <form id="kt_new_booking_form" class="form" > --}}
                             @csrf
                             <!--begin::Card body-->
@@ -90,9 +90,17 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
+                                        @if ($isLockedMode)
+                                        <select name="selectedPhase" id="selectedPhase" class="form-select form-select-solid form-select-lg fw-semibold" placeholder="Select phase.." data-control="select2">
+                                            <option value="{{ $bookingData->phase_id }}" selected>
+                                                {{ $bookingData->phase_title }}
+                                            </option>
+                                        </select>
+                                        @else
                                         <select name="phase_id" id="phaseDropdown" aria-label="Select Phase" class="form-select form-select-solid form-select-lg fw-semibold" placeholder="Select phase.." data-control="select2">
                                             <option value="" selected disabled>Select phase...</option>
                                         </select>
+                                        @endif
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -313,9 +321,9 @@
                                     <div class="col-lg-8 fv-row">
                                         <select name="payment_plan" id="paymentPlan" aria-label="Select Payment Plan" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select Payment Plan...">
                                             <option value="">Select Payment Plan...</option>
-                                            <option value="full_cash">Full Cash</option>
-                                            <option value="installment">Installment</option>
-                                            <option value="part_payment">Part Payment</option>
+                                            <option value="full_cash" {{ (isset($bookingData) && $bookingData->payment_plan == 'full_cash') ? 'selected' : '' }}>Full Cash</option>
+                                            <option value="installment" {{ (isset($bookingData) && $bookingData->payment_plan == 'installment') ? 'selected' : '' }}>Installment</option>
+                                            <option value="part_payment" {{ (isset($bookingData) && $bookingData->payment_plan == 'part_payment') ? 'selected' : '' }}>Part Payment</option>
                                         </select>
                                     </div>    
                                 </div>
@@ -330,7 +338,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" id="num_of_installments" name="num_of_installments" class="form-control form-control-lg form-control-solid" placeholder="Number of Installment" />
+                                        <input type="number" id="num_of_installments" name="num_of_installments" class="form-control form-control-lg form-control-solid" placeholder="Number of Installment" value="{{ $bookingData->number_of_installments ?? '' }}" />
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Label-->
@@ -338,7 +346,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="installment_amount" id="installment_amount" class="form-control form-control-lg form-control-solid" placeholder="Installment Amount" {{ 'readonly' }} />
+                                        <input type="number" step="any" name="installment_amount" id="installment_amount" class="form-control form-control-lg form-control-solid" placeholder="Installment Amount" value="{{ $bookingData->installment_amount ?? '' }}" {{ 'readonly' }} />
                                     </div>
                                     <!--end::Col-->
                                     <div class="row">
