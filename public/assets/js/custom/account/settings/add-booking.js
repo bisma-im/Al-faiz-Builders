@@ -89,14 +89,14 @@ var KTNewBooking = (function () {
     
         installments.forEach(installment => {
             // Determine if dropdowns should be disabled
-            let isPaid = installment.installment_status === 'paid';
-            let statusDropdownDisabledAttribute = isPaid ? 'disabled' : '';
-            let paymentModeDropdownDisabledAttribute = isPaid ? 'disabled' : '';
-
-            // Generate the status and payment mode options with the correct option selected
+            let isPending = installment.installment_status === 'pending';
+            let statusDropdownDisabledAttribute = isPending ? '' : 'disabled';
+            let paymentModeDropdownDisabledAttribute = isPending ? '' : 'disabled';
+    
+            // Generate the status and payment mode options
             let statusOptions = `
                 <option value="pending" ${installment.installment_status === 'pending' ? 'selected' : ''}>Pending</option>
-                <option value="paid" ${isPaid ? 'selected' : ''}>Paid</option>
+                <option value="paid" ${installment.installment_status === 'paid' ? 'selected' : ''}>Paid</option>
             `;
             let paymentModeOptions = `
                 <option value="cash" ${installment.payment_mode === 'cash' ? 'selected' : ''}>Cash</option>
@@ -104,7 +104,10 @@ var KTNewBooking = (function () {
                 <option value="online" ${installment.payment_mode === 'online' ? 'selected' : ''}>Online</option>
             `;
     
-            // Assuming installment is an object with amount, due_date, etc.
+            // Hidden inputs to include disabled values in submission
+            let hiddenStatusInput = isPending ? '' : `<input type="hidden" name="statuses[]" value="${installment.installment_status}">`;
+            let hiddenPaymentModeInput = isPending ? '' : `<input type="hidden" name="payment_modes[]" value="${installment.payment_mode}">`;
+    
             let row = `
                 <tr>
                     <input type="hidden" name="installment_ids[]" value="${installment.id || ''}">
@@ -115,17 +118,20 @@ var KTNewBooking = (function () {
                         <select name="statuses[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" ${statusDropdownDisabledAttribute}>
                             ${statusOptions}
                         </select>
+                        ${hiddenStatusInput}
                     </td>
                     <td>
                         <select name="payment_modes[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" ${paymentModeDropdownDisabledAttribute}>
                             ${paymentModeOptions}
                         </select>
+                        ${hiddenPaymentModeInput}
                     </td>
                 </tr>
             `;
             tableBody.append(row);
         });
     }
+    
     
     function fetchInstallments(bookingId) {
         $.ajax({
