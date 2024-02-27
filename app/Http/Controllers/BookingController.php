@@ -17,8 +17,13 @@ class BookingController extends Controller
             ->join('customer as c', 'c.id', '=', 'booking.customer_id')
             ->join('projects as pr', 'pr.id', '=', 'booking.project_id')
             ->join('plots_inventory as pl', 'pl.id', '=', 'booking.plot_id')
-            ->select('booking.id', 'c.cnic_number', 'pr.project_title','pl.plot_no', 'booking.unit_cost', 'booking.total_amount')
-            ->where('username', $sessionUsername)
+            ->join('installment as i', 'booking.id', '=', 'i.booking_id')
+            ->select('booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title','pl.plot_no', 'booking.total_amount',
+                    DB::raw('SUM(CASE WHEN i.installment_status = \'paid\' THEN i.amount ELSE 0 END) as received_amount'),
+                    DB::raw('SUM(CASE WHEN i.installment_status = \'pending\' THEN i.amount ELSE 0 END) as pending_amount'))
+            
+            ->where('booking.username', $sessionUsername)
+            ->groupby('booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title','pl.plot_no', 'booking.total_amount')
             ->get();
             return view('pages.bookings', ['bookingData' => $bookings]);
         }
@@ -36,7 +41,6 @@ class BookingController extends Controller
             $bookingData = null;
             $isLockedMode = null;
             $customers = DB::table('customer')
-                ->select('id', 'name', 'cnic_number')
                 ->get();
 
             $projects = DB::table('projects')
@@ -52,7 +56,8 @@ class BookingController extends Controller
                 ->join('plots_inventory as pl', 'pl.id', '=', 'booking.plot_id')
                 ->select(
                     'booking.*', 
-                    'c.name', 'c.cnic_number', 'c.address', 'c.customer_image', 'c.mobile_number_1', // Alias to avoid column name collision
+                    'c.name', 'c.cnic_number','c.address','c.customer_image','c.mobile_number_1',
+                    'c.next_of_kin_name', 'c.next_of_kin_relation', 'c.next_of_kin_cnic', 'c.next_of_kin_address', 'c.next_of_kin_mobile_number_1',
                     'ph.completion_date', 'ph.phase_title',
                     'pl.plot_no'
                 )
@@ -67,6 +72,23 @@ class BookingController extends Controller
             return view('pages.add-booking', compact('customers','projects','bookingData','isLockedMode'));
         }
         catch (\Exception $e) 
+        {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function getCustomer($customerId)
+    {
+        try
+        {
+            $customer = DB::table('customer')
+            ->select('id', 'name', 'cnic_number','address','customer_image','mobile_number_1',
+            'next_of_kin_name', 'next_of_kin_relation', 'next_of_kin_cnic', 'next_of_kin_address', 'next_of_kin_mobile_number_1')
+            ->where('id',$customerId)
+            ->get();
+
+            return response()->json(['success' => true,'data' => $customer,], 200);
+        } catch (\Exception $e) 
         {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -126,10 +148,12 @@ class BookingController extends Controller
             'address' => $req->input('customer_address'),
             'mobile_number_1' => $req->input('mobile_no'),
             'cnic_number' => $req->input('customer_cnic'),
+            'next_of_kin_name' => $req->input('nok_name'),
+            'next_of_kin_relation' => $req->input('nok_relation'),
+            'next_of_kin_cnic' => $req->input('nok_cnic'),
+            'next_of_kin_address' => $req->input('nok_address'),
+            'next_of_kin_mobile_number_1' => $req->input('nok_mobile_no'),
         ];
-        if (!$req->input('id')) {
-            $customerData['customer_image'] = 'default.jpg';
-        }
         
         if ($req->hasFile('avatar')) {
             $avatar = $req->file('avatar');
@@ -137,6 +161,54 @@ class BookingController extends Controller
             $destinationPath = public_path('images/customer-images');
             $avatar->move($destinationPath, $avatarName);
             $customerData['customer_image'] = $avatarName;
+        } else if ($req->input('existing_customer_image') != 'default.svg' && !$req->hasFile('avatar')) {
+            $customerData['customer_image'] = $req->input('existing_customer_image');
+        } else {
+            if (!$req->input('customer_id_dropdown')) {
+                $customerData['customer_image'] = 'default.svg';
+            }
+        }
+
+        if ($req->hasFile('cnic_image')) {
+            $cnicImage = $req->file('cnic_image');
+            $cnicImageName = time() . '.' . $cnicImage->getClientOriginalExtension();
+            $destinationPath = public_path('images/customer/customer-cnic');
+            $cnicImage->move($destinationPath, $cnicImageName);
+            $customerData['customer_cnic_image'] = $cnicImageName;
+        } else if ($req->input('existing_cnic_image') != 'default.svg' && !$req->hasFile('cnic_image')) {
+            $customerData['customer_cnic_image'] = $req->input('existing_cnic_image');
+        } else {
+            if (!$req->input('customer_id_dropdown')) {
+                $customerData['customer_cnic_image'] = 'default.svg';
+            }
+        }
+
+        if ($req->hasFile('nok_cnic_image')) {
+            $cnicImage = $req->file('nok_cnic_image');
+            $cnicImageName = time() . '.' . $cnicImage->getClientOriginalExtension();
+            $destinationPath = public_path('images/customer/nok-cnic');
+            $cnicImage->move($destinationPath, $cnicImageName);
+            $customerData['nok_cnic_image'] = $cnicImageName;
+        } else if ($req->input('existing_nok_cnic_image') != 'default.svg' && !$req->hasFile('nok_cnic_image')) {
+            $customerData['nok_cnic_image'] = $req->input('existing_nok_cnic_image');
+        } else {
+            if (!$req->input('customer_id_dropdown')) {
+                $customerData['nok_cnic_image'] = 'default.svg';
+            }
+        }
+
+        if ($req->hasFile('thumb_impression')) {
+            $thumbImpression = $req->file('thumb_impression');
+            $imageName = time() . '.' . $thumbImpression->getClientOriginalExtension();
+            $destinationPath = public_path('images/customer/thumb-impression');
+            $thumbImpression->move($destinationPath, $imageName);
+            $customerData['thumb_impression'] = $imageName;
+        } else if ($req->input('existing_thumb_impression') != 'default.svg' && !$req->hasFile('thumb_impression')) {
+            $customerData['thumb_impression'] = $req->input('existing_thumb_impression');
+        } else {
+            if (!$req->input('customer_id_dropdown')) {
+                $customerData['thumb_impression'] = 'default.svg';
+            }
         }
 
         return $customerData;
@@ -144,57 +216,30 @@ class BookingController extends Controller
 
     public function getInstallmentsData(Request $request, $bookingId, $customerId) {
         $installmentsData = [];
-        $installmentIds = $request->input('installment_ids', []);
+        // Assuming you have installment data in the request...
+        foreach ($request->input('amounts', []) as $key => $amount) {
+            $dueDate = $request->input('due_dates', [])[$key] ?? null;
+            $status = $request->input('statuses', [])[$key] ?? 'pending';
+            $intimationDate = $request->input('intimation_dates', [])[$key] ?? null;
     
-        $amounts = $request->input('amounts', []);
-        $dueDates = $request->input('due_dates', []);
-        $statuses = $request->input('statuses', []);
-        $paymentModes = $request->input('payment_modes', []);
-        $intimationDates = $request->input('intimation_dates', []);
-    
-        foreach ($installmentIds as $key => $installmentId) {
-            // Initialize variables to avoid undefined index error
-            $amount = $amounts[$key];
-            $dueDate = $dueDates[$key];
-            $status = $statuses[$key]; // Default to 'pending' if not set
-            $paymentMode = $paymentModes[$key]; // Default to 'cash' if not set
-            $intimationDate = $intimationDates[$key];
-    
-            if (!empty($installmentId)) {
-                // Update existing installment
-                DB::table('installment')
-                    ->where('id', $installmentId)
-                    ->update([
-                        'amount' => $amount,
-                        'due_date' => $dueDate,
-                        'installment_status' => $status,
-                        'payment_mode' => $paymentMode,
-                        'intimation_date' => $intimationDate,
-                        'updated_at' => now(),
-                    ]);
-            } else {
-                // Prepare data for new installment
-                $installmentsData[] = [
-                    'booking_id' => $bookingId,
-                    'project_id' => $request->input('project_id'),
-                    'phase_id' => $request->input('phase_id'),
-                    'plot_id' => $request->input('plot_id'),
-                    'customer_id' => $customerId,
-                    'amount' => $amount,
-                    'due_date' => $dueDate,
-                    'installment_status' => $status,
-                    'payment_mode' => $paymentMode,
-                    'intimation_date' => $intimationDate,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            }
+            $installmentsData[] = [
+                'booking_id' => $bookingId,
+                'project_id' => $request->input('project_id'),
+                'phase_id' => $request->input('phase_id'),
+                'plot_id' => $request->input('plot_id'),
+                'customer_id' => $customerId,
+                'amount' => $amount,
+                'due_date' => $dueDate,
+                'installment_status' => $status,
+                'intimation_date' => $intimationDate,
+                'created_at' => now(),
+                'updated_at' => now(),
+                // Add other fields as necessary
+            ];
         }
-    
-        // Insert any new installments
-        if (!empty($installmentsData)) {
-            DB::table('installment')->insert($installmentsData);
-        }
+        // dd($installmentsData);
+        return $installmentsData;
+            
     }
     
     
@@ -205,6 +250,8 @@ class BookingController extends Controller
             ->where('booking_id', $bookingId)
             ->orderBy('due_date', 'asc')
             ->get();
+
+        // dd($installments);
     
         return response()->json([
             'success' => true,
@@ -217,6 +264,7 @@ class BookingController extends Controller
     {
         $customerData =$this->getCustomerData($req);
         $bookingData = $this->getBookingData($req);
+        $customerId= null;
         DB::beginTransaction();
         try
         {
@@ -226,10 +274,18 @@ class BookingController extends Controller
             }
             else
             {
-                $customerId = DB::table('customer')->insertGetId($customerData);
+                $customerExists = $req->input('customer_exists');
+                if ($customerExists === 'yes') {
+                    $customerId = $req->input('customer_id_dropdown');
+                    DB::table('customer')->where('id', $customerId)->update($customerData);
+                } elseif ($customerExists === 'no') {
+                    $customerId = DB::table('customer')->insertGetId($customerData);
+                }
+                
                 $bookingData['customer_id'] = $customerId;
                 $bookingId = DB::table('booking')->insertGetId($bookingData);
                 $installmentsData = $this->getInstallmentsData($req, $bookingId, $customerId);
+                DB::table('installment')->insert($installmentsData);
                 DB::commit();
                 return response()->json(['success' => 'booking added successfully']);
             }

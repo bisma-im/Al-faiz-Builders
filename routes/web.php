@@ -16,7 +16,7 @@ Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signIn
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
 Route::post('/change-password', [AdminController::class, 'changePassword'])->name('changePassword')->middleware('admin.auth');
 Route::view('/change-password-form', 'pages.change-password')->name('changePasswordForm')->middleware('admin.auth');
-Route::view('/', 'dashboards.index')->middleware('admin.auth');
+Route::get('/', [AdminController::class, 'viewDashboard'])->middleware('admin.auth');
 Route::view('/sign-in', 'pages.sign-in')->name('signInPage');
 
 Route::get('/booking-verification', [CustomerController::class, 'showBookingVerificationForm']);
@@ -79,6 +79,7 @@ Route::post('/update-booking', [BookingController::class, 'updateBooking'])->nam
 Route::post('/get-plots-for-booking', [BookingController::class, 'getPlotsForBooking']);
 Route::post('/get-phases-for-booking', [BookingController::class, 'getPhasesForBooking']);
 Route::get('/get-installments/{bookingId}', [BookingController::class, 'getInstallments']);
+Route::get('/get-customer/{customerId}', [BookingController::class, 'getCustomer']);
 
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount');

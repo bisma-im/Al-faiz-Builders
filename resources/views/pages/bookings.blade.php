@@ -271,12 +271,12 @@
                                             <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Booking ID</th>
-                                    <th class="min-w-125px">Customer CNIC</th>
+                                    <th class="min-w-125px">Customer Name</th>
+                                    <th class="min-w-125px">Contact</th>
                                     <th class="min-w-125px">Project</th>
                                     <th class="min-w-125px">Plot No</th>
-                                    <th class="min-w-125px">Base Unit Cost</th>
-                                    <th class="min-w-125px">Total Amount</th>
+                                    <th class="min-w-125px">Received Amount</th>
+                                    <th class="min-w-125px">Pending Amount</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
@@ -289,14 +289,14 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="{{ route('updateBookingForm', ['id' => $booking->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $booking->id }}</a>
+                                        <a href="{{ route('updateBookingForm', ['id' => $booking->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $booking->name }}</a>
                                     </td>
-                                    <td>{{ $booking->cnic_number }}</td>
+                                    <td>{{ $booking->mobile_number_1 }}</td>
                                     <td>{{ $booking->project_title }}</td>
                                     <td>{{ $booking->plot_no }}</td>
                                     {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $booking->unit_cost }}</td>
-                                    <td>{{ $booking->total_amount }}</td>
+                                    <td>{{ $booking->received_amount }}</td>
+                                    <td>{{ $booking->pending_amount }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>

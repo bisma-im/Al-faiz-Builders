@@ -1,18 +1,39 @@
 "use strict";
 
 var KTNewBooking = (function () {
-    var t, e, r, installmentAmount, numberOfInstallments, totalAmount, bookingId;
+    var t, e, r, installmentAmount, numberOfInstallments, totalAmount, bookingId, customerImageWrapper, partPaymentInput;
     var numberOfInstallmentsInput = document.getElementById('num_of_installments');
+    var discountAmountInput = document.getElementById('discount_amount');
+    var discountPercentageInput = document.getElementById('discount_percentage');
 
     function updatePaymentPlanDisplay() {
         var paymentPlan = $('#paymentPlan').val();
-        $('#fullCashInputs, #installmentInputs, #partPaymentInputs, #installmentTable').hide();
+        let tableBody = $('#installmentTable tbody');
+        tableBody.empty(); 
+        numberOfInstallmentsInput.value = '';
+        $('#customerDropdown, #numOfInstallmentsInput, #installmentAmountInput, #installmentTableCard, #installments').hide();
+        $('#discountType').hide();
+        $('#partPaymentInput').hide();
+        $('#discountPlan').hide();
         if (paymentPlan === 'full_cash') {
-            $('#fullCashInputs').show();
+            $('#installmentTableCard').show();
+            totalAmount = parseInt(document.getElementById('total_amount').value, 10);
+            numberOfInstallmentsInput.value = '1';
+            document.getElementById('installment_amount').value = (totalAmount/1);
+            generateInstallmentTable(null, 1, totalAmount, new Date());
         } else if (paymentPlan === 'installment') {
-            $('#installmentInputs, #installmentTable').show();
+            $('#numOfInstallmentsInput').show(); 
+            $('#installmentAmountInput').show(); 
+            $('#installmentTableCard').show();
+            $('#installments').show();
         } else if (paymentPlan === 'part_payment') {
-            $('#partPaymentInputs').show();
+            $('#partPaymentInput').show(); 
+            $('#discountPlan').show(); 
+            $('#discountType').show(); 
+            $('#numOfInstallmentsInput').show(); 
+            $('#installmentAmountInput').show(); 
+            $('#installments').show();
+            $('#installmentTableCard').show();
         }
     }
 
@@ -23,38 +44,50 @@ var KTNewBooking = (function () {
         return months <= 0 ? 0 : months;
     }
 
-    function generateInstallmentTable(numberOfInstallments, installmentAmount, bookingDate) {
+    function generateInstallmentTable(partPayment, numberOfInstallments, installmentAmount, bookingDate) {
         let tableBody = $('#installmentTable tbody');
         tableBody.empty(); // Clear existing rows
-    
+        
+        numberOfInstallments = partPayment === null ? numberOfInstallments : (numberOfInstallments + 1);
+        partPayment = partPayment === null ? installmentAmount : partPayment;
+
+        let discountAmount;
+        if($('#discount_type').val() === 'discount_amount'){
+            discountAmount = parseFloat(document.getElementById('discount_amount').value);
+        } else if($('#discount_type').val() === 'discount_percentage'){
+            discountAmount = (parseFloat(discountPercentageInput.value) / 100) * parseFloat(document.getElementById('total_amount').value, 10);
+        }
+
+        let adjustedInstallmentsCount = Math.ceil(discountAmount / installmentAmount);
+        let lastInstallmentsAdjustment = Array(numberOfInstallments).fill(0);
+
+        for (let i = 0; i < adjustedInstallmentsCount; i++) {
+            let index = numberOfInstallments - 1 - i; // Start adjusting from the last installment backwards
+            let adjustment = (discountAmount > installmentAmount) ? installmentAmount : discountAmount;
+            lastInstallmentsAdjustment[index] = adjustment;
+            discountAmount -= adjustment;
+        }
+
         for (let i = 0; i < numberOfInstallments; i++) {
             let dueDate = new Date(bookingDate);
             dueDate.setMonth(dueDate.getMonth() + i); // Increment month by i
 
             let intimationDate = new Date(dueDate.getTime());
             intimationDate.setDate(dueDate.getDate() + 5);
+
+            let installmentValue = i === 0 ? partPayment - lastInstallmentsAdjustment[i] : installmentAmount - lastInstallmentsAdjustment[i];
+            if (installmentValue <= 0) {
+                break;
+            }
             
             let row = `
                 <tr>
-                    <td><input class="form-control form-control-lg form-control-solid" type="text" name="amounts[]" value="${installmentAmount.toFixed(2)}" ${i === 0 ? 'readonly' : ''}></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="number" name="amounts[]" value="${installmentValue.toFixed(2)}" readonly></td>
                     <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly></td>
                     <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly></td>
-                    <td>
-                        <select name="statuses[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
-                            <option value="pending">Pending</option>
-                            <option value="paid">Paid</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="payment_modes[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
-                            <option value="cash">Cash</option>
-                            <option value="check">Check</option>
-                            <option value="online">Online</option>
-                        </select>
-                    </td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="text" name="statuses[]" value="pending" readonly></td>
                 </tr>
             `;
-            
             tableBody.append(row);
         }
     }
@@ -76,10 +109,18 @@ var KTNewBooking = (function () {
                 }
             });                        
         } else {
-            totalAmount = parseFloat(document.getElementById('total_amount').value, 10);
-            installmentAmount = totalAmount/parseFloat(numberOfInstallments,10);
+            if($('#paymentPlan').val() === 'installment'){
+                totalAmount = parseFloat(document.getElementById('total_amount').value, 10);
+                installmentAmount = totalAmount/parseInt(numberOfInstallments,10);
+                partPaymentInput = null;
+            } else if($('#paymentPlan').val() === 'part_payment'){
+                totalAmount = document.getElementById('pending_amount').value;
+                installmentAmount = totalAmount/(parseInt(numberOfInstallments,10));
+                partPaymentInput = parseFloat(document.getElementById('part_payment_amount').value);
+            }
+
             document.getElementById('installment_amount').value = installmentAmount;
-            generateInstallmentTable(numberOfInstallments, installmentAmount, new Date());
+            generateInstallmentTable(partPaymentInput, numberOfInstallments, installmentAmount, new Date());
         }
     }
 
@@ -88,50 +129,19 @@ var KTNewBooking = (function () {
         tableBody.empty(); // Clear the table first
     
         installments.forEach(installment => {
-            // Determine if dropdowns should be disabled
-            let isPending = installment.installment_status === 'pending';
-            let statusDropdownDisabledAttribute = isPending ? '' : 'disabled';
-            let paymentModeDropdownDisabledAttribute = isPending ? '' : 'disabled';
-    
-            // Generate the status and payment mode options
-            let statusOptions = `
-                <option value="pending" ${installment.installment_status === 'pending' ? 'selected' : ''}>Pending</option>
-                <option value="paid" ${installment.installment_status === 'paid' ? 'selected' : ''}>Paid</option>
-            `;
-            let paymentModeOptions = `
-                <option value="cash" ${installment.payment_mode === 'cash' ? 'selected' : ''}>Cash</option>
-                <option value="check" ${installment.payment_mode === 'check' ? 'selected' : ''}>Check</option>
-                <option value="online" ${installment.payment_mode === 'online' ? 'selected' : ''}>Online</option>
-            `;
-    
-            // Hidden inputs to include disabled values in submission
-            let hiddenStatusInput = isPending ? '' : `<input type="hidden" name="statuses[]" value="${installment.installment_status}">`;
-            let hiddenPaymentModeInput = isPending ? '' : `<input type="hidden" name="payment_modes[]" value="${installment.payment_mode}">`;
     
             let row = `
                 <tr>
                     <input type="hidden" name="installment_ids[]" value="${installment.id || ''}">
-                    <td><input type="text" name="amounts[]" value="${Number(installment.amount).toFixed(2)}" class="form-control"></td>
-                    <td><input type="date" name="due_dates[]" value="${installment.due_date}" class="form-control"></td>
-                    <td><input type="date" name="intimation_dates[]" value="${installment.intimation_date}" class="form-control"></td>
-                    <td>
-                        <select name="statuses[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" ${statusDropdownDisabledAttribute}>
-                            ${statusOptions}
-                        </select>
-                        ${hiddenStatusInput}
-                    </td>
-                    <td>
-                        <select name="payment_modes[]" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" ${paymentModeDropdownDisabledAttribute}>
-                            ${paymentModeOptions}
-                        </select>
-                        ${hiddenPaymentModeInput}
-                    </td>
+                    <td><input type="text" name="amounts[]" value="${Number(installment.amount).toFixed(2)}" class="form-control" readonly></td>
+                    <td><input type="date" name="due_dates[]" value="${installment.due_date}" class="form-control" readonly></td>
+                    <td><input type="date" name="intimation_dates[]" value="${installment.intimation_date}" class="form-control" readonly></td>
+                    <td><input type="text" name="statuses[]" value="${installment.installment_status}" class="form-control" readonly></td>
                 </tr>
             `;
             tableBody.append(row);
         });
     }
-    
     
     function fetchInstallments(bookingId) {
         $.ajax({
@@ -151,6 +161,66 @@ var KTNewBooking = (function () {
             }
         });
     }
+    function customerExists(){
+        $('#customerExistsCheck').hide();
+        if($('#customer_exists_yes').is(':checked')){
+            $('#customerExistsCheck').show();
+        } else if($('#customer_exists_no').is(':checked')){
+            $('#customerExistsCheck').hide();
+            $('#customerDropdown').val('').trigger('change');
+            document.getElementById('customer_name').value = '';
+            document.getElementById('customer_cnic').value = '';
+            document.getElementById('mobile_no').value = '';
+            document.getElementById('customer_address').value = '';
+            customerImageWrapper = document.querySelector('.image-input-wrapper');
+            customerImageWrapper.style.backgroundImage = 'none';
+            customerImageWrapper.style.backgroundImage = "url('assets/media/svg/avatars/blank.svg')";
+        }
+    }
+
+    function loadCustomer(customerId) {
+        $.ajax({
+            url: `/get-customer/${customerId}`,
+            type: 'GET',
+            success: function(response) {
+                if (response.success) {
+                    populateCustomerFields(response.data);
+                } else {
+                    console.error('Failed to fetch customer.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching customer:', error);
+            }
+        });
+    }
+
+    function populateCustomerFields(customerData){
+        customerImageWrapper = document.querySelector('.image-input-wrapper');
+        if (customerData.length > 0) {
+            var customer = customerData[0];
+            document.getElementById('customer_id_dropdown').value = customer.id;
+            document.getElementById('existing_customer_image').value = customer.customer_image;
+            document.getElementById('existing_cnic_image').value = customer.customer_cnic_image;
+            document.getElementById('existing_nok_cnic_image').value = customer.nok_cnic_image;
+            document.getElementById('existing_thumb_impression').value = customer.thumb_impression;
+            document.getElementById('customer_name').value = customer.name;
+            document.getElementById('customer_cnic').value = customer.cnic_number;
+            document.getElementById('mobile_no').value = customer.mobile_number_1;
+            document.getElementById('customer_address').value = customer.address;
+            document.getElementById('nok_name').value = customer.next_of_kin_name;
+            document.getElementById('nok_relation').value = customer.next_of_kin_relation;
+            document.getElementById('nok_address').value = customer.next_of_kin_address;
+            document.getElementById('nok_mobile_no').value = customer.next_of_kin_mobile_number_1;
+            document.getElementById('nok_cnic').value = customer.next_of_kin_cnic;
+            if (customer.customer_image) {
+                var imageUrl = '/images/customer-images/' + customer.customer_image; // Update the base URL path as needed
+                customerImageWrapper.style.backgroundImage = `url(${imageUrl})`;
+            } else {
+                customerImageWrapper.style.backgroundImage = "url('assets/media/svg/avatars/blank.svg')";
+            }
+        }
+    }
         
 
     return {
@@ -158,25 +228,30 @@ var KTNewBooking = (function () {
             t = document.querySelector("#kt_new_booking_form");
             e = document.querySelector("#kt_new_booking_submit");// Ensure this ID matches your plot dropdown ID
             var isLocked = document.getElementById('isLocked').value; 
-            console.log(isLocked);
             function makeInputsReadonly() {
-                $(t).find('input, select, textarea').attr('readonly', true).attr('disabled', 'disabled');
+                $(t).find('input, select, textarea, button[type="submit"], input[type="submit"]').attr('readonly', true).attr('disabled', 'disabled');
             };
             r = FormValidation.formValidation(t, {
                 fields: {
+                    discount_amount: {validators: {notEmpty: {message: "Discount amount is required"},
+                            lessThan: {message: "Discount amount must be less than or equal to the total amount",
+                                compare: function() {
+                                    var total = parseFloat(document.getElementById('total_amount').value);
+                                    var discount = parseFloat(document.getElementById('discount_amount').value);
+                                    return discount <= total; } } } },
                     project_id: { validators: { notEmpty: { message: "Project is required" } } },
                     project_phase: { validators: { notEmpty: { message: "Project phase is required" } } },
                     plot_id: { validators: { notEmpty: { message: "Plot is required" } } },
-                    customer_name: { validators: { notEmpty: { message: "Customer_name is required" } } },
+                    customer_name: { validators: { notEmpty: { message: "Customer name is required" } } },
                     customer_cnic: { validators: { notEmpty: { message: "Customer CNIC is required" } } },
                     customer_address: { validators: { notEmpty: { message: "Customer Address is required" } } },
                     mobile_no: { validators: { notEmpty: { message: "Customer Mobile Number is required" } } },
                     unit_cost: { validators: { notEmpty: { message: "Customer Mobile Number is required" } } },
-                    extra_charges: { validators: { notEmpty: { message: "extra_charges is required" } } },
-                    development_charges: { validators: { notEmpty: { message: "development_charges is required" } } },
-                    total_amount: { validators: { notEmpty: { message: "total_amount is required" } } },
-                    token_amount: { validators: { notEmpty: { message: "token_amount is required" } } },
-                    advance_amount: { validators: { notEmpty: { message: "advance_amount is required" } } },
+                    extra_charges: { validators: { notEmpty: { message: "Extra Charges is required" } } },
+                    development_charges: { validators: { notEmpty: { message: "Development Charges is required" } } },
+                    total_amount: { validators: { notEmpty: { message: "Total Amount is required" } } },
+                    token_amount: { validators: { notEmpty: { message: "Token Amount is required" } } },
+                    advance_amount: { validators: { notEmpty: { message: "Advance Amount is required" } } },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -188,26 +263,59 @@ var KTNewBooking = (function () {
             $(document).ready(function(){
                 var selectedPlot = parseInt($('#bookingForm').data('selected-plot'), 10);
                 var selectedPhase = $('#bookingForm').data('selected-phase');
+                $('input[name="customer_exists"]').on('change', customerExists);
                 updatePaymentPlanDisplay();
-                bookingId = $('#id').val(); 
-                if(bookingId) {
-                    fetchInstallments(bookingId);
-                }
+                customerExists();
+                $('#customerDropdown').on('change', function(e){
+                    var customerId = e.target.value;
+                    if(customerId) { // Check if customerId is not empty
+                        loadCustomer(customerId);
+                    } else {
+                        console.log('no customer');
+                    }
+                });
                 $('#projectDropdown').on('change', function(e){
+                    $('#phaseDropdown').val('').trigger('change');
+                    $('#plotDropdown').val('').trigger('change');
                     var projectId = e.target.value;
                     loadPhases(projectId);
                 });
                 $('#phaseDropdown').on('change', function(e){
+                    $('#plotDropdown').val('').trigger('change');
                     var phaseId = e.target.value;
                     loadPlots(phaseId);
                 });
+                $('#discount_type').on('change', function() {
+                    var discountType = $(this).val();
+                    document.getElementById('discount_amount').value = '';
+                    document.getElementById('discount_percentage').value = '';
+                    document.getElementById('pending_amount').value = '';
+                    $('#discountPlan').show(); // Show the discount plan section
+                    $('#installments, #numOfInstallmentsInput, #installmentAmountInput').show();
+                
+                    if(discountType === 'discount_amount') {
+                        $('#discountAmount').show(); // Show discount amount input
+                        $('#discountPercentage').hide(); // Hide discount percentage input
+                    } else if(discountType === 'discount_percentage') {
+                        $('#discountAmount').hide(); // Hide discount amount input
+                        $('#discountPercentage').show(); // Show discount percentage input
+                    }
+                });
+                
                 if ($('#projectDropdown').val() !== "" && isLocked === 'false') {
+                    $('#phaseDropdown').val('').trigger('change');
+                    $('#plotDropdown').val('').trigger('change');
                     loadPhases($('#projectDropdown').val());
                     loadPlots($('#phaseDropdown').val());
                 }
                 else if(isLocked === 'true')
                 {
+                    $('#customerExistsCheck').hide();
                     makeInputsReadonly();
+                    bookingId = document.getElementById('id').value;
+                    if(bookingId) {
+                        fetchInstallments(bookingId);
+                    }
                     return; 
                 }
 
@@ -257,7 +365,15 @@ var KTNewBooking = (function () {
                     });
                 }
                 $('#paymentPlan').on('change', updatePaymentPlanDisplay);
-                numberOfInstallmentsInput.addEventListener('focusout', handleInstallments);                
+                numberOfInstallmentsInput.addEventListener('focusout', handleInstallments);    
+                discountAmountInput.addEventListener('focusout', function (){
+                    totalAmount = parseFloat(document.getElementById('total_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
+                    document.getElementById('pending_amount').value = totalAmount;
+                });  
+                discountPercentageInput.addEventListener('focusout', function (){
+                    totalAmount = parseFloat(document.getElementById('total_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
+                    document.getElementById('pending_amount').value = totalAmount;
+                });              
             });            
             
             e.addEventListener("click", function (a) {

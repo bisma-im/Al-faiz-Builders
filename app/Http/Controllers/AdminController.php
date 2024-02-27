@@ -9,6 +9,24 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
 
+    public function viewDashboard()
+    {
+        $phases = DB::table('phase')
+                    ->join('projects as pr', 'pr.id', '=', 'phase.project_id') // Assuming the correct column is project_id
+                    ->leftJoin('plots_inventory as pi', 'pi.phase_id', '=', 'phase.id')
+                    ->leftJoin('booking as b', 'b.phase_id', '=', 'phase.id')
+                    ->select(
+                        'pr.project_title',
+                        'phase.phase_title',
+                        DB::raw('COUNT(DISTINCT pi.id) as total_plots'),
+                        DB::raw('COUNT(DISTINCT b.plot_id) as booked_plots')
+                    )
+                    ->groupBy('phase.id', 'pr.project_title', 'phase.phase_title')
+                    ->get();
+        $colors = ['#32BFAF', '#f74d89', '#e95ecd', '#2596be'];
+        return view('dashboards.index', compact('phases', 'colors'));
+    }
+
     public function accessRightsTable()
     {
         $userData = DB::table('user')->get(['id','username', 'invoicing', 'booking', 'leads', 'accounting']);
