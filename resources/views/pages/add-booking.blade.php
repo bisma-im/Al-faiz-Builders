@@ -433,7 +433,7 @@
                                                     <input type="number" id="discount_amount" name="discount_amount" class="form-control form-control-lg form-control-solid" placeholder="Discount Amount" value="" />
                                                 </div>
                                                 <div class="col-lg-3 fv-row" id="discountPercentage" style="display: none;">
-                                                    <input type="percentage" id="discount_percentage" name="discount_percentage" class="form-control form-control-lg form-control-solid" placeholder="Discount Percentage" value="" />
+                                                    <input type="number" id="discount_percentage" name="discount_percentage" class="form-control form-control-lg form-control-solid" placeholder="Discount Percentage" value="" />
                                                 </div>
                                                 <div class="col-lg-3 fv-row" >
                                                     <input type="number" id="pending_amount" name="pending_amount" class="form-control form-control-lg form-control-solid" placeholder="Pending Amount" value="" readonly />

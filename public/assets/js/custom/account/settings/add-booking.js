@@ -221,6 +221,26 @@ var KTNewBooking = (function () {
             }
         }
     }
+
+    const checkDiscount = function() {
+        return {
+            validate: function (input) {
+                const value = input.value;
+                const discountValue = value ? parseFloat(value, 10) : 0;
+                const totalAmount = parseFloat(document.getElementById('total_amount').value, 10);
+                console.log("Discount Value:", value, "Total Amount:", totalAmount);
+                if (discountValue > totalAmount) {
+                    return {
+                        valid: false,
+                    };
+                }
+                return {
+                    valid: true,
+                };
+            }
+        }
+    };
+    FormValidation.validators.checkDiscount = checkDiscount;
         
 
     return {
@@ -233,12 +253,7 @@ var KTNewBooking = (function () {
             };
             r = FormValidation.formValidation(t, {
                 fields: {
-                    discount_amount: {validators: {notEmpty: {message: "Discount amount is required"},
-                            lessThan: {message: "Discount amount must be less than or equal to the total amount",
-                                compare: function() {
-                                    var total = parseFloat(document.getElementById('total_amount').value);
-                                    var discount = parseFloat(document.getElementById('discount_amount').value);
-                                    return discount <= total; } } } },
+                    discount_amount: {validators: {checkDiscount: {message: "Discount amount must be less than the total amount"} } },
                     project_id: { validators: { notEmpty: { message: "Project is required" } } },
                     project_phase: { validators: { notEmpty: { message: "Project phase is required" } } },
                     plot_id: { validators: { notEmpty: { message: "Plot is required" } } },
@@ -252,6 +267,12 @@ var KTNewBooking = (function () {
                     total_amount: { validators: { notEmpty: { message: "Total Amount is required" } } },
                     token_amount: { validators: { notEmpty: { message: "Token Amount is required" } } },
                     advance_amount: { validators: { notEmpty: { message: "Advance Amount is required" } } },
+                    discount_percentage: {
+                        validators: {
+                            greaterThan: {message: 'The value must be greater than or equal to 0', min: 0},
+                            lessThan: {message: 'The value must be less than or equal to 100', max: 100}
+                        }
+                    },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -290,6 +311,9 @@ var KTNewBooking = (function () {
                     document.getElementById('discount_amount').value = '';
                     document.getElementById('discount_percentage').value = '';
                     document.getElementById('pending_amount').value = '';
+                    numberOfInstallmentsInput.value = '';
+                    document.getElementById('installment_amount').value = '';
+                    $('#installmentTable tbody').empty();
                     $('#discountPlan').show(); // Show the discount plan section
                     $('#installments, #numOfInstallmentsInput, #installmentAmountInput').show();
                 
@@ -367,12 +391,12 @@ var KTNewBooking = (function () {
                 $('#paymentPlan').on('change', updatePaymentPlanDisplay);
                 numberOfInstallmentsInput.addEventListener('focusout', handleInstallments);    
                 discountAmountInput.addEventListener('focusout', function (){
-                    totalAmount = parseFloat(document.getElementById('total_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
-                    document.getElementById('pending_amount').value = totalAmount;
+                    let pendingAmount = parseFloat(document.getElementById('total_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
+                    document.getElementById('pending_amount').value = pendingAmount;
                 });  
                 discountPercentageInput.addEventListener('focusout', function (){
-                    totalAmount = parseFloat(document.getElementById('total_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
-                    document.getElementById('pending_amount').value = totalAmount;
+                    let pendingAmount = parseFloat(document.getElementById('total_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
+                    document.getElementById('pending_amount').value = pendingAmount;
                 });              
             });            
             
