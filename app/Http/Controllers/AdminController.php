@@ -86,7 +86,7 @@ class AdminController extends Controller
                 {
                     $permissions[] = 'accounting';
                 }
-                session(['userId' => $user->id, 'username' => $user->username, 'permissions' => $permissions, 'role' => $user->user_access_level, 'authenticated' => TRUE]);
+                session(['userId' => $user->id, 'full_name' => $user->full_name, 'user_image' => $user->user_image, 'email' => $user->email, 'username' => $user->username, 'permissions' => $permissions, 'role' => $user->user_access_level, 'authenticated' => TRUE]);
                 return response()->json(['success' => 'Logged in successfully']);
             } else {
                 return response()->json(['error' => 'Invalid credentials']);

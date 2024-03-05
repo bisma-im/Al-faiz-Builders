@@ -1,40 +1,13 @@
 "use strict";
 var KTAppEcommerceSaveProduct = (function () {
-    const e = () => {
-            $("#kt_ecommerce_add_project_options").repeater({
-                initEmpty: !1,
-                defaultValues: { "text-input": "foo" },
-                show: function () {
-                    $(this).slideDown(), t();
-                },
-                hide: function (e) {
-                    $(this).slideUp(e);
-                },
-            });
-        },
-        t = () => {
-            document.querySelectorAll('[data-kt-ecommerce-catalog-add-project="project_option"]').forEach((e) => {
-                $(e).hasClass("select2-hidden-accessible") || $(e).select2({ minimumResultsForSearch: -1 });
-            });
-        };
+
     return {
         init: function () {
-            var o, a;
             ["#kt_ecommerce_add_project_description", "#kt_ecommerce_add_project_meta_description"].forEach((e) => {
                 let t = document.querySelector(e);
                 t && (t = new Quill(e, { modules: { toolbar: [[{ header: [1, 2, !1] }], ["bold", "italic", "underline"], ["image", "code-block"]] }, placeholder: "Type your text here...", theme: "snow" }));
             }),
-                ["#kt_ecommerce_add_product_category", "#kt_ecommerce_add_project_tags"].forEach((e) => {
-                    const t = document.querySelector(e);
-                    t && new Tagify(t, { whitelist: ["new", "trending", "sale", "discounted", "selling fast", "last 10"], dropdown: { maxItems: 20, classname: "tagify__inline__suggestions", enabled: 0, closeOnSelect: !1 } });
-                }),
-                (o = document.querySelector("#kt_ecommerce_add_product_discount_slider")),
-                (a = document.querySelector("#kt_ecommerce_add_product_discount_label")),
-                noUiSlider.create(o, { start: [10], connect: !0, range: { min: 1, max: 100 } }),
-                o.noUiSlider.on("update", function (e, t) {
-                    (a.innerHTML = Math.round(e[t])), t && (a.innerHTML = Math.round(e[t]));
-                }),
-                e(),
+                
                 new Dropzone("#kt_ecommerce_add_project_media", {
                     url: "https://keenthemes.com/scripts/void.php",
                     autoProcessQueue: false,
@@ -43,7 +16,6 @@ var KTAppEcommerceSaveProduct = (function () {
                     maxFilesize: 10,
                     addRemoveLinks: true,
                 }),
-                t(),
                 (() => {
                     const e = document.getElementById("kt_ecommerce_add_project_status"),
                         t = document.getElementById("kt_ecommerce_add_project_status_select"),
@@ -53,10 +25,7 @@ var KTAppEcommerceSaveProduct = (function () {
                             case "published":
                                 e.classList.remove(...o), e.classList.add("bg-success"), c();
                                 break;
-                            case "scheduled":
-                                e.classList.remove(...o), e.classList.add("bg-warning"), d();
-                                break;
-                            case "inactive":
+                            case "closed":
                                 e.classList.remove(...o), e.classList.add("bg-danger"), c();
                                 break;
                             case "draft":
@@ -101,13 +70,6 @@ var KTAppEcommerceSaveProduct = (function () {
                     });
                 })(),
                 (() => {
-                    const e = document.getElementById("kt_ecommerce_add_product_shipping_checkbox"),
-                        t = document.getElementById("kt_ecommerce_add_product_shipping");
-                    e.addEventListener("change", (e) => {
-                        e.target.checked ? t.classList.remove("d-none") : t.classList.add("d-none");
-                    });
-                })(),
-                (() => {
                     let e;
                     
                     const t = document.getElementById("kt_ecommerce_add_project_form"),
@@ -115,7 +77,7 @@ var KTAppEcommerceSaveProduct = (function () {
                     (e = FormValidation.formValidation(t, {
                         fields: {
                             project_title: { validators: { notEmpty: { message: "Project Title is required" } } },
-                            
+                            // status: { validators: { notEmpty: { message: "Project Title is required" } } },
                         },
                         plugins: { trigger: new FormValidation.plugins.Trigger(), bootstrap: new FormValidation.plugins.Bootstrap5({ rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: "" }) },
                     })),

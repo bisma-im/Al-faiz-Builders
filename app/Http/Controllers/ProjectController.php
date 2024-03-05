@@ -14,6 +14,16 @@ class ProjectController extends Controller
         return view('pages.projects', ['data' => $projects]);
     }
 
+    public function showPlots(Request $req, $id){
+        $plots = DB::table('plots_inventory as p')
+        ->leftJoin('booking as b', 'p.id', '=', 'b.plot_id')
+        ->leftJoin('customer as c', 'c.id', '=', 'b.customer_id')
+        ->select('p.plot_no', 'p.amount', 'p.category', DB::raw('IFNULL(b.created_on, "Not Booked") as created_on'), DB::raw('IFNULL(c.name, "Not Booked") as name'))
+        ->where('p.phase_id', $id)
+        ->get();
+        return view('pages.plots', ['plots' => $plots]);
+    }
+
     public function showAddProjectForm($id = null) {
         $projectData = null;
         $phaseData = [];
@@ -34,7 +44,7 @@ class ProjectController extends Controller
         return view('pages.add-project', compact('projectData','phaseData'));
     }
 
-    public function showAddPhaseForm($projectId=null, $phaseId=null) {
+    public function showAddPhaseForm(Request $req, $projectId=null, $phaseId=null) {
         $phaseData = null;
         
         if ($projectId && $phaseId) 
@@ -47,10 +57,12 @@ class ProjectController extends Controller
             if (!$phaseData) {
                 return redirect()->route('showProjects');
             }
+        } else {
+            $projectId = $req->input('project_id');
         }
         
         $projects = DB::table('projects')->get();
-        return view('pages.add-phase', compact('phaseData','projects'));
+        return view('pages.add-phase', compact('phaseData','projectId','projects'));
     }
 
     public function getPhaseData(Request $req){
@@ -142,6 +154,7 @@ class ProjectController extends Controller
         $projectData = [
             'project_title' => $req->input('project_title'),
             'project_description' => $req->input('project_description'),
+            'status' => $req->input('status'),
         ];
     
         if ($req->hasFile('project_logo')) {
@@ -150,8 +163,12 @@ class ProjectController extends Controller
             $destinationPath = public_path('images/project-logos');
             $projectLogo->move($destinationPath, $projectLogoName);
             $projectData['project_logo'] = $projectLogoName;
+        } else if ($req->input('existing_project_logo') != 'default.jpg' && !$req->hasFile('project_logo')) {
+            $projectData['project_logo'] = $req->input('existing_project_logo');
         } else {
-            $projectData['project_logo'] = 'default.jpg';
+            if (!$req->input('id')) {
+                $customerData['project_logo'] = 'default.svg';
+            }
         }
         
         return $projectData;

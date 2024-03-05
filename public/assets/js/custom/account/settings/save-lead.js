@@ -3,6 +3,14 @@
 var KTAccountSettingsProfileDetails = (function () {
     var form, validator, submitButton;
 
+    function matureLeadExists(){
+        if ($('#mature').is(':checked')) {
+            $('#transferTo').show();
+        } else {
+            $('#transferTo').hide();
+        }
+    }
+
     return {
         init: function () {
             form = document.getElementById("kt_leads_form");

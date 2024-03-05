@@ -12,7 +12,30 @@ class LeadController extends Controller
 {
     public function showLeads(Request $req){
         $sessionUsername = $req->session()->get('username');
-        if($sessionUsername && session('role') == 'sales-agent')
+        $sessionRole = $req->session()->get('role');
+        $sessionUserId = $req->session()->get('userId');
+        $leads = null;
+
+        if($sessionRole == 'sales-manager')
+        {
+            $leads = DB::table('leads')
+            ->where('mature', 1)
+            ->get();
+        
+            return view('pages.leads', ['data' => $leads]);
+        }
+
+        else if($sessionRole == 'sales-agent')
+        {
+            $leads = DB::table('leads')
+            ->where('mature', 1)
+            ->where('transferred_to_user_id', $sessionUserId)
+            ->get();
+        
+            return view('pages.leads', ['data' => $leads]);
+        }
+
+        else if(in_array('leads', session('permissions', [])))
         {
             $leads = DB::table('leads')
             ->where('username', $sessionUsername)
@@ -20,6 +43,7 @@ class LeadController extends Controller
         
             return view('pages.leads', ['data' => $leads]);
         }
+        
         else
         {
             return redirect()->back();
@@ -32,22 +56,45 @@ class LeadController extends Controller
         $leadData = $callLogData = null;
         $isViewMode = $request->is('leads/view/*');
         $sessionUsername = $request->session()->get('username');
+        $role = $request->session()->get('role');
+        $sessionUserId = $request->session()->get('userId');
+        $salesAgents = DB::table('user')
+            ->select('id', 'full_name')
+            ->where('user_access_level', 'sales-agent')
+            ->get();
         if ($id) 
         {
-            $leadData = DB::table('leads')
+            if($role == 'sales-manager')
+            {
+                $leadData = DB::table('leads')
+                ->where('id', $id)
+                ->where('mature', 1)
+                ->first();
+            }
+            else if($role == 'sales-agent')
+            {
+                $leadData = DB::table('leads')
+                ->where('id', $id)
+                ->where('transferred_to_user_id', $sessionUserId)
+                ->first();
+            }
+            else if(in_array('leads', session('permissions', [])))
+            {
+                $leadData = DB::table('leads')
                 ->where('id', $id)
                 ->where('username', $sessionUsername)
                 ->first();
-
-            
-            if (!$leadData) {
-                return redirect()->route('showLeads', ['username' => $username]);
             }
     
-            $callLogData = $isViewMode ? DB::table('call_logs')->where('lead_id', $id)->get() : [];
+            // $callLogData = $isViewMode ? DB::table('call_logs')->where('lead_id', $id)->get() : [];
+            $callLogData = DB::table('call_logs')->where('lead_id', $id)->get();
+        }
+
+        if (!$leadData) {
+            return redirect()->route('showLeads');
         }
     
-        return view('pages.add-lead', compact('leadData', 'isViewMode', 'callLogData'));
+        return view('pages.add-lead', compact('leadData', 'isViewMode', 'callLogData', 'salesAgents'));
     }
 
 
@@ -63,7 +110,12 @@ class LeadController extends Controller
             'details' => $req->input('details'),
             'username' => $req->input('session_username'),
         ];
-        
+        if ($req->has('mature')) {
+            $leadData['mature'] = $req->input('mature') == "on" ? 1 : 0;
+        }
+        if ($req->has('sales_agent')) {
+            $leadData['transferred_to_user_id'] = $req->input('sales_agent');
+        }
         return $leadData;
     }
 
@@ -143,6 +195,7 @@ class LeadController extends Controller
             'customer_response' => $req->input('customer_response'),
             'next_call_date' => $nextCallDateTime->toDateString(),
             'next_call_time' => $nextCallDateTime->toTimeString(),
+            'received_by' => $req->session()->get('full_name'),
         ];
 
         try

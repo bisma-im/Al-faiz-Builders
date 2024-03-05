@@ -147,6 +147,7 @@
                         @if (isset($phaseData) && $phaseData->id)
                             <input type="hidden" id="id" name="id" value="{{ $phaseData->id }}">
                         @endif
+                        <input type="hidden" id="project_id" name="project_id" value="{{ $projectId }}">
                         <input type="hidden" id="phase_completion_date" name="phase_completion_date" value="{{ $phaseData->formattedDate ?? '' }}"/>
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -391,27 +392,10 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class="required form-label">Project Name</label>
-                                                    <!--end::Label-->
-                                                    <select name="project_id" id="projectDropdown" aria-label="Select Project" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select project...">
-                                                        <option value="">Select Project...</option>
-                                                        @foreach ($projects as $project)
-                                                            <option value="{{ $project->id }}" {{ (isset($phaseData) && $phaseData->project_id == $project->id) ? 'selected' : '' }}>
-                                                                {{ $project->project_title }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">A project name is required and recommended to be unique.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
                                                     <label class="required form-label">Phase Name</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" name="phase_name" class="form-control mb-2" placeholder="Phase Name" value="{{ $phaseData->phase_name ?? '' }}" />
+                                                    <input type="text" name="phase_name" class="form-control mb-2" placeholder="Phase Name" value="{{ $phaseData->phase_title ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Enter the project phase.</div>
@@ -714,13 +698,13 @@
                                                 <!--begin::Input group-->
                                                 <div class="mb-10 fv-row">
                                                     <!--begin::Label-->
-                                                    <label class="required form-label">Project Area</label>
+                                                    <label class="required form-label">Phase Area</label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="number" name="phase_area" step="any" class="form-control mb-2" placeholder="Project Area" value="{{ $projectData->phase_area ?? '' }}" />
+                                                    <input type="number" name="phase_area" step="any" class="form-control mb-2" placeholder="Phase Area" value="{{ $phaseData->phase_area ?? '' }}" />
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Enter the project area.</div>
+                                                    <div class="text-muted fs-7">Enter the phase area.</div>
                                                     <!--end::Description-->
                                                 </div>
                                                 <!--end::Input group-->
@@ -729,38 +713,44 @@
                                                     <!--begin::Label-->
                                                     <label class="form-label">Plots</label>
                                                     <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <div class="d-flex gap-3">
-                                                        <input type="text" name="category_1" class="form-control mb-2" value="80 Sq. Yds." {{ 'readonly' }}/>
-                                                        <input type="number" name="no_of_plots_cat_1" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
-                                                        <input type="text" name="plot_prefix_cat_1" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
-                                                        <input type="number" step="any" name="amount_cat_1" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
-                                                    </div>
-                                                    <!--end::Input-->
-                                                    <!--begin::Input-->
-                                                    <div class="d-flex gap-3">
-                                                        <input type="text" name="category_2" class="form-control mb-2" value="100 Sq. Yds." {{ 'readonly' }}/>
-                                                        <input type="number" name="no_of_plots_cat_2" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
-                                                        <input type="text" name="plot_prefix_cat_2" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
-                                                        <input type="number" step="any" name="amount_cat_2" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
-                                                    </div>
-                                                    <!--end::Input-->
-                                                    <!--begin::Input-->
-                                                    <div class="d-flex gap-3">
-                                                        <input type="text" name="category_3" class="form-control mb-2" value="120 Sq. Yds." {{ 'readonly' }}/>
-                                                        <input type="number" name="no_of_plots_cat_3" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
-                                                        <input type="text" name="plot_prefix_cat_3" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
-                                                        <input type="number" step="any" name="amount_cat_3" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
-                                                    </div>
-                                                    <!--end::Input-->
-                                                    <!--begin::Input-->
-                                                    <div class="d-flex gap-3">
-                                                        <input type="text" name="category_4" class="form-control mb-2" value="200 Sq. Yds." {{ 'readonly' }}/>
-                                                        <input type="number" name="no_of_plots_cat_4" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
-                                                        <input type="text" name="plot_prefix_cat_4" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
-                                                        <input type="number" step="any" name="amount_cat_4" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
-                                                    </div>
-                                                    <!--end::Input-->
+                                                    @if(isset($phaseData))
+                                                        <div class="d-flex gap-3">
+                                                            <button type="button" class="btn btn-primary mb-7" onclick="location.href='{{ route('showPlots', ['id' => $phaseData->id]) }}'">Show Details</button>
+                                                        </div>
+                                                    @else
+                                                        <!--begin::Input-->
+                                                        <div class="d-flex gap-3">
+                                                            <input type="text" name="category_1" class="form-control mb-2" value="80 Sq. Yds." {{ 'readonly' }}/>
+                                                            <input type="number" name="no_of_plots_cat_1" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                            <input type="text" name="plot_prefix_cat_1" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                            <input type="number" step="any" name="amount_cat_1" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
+                                                        </div>
+                                                        <!--end::Input-->
+                                                        <!--begin::Input-->
+                                                        <div class="d-flex gap-3">
+                                                            <input type="text" name="category_2" class="form-control mb-2" value="100 Sq. Yds." {{ 'readonly' }}/>
+                                                            <input type="number" name="no_of_plots_cat_2" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                            <input type="text" name="plot_prefix_cat_2" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                            <input type="number" step="any" name="amount_cat_2" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
+                                                        </div>
+                                                        <!--end::Input-->
+                                                        <!--begin::Input-->
+                                                        <div class="d-flex gap-3">
+                                                            <input type="text" name="category_3" class="form-control mb-2" value="120 Sq. Yds." {{ 'readonly' }}/>
+                                                            <input type="number" name="no_of_plots_cat_3" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                            <input type="text" name="plot_prefix_cat_3" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                            <input type="number" step="any" name="amount_cat_3" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
+                                                        </div>
+                                                        <!--end::Input-->
+                                                        <!--begin::Input-->
+                                                        <div class="d-flex gap-3">
+                                                            <input type="text" name="category_4" class="form-control mb-2" value="200 Sq. Yds." {{ 'readonly' }}/>
+                                                            <input type="number" name="no_of_plots_cat_4" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
+                                                            <input type="text" name="plot_prefix_cat_4" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
+                                                            <input type="number" step="any" name="amount_cat_4" class="form-control mb-2" placeholder="Amount" value="{{ $projectData->amount ?? '' }}" />
+                                                        </div>
+                                                        <!--end::Input-->
+                                                    @endif
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Enter the plot quantity.</div>
                                                     <!--end::Description-->

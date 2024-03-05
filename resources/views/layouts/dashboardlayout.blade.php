@@ -4621,7 +4621,7 @@ License: For each use you must have a valid license purchased only from above li
 								<div class="app-navbar-item ms-1 ms-md-3" id="kt_header_user_menu_toggle">
 									<!--begin::Menu wrapper-->
 									<div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-										<img src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" alt="user" />
+										<img src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" alt="user" />
 									</div>
 									<!--begin::User account menu-->
 									<div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
@@ -4630,14 +4630,14 @@ License: For each use you must have a valid license purchased only from above li
 											<div class="menu-content d-flex align-items-center px-3">
 												<!--begin::Avatar-->
 												<div class="symbol symbol-50px me-5">
-													<img alt="Logo" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+													<img alt="Logo" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Username-->
 												<div class="d-flex flex-column">
-													<div class="fw-bold d-flex align-items-center fs-5">Max Smith
+													<div class="fw-bold d-flex align-items-center fs-5">{{ Session::get('full_name') }}
 													<span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span></div>
-													<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">max@kt.com</a>
+													<a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ Session::get('email') }}</a>
 												</div>
 												<!--end::Username-->
 											</div>
@@ -5324,7 +5324,7 @@ License: For each use you must have a valid license purchased only from above li
 											<!--end::Info-->
 											<!--begin::User-->
 											<div class="symbol symbol-circle symbol-25px" data-bs-toggle="tooltip" data-bs-boundary="window" data-bs-placement="top" title="Alan Nilson">
-												<img src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" alt="img" />
+												<img src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" alt="img" />
 											</div>
 											<!--end::User-->
 										</div>
@@ -5884,7 +5884,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Details-->
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+										<img alt="Pic" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 									</div>
 									<!--end::Avatar-->
 								</div>
@@ -5936,7 +5936,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Details-->
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+										<img alt="Pic" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 									</div>
 									<!--end::Avatar-->
 								</div>
@@ -5989,7 +5989,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Details-->
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+										<img alt="Pic" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 									</div>
 									<!--end::Avatar-->
 								</div>
@@ -6041,7 +6041,7 @@ License: For each use you must have a valid license purchased only from above li
 									<!--end::Details-->
 									<!--begin::Avatar-->
 									<div class="symbol symbol-35px symbol-circle">
-										<img alt="Pic" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+										<img alt="Pic" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 									</div>
 									<!--end::Avatar-->
 								</div>
@@ -7947,17 +7947,17 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+											<img alt="Pic" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
 										<div class="ms-6">
 											<!--begin::Name-->
-											<a href="#" class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary">Max Smith
-											<span class="badge badge-light fs-8 fw-semibold ms-2">Software Enginer</span></a>
+											<a href="#" class="d-flex align-items-center fs-5 fw-bold text-dark text-hover-primary">{{ Session::get('full_name') }}
+											<span class="badge badge-light fs-8 fw-semibold ms-2">{{ Session::get('role') }}</span></a>
 											<!--end::Name-->
 											<!--begin::Email-->
-											<div class="fw-semibold text-muted">max@kt.com</div>
+											<div class="fw-semibold text-muted">{{ Session::get('email') }}</div>
 											<!--end::Email-->
 										</div>
 										<!--end::Details-->
@@ -8443,13 +8443,13 @@ License: For each use you must have a valid license purchased only from above li
 										<a href="#" class="d-flex align-items-center p-3 rounded bg-state-light bg-state-opacity-50 mb-1">
 											<!--begin::Avatar-->
 											<div class="symbol symbol-35px symbol-circle me-5">
-												<img alt="Pic" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+												<img alt="Pic" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 											</div>
 											<!--end::Avatar-->
 											<!--begin::Info-->
 											<div class="fw-semibold">
-												<span class="fs-6 text-gray-800 me-2">Max Smith</span>
-												<span class="badge badge-light">Software Enginer</span>
+												<span class="fs-6 text-gray-800 me-2">{{ Session::get('full_name') }}</span>
+												<span class="badge badge-light">{{ Session::get('role') }}</span>
 											</div>
 											<!--end::Info-->
 										</a>
@@ -8575,13 +8575,13 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Checkbox-->
 												<!--begin::Avatar-->
 												<div class="symbol symbol-35px symbol-circle">
-													<img alt="Pic" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+													<img alt="Pic" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 												</div>
 												<!--end::Avatar-->
 												<!--begin::Details-->
 												<div class="ms-5">
-													<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max Smith</a>
-													<div class="fw-semibold text-muted">max@kt.com</div>
+													<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">{{ Session::get('full_name') }}</a>
+													<div class="fw-semibold text-muted">{{ Session::get('email') }}</div>
 												</div>
 												<!--end::Details-->
 											</div>
@@ -9250,13 +9250,13 @@ License: For each use you must have a valid license purchased only from above li
 									<div class="d-flex align-items-center">
 										<!--begin::Avatar-->
 										<div class="symbol symbol-35px symbol-circle">
-											<img alt="Pic" src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" />
+											<img alt="Pic" src="{{ null !==Session::get('user_image') ? URL::asset('images/user-avatars/'.Session::get('user_image')) : URL::asset('assets/media/svg/avatars/blank.svg') }}" />
 										</div>
 										<!--end::Avatar-->
 										<!--begin::Details-->
 										<div class="ms-5">
-											<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">Max Smith</a>
-											<div class="fw-semibold text-muted">max@kt.com</div>
+											<a href="#" class="fs-5 fw-bold text-gray-900 text-hover-primary mb-2">{{ Session::get('full_name') }}</a>
+											<div class="fw-semibold text-muted">{{ Session::get('email') }}</div>
 										</div>
 										<!--end::Details-->
 									</div>

@@ -37,9 +37,9 @@
                     <!--begin::Secondary button-->
                     <!--end::Secondary button-->
                     <!--begin::Primary button-->
-                    @if($isViewMode)
+                    {{-- @if($isViewMode) --}}
                         <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_log">Add Log</a>
-                    @endif
+                    {{-- @endif --}}
                     <!--end::Primary button-->
                 </div>
                 <!--end::Actions-->
@@ -194,6 +194,38 @@
                                     </div>
                                     <!--end::Col-->
                                 </div>
+                                @if (Session::get('role') == 'marketing-agent')
+                                    <div class="row mb-6">
+                                        <!--begin::Label-->
+                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">Mature Lead?</label>
+                                        <!--end::Label-->
+                                        <!--begin::Col-->
+                                        <div class="col-lg-8 form-check form-check-sm form-check-custom form-check-solid fv-row ">
+                                            <input name="mature" class="form-check-input" style="margin-left: 10px;" type="checkbox" id="mature" @if (isset($leadData) && $leadData->mature == 1) checked  @endif />
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                @endif
+                                @if (Session::get('role') == 'sales-manager')
+                                    <div class="row mb-6">
+                                        <!--begin::Label-->
+                                        <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                            <span >Transfer to</span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <!--begin::Col-->
+                                        <div class="col-lg-8 fv-row">
+                                            <select name="sales_agent" id="salesAgentDropdown" aria-label="Select Sales Manager" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select sales agent...">
+                                                <option value="" selected disabled>Select sales agent...</option>
+                                                @foreach ($salesAgents as $salesAgent)
+                                                    <option value="{{ $salesAgent->id }}" {{ (isset($leadData) && $leadData->transferred_to_user_id == $salesAgent->id) ? 'selected' : '' }}>
+                                                        {{ $salesAgent->full_name }}</option>
+                                                @endforeach
+                                            </select>   
+                                        </div>                                 
+                                        <!--end::Col-->
+                                    </div>
+                                @endif
                                 <!--end::Input group-->
                             </div>
                             <!--end::Card body-->
@@ -209,7 +241,7 @@
                     <!--end::Content-->
                 </div>
                 <!--end::Basic info-->
-                @if($isViewMode)
+                {{-- @if($isViewMode) --}}
                 <!--begin::Call Logs Table-->
                 <div class="card mb-5 mb-xl-10">
                     <!--begin::Card header-->
@@ -350,14 +382,10 @@
                                 <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_users_table">
                                     <thead>
                                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="w-10px pe-2">
-                                                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                                    <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
-                                                </div>
-                                            </th>
+                                            <th class="min-w-125px">Received By</th>
+                                            <th class="min-w-125px">Customer Response</th>
                                             <th class="min-w-125px">Date of Call</th>
                                             <th class="min-w-125px">Time of Call</th>
-                                            <th class="min-w-125px">Customer Response</th>
                                             <th class="min-w-125px">Next Date of Call</th>
                                             <th class="min-w-125px">Next Time of Call</th>
                                             <th class="text-end min-w-70px">Actions</th>
@@ -366,16 +394,10 @@
                                     <tbody class="fw-semibold text-gray-600">
                                         @foreach ($callLogData as $id => $callLog)
                                         <tr>
-                                            <td>
-                                                <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value="1" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="text-gray-600 text-hover-primary mb-1">{{ $callLog->date_of_call }}</a>
-                                            </td>
-                                            <td>{{ $callLog->time_of_call }}</td>
+                                            <td>{{ $callLog->received_by }}</td>
                                             <td>{{ $callLog->customer_response }}</td>
+                                            <td>{{ $callLog->date_of_call }}</td>
+                                            <td>{{ $callLog->time_of_call }}</td>
                                             {{-- <td data-filter="mastercard"> --}}
                                             <td>{{ $callLog->next_call_date }}</td>
                                             <td>{{ $callLog->next_call_time }}</td>
@@ -517,7 +539,7 @@
                     <!--end::Content-->
                 </div>
                 <!--end::Call Logs Table-->
-                @endif
+                {{-- @endif --}}
                 <!--begin::Delete Account-->
                 <div class="card">
                     <!--begin::Card header-->

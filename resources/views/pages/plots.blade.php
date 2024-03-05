@@ -10,7 +10,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Lead List</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Project List</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Leads</li>
+                        <li class="breadcrumb-item text-muted">Plots Inventory</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -88,7 +88,7 @@
                                         <!--begin::Options-->
                                         <label class="form-check form-check-sm form-check-custom form-check-solid">
                                             <input class="form-check-input" type="checkbox" value="2" checked="checked" />
-                                            <span class="form-check-label">Customer</span>
+                                            <span class="form-check-label">Project</span>
                                         </label>
                                         <!--end::Options-->
                                     </div>
@@ -237,19 +237,6 @@
                                 </div>
                                 <!--end::Menu 1-->
                                 <!--end::Filter-->
-                                <!--begin::Export-->
-                                <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal">
-                                <i class="ki-duotone ki-exit-up fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>Export</button>
-                                <!--end::Export-->
-                                <!--begin::Add customer-->
-                                {{-- @if (Session::get('role') == 'marketing-agent') --}}
-                                @if (Session::get('role') == 'admin')
-                                    <a href="{{ route('addLeadForm', ['id' => null]) }}" class="btn btn-primary" role="button">Add Lead</a>
-                                @endif
-                                <!--end::Add customer-->
                             </div>
                             <!--end::Toolbar-->
                             <!--begin::Group actions-->
@@ -274,48 +261,26 @@
                                             <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Name</th>
-                                    <th class="min-w-125px">Mobile Number</th>
-                                    <th class="min-w-125px">Landline Number</th>
-                                    <th class="min-w-125px">Email</th>
-                                    <th class="min-w-125px">Source of Information</th>
-                                    <th class="text-end min-w-70px">Actions</th>
+                                    <th class="min-w-125px">Plot Number</th>
+                                    <th class="min-w-125px">Booked By</th>
+                                    <th class="min-w-125px">Booking Date Time</th>
+                                    <th class="min-w-125px">Plot Category</th>
+                                    <th class="min-w-125px">Amount</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
-                                @foreach ($data as $id => $lead)
+                                @foreach ($plots as $id => $plot)
                                 <tr>
                                     <td>
                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
                                             <input class="form-check-input" type="checkbox" value="1" />
                                         </div>
                                     </td>
-                                    <td>
-                                        <a href="{{ route('updateLeadForm', ['id' => $lead->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $lead->name }}</a>
-                                    </td>
-                                    <td>{{ $lead->mobile_number_1 }}</td>
-                                    <td>{{ $lead->landline_number_1 }}</td>
-                                    {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $lead->email }}</td>
-                                    <td>{{ $lead->source_of_information }}</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                        <!--begin::Menu-->
-                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="{{ route('viewLead', ['id' => $lead->id]) }}" class="menu-link px-3">View</a>
-                                            </div>
-                                            <!--end::Menu item-->
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
-                                            </div>
-                                            <!--end::Menu item-->
-                                        </div>
-                                        <!--end::Menu-->
-                                    </td>
+                                    <td>{{ $plot->plot_no }}</td>
+                                    <td>{{ $plot->name }}</td>
+                                    <td>{{ $plot->created_on }}</td>
+                                    <td>{{ $plot->category }}</td>
+                                    <td>{{ $plot->amount }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -325,6 +290,7 @@
                     <!--end::Card body-->
                 </div>
                 <!--end::Card-->
+                <!--begin::Modals-->
                 <!--begin::Modal - Adjust Balance-->
                 <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->
@@ -442,16 +408,16 @@
 
 @push('scripts')
     <!--begin::Vendors Javascript(used for this page only)-->
-    <script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-	<!--end::Vendors Javascript-->
-	<!--begin::Custom Javascript(used for this page only)-->
-    <script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/apps/customers/list/list.js') }}"></script>
-	<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
-	<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-	<!--end::Custom Javascript-->
+		<script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+		<!--end::Vendors Javascript-->
+		<!--begin::Custom Javascript(used for this page only)-->
+		<script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/pages/listings/projects/plots.js') }}"></script>
+		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+		<!--end::Custom Javascript-->
 @endpush

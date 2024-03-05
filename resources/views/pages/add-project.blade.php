@@ -146,6 +146,7 @@
                         @csrf
                         @if (isset($projectData) && $projectData->id)
                             <input type="hidden" id="id" name="id" value="{{ $projectData->id }}">
+                            <input type="hidden" name="existing_project_logo" id="existing_project_logo" value="{{ $projectData->project_logo }}">
                         @endif
                         <!--begin::Aside column-->
                         <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
@@ -219,7 +220,7 @@
                                     <!--end::Card title-->
                                     <!--begin::Card toolbar-->
                                     <div class="card-toolbar">
-                                        <div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_project_status"></div>
+                                        <div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_project_status_select"></div>
                                     </div>
                                     <!--begin::Card toolbar-->
                                 </div>
@@ -227,12 +228,11 @@
                                 <!--begin::Card body-->
                                 <div class="card-body pt-0">
                                     <!--begin::Select2-->
-                                    <select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_project_status_select" name="status">
+                                    <select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_project_status_select" name="status" id="status">
                                         <option></option>
-                                        <option value="published" selected="selected">Published</option>
-                                        <option value="draft">Draft</option>
-                                        <option value="scheduled">Scheduled</option>
-                                        <option value="inactive">Inactive</option>
+                                        <option value="published" {{ $projectData && $projectData->status == 'published' ? 'selected' : '' }}>Published</option>
+                                        <option value="draft" {{ $projectData && $projectData->status == 'draft' ? 'selected' : '' }}>Draft</option>
+                                        <option value="closed" {{ $projectData && $projectData->status == 'closed' ? 'selected' : '' }}>Closed</option>
                                     </select>
                                     <!--end::Select2-->
                                     <!--begin::Description-->
@@ -248,129 +248,11 @@
                                 <!--end::Card body-->
                             </div>
                             <!--end::Status-->
-                            <!--begin::Category & tags-->
-                            <div class="card card-flush py-4">
-                                <!--begin::Card header-->
-                                <div class="card-header">
-                                    <!--begin::Card title-->
-                                    <div class="card-title">
-                                        <h2>Project Details</h2>
-                                    </div>
-                                    <!--end::Card title-->
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body pt-0">
-                                    <!--begin::Input group-->
-                                    <!--begin::Label-->
-                                    <label class="form-label">Categories</label>
-                                    <!--end::Label-->
-                                    <!--begin::Select2-->
-                                    <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option" data-allow-clear="true" multiple="multiple">
-                                        <option></option>
-                                        <option value="Computers">Computers</option>
-                                        <option value="Watches">Watches</option>
-                                        <option value="Headphones">Headphones</option>
-                                        <option value="Footwear">Footwear</option>
-                                        <option value="Cameras">Cameras</option>
-                                        <option value="Shirts">Shirts</option>
-                                        <option value="Household">Household</option>
-                                        <option value="Handbags">Handbags</option>
-                                        <option value="Wines">Wines</option>
-                                        <option value="Sandals">Sandals</option>
-                                    </select>
-                                    <!--end::Select2-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7 mb-7">Add product to a category.</div>
-                                    <!--end::Description-->
-                                    <!--end::Input group-->
-                                    <!--begin::Button-->
-                                    <a href="../../demo1/dist/apps/ecommerce/catalog/add-category.html" class="btn btn-light-primary btn-sm mb-10">
-                                    <i class="ki-duotone ki-plus fs-2"></i>Create new category</a>
-                                    <!--end::Button-->
-                                    <!--begin::Input group-->
-                                    <!--begin::Label-->
-                                    <label class="form-label d-block">Tags</label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <input id="kt_ecommerce_add_project_tags" name="kt_ecommerce_add_project_tags" class="form-control mb-2" value="" />
-                                    <!--end::Input-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7">Add tags to a product.</div>
-                                    <!--end::Description-->
-                                    <!--end::Input group-->
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Category & tags-->
-                            <!--begin::Weekly sales-->
-                            <div class="card card-flush py-4">
-                                <!--begin::Card header-->
-                                <div class="card-header">
-                                    <!--begin::Card title-->
-                                    <div class="card-title">
-                                        <h2>Weekly Sales</h2>
-                                    </div>
-                                    <!--end::Card title-->
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body pt-0">
-                                    <span class="text-muted">No data available. Sales data will begin capturing once product has been published.</span>
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Weekly sales-->
-                            <!--begin::Template settings-->
-                            <div class="card card-flush py-4">
-                                <!--begin::Card header-->
-                                <div class="card-header">
-                                    <!--begin::Card title-->
-                                    <div class="card-title">
-                                        <h2>Product Template</h2>
-                                    </div>
-                                    <!--end::Card title-->
-                                </div>
-                                <!--end::Card header-->
-                                <!--begin::Card body-->
-                                <div class="card-body pt-0">
-                                    <!--begin::Select store template-->
-                                    <label for="kt_ecommerce_add_product_store_template" class="form-label">Select a product template</label>
-                                    <!--end::Select store template-->
-                                    <!--begin::Select2-->
-                                    <select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" id="kt_ecommerce_add_product_store_template">
-                                        <option></option>
-                                        <option value="default" selected="selected">Default template</option>
-                                        <option value="electronics">Electronics</option>
-                                        <option value="office">Office stationary</option>
-                                        <option value="fashion">Fashion</option>
-                                    </select>
-                                    <!--end::Select2-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7">Assign a template from your current theme to define how a single product is displayed.</div>
-                                    <!--end::Description-->
-                                </div>
-                                <!--end::Card body-->
-                            </div>
-                            <!--end::Template settings-->
                         </div>
                         <!--end::Aside column-->
                         <!--begin::Main column-->
                         <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
-                            <!--begin:::Tabs-->
-                            <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
-                                <!--begin:::Tab item-->
-                                <li class="nav-item">
-                                    <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab" href="#kt_ecommerce_add_product_general">General</a>
-                                </li>
-                                <!--end:::Tab item-->
-                                <!--begin:::Tab item-->
-                                <li class="nav-item">
-                                    <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab" href="#kt_ecommerce_add_product_advanced">Advanced</a>
-                                </li>
-                                <!--end:::Tab item-->
-                            </ul>
-                            <!--end:::Tabs-->
+                            
                             <!--begin::Tab content-->
                             <div class="tab-content">
                                 <!--begin::Tab pane-->
@@ -397,19 +279,6 @@
                                                     <!--end::Input-->
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">A project name is required and recommended to be unique.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Project Cost</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="number" step="any" name="project_cost" class="form-control mb-2" placeholder="Project Cost" value="{{ $projectData->project_cost ?? '' }}" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set the project cost.</div>
                                                     <!--end::Description-->
                                                 </div>
                                                 <!--end::Input group-->
@@ -473,468 +342,6 @@
                                             <!--end::Card header-->
                                         </div>
                                         <!--end::Media-->
-                                        <!--begin::Pricing-->
-                                        <div class="card card-flush py-4">
-                                            <!--begin::Card header-->
-                                            <div class="card-header">
-                                                <div class="card-title">
-                                                    <h2>Pricing</h2>
-                                                </div>
-                                            </div>
-                                            <!--end::Card header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body pt-0">
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class=" form-label">Down Payment</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="number" step="any" name="down_payment" class="form-control mb-2" placeholder="Product price" value="{{ $projectData->down_payment ?? '' }}" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set the down payment.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class=" form-label">Development Charges</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="number" step="any" name="development_charges" class="form-control mb-2" placeholder="Development Charges" value="{{ $projectData->development_charges ?? '' }}" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set the development charges.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class=" form-label">Extra Charges</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="number" step="any" name="extra_charges" class="form-control mb-2" placeholder="Extra Charges" value="{{ $projectData->extra_charges ?? '' }}" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set the extra charges.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class=" form-label">Monthly Installment</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="number" step="any" name="monthly_installment" class="form-control mb-2" placeholder="Monthly Installment" value="{{ $projectData->monthly_installment ?? '' }}" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set the monthly installment.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="fv-row mb-10">
-                                                    <!--begin::Label-->
-                                                    <label class="fs-6 fw-semibold mb-2">Discount Type
-                                                    <span class="ms-1" data-bs-toggle="tooltip" title="Select a discount type that will be applied to this product">
-                                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                            <span class="path1"></span>
-                                                            <span class="path2"></span>
-                                                            <span class="path3"></span>
-                                                        </i>
-                                                    </span></label>
-                                                    <!--End::Label-->
-                                                    <!--begin::Row-->
-                                                    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-1 row-cols-xl-3 g-9" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button='true']">
-                                                        <!--begin::Col-->
-                                                        <div class="col">
-                                                            <!--begin::Option-->
-                                                            <label class="btn btn-outline btn-outline-dashed btn-active-light-primary active d-flex text-start p-6" data-kt-button="true">
-                                                                <!--begin::Radio-->
-                                                                <span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-                                                                    <input class="form-check-input" type="radio" name="discount_option" value="1" checked="checked" />
-                                                                </span>
-                                                                <!--end::Radio-->
-                                                                <!--begin::Info-->
-                                                                <span class="ms-5">
-                                                                    <span class="fs-4 fw-bold text-gray-800 d-block">No Discount</span>
-                                                                </span>
-                                                                <!--end::Info-->
-                                                            </label>
-                                                            <!--end::Option-->
-                                                        </div>
-                                                        <!--end::Col-->
-                                                        <!--begin::Col-->
-                                                        <div class="col">
-                                                            <!--begin::Option-->
-                                                            <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6" data-kt-button="true">
-                                                                <!--begin::Radio-->
-                                                                <span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-                                                                    <input class="form-check-input" type="radio" name="discount_option" value="2" />
-                                                                </span>
-                                                                <!--end::Radio-->
-                                                                <!--begin::Info-->
-                                                                <span class="ms-5">
-                                                                    <span class="fs-4 fw-bold text-gray-800 d-block">Percentage %</span>
-                                                                </span>
-                                                                <!--end::Info-->
-                                                            </label>
-                                                            <!--end::Option-->
-                                                        </div>
-                                                        <!--end::Col-->
-                                                        <!--begin::Col-->
-                                                        <div class="col">
-                                                            <!--begin::Option-->
-                                                            <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6" data-kt-button="true">
-                                                                <!--begin::Radio-->
-                                                                <span class="form-check form-check-custom form-check-solid form-check-sm align-items-start mt-1">
-                                                                    <input class="form-check-input" type="radio" name="discount_option" value="3" />
-                                                                </span>
-                                                                <!--end::Radio-->
-                                                                <!--begin::Info-->
-                                                                <span class="ms-5">
-                                                                    <span class="fs-4 fw-bold text-gray-800 d-block">Fixed Price</span>
-                                                                </span>
-                                                                <!--end::Info-->
-                                                            </label>
-                                                            <!--end::Option-->
-                                                        </div>
-                                                        <!--end::Col-->
-                                                    </div>
-                                                    <!--end::Row-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="d-none mb-10 fv-row" id="kt_ecommerce_add_product_discount_percentage">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Set Discount Percentage</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Slider-->
-                                                    <div class="d-flex flex-column text-center mb-5">
-                                                        <div class="d-flex align-items-start justify-content-center mb-7">
-                                                            <span class="fw-bold fs-3x" id="kt_ecommerce_add_product_discount_label">0</span>
-                                                            <span class="fw-bold fs-4 mt-1 ms-2">%</span>
-                                                        </div>
-                                                        <div id="kt_ecommerce_add_product_discount_slider" class="noUi-sm"></div>
-                                                    </div>
-                                                    <!--end::Slider-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set a percentage discount to be applied on this product.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="d-none mb-10 fv-row" id="kt_ecommerce_add_product_discount_fixed">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Fixed Discounted Price</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="text" name="dicsounted_price" class="form-control mb-2" placeholder="Discounted price" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set the discounted product price. The product will be reduced at the determined fixed price</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Tax-->
-                                                <div class="d-flex flex-wrap gap-5">
-                                                    <!--begin::Input group-->
-                                                    <div class="fv-row w-100 flex-md-root">
-                                                        <!--begin::Label-->
-                                                        <label class="required form-label">Tax Class</label>
-                                                        <!--end::Label-->
-                                                        <!--begin::Select2-->
-                                                        <select class="form-select mb-2" name="tax" data-control="select2" data-hide-search="true" data-placeholder="Select an option">
-                                                            <option></option>
-                                                            <option value="0">Tax Free</option>
-                                                            <option value="1">Taxable Goods</option>
-                                                            <option value="2">Downloadable Product</option>
-                                                        </select>
-                                                        <!--end::Select2-->
-                                                        <!--begin::Description-->
-                                                        <div class="text-muted fs-7">Set the product tax class.</div>
-                                                        <!--end::Description-->
-                                                    </div>
-                                                    <!--end::Input group-->
-                                                    <!--begin::Input group-->
-                                                    <div class="fv-row w-100 flex-md-root">
-                                                        <!--begin::Label-->
-                                                        <label class="form-label">VAT Amount (%)</label>
-                                                        <!--end::Label-->
-                                                        <!--begin::Input-->
-                                                        <input type="text" class="form-control mb-2" value="" />
-                                                        <!--end::Input-->
-                                                        <!--begin::Description-->
-                                                        <div class="text-muted fs-7">Set the product VAT about.</div>
-                                                        <!--end::Description-->
-                                                    </div>
-                                                    <!--end::Input group-->
-                                                </div>
-                                                <!--end:Tax-->
-                                            </div>
-                                            <!--end::Card header-->
-                                        </div>
-                                        <!--end::Pricing-->
-                                    </div>
-                                </div>
-                                <!--end::Tab pane-->
-                                <!--begin::Tab pane-->
-                                <div class="tab-pane fade" id="kt_ecommerce_add_product_advanced" role="tab-panel">
-                                    <div class="d-flex flex-column gap-7 gap-lg-10">
-                                        <!--begin::Inventory-->
-                                        <div class="card card-flush py-4">
-                                            <!--begin::Card header-->
-                                            <div class="card-header">
-                                                <div class="card-title">
-                                                    <h2>Inventory</h2>
-                                                </div>
-                                            </div>
-                                            <!--end::Card header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body pt-0">
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="required form-label">Project Phase</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="text" name="project_phase" class="form-control mb-2" placeholder="Project Phase" value="{{ $projectData->project_phase ?? '' }}" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Enter the project phase.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="required form-label">Project Area</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="number" name="project_area" step="any" class="form-control mb-2" placeholder="Project Area" value="{{ $projectData->project_area ?? '' }}" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Enter the project area.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10 fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="required form-label">Plots</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <div class="d-flex gap-3">
-                                                        <input type="number" name="no_of_plots" class="form-control mb-2" placeholder="Number of Plots" value="{{ $projectData->no_of_plots ?? '' }}" />
-                                                        <input type="text" name="plot_prefix" class="form-control mb-2" placeholder="Plot Prefix" value="{{ $projectData->plot_prefix ?? '' }}" />
-                                                    </div>
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Enter the plot quantity.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="fv-row">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Allow Backorders</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <div class="form-check form-check-custom form-check-solid mb-2">
-                                                        <input class="form-check-input" type="checkbox" value="" />
-                                                        <label class="form-check-label">Yes</label>
-                                                    </div>
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Allow customers to purchase products that are out of stock.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                            </div>
-                                            <!--end::Card header-->
-                                        </div>
-                                        <!--end::Inventory-->
-                                        <!--begin::Variations-->
-                                        <div class="card card-flush py-4">
-                                            <!--begin::Card header-->
-                                            <div class="card-header">
-                                                <div class="card-title">
-                                                    <h2>Variations</h2>
-                                                </div>
-                                            </div>
-                                            <!--end::Card header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body pt-0">
-                                                <!--begin::Input group-->
-                                                <div class="" data-kt-ecommerce-catalog-add-project="auto-options">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Add Product Variations</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Repeater-->
-                                                    <div id="kt_ecommerce_add_project_options">
-                                                        <!--begin::Form group-->
-                                                        <div class="form-group">
-                                                            <div data-repeater-list="kt_ecommerce_add_project_options" class="d-flex flex-column gap-3">
-                                                                <div data-repeater-item="" class="form-group d-flex flex-wrap align-items-center gap-5">
-                                                                    <!--begin::Select2-->
-                                                                    <div class="w-100 w-md-200px">
-                                                                        <select class="form-select" name="product_option" data-placeholder="Select a variation" data-kt-ecommerce-catalog-add-project="project_option">
-                                                                            <option></option>
-                                                                            <option value="color">Color</option>
-                                                                            <option value="size">Size</option>
-                                                                            <option value="material">Material</option>
-                                                                            <option value="style">Style</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <!--end::Select2-->
-                                                                    <!--begin::Input-->
-                                                                    <input type="text" class="form-control mw-100 w-200px" name="product_option_value" placeholder="Variation" />
-                                                                    <!--end::Input-->
-                                                                    <button type="button" data-repeater-delete="" class="btn btn-sm btn-icon btn-light-danger">
-                                                                        <i class="ki-duotone ki-cross fs-1">
-                                                                            <span class="path1"></span>
-                                                                            <span class="path2"></span>
-                                                                        </i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Form group-->
-                                                        <!--begin::Form group-->
-                                                        <div class="form-group mt-5">
-                                                            <button type="button" data-repeater-create="" class="btn btn-sm btn-light-primary">
-                                                            <i class="ki-duotone ki-plus fs-2"></i>Add another variation</button>
-                                                        </div>
-                                                        <!--end::Form group-->
-                                                    </div>
-                                                    <!--end::Repeater-->
-                                                </div>
-                                                <!--end::Input group-->
-                                            </div>
-                                            <!--end::Card header-->
-                                        </div>
-                                        <!--end::Variations-->
-                                        <!--begin::Shipping-->
-                                        <div class="card card-flush py-4">
-                                            <!--begin::Card header-->
-                                            <div class="card-header">
-                                                <div class="card-title">
-                                                    <h2>Shipping</h2>
-                                                </div>
-                                            </div>
-                                            <!--end::Card header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body pt-0">
-                                                <!--begin::Input group-->
-                                                <div class="fv-row">
-                                                    <!--begin::Input-->
-                                                    <div class="form-check form-check-custom form-check-solid mb-2">
-                                                        <input class="form-check-input" type="checkbox" id="kt_ecommerce_add_product_shipping_checkbox" value="1" />
-                                                        <label class="form-check-label">This is a physical product</label>
-                                                    </div>
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set if the product is a physical or digital item. Physical products may require shipping.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Shipping form-->
-                                                <div id="kt_ecommerce_add_product_shipping" class="d-none mt-10">
-                                                    <!--begin::Input group-->
-                                                    <div class="mb-10 fv-row">
-                                                        <!--begin::Label-->
-                                                        <label class="form-label">Weight</label>
-                                                        <!--end::Label-->
-                                                        <!--begin::Editor-->
-                                                        <input type="text" name="weight" class="form-control mb-2" placeholder="Product weight" value="" />
-                                                        <!--end::Editor-->
-                                                        <!--begin::Description-->
-                                                        <div class="text-muted fs-7">Set a product weight in kilograms (kg).</div>
-                                                        <!--end::Description-->
-                                                    </div>
-                                                    <!--end::Input group-->
-                                                    <!--begin::Input group-->
-                                                    <div class="fv-row">
-                                                        <!--begin::Label-->
-                                                        <label class="form-label">Dimension</label>
-                                                        <!--end::Label-->
-                                                        <!--begin::Input-->
-                                                        <div class="d-flex flex-wrap flex-sm-nowrap gap-3">
-                                                            <input type="number" name="width" class="form-control mb-2" placeholder="Width (w)" value="" />
-                                                            <input type="number" name="height" class="form-control mb-2" placeholder="Height (h)" value="" />
-                                                            <input type="number" name="length" class="form-control mb-2" placeholder="Lengtn (l)" value="" />
-                                                        </div>
-                                                        <!--end::Input-->
-                                                        <!--begin::Description-->
-                                                        <div class="text-muted fs-7">Enter the product dimensions in centimeters (cm).</div>
-                                                        <!--end::Description-->
-                                                    </div>
-                                                    <!--end::Input group-->
-                                                </div>
-                                                <!--end::Shipping form-->
-                                            </div>
-                                            <!--end::Card header-->
-                                        </div>
-                                        <!--end::Shipping-->
-                                        <!--begin::Meta options-->
-                                        <div class="card card-flush py-4">
-                                            <!--begin::Card header-->
-                                            <div class="card-header">
-                                                <div class="card-title">
-                                                    <h2>Meta Options</h2>
-                                                </div>
-                                            </div>
-                                            <!--end::Card header-->
-                                            <!--begin::Card body-->
-                                            <div class="card-body pt-0">
-                                                <!--begin::Input group-->
-                                                <div class="mb-10">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Meta Tag Title</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Input-->
-                                                    <input type="text" class="form-control mb-2" name="meta_title" placeholder="Meta tag name" />
-                                                    <!--end::Input-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set a meta tag title. Recommended to be simple and precise keywords.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div class="mb-10">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Meta Tag Description</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Editor-->
-                                                    <div id="kt_ecommerce_add_project_meta_description" name="kt_ecommerce_add_project_meta_description" class="min-h-100px mb-2"></div>
-                                                    <!--end::Editor-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set a meta tag description to the product for increased SEO ranking.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                                <!--begin::Input group-->
-                                                <div>
-                                                    <!--begin::Label-->
-                                                    <label class="form-label">Meta Tag Keywords</label>
-                                                    <!--end::Label-->
-                                                    <!--begin::Editor-->
-                                                    <input id="kt_ecommerce_add_product_meta_keywords" name="kt_ecommerce_add_product_meta_keywords" class="form-control mb-2" />
-                                                    <!--end::Editor-->
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7">Set a list of keywords that the product is related to. Separate the keywords by adding a comma
-                                                    <code>,</code>between each keyword.</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                                <!--end::Input group-->
-                                            </div>
-                                            <!--end::Card header-->
-                                        </div>
-                                        <!--end::Meta options-->
                                     </div>
                                 </div>
                                 <!--end::Tab pane-->
@@ -1083,7 +490,13 @@
                                         </i>Export</button>
                                         <!--end::Export-->
                                         <!--begin::Add customer-->
-                                        <a href="/add-phase-form" class="btn btn-primary" role="button">Add Phase</a>
+                                        <form action="/add-phase-form" method="POST">
+                                            @csrf <!-- Include this for Laravel projects to prevent CSRF attacks -->
+                                            <input type="hidden" name="project_id" value="{{ $projectData->id }}">
+                                            <button type="submit" class="btn btn-primary me-3" {{ $projectData->status == 'closed' ? 'disabled' : '' }}>Add Phase</button>
+                                        </form>
+                                        
+                                        {{-- <button type="button" class="btn btn-primary me-3" onclick="location.href='/add-phase-form';" {{ $projectData->status == 'closed' ? 'disabled' : '' }}>Add Phase</button> --}}
                                         <!--end::Add customer-->
                                     </div>
                                     <!--end::Toolbar-->

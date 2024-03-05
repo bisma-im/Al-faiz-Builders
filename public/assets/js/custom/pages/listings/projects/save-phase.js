@@ -117,14 +117,13 @@ var KTAppEcommerceSaveProduct = (function () {
                         o = document.getElementById("kt_ecommerce_add_phase_submit");
                     (e = FormValidation.formValidation(t, {
                         fields: {
-                            project_id: { validators: { notEmpty: { message: "Project Title is required" } } },
                             phase_name: { validators: { notEmpty: { message: "Phase Name is required" } } },
-                            project_cost: { validators: { notEmpty: { message: "Project Buying Cost is required" } } },
+                            phase_cost: { validators: { notEmpty: { message: "Project Buying Cost is required" } } },
                             down_payment: { validators: { notEmpty: { message: "Product Down Payment is required" } } },
                             development_charges: { validators: { notEmpty: { message: "Product Development Charges are required" } } },
                             extra_charges: { validators: { notEmpty: { message: "Extra Charges are required" } } },
                             monthly_installment: { validators: { notEmpty: { message: "Monthly Installment Amount is required" } } },
-                            project_area: { validators: { notEmpty: { message: "Project Area is required" } } },
+                            phase_area: { validators: { notEmpty: { message: "Project Area is required" } } },
                         },
                         plugins: { trigger: new FormValidation.plugins.Trigger(), bootstrap: new FormValidation.plugins.Bootstrap5({ rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: "" }) },
                     })),
@@ -189,9 +188,6 @@ var KTAppEcommerceSaveProduct = (function () {
                                     }
                             });
                         });
-                $(t.querySelector('[name="project_title"]')).on("change", function () {
-                    validator.revalidateField("project_title");
-                });
             })();
         },
     };
