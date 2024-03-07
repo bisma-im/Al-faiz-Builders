@@ -252,40 +252,69 @@
                     <!--end::Card header-->
                     <!--begin::Card body-->
                     <div class="card-body pt-0">
-                        <!--begin::Table-->
-                        <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_users_table">
-                            <thead>
-                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                                    <th class="w-10px pe-2">
-                                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                            <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
-                                        </div>
-                                    </th>
-                                    <th class="min-w-125px">Plot Number</th>
-                                    <th class="min-w-125px">Booked By</th>
-                                    <th class="min-w-125px">Booking Date Time</th>
-                                    <th class="min-w-125px">Plot Category</th>
-                                    <th class="min-w-125px">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody class="fw-semibold text-gray-600">
-                                @foreach ($plots as $id => $plot)
-                                <tr>
-                                    <td>
-                                        <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                            <input class="form-check-input" type="checkbox" value="1" />
-                                        </div>
-                                    </td>
-                                    <td>{{ $plot->plot_no }}</td>
-                                    <td>{{ $plot->name }}</td>
-                                    <td>{{ $plot->created_on }}</td>
-                                    <td>{{ $plot->category }}</td>
-                                    <td>{{ $plot->amount }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <!--end::Table-->
+                        <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mt-7 mb-7">
+                            @foreach ($categories as $category)
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link text-active-primary pb-4 {{ $loop->first ? 'active' : '' }}" data-bs-toggle="tab" href="#{{ 'category-' . str_replace(' ', '-', $category->category) }}">{{ $category->category }}</a>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <div class="tab-content" id="plotCategoryContent">
+                            @foreach ($categories as $category)
+                                <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="{{ 'category-' . str_replace(' ', '-', $category->category) }}" role="tab-panel">
+                                    <!--begin::Table-->
+                                    <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_users_table">
+                                        <thead>
+                                            <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                                <th class="w-10px pe-2">
+                                                    <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                                        <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
+                                                    </div>
+                                                </th>
+                                                <th class="min-w-125px">Plot Number</th>
+                                                <th class="min-w-125px">Booked By</th>
+                                                <th class="min-w-125px">Booking Date Time</th>
+                                                <th class="min-w-125px">Amount</th>
+                                                <th class="min-w-125px"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="fw-semibold text-gray-600">
+                                            @foreach ($plots as $id => $plot)
+                                                @if ($plot->category == $category->category)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                                <input class="form-check-input" type="checkbox" value="1" />
+                                                            </div>
+                                                        </td>
+                                                        @if ($plot->created_on == 'Not Booked')
+                                                            <td>{{ $plot->plot_no }}</td>
+                                                        @else
+                                                            <td>
+                                                                <a href="{{ route('updateBookingForm', ['id' => $plot->booking_id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $plot->plot_no }}</a>
+                                                            </td>
+                                                        @endif
+                                                        <td>{{ $plot->name }}</td>
+                                                        <td>{{ $plot->created_on }}</td>
+                                                        <td>{{ $plot->amount }}</td>
+                                                        <td>
+                                                            @if (isset($lastPlotIds[$category->category]) && $plot->id === $lastPlotIds[$category->category])
+                                                                {{-- <form action="{{ route('plot.delete', ['id' => $plot->id]) }}" method="POST"> --}}
+                                                                <form action="#" method="POST">
+                                                                    @csrf
+                                                                        <button type="submit" class="btn btn-danger fw-semibold">Delete</button>
+                                                                </form>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>       
+                                    </table>
+                                    <!--end::Table-->
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                     <!--end::Card body-->
                 </div>

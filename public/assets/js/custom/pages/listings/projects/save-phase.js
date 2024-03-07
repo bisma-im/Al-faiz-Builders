@@ -1,7 +1,7 @@
 "use strict";
 var KTAppEcommerceSaveProduct = (function () {
     const e = () => {
-            $("#kt_ecommerce_add_project_options").repeater({
+            $("#kt_ecommerce_add_plot_options").repeater({
                 initEmpty: !1,
                 defaultValues: { "text-input": "foo" },
                 show: function () {

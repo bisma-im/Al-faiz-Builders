@@ -12,7 +12,12 @@ class AccountsController extends Controller
     public function showAccounts()
     {
         $accountData = DB::table('accounts')->get();
-        return view('pages.accounts', ['accountData' => $accountData]);
+        if(Session::get('role') == 'admin'){
+            return view('pages.accounts', ['accountData' => $accountData]);
+        }
+        else{
+            return redirect()->back();
+        }
     }
 
     public function getAccountData(Request $req){

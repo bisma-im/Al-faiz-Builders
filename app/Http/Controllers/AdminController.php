@@ -74,6 +74,14 @@ class AdminController extends Controller
                 {
                     $permissions[] = 'invoicing';
                 } 
+                if($user->users == 1)
+                {
+                    $permissions[] = 'users';
+                } 
+                if($user->projects == 1)
+                {
+                    $permissions[] = 'projects';
+                } 
                 if($user->booking == 1)
                 {
                     $permissions[] = 'booking';

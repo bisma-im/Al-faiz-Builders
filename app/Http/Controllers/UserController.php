@@ -37,16 +37,16 @@ class UserController extends Controller
 
         switch($req->input('user_access_level'))
         {
+            case 'admin':
+                $userData['users'] = 1;
+                $userData['projects'] = 1;
             case 'sales-agent':
                 $userData['leads'] = 1;
             case 'sales-manager':
                 $userData['leads'] = 1;
             case 'accounts-officer':
-                $userData['accounting'] = 1;
-            case 'accounts-officer':
                 $userData['invoicing'] = 1;
-            case 'booking-agent':
-                $userData['booking'] = 1;
+                $userData['accounting'] = 1;
             case 'dealer':
                 $userData['booking'] = 1;
             case 'marketing-agent':

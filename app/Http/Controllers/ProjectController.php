@@ -15,13 +15,35 @@ class ProjectController extends Controller
     }
 
     public function showPlots(Request $req, $id){
+        $categories = DB::table('plots_inventory')
+                        ->select('category')
+                        ->where('phase_id', $id)
+                        ->groupby('category')
+                        ->orderBy('category', 'desc')
+                        ->get();
         $plots = DB::table('plots_inventory as p')
-        ->leftJoin('booking as b', 'p.id', '=', 'b.plot_id')
-        ->leftJoin('customer as c', 'c.id', '=', 'b.customer_id')
-        ->select('p.plot_no', 'p.amount', 'p.category', DB::raw('IFNULL(b.created_on, "Not Booked") as created_on'), DB::raw('IFNULL(c.name, "Not Booked") as name'))
-        ->where('p.phase_id', $id)
-        ->get();
-        return view('pages.plots', ['plots' => $plots]);
+                    ->leftJoin('booking as b', 'p.id', '=', 'b.plot_id')
+                    ->leftJoin('customer as c', 'c.id', '=', 'b.customer_id')
+                    ->select('b.id as booking_id', 'p.id', 'p.plot_no', 'p.amount', 'p.category', DB::raw('IFNULL(b.created_on, "Not Booked") as created_on'), DB::raw('IFNULL(c.name, "Not Booked") as name'))
+                    ->where('p.phase_id', $id)
+                    ->get();
+        $lastPlotIds = DB::table('plots_inventory')
+                     ->select(DB::raw('MAX(id) as last_id'), 'category')
+                     ->where('phase_id', $id)
+                     ->groupBy('category')
+                     ->pluck('last_id', 'category')->all();
+        // dd($lastPlotIds);
+        return view('pages.plots', compact('categories','plots', 'lastPlotIds'));
+    }
+
+    public function deletePlot(Request $req, $id){
+        try
+        {
+
+        } catch (\Exception $e) 
+        {   
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function showAddProjectForm($id = null) {
@@ -86,7 +108,7 @@ class ProjectController extends Controller
             $phaseLogo->move($destinationPath, $phaseLogoName);
             $phaseData['phase_logo'] = $phaseLogoName;
         } else {
-            $phaseData['phase_logo'] = 'default.jpg';
+            $phaseData['phase_logo'] = 'default.svg';
         }
         
         return $phaseData;
@@ -94,12 +116,7 @@ class ProjectController extends Controller
 
     public function addPhase(Request $req){
         $phaseData = $this->getPhaseData($req);
-        $categories = [
-            ['category' => $req->input('category_1'), 'totalPlots' => $req->input('no_of_plots_cat_1'), 'plotPrefix' => $req->input('plot_prefix_cat_1'), 'amount' => $req->input('amount_cat_1')],
-            ['category' => $req->input('category_2'), 'totalPlots' => $req->input('no_of_plots_cat_2'), 'plotPrefix' => $req->input('plot_prefix_cat_2'), 'amount' => $req->input('amount_cat_2')],
-            ['category' => $req->input('category_3'), 'totalPlots' => $req->input('no_of_plots_cat_3'), 'plotPrefix' => $req->input('plot_prefix_cat_3'), 'amount' => $req->input('amount_cat_3')],
-            ['category' => $req->input('category_4'), 'totalPlots' => $req->input('no_of_plots_cat_4'), 'plotPrefix' => $req->input('plot_prefix_cat_4'), 'amount' => $req->input('amount_cat_4')],
-        ];
+        $categories = $req->input('kt_ecommerce_add_plot_options');
         $plotInventory=[];
         $projectId= $phaseData['project_id'];
         $phaseId=0;
@@ -110,10 +127,11 @@ class ProjectController extends Controller
             $phaseId = DB::table('phase')->insertGetId($phaseData);
             foreach($categories as $category)
             {
-                $totalPlots = $category['totalPlots'];
-                $plotPrefix = $category['plotPrefix'];
+                $totalPlots = $category['no_of_plots'];
+                $plotPrefix = $category['plot_prefix'];
                 $amount = $category['amount'];
                 $cat = $category['category'];
+                $type = $category['plot_or_shop'];
                 for($i = 1; $i <= $totalPlots; $i++)
                 {
                     $plotInventory[] = [
@@ -121,6 +139,7 @@ class ProjectController extends Controller
                         'project_id' => $projectId,
                         'phase_id' => $phaseId,
                         'amount' => $amount,
+                        'plot_or_shop' => $type,
                         'plot_no' => $plotPrefix . $i,
                     ];
                 }
@@ -135,6 +154,7 @@ class ProjectController extends Controller
 
                     DB::table('phase_media')->insert([
                         'phase_id' => $phaseId,
+                        'project_id' => $projectId,
                         'media_name' => $filename,
                     ]);
                 }
@@ -163,7 +183,7 @@ class ProjectController extends Controller
             $destinationPath = public_path('images/project-logos');
             $projectLogo->move($destinationPath, $projectLogoName);
             $projectData['project_logo'] = $projectLogoName;
-        } else if ($req->input('existing_project_logo') != 'default.jpg' && !$req->hasFile('project_logo')) {
+        } else if ($req->input('existing_project_logo') != 'default.svg' && !$req->hasFile('project_logo')) {
             $projectData['project_logo'] = $req->input('existing_project_logo');
         } else {
             if (!$req->input('id')) {
@@ -217,33 +237,57 @@ class ProjectController extends Controller
         }
     }
 
+    public function updatePhase(Request $req) {
+        $phaseData = $this->getPhaseData($req);
+        $id = $req->input('id'); // Get the customer ID from the request
+    
+        $updated = DB::table('phase')
+            ->where('id', $id)
+            ->update($phaseData);
+    
+        if ($updated) {
+            return response()->json(['success' => 'Phase updated successfully']);
+        } else {
+            return response()->json(['error' => 'Phase not found or update failed'], 404);
+        }
+    }
+
     public function deleteProject(Request $req, $id) {
         DB::beginTransaction();
         try {
             $projectLogo = DB::table('projects')->where('id', $id)->value('project_logo');
-            
-            if ($projectLogo && $projectLogo != 'default.jpg') {
-                $logoPath = public_path('images/project-logos/' . $projectLogo);
-                if (file_exists($logoPath)) {
-                    unlink($logoPath);
-                }
+        
+            // Collect paths of files to delete, but do not actually delete them yet
+            $filesToDelete = [];
+            if ($projectLogo && $projectLogo != 'default.svg') {
+                $filesToDelete[] = public_path('images/project-logos/' . $projectLogo);
             }
-    
-            $mediaFiles = DB::table('project_media')->where('project_id', $id)->get();
-            foreach ($mediaFiles as $file) {
-                $filePath = public_path('images/project-media/' . $file->media_name);
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
+
+            // Collect media files
+            $mediaFiles = DB::table('project_media')->where('project_id', $id)->pluck('media_name');
+            foreach ($mediaFiles as $fileName) {
+                $filesToDelete[] = public_path('images/project-media/' . $fileName);
+            }
+
+            // Collect phase logos
+            $phaseLogos = DB::table('phase')->where('project_id', $id)->pluck('phase_logo');
+            foreach ($phaseLogos as $phaseLogo) {
+                $filesToDelete[] = public_path('images/phase-logos/' . $phaseLogo);
             }
     
             DB::table('project_media')->where('project_id', $id)->delete();
+            DB::table('phase_media')->where('project_id', $id)->delete();
             DB::table('plots_inventory')->where('project_id', $id)->delete();
-    
+            DB::table('phase')->where('project_id', $id)->delete();
             $deleted = DB::table('projects')->where('id', $id)->delete();
     
             if ($deleted) {
                 DB::commit();
+                foreach ($filesToDelete as $filePath) {
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
                 return response()->json(['success' => 'Project deleted successfully']);
             } else {
                 return response()->json(['error' => 'Project not found or could not be deleted'], 404);

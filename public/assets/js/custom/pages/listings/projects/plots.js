@@ -85,6 +85,7 @@ var KTCustomersList = (function () {
                 (t = $(n).DataTable({
                     info: !1,
                     order: [],
+                    paging: false,
                     columnDefs: [
                         { orderable: !1, targets: 0 },
                     ],
