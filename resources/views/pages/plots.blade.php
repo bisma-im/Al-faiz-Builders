@@ -281,7 +281,7 @@
                                         <tbody class="fw-semibold text-gray-600">
                                             @foreach ($plots as $id => $plot)
                                                 @if ($plot->category == $category->category)
-                                                    <tr>
+                                                <tr data-plot-id="{{ $plot->id }}" data-category="{{ $plot->category }}">
                                                         <td>
                                                             <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                                 <input class="form-check-input" type="checkbox" value="1" />
@@ -299,10 +299,11 @@
                                                         <td>{{ $plot->amount }}</td>
                                                         <td>
                                                             @if (isset($lastPlotIds[$category->category]) && $plot->id === $lastPlotIds[$category->category])
-                                                                {{-- <form action="{{ route('plot.delete', ['id' => $plot->id]) }}" method="POST"> --}}
-                                                                <form action="#" method="POST">
+                                                                <form method="POST" id="deleteForm">
+                                                                {{-- <form action="#" method="POST" id="deleteForm"> --}}
                                                                     @csrf
-                                                                        <button type="submit" class="btn btn-danger fw-semibold">Delete</button>
+                                                                        <input type="hidden" name="plotId" id="plotId-{{ $plot->id }}" value="{{ $plot->id }}"/>
+                                                                        <button id="deleteButton" type="submit" class="btn btn-danger fw-semibold">Delete</button>
                                                                 </form>
                                                             @endif
                                                         </td>

@@ -81,7 +81,7 @@ var KTCustomersList = (function () {
     return {
         init: function () {
             (n = document.querySelector("#kt_users_table")) &&
-                (
+            (
                 (t = $(n).DataTable({
                     info: !1,
                     order: [],
@@ -108,9 +108,75 @@ var KTCustomersList = (function () {
                     t.search(r).draw();
                 }),
                 c(),
+                
                 document.querySelector('[data-kt-customer-table-filter="reset"]').addEventListener("click", function () {
                     e.val(null).trigger("change"), (o[0].checked = !0), t.search("").draw();
-                }));
+                })
+            );
+            let deleteForm = document.getElementById("deleteForm");
+            let button = document.getElementById("deleteButton");
+            addDeleteListener(button);
+            function addDeleteListener(button) {
+                document.querySelector('#plotCategoryContent').addEventListener('click', function (e) {
+                    if (e.target && e.target.id === 'deleteButton') {
+                        e.preventDefault();
+                        const o = e.target.closest("tr"),
+                        plotId = o.dataset.plotId,
+                        category = o.dataset.category,
+                        n = o.querySelectorAll("td")[1].innerText;
+                        const formData = new FormData();
+                        formData.append('plotId', plotId);
+                        formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                        console.log(plotId);
+                        console.log(category);
+                        Swal.fire({
+                            text: "Are you sure you want to delete " + n + "?",
+                            icon: "warning",
+                            showCancelButton: !0,
+                            buttonsStyling: !1,
+                            confirmButtonText: "Yes, delete!",
+                            cancelButtonText: "No, cancel",
+                            customClass: { confirmButton: "btn fw-bold btn-danger", cancelButton: "btn fw-bold btn-active-light-primary" },
+                        })
+                        .then(function (result) {
+                            if (result.isConfirmed) {
+                                // Send AJAX request to delete project
+                                fetch('/delete-plot', { // Use the correct URL pattern as per your routes
+                                    method: 'POST',
+                                    body: formData,
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    }
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Server responded with a status: ' + response.status);
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    if (data.success) {
+                                        console.log('plot deleted');
+                                        Swal.fire({
+                                            text: "You have deleted " + n + "!.", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } })
+                                            .then(function () {
+                                                t.row($(o)).remove().draw(); 
+                                                window.location.reload();
+                                        });
+                                    } else {
+                                        "cancel" === e.dismiss && 
+                                        Swal.fire({ text: n + " was not deleted.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                            }
+                        });
+                    }
+                });
+            }   
         },
     };
 })();

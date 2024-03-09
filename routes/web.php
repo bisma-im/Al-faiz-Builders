@@ -50,7 +50,7 @@ Route::get('/add-project-form', [ProjectController::class, 'showAddProjectForm']
 Route::post('/update-project', [ProjectController::class, 'updateProject'])->name('updateProject');
 Route::get('{id}/plots', [ProjectController::class, 'showPlots'])->name('showPlots');
 Route::post('/delete-project/{id}', [ProjectController::class, 'deleteProject'])->name('deleteProject');
-Route::post('/delete-plot/{id}', [ProjectController::class, 'deletePlot'])->name('deletePlot');
+Route::post('/delete-plot', [ProjectController::class, 'deletePlot'])->name('deletePlot');
 
 Route::post('/add-phase-form', [ProjectController::class, 'showAddPhaseForm'])->name('showAddPhaseForm');
 Route::post('/add-phase', [ProjectController::class, 'addPhase'])->name('addPhase');

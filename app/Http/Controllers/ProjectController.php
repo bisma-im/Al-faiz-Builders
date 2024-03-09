@@ -36,11 +36,17 @@ class ProjectController extends Controller
         return view('pages.plots', compact('categories','plots', 'lastPlotIds'));
     }
 
-    public function deletePlot(Request $req, $id){
+    public function deletePlot(Request $req){
         try
         {
-
-        } catch (\Exception $e) 
+            $id = $req->input('plotId');
+            $plotInfo = DB::table('plots_inventory')->select('phase_id', 'category')->where('id', $id)->first();
+            $deleted = DB::table('plots_inventory')->where('id',$id)->delete();
+            if($deleted){
+                return response()->json(['success' => 'Plot deleted successfully']);
+            }
+        } 
+        catch (\Exception $e) 
         {   
             return response()->json(['error' => $e->getMessage()], 500);
         }
