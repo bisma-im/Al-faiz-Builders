@@ -12,6 +12,7 @@ class ProjectController extends Controller
     public function showProjects(Request $req){
         $projects = DB::table('projects')->get();
         return view('pages.projects', ['data' => $projects]);
+        //fsdufuifhsg
     }
 
     public function showPlots(Request $req, $id){
