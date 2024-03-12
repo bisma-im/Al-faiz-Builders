@@ -11,6 +11,7 @@ use App\Http\Controllers\AccountsController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\VoucherController;
 
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
@@ -57,6 +58,8 @@ Route::post('/add-phase', [ProjectController::class, 'addPhase'])->name('addPhas
 Route::get('/projects/{projectId}/phases/{phaseId}', [ProjectController::class, 'showAddPhaseForm'])->name('updatePhaseForm');
 Route::post('/update-phase', [ProjectController::class, 'updatePhase'])->name('updatePhase');
 
+Route::get('/add-voucher-form', [VoucherController::class, 'showVoucherForm'])->name('showVoucherForm');
+Route::post('/add-voucher', [VoucherController::class, 'addVoucher'])->name('addVoucher');
 
 Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->name('addLeadForm');
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');

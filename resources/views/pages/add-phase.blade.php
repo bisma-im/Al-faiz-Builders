@@ -422,7 +422,7 @@
                                                     </label>
                                                     
                                                     <div class="col-lg-8 fv-row">
-                                                        <input class="form-control" name="completion_date" id="kt_ecommerce_phase_complete_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date & time"/>
+                                                        <input name="completion_date" id="kt_ecommerce_phase_complete_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date & time"/>
                                                         
                                                     </div>
                                                 </div>
