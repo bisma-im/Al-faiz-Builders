@@ -12,15 +12,16 @@ class VoucherController extends Controller
 {
     public function showVoucherForm(Request $req){
         $accounts = DB::table('acc_coa')->get();
-        return view('pages.voucher-form', compact('accounts'));
+        $voucherType = $req->input('voucher_type');
+        return view('pages.voucher-form', compact('accounts','voucherType'));
     }
 
     public function getVoucherData(Request $req){
         $voucherDate = Carbon::createFromFormat('Y-m-d', $req->input('voucher_date'));
         $voucherData = [
             'date' => $voucherDate->toDateString(),
-            'account_code' => $req->input('account_code'),
-            'amount' => $req->input('amount'),
+            'account_code' => $req->input('debit_account_code'),
+            'debit_amount' => $req->input('amount'),
             'description' => $req->input('description'),
             'added_by' => session()->get('username'),
             'added_on' => now(),
@@ -28,6 +29,13 @@ class VoucherController extends Controller
         ];
 
         return $voucherData;
+    }
+
+    public function getTransactionData(Request $req){
+        $transactionData = [
+
+        ];
+        return $transactionData;
     }
 
     public function addVoucher(Request $req){
@@ -50,14 +58,22 @@ class VoucherController extends Controller
                 }
             }
             $voucherId = $currentYearMonth . '/' . $id;
+            $voucherType = $req->input('voucher_type');
             $voucherIdAndType= [
                 'voucher_id' => $voucherId,
+                'voucher_type' => $voucherType,
             ];
             DB::table('voucher')
                 ->where('id', $id)
                 ->update($voucherIdAndType);
+
+            $voucherData = array_merge($voucherIdAndType, $voucherData);
+            $voucherData['account_code'] = $req->input('credit_account_code');
+            $voucherData['credit_amount'] = $voucherData['debit_amount'];
+            $voucherData['debit_amount'] = null;
+            DB::table('voucher')->insert($voucherData);
             DB::commit();
-            return response()->json(['success' => 'Phase added successfully']);
+            return response()->json(['success' => 'Voucher added successfully']);
         }
         catch (\Exception $e) 
         {   

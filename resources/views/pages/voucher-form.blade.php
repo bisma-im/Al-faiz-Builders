@@ -32,14 +32,14 @@
                         <!--begin::Form-->
                         <form id="kt_new_voucher_form" class="form" data-kt-redirect="#" action="{{ route('addVoucher') }}" method="POST">
                             @csrf
+                            <input type="hidden" name="voucher_type" value="{{ $voucherType }}">
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
-                                
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                        <span class="required">Account</span>
+                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">
+                                        <span class="required">Account (Debit)</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate account">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
@@ -50,20 +50,41 @@
                                     </label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
-                                        <select name="account_code" aria-label="Select an Account Head" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Choose an account...">
+                                    <div class="col-lg-4 fv-row">
+                                        <select name="debit_account_code" aria-label="Select an Account Head" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Choose an account...">
                                             <option value="">Choose an Account...</option>
                                             @foreach ($accounts as $account)
                                                 <option value="{{ $account->HeadCode }}"> {{ $account->HeadCode . ' - ' . $account->HeadName }}</option>
                                             @endforeach
                                         </select>
-                                    </div>    
+                                    </div>  
+                                      <!--begin::Label-->
+                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">
+                                        <span class="required">Account (Credit)</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate account">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                    </label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-4 fv-row">
+                                        <select name="credit_account_code" aria-label="Select an Account Head" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Choose an account...">
+                                            <option value="">Choose an Account...</option>
+                                            @foreach ($accounts as $account)
+                                                <option value="{{ $account->HeadCode }}"> {{ $account->HeadCode . ' - ' . $account->HeadName }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div> 
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                    <label class="col-lg-2 col-form-label fw-semibold fs-6">
                                         <span class="required">Date</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Select the date">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
@@ -75,9 +96,19 @@
                                     </label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
+                                    <div class="col-lg-4 fv-row">
                                         <input name="voucher_date" id="kt_ecommerce_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date"/>
                                     </div>
+                                     <!--begin::Input group-->
+                                    <!--begin::Label-->
+                                    <label class="col-lg-2 col-form-label required fw-semibold fs-6">Amount</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-4 fv-row">
+                                        <input type="number" step="any" name="amount" class="form-control form-control-lg form-control-solid" placeholder="Amount" value="" />
+                                    </div>
+                                    <!--end::Col-->
+                                <!--end::Input group-->
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
@@ -130,18 +161,7 @@
                                     </div>    
                                 </div>
                                 <!--end::Input group-->
-                                 <!--begin::Input group-->
-                                 <div class="row mb-6">
-                                    <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Amount</label>
-                                    <!--end::Label-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="amount" class="form-control form-control-lg form-control-solid" placeholder="Amount" value="" />
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Input group-->
+                                
                             </div>
                             <!--end::Card body-->
                             <!--begin::Actions-->
