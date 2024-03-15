@@ -7,6 +7,7 @@ use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\DateTime;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VoucherController extends Controller
 {
@@ -14,6 +15,42 @@ class VoucherController extends Controller
         $accounts = DB::table('acc_coa')->get();
         $voucherType = $req->input('voucher_type');
         return view('pages.voucher-form', compact('accounts','voucherType'));
+    }
+
+    public function showVouchers(){
+        $voucherData = DB::table('voucher')
+                    ->select('id','voucher_id', 'date', 'description', 'debit_amount', 'added_by', 'voucher_type')
+                    ->distinct('voucher_id')
+                    ->orderBy('id', 'asc')
+                    ->get()
+                    ->unique('voucher_id');
+        return view('pages.vouchers', compact('voucherData'));
+    }
+
+    public function voucherPdf(Request $req){
+        $voucherId = $req->input('voucher_id');
+        $voucherData = DB::table('voucher')->where('voucher_id', $voucherId)->get();
+        $totals = DB::table('voucher')
+                    ->selectRaw('SUM(debit_amount) as totalDebitAmount, SUM(credit_amount) as totalCreditAmount')
+                    ->where('voucher_id', $voucherId)
+                    ->first();
+        return view('pages.voucher-pdf', compact('voucherData', 'voucherId', 'totals'));
+    }
+
+    public function downloadVoucher(){
+        $voucherId = '2024/3/9';
+        $voucherData = DB::table('voucher')->where('voucher_id', $voucherId)->get();
+        $totals = DB::table('voucher')
+                    ->selectRaw('SUM(debit_amount) as totalDebitAmount, SUM(credit_amount) as totalCreditAmount')
+                    ->where('voucher_id', $voucherId)
+                    ->first();
+        $data = [
+        'voucherData' => $voucherData,
+        'voucherId' => $voucherId,
+        'totals' => $totals
+        ];
+        $pdf = Pdf::loadView('pages.voucher-pdf', $data);
+        return $pdf->download('voucher.pdf');
     }
 
     public function getVoucherData(Request $req){
@@ -29,13 +66,6 @@ class VoucherController extends Controller
         ];
 
         return $voucherData;
-    }
-
-    public function getTransactionData(Request $req){
-        $transactionData = [
-
-        ];
-        return $transactionData;
     }
 
     public function addVoucher(Request $req){

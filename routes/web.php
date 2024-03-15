@@ -60,6 +60,9 @@ Route::post('/update-phase', [ProjectController::class, 'updatePhase'])->name('u
 
 Route::get('/add-voucher-form', [VoucherController::class, 'showVoucherForm'])->name('showVoucherForm');
 Route::post('/add-voucher', [VoucherController::class, 'addVoucher'])->name('addVoucher');
+Route::get('/voucher-pdf', [VoucherController::class, 'voucherPdf'])->name('voucherPdf');
+Route::get('/download-voucher', [VoucherController::class, 'downloadVoucher'])->name('downloadVoucher');
+Route::get('/vouchers', [VoucherController::class, 'showVouchers'])->name('showVouchers');
 
 Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->name('addLeadForm');
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');
