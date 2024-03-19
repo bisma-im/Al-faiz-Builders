@@ -63,6 +63,7 @@ Route::post('/add-voucher', [VoucherController::class, 'addVoucher'])->name('add
 Route::get('/voucher-pdf', [VoucherController::class, 'voucherPdf'])->name('voucherPdf');
 Route::get('/download-voucher', [VoucherController::class, 'downloadVoucher'])->name('downloadVoucher');
 Route::get('/vouchers', [VoucherController::class, 'showVouchers'])->name('showVouchers');
+Route::get('/get-voucher/{safeVoucherId}', [VoucherController::class, 'getVoucher'])->name('getVoucher');
 
 Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->name('addLeadForm');
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');

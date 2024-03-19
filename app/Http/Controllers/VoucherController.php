@@ -27,6 +27,22 @@ class VoucherController extends Controller
         return view('pages.vouchers', compact('voucherData'));
     }
 
+    public function getVoucher($safeVoucherId){
+        $voucherId = str_replace('-', '/', $safeVoucherId);
+        $voucher = DB::table('voucher')
+        ->join('acc_coa', 'acc_coa.HeadCode', '=', 'voucher.account_code')
+        ->select(
+            'voucher.*', 
+            'acc_coa.HeadName')
+        ->where('voucher_id', $voucherId)
+        ->orderBy('voucher.id', 'asc')
+        ->get();
+        return response()->json([
+            'success' => true,
+            'data' => $voucher,
+        ]);
+    }
+
     public function voucherPdf(Request $req){
         $voucherId = $req->input('voucher_id');
         $voucherData = DB::table('voucher')->where('voucher_id', $voucherId)->get();

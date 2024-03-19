@@ -1,4 +1,20 @@
 @extends('layouts.dashboardlayout')
+@section('extra-css')
+<style>
+    .voucher-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+    }
+    .voucher-table, .voucher-table th, .voucher-table td {
+        border: 1px solid black;
+    }
+    .voucher-table th, .voucher-table td {
+        padding: 8px;
+        text-align: left;
+    }
+</style>
+@endsection
 @section('content')
 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
     <!--begin::Content wrapper-->
@@ -36,6 +52,7 @@
                     <!--begin::Filter menu-->
                     <div class="m-0">
                         <!--begin::Menu toggle-->
+                        
                         <a href="#" class="btn btn-sm btn-flex bg-body btn-color-gray-700 btn-active-color-primary fw-bold" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                         <i class="ki-duotone ki-filter fs-6 text-muted me-1">
                             <span class="path1"></span>
@@ -154,9 +171,13 @@
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
+                            <input type="text" id="kt_datepicker_start" placeholder="Select start date" />
+                            <input type="text" id="kt_datepicker_end" placeholder="Select end date" />
+
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                 <!--begin::Filter-->
+                                
                                 <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                 <i class="ki-duotone ki-filter fs-2">
                                     <span class="path1"></span>
@@ -289,7 +310,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-gray-600 text-hover-primary mb-1">{{ $voucher->voucher_id }}</a>
+                                        <a href="#" class="text-gray-600 text-hover-primary mb-1" data-bs-toggle="modal" data-bs-target="#kt_modal_show_voucher" data-voucher-id="{{ $voucher->voucher_id }}" data-voucher-type="{{ $voucher->voucher_type }}">{{ $voucher->voucher_id }}</a>
                                     </td>
                                     <td>{{ $voucher->voucher_type }}</td>
                                     <td>{{ $voucher->description }}</td>
@@ -324,6 +345,69 @@
                     <!--end::Card body-->
                 </div>
                 <!--end::Card-->
+                <!--begin::Modal - Show - Voucher-->
+                <div class="modal fade" id="kt_modal_show_voucher" tabindex="-1" aria-hidden="true">
+                    <!--begin::Modal dialog-->
+                    <div class="modal-dialog modal-dialog-centered mw-650px">
+                        <!--begin::Modal content-->
+                        <div class="modal-content">
+                            <!--begin::Modal header-->
+                            <div class="modal-header" id="kt_modal_add_customer_header">
+                                <!--begin::Modal title-->
+                                <h2 class="fw-bold">Voucher Details ( <span id="voucher-type-placeholder"></span><span id="voucher-id-placeholder"></span> )</h2>
+                                <!--end::Modal title-->
+                                <!--begin::Close-->
+                                <div id="kt_modal_voucher_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                                    <i class="ki-duotone ki-cross fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+                            <!--end::Modal header-->
+                            <!--begin::Modal body-->
+                            <div class="modal-body py-10 px-lg-17">
+                                <!--begin::Scroll-->
+                                <div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_customer_header" data-kt-scroll-wrappers="#kt_modal_add_customer_scroll" data-kt-scroll-offset="300px">
+                                    <table class="voucher-table">
+                                        <colgroup>
+                                            <col style="width: 20%;">  <!-- Smaller width for the Date column -->
+                                            <col style="width: 40%;">  <!-- Larger width for the Account column -->
+                                            <!-- The next two col elements will split the remaining 50% of the table width -->
+                                            <col style="width: 20%;">
+                                            <col style="width: 20%;">
+                                        </colgroup>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Account</th>
+                                            <th>Debit</th>
+                                            <th>Credit</th>
+                                        </tr>
+                                        <tbody id="voucher_entries">
+                                            {{-- <tr>
+                                                <td id="voucher_date"></td>
+                                                <td id="voucher_account"></td>
+                                                <td id="voucher_debit"></td>
+                                                <td id="voucher_credit"></td>
+                                            </tr> --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--end::Scroll-->
+                            </div>
+                            <!--end::Modal body-->
+                            <!--begin::Modal footer-->
+                            <div class="modal-footer flex-center">
+                                <!--begin::Button-->
+                                <button type="reset" id="kt_modal_voucher_cancel" class="btn btn-light me-3">Discard</button>
+                                <!--end::Button-->
+                            </div>
+                            <!--end::Modal footer-->
+                        </div>
+                    </div>
+                </div>
+                <!--end::Modal - Show - Voucher-->
                 <!--begin::Modal - Adjust Balance-->
                 <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->
@@ -345,6 +429,7 @@
                                 <!--end::Close-->
                             </div>
                             <!--end::Modal header-->
+                            
                             <!--begin::Modal body-->
                             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                 <!--begin::Form-->
@@ -445,7 +530,8 @@
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
 		<script src="assets/js/custom/apps/customers/list/export.js"></script>
-		<script src="assets/js/custom/apps/customers/list/list.js"></script>
+		<script src="assets/js/custom/account/settings/voucher-list.js"></script>
+        <script src="assets/js/custom/account/settings/show-voucher.js"></script>
 		<script src="assets/js/widgets.bundle.js"></script>
 		<script src="assets/js/custom/widgets.js"></script>
 		<script src="assets/js/custom/apps/chat/chat.js"></script>
