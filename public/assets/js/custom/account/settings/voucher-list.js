@@ -79,28 +79,30 @@ var KTCustomersList = (function () {
         }),
             r ? ((o.innerHTML = l), t.classList.add("d-none"), e.classList.remove("d-none")) : (t.classList.remove("d-none"), e.classList.add("d-none"));
     };
-    
-    $("#kt_datepicker_start, #kt_datepicker_end").flatpickr({
-        todayHighlight: true,
-        autoclose: true,
-        enableTime: false,
-        dateFormat: "Y-m-d",
-        defaultDate: new Date(),
-    });    
+    // Initialize the "From" date picker
+    var fromPicker = flatpickr("#kt_datepicker_start", {
+        dateFormat: "d M Y",
+        defaultDate: new Date(), // or any default you prefer
+        onChange: function(selectedDates) {
+            // When a date is selected in the "From" picker,
+            // update the "To" picker's minDate to this date
+            toPicker.set('minDate', selectedDates[0]);
+        },
+    });
+
+    // Initialize the "To" date picker
+    var toPicker = flatpickr("#kt_datepicker_end", {
+        dateFormat: "d M Y",
+        defaultDate: new Date(), // or any default you prefer
+        onChange: function(selectedDates) {
+            // When a date is selected in the "To" picker,
+            // update the "From" picker's maxDate to this date
+            fromPicker.set('maxDate', selectedDates[0]);
+        },
+    });
+
     return {
         init: function () {
-            $.fn.dataTable.ext.search.push(
-                function(settings, data, dataIndex) {
-                    var startDate = new Date($('#kt_datepicker_start').val());
-                    var endDate = new Date($('#kt_datepicker_end').val());
-                    var columnDate = new Date(data[4]); // Adjust index to match your date column in data
-                    
-                    if (startDate && endDate) {
-                        return columnDate >= startDate && columnDate <= endDate;
-                    }
-                    return false; // Exclude row from filter if dates are not selected
-                }
-            );
             (n = document.querySelector("#kt_users_table")) &&
                 (n.querySelectorAll("tbody tr").forEach((t) => {
                     const e = t.querySelectorAll("td"),
@@ -139,7 +141,20 @@ var KTCustomersList = (function () {
                     e.val(null).trigger("change"), (o[0].checked = !0), t.search("").draw();
                 }));
                 $('#kt_datepicker_start, #kt_datepicker_end').on('change', function () {
-                    t.draw();
+                    var startDate = $('#kt_datepicker_start').val();
+                    var endDate = $('#kt_datepicker_end').val();
+
+                    $.ajax({
+                        url: '/vouchers', // Adjust the URL as necessary
+                        type: 'GET',
+                        data: {
+                            startDate: startDate,
+                            endDate: endDate
+                        },
+                        success: function(data) {
+                            $('#vouchersList').html(data);
+                        }
+                    });
                 });                
         },
     };

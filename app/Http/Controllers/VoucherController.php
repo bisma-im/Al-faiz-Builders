@@ -17,14 +17,32 @@ class VoucherController extends Controller
         return view('pages.voucher-form', compact('accounts','voucherType'));
     }
 
-    public function showVouchers(){
+    public function showVouchers(Request $request){
+        try {
+            $startDate = Carbon::createFromFormat('d M Y', $request->input('startDate'))->format('Y-m-d');
+        } catch (\Exception $e) {
+            $startDate = Carbon::today()->format('Y-m-d');
+        }
+    
+        try {
+            $endDate = Carbon::createFromFormat('d M Y', $request->input('endDate'))->format('Y-m-d');
+        } catch (\Exception $e) {
+            $endDate = Carbon::today()->format('Y-m-d');
+        }
+
         $voucherData = DB::table('voucher')
-                    ->select('id','voucher_id', 'date', 'description', 'debit_amount', 'added_by', 'voucher_type')
-                    ->distinct('voucher_id')
-                    ->orderBy('id', 'asc')
-                    ->get()
-                    ->unique('voucher_id');
-        return view('pages.vouchers', compact('voucherData'));
+                        ->select('id', 'voucher_id', 'date', 'description', 'debit_amount', 'added_by', 'voucher_type')
+                        ->where('date', '>=', $startDate)
+                        ->where('date', '<=', $endDate)
+                        ->orderBy('id', 'asc')
+                        ->get()
+                        ->unique('voucher_id');
+
+        if($request->ajax()) {
+            return view('partials.voucher_row', compact('voucherData'))->render();
+        } else {
+            return view('pages.vouchers', compact('voucherData'));
+        }
     }
 
     public function getVoucher($safeVoucherId){
