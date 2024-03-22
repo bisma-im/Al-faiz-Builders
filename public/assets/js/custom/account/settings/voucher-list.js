@@ -79,6 +79,7 @@ var KTCustomersList = (function () {
         }),
             r ? ((o.innerHTML = l), t.classList.add("d-none"), e.classList.remove("d-none")) : (t.classList.remove("d-none"), e.classList.add("d-none"));
     };
+    
     $("#kt_datepicker_start, #kt_datepicker_end").flatpickr({
         todayHighlight: true,
         autoclose: true,
@@ -88,12 +89,25 @@ var KTCustomersList = (function () {
     });    
     return {
         init: function () {
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var startDate = new Date($('#kt_datepicker_start').val());
+                    var endDate = new Date($('#kt_datepicker_end').val());
+                    var columnDate = new Date(data[4]); // Adjust index to match your date column in data
+                    
+                    if (startDate && endDate) {
+                        return columnDate >= startDate && columnDate <= endDate;
+                    }
+                    return false; // Exclude row from filter if dates are not selected
+                }
+            );
             (n = document.querySelector("#kt_users_table")) &&
                 (n.querySelectorAll("tbody tr").forEach((t) => {
                     const e = t.querySelectorAll("td"),
                         o = moment(e[5].innerHTML, "DD MMM YYYY, LT").format();
                     e[5].setAttribute("data-order", o);
                 }),
+
                 (t = $(n).DataTable({
                     info: !1,
                     order: [],
@@ -124,24 +138,9 @@ var KTCustomersList = (function () {
                 document.querySelector('[data-kt-customer-table-filter="reset"]').addEventListener("click", function () {
                     e.val(null).trigger("change"), (o[0].checked = !0), t.search("").draw();
                 }));
-                $.fn.dataTable.ext.search.push(
-                    function(settings, data, dataIndex) {
-                        var startDate = $('#kt_datepicker_start').flatpickr("getDate");
-                        var endDate = $('#kt_datepicker_end').flatpickr("getDate");
-                        var columnDate = new Date(data[4]); // Adjust index to match your date column in data
-                        
-                        if (startDate && endDate) {
-                            return columnDate >= startDate && columnDate <= endDate;
-                        }
-                        return false; // Exclude row from filter if dates are not selected
-                    }
-                );
-                
-                // Trigger filter when dates are changed
                 $('#kt_datepicker_start, #kt_datepicker_end').on('change', function () {
                     t.draw();
-                });
-                
+                });                
         },
     };
 })();

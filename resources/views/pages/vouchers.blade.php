@@ -164,21 +164,24 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Users" />
+                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Vouchers" style="max-width: 170px;"/>
                             </div>
                             <!--end::Search-->
                         </div>
                         <!--begin::Card title-->
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
-                            <input type="text" id="kt_datepicker_start" placeholder="Select start date" />
-                            <input type="text" id="kt_datepicker_end" placeholder="Select end date" />
-
+                            
+                            <label for="kt_datepicker_start" class="form-label ki-duotone me-1">From:</label>
+                            <input class="form-control form-control-sm me-2" id="kt_datepicker_start" placeholder="Select start date" style="max-width: 100px;"/>
+                            <label for="kt_datepicker_end" class="form-label ki-duotone me-1">To: </label>
+                            <input class="form-control form-control-sm me-2" id="kt_datepicker_end" placeholder="Select end date" style="max-width: 100px;"/>
+                            
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                 <!--begin::Filter-->
                                 
-                                <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <button type="button" class="btn btn-light-primary me-2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                 <i class="ki-duotone ki-filter fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
@@ -259,17 +262,18 @@
                                 <!--end::Menu 1-->
                                 <!--end::Filter-->
                                 <!--begin::Export-->
-                                <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal">
+                                <button type="button" class="btn btn-light-primary me-2" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal" style="max-width: 120px;">
                                 <i class="ki-duotone ki-exit-up fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>Export</button>
                                 <!--end::Export-->
                                 <!--begin::Add customer-->
-                                <a href="/add-voucher-form" class="btn btn-primary" role="button">Add Voucher</a>
+                                <a href="/add-voucher-form" class="btn btn-primary" role="button" style="max-width: 130px;">Add Voucher</a>
                                 <!--end::Add customer-->
                             </div>
                             <!--end::Toolbar-->
+                        
                             <!--begin::Group actions-->
                             <div class="d-flex justify-content-end align-items-center d-none" data-kt-customer-table-toolbar="selected">
                                 <div class="fw-bold me-5">
