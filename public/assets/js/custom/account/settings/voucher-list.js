@@ -2,6 +2,7 @@
 var KTCustomersList = (function () {
 
     var t,
+        exportButton,
         e,
         o,
         n,
@@ -82,10 +83,8 @@ var KTCustomersList = (function () {
     // Initialize the "From" date picker
     var fromPicker = flatpickr("#kt_datepicker_start", {
         dateFormat: "d M Y",
-        defaultDate: new Date(), // or any default you prefer
+        defaultDate: new Date(), 
         onChange: function(selectedDates) {
-            // When a date is selected in the "From" picker,
-            // update the "To" picker's minDate to this date
             toPicker.set('minDate', selectedDates[0]);
         },
     });
@@ -93,10 +92,8 @@ var KTCustomersList = (function () {
     // Initialize the "To" date picker
     var toPicker = flatpickr("#kt_datepicker_end", {
         dateFormat: "d M Y",
-        defaultDate: new Date(), // or any default you prefer
+        defaultDate: new Date(), 
         onChange: function(selectedDates) {
-            // When a date is selected in the "To" picker,
-            // update the "From" picker's maxDate to this date
             fromPicker.set('maxDate', selectedDates[0]);
         },
     });
@@ -109,7 +106,6 @@ var KTCustomersList = (function () {
                         o = moment(e[5].innerHTML, "DD MMM YYYY, LT").format();
                     e[5].setAttribute("data-order", o);
                 }),
-
                 (t = $(n).DataTable({
                     info: !1,
                     order: [],
@@ -155,7 +151,15 @@ var KTCustomersList = (function () {
                             $('#vouchersList').html(data);
                         }
                     });
-                });                
+                });       
+                $("#exportPDF").click(function () {
+                    document.getElementById('fromDate').value = $('#kt_datepicker_start').val();
+                    document.getElementById('toDate').value = $('#kt_datepicker_end').val();
+
+                    // Submit the form
+                    document.getElementById('exportVouchersForm').submit();
+                });
+                
         },
     };
 })();

@@ -45,6 +45,17 @@ class VoucherController extends Controller
         }
     }
 
+    public function exportVouchers(Request $request){
+        $startDate = Carbon::createFromFormat('d M Y', $request->input('fromDate'))->format('Y-m-d');
+        $endDate = Carbon::createFromFormat('d M Y', $request->input('toDate'))->format('Y-m-d');
+        
+        $vouchers = DB::table('voucher')
+            ->where('date', '>=', $startDate)
+            ->where('date', '<=', $endDate)
+            ->get();
+        return view('pages.export-vouchers-pdf', compact('vouchers'));
+    }
+
     public function getVoucher($safeVoucherId){
         $voucherId = str_replace('-', '/', $safeVoucherId);
         $voucher = DB::table('voucher')
