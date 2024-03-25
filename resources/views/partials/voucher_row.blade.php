@@ -14,7 +14,11 @@
         {{-- <td data-filter="mastercard"> --}}
         <td>{{ $voucher->debit_amount }}</td>
         <td>{{ $voucher->added_by }}</td>
-        <td class="text-end">
+        <td><div class="menu-item px-3">
+            <a href="{{ route('downloadVoucher', ['voucher_id' => $voucher->voucher_id]) }}" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary">Download PDF</a>
+        </div>
+        </td>
+        {{-- <td class="text-end">
             <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
             <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
             <!--begin::Menu-->
@@ -31,6 +35,7 @@
                 <!--end::Menu item-->
             </div>
             <!--end::Menu-->
-        </td>
+        </td> --}}
     </tr>
 @endforeach
+
