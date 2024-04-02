@@ -6,7 +6,7 @@
     <title>Receipt Voucher</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', serif;
             margin: 0;
             padding: 0;
         }

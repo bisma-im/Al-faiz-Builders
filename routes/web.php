@@ -12,6 +12,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\LedgerController;
 
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
@@ -65,6 +66,12 @@ Route::get('/download-voucher', [VoucherController::class, 'downloadVoucher'])->
 Route::get('/vouchers', [VoucherController::class, 'showVouchers'])->name('showVouchers');
 Route::get('/get-voucher/{safeVoucherId}', [VoucherController::class, 'getVoucher'])->name('getVoucher');
 Route::post('/export-vouchers', [VoucherController::class, 'exportVouchers'])->name('exportVouchers');
+
+Route::get('/ledger-form', [LedgerController::class, 'showLedgerForm'])->name('showLedgerForm');
+Route::post('/show-ledger', [LedgerController::class, 'showLedger'])->name('showLedger');
+// Route::get('/ledger-account', function () {
+//     return view('pages.ledger-account');
+// });
 
 Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->name('addLeadForm');
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead');

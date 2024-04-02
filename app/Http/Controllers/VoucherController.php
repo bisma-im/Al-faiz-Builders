@@ -65,7 +65,7 @@ class VoucherController extends Controller
             'toDate' => $toDate,
             'vouchers' => $vouchers
         ];
-        $pdf = Pdf::loadView('pages.export-vouchers-pdf', $data);
+        $pdf = Pdf::loadView('pages.export-vouchers-pdf', $data)->setPaper('a4', 'landscape');
         return $pdf->download('vouchers-list.pdf');
     }
 
