@@ -126,10 +126,59 @@ class VoucherController extends Controller
         return $voucherData;
     }
 
+    public function calculateNewBalance($voucherData){
+        $headType = $currentBalance = null;
+        $row = DB::table('voucher')
+                ->select('balance')
+                ->where('account_code', $voucherData['account_code'])
+                ->orderBy('id', 'desc')
+                ->first();
+        if ($row) {
+            $currentBalance = $row->balance;
+            $accTypeRow = DB::table('acc_coa')
+                        ->select('HeadType')
+                        ->where('HeadCode', $voucherData['account_code'])
+                        ->first();
+            $headType = $accTypeRow->HeadType;
+        } 
+        else {
+            $openingBalanceRow = DB::table('acc_coa')
+                                ->select('opening_balance', 'HeadType')
+                                ->where('HeadCode', $voucherData['account_code'])
+                                ->first();
+            $headType = $openingBalanceRow->HeadType;
+            $currentBalance = $openingBalanceRow ? $openingBalanceRow->opening_balance : 0;
+        }
+        $transactionDebitAmount = $voucherData['debit_amount'] ?? 0;
+        $transactionCreditAmount = $voucherData['credit_amount'] ?? 0;
+        switch ($headType) {
+            case 'A': // Asset
+            case 'E': // Expense
+                $newBalance = $currentBalance + $transactionDebitAmount - $transactionCreditAmount;
+                break;
+            
+            case 'L': // Liability
+            case 'C': // Capital
+            case 'I': // Income
+                $newBalance = $currentBalance - $transactionDebitAmount + $transactionCreditAmount;
+                break;
+            
+            // Add cases for other HeadTypes if necessary
+            
+            default:
+                // Handle unexpected HeadType
+                throw new Exception("Unknown HeadType: $headType");
+        }
+        return $newBalance;
+    }
+    
     public function addVoucher(Request $req){
         $voucherData = $this->getVoucherData($req);
         $today = Carbon::now();
         $currentYearMonth = $today->year . '/' . $today->month;
+        $newBalance = $this->calculateNewBalance($voucherData);
+        $voucherData['balance'] = $newBalance;
+        
         DB::beginTransaction();
         try{
             $id = DB::table('voucher')->insertGetId($voucherData);
@@ -159,6 +208,8 @@ class VoucherController extends Controller
             $voucherData['account_code'] = $req->input('credit_account_code');
             $voucherData['credit_amount'] = $voucherData['debit_amount'];
             $voucherData['debit_amount'] = null;
+            $newBalance = $this->calculateNewBalance($voucherData);
+            $voucherData['balance'] = $newBalance;
             DB::table('voucher')->insert($voucherData);
             DB::commit();
             return response()->json(['success' => 'Voucher added successfully']);

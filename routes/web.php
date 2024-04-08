@@ -69,6 +69,7 @@ Route::post('/export-vouchers', [VoucherController::class, 'exportVouchers'])->n
 
 Route::get('/ledger-form', [LedgerController::class, 'showLedgerForm'])->name('showLedgerForm');
 Route::post('/show-ledger', [LedgerController::class, 'showLedger'])->name('showLedger');
+Route::get('/generate-pdf', [LedgerController::class, 'downloadLedger'])->name('downloadLedger');
 // Route::get('/ledger-account', function () {
 //     return view('pages.ledger-account');
 // });

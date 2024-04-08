@@ -131,7 +131,7 @@
                     <div class="ledger-header">
                         <h1>Al-Faiz Builders</h1>
                         <h2>General Ledger</h2>
-                        <p>{{ $accountName->HeadName  . ' (' . $accountCode . ')' }}</p>
+                        <p>{{ $accountName  . ' (' . $accountCode . ')' }}</p>
                         <h3>{{ date('d-M-Y', strtotime($startDate)) . ' - ' . date('d-M-Y', strtotime($endDate)) }}</h3>
                     </div>
                 </header>
