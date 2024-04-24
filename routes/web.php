@@ -13,6 +13,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\LedgerController;
+use App\Http\Controllers\StatementsController;
 
 Route::post('/signInAuth', [AdminController::class, 'signInAuth'])->name('signInAuth');
 Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
@@ -70,8 +71,11 @@ Route::post('/export-vouchers', [VoucherController::class, 'exportVouchers'])->n
 Route::get('/ledger-form', [LedgerController::class, 'showLedgerForm'])->name('showLedgerForm');
 Route::post('/show-ledger', [LedgerController::class, 'showLedger'])->name('showLedger');
 Route::get('/generate-pdf', [LedgerController::class, 'downloadLedger'])->name('downloadLedger');
-// Route::get('/ledger-account', function () {
-//     return view('pages.ledger-account');
+
+Route::post('/trial-balance', [StatementsController::class, 'generateTrialBalance'])->name('generateTrialBalance');
+Route::get('/trial-balance-form', [StatementsController::class, 'showTBForm'])->name('showTBForm');
+// Route::get('/trial-balance', function () {
+//     return view('pages.trial-balance');
 // });
 
 Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->name('addLeadForm');

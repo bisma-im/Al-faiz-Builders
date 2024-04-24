@@ -18,6 +18,7 @@ var KTNewAccount = (function () {
                 fromPicker.set('maxDate', selectedDates[0]);
             },
         });
+        
         function generatePdf(reportId) {
             const pdfUrl = `/generate-pdf?reportId=${reportId}`;
             window.open(pdfUrl, '_blank');
