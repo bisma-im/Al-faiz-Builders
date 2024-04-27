@@ -25,6 +25,9 @@
             float: right;
             padding: 20px; /* Adjust as needed */
         }
+        .page-break {
+            page-break-after: always;
+        }
         .tb-wrapper {
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -73,10 +76,12 @@
             padding-left:0.75rem;
             padding-right: 15px;
             vertical-align: top;
+            
         }
         .tb-table tr td {
             border-left: 1px solid black;
             border-right: 1px solid black;
+            margin: 15px;
         }
         
         /* Targets the last tbody row for bottom border */
@@ -85,6 +90,7 @@
             border-left: none;
             border-right: none;
             padding: 15px;
+            font-size: 17px;
             text-align: right;
             font-weight: bold;
         }
@@ -93,6 +99,7 @@
             background-color: #a3d5ff;
             color:  black;
             padding: 15px;
+            font-size: 17px;
             text-align: right;
             border: 1px solid black;
         }
@@ -107,8 +114,12 @@
     @php
         $rowsPerPage = 27;
         $totalRows = count($accountBalances); // Assuming $data is your dataset
+        // $totalRows = 60;
         $pageNumber = 1;
         $pages = ceil($totalRows / $rowsPerPage);
+        function format_balance($balance) {
+            return $balance > 0 ? number_format($balance, 2) : '(' . number_format(abs($balance), 2) . ')';
+        }
     @endphp
     @for ($page = 0; $page < $pages; $page++)
         <div class="container mt-4">
@@ -147,12 +158,23 @@
                         @for ($i = $page * $rowsPerPage; $i < min(($page + 1) * $rowsPerPage, $totalRows); $i++)
                             @php
                                 $accountBalance = $accountBalances[$i];
+                                
                             @endphp
                             <tr>
                                 <td>{{ $accountBalance->account_code }}</td>
-                                <td>{{ $accountBalance->HeadName }}</td>
-                                <td style="text-align: right;">{{ in_array($accountBalance->HeadType, ['A', 'E']) ? ($accountBalance->ending_balance > 0 ? number_format($accountBalance->ending_balance, 2) : '(' . number_format(abs($accountBalance->ending_balance), 2)  . ')') : '' }}</td>
-                                <td style="text-align: right;">{{ in_array($accountBalance->HeadType, ['L', 'C', 'I']) ? ($accountBalance->ending_balance > 0 ? number_format(abs($accountBalance->ending_balance), 2) : '(' . number_format(abs($accountBalance->ending_balance), 2) . ')') : '' }}</td>
+                                <td>{{ $accountBalance->Account_Title }}</td>
+                                <td style="text-align: right;">
+                                    @if (in_array(substr($accountBalance->account_code, 0, 1), ['1', '5']) || in_array($accountBalance->account_code, ['4-001-002', '6-001-001']))
+                                        {{ format_balance($accountBalance->balance) }}
+                                    @endif
+                                </td>
+                                <td style="text-align: right;">
+                                    @if (in_array(substr($accountBalance->account_code, 0, 1), ['2', '3', '4']) && !in_array($accountBalance->account_code, ['4-001-002', '6-001-001', '6-001-002']))
+                                        {{ format_balance($accountBalance->balance) }}
+                                    @elseif ($accountBalance->account_code == '6-001-002')
+                                        {{ format_balance($accountBalance->balance) }}
+                                    @endif
+                                </td>
                             </tr>
                         @endfor
                         <tr>

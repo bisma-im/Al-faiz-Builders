@@ -54,7 +54,7 @@
                                         <select name="debit_account_code" aria-label="Select an Account Head" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Choose an account...">
                                             <option value="">Choose an Account...</option>
                                             @foreach ($accounts as $account)
-                                                <option value="{{ $account->HeadCode }}"> {{ $account->HeadCode . ' - ' . $account->HeadName }}</option>
+                                                <option value="{{ $account->Account_Code }}"> {{ $account->Account_Code . ' - ' . $account->Account_Title }}</option>
                                             @endforeach
                                         </select>
                                     </div>  
@@ -75,7 +75,7 @@
                                         <select name="credit_account_code" aria-label="Select an Account Head" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Choose an account...">
                                             <option value="">Choose an Account...</option>
                                             @foreach ($accounts as $account)
-                                                <option value="{{ $account->HeadCode }}"> {{ $account->HeadCode . ' - ' . $account->HeadName }}</option>
+                                                <option value="{{ $account->Account_Code }}"> {{ $account->Account_Code . ' - ' . $account->Account_Title }}</option>
                                             @endforeach
                                         </select>
                                     </div> 

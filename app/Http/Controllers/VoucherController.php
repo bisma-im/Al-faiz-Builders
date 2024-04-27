@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
@@ -12,7 +13,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class VoucherController extends Controller
 {
     public function showVoucherForm(Request $req){
-        $accounts = DB::table('acc_coa')->get();
+        $accounts = DB::table('chart_of_accounts')->where('Level', 3)->get();
         $voucherType = $req->input('voucher_type');
         return view('pages.voucher-form', compact('accounts','voucherType'));
     }
@@ -52,10 +53,10 @@ class VoucherController extends Controller
         $endDate = Carbon::createFromFormat('d M Y', $toDate)->format('Y-m-d');
         
         $vouchers = DB::table('voucher')
-            ->join('acc_coa', 'acc_coa.HeadCode', '=', 'voucher.account_code')
+            ->join('chart_of_accounts', 'chart_of_accounts.Account_Code', '=', 'voucher.account_code')
             ->select(
                 'voucher.*', 
-                'acc_coa.HeadName')
+                'chart_of_accounts.Account_Title')
             ->where('date', '>=', $startDate)
             ->where('date', '<=', $endDate)
             ->orderBy('voucher.id', 'asc')
@@ -72,10 +73,10 @@ class VoucherController extends Controller
     public function getVoucher($safeVoucherId){
         $voucherId = str_replace('-', '/', $safeVoucherId);
         $voucher = DB::table('voucher')
-        ->join('acc_coa', 'acc_coa.HeadCode', '=', 'voucher.account_code')
+        ->join('chart_of_accounts', 'chart_of_accounts.Account_Code', '=', 'voucher.account_code')
         ->select(
             'voucher.*', 
-            'acc_coa.HeadName')
+            'chart_of_accounts.Account_Title')
         ->where('voucher_id', $voucherId)
         ->orderBy('voucher.id', 'asc')
         ->get();
@@ -127,7 +128,8 @@ class VoucherController extends Controller
     }
 
     public function calculateNewBalance($voucherData){
-        $headType = $currentBalance = null;
+        $currentBalance = null;
+        $accountCodePrefix = substr($voucherData['account_code'], 0, 1);
         $row = DB::table('voucher')
                 ->select('balance')
                 ->where('account_code', $voucherData['account_code'])
@@ -135,36 +137,42 @@ class VoucherController extends Controller
                 ->first();
         if ($row) {
             $currentBalance = $row->balance;
-            $accTypeRow = DB::table('acc_coa')
-                        ->select('HeadType')
-                        ->where('HeadCode', $voucherData['account_code'])
-                        ->first();
-            $headType = $accTypeRow->HeadType;
         } 
         else {
-            $openingBalanceRow = DB::table('acc_coa')
-                                ->select('opening_balance', 'HeadType')
-                                ->where('HeadCode', $voucherData['account_code'])
+            $openingBalanceRow = DB::table('chart_of_accounts')
+                                ->select('opening_balance')
+                                ->where('Account_Code', $voucherData['account_code'])
                                 ->first();
-            $headType = $openingBalanceRow->HeadType;
-            $currentBalance = $openingBalanceRow ? $openingBalanceRow->opening_balance : 0;
+            $currentBalance = $openingBalanceRow->opening_balance ?? 0;
         }
+
         $transactionDebitAmount = $voucherData['debit_amount'] ?? 0;
         $transactionCreditAmount = $voucherData['credit_amount'] ?? 0;
-        switch ($headType) {
-            case 'A': // Asset
-            case 'E': // Expense
+        switch ($accountCodePrefix) {
+            case '1': // Asset
+            case '5': // Expense
                 $newBalance = $currentBalance + $transactionDebitAmount - $transactionCreditAmount;
                 break;
             
-            case 'L': // Liability
-            case 'C': // Capital
-            case 'I': // Income
-                $newBalance = $currentBalance - $transactionDebitAmount + $transactionCreditAmount;
+            case '2': // Liability
+            case '3': // Capital
+            case '4': // Income
+                if ($voucherData['account_code'] == '4-001-002') {
+                    $newBalance = $currentBalance + $transactionDebitAmount - $transactionCreditAmount;
+                } else { // Purchases and Wastage Recycling
+                    $newBalance = $currentBalance - $transactionDebitAmount + $transactionCreditAmount;
+                }
+                break;
+
+            case '6':
+                if ($voucherData['account_code'] == '6-001-002') {
+                    $newBalance = $currentBalance - $transactionDebitAmount + $transactionCreditAmount;
+                } else { // Purchases and Wastage Recycling
+                    $newBalance = $currentBalance + $transactionDebitAmount - $transactionCreditAmount;
+                }
                 break;
             
             // Add cases for other HeadTypes if necessary
-            
             default:
                 // Handle unexpected HeadType
                 throw new Exception("Unknown HeadType: $headType");

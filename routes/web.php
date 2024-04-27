@@ -74,8 +74,9 @@ Route::get('/generate-pdf', [LedgerController::class, 'downloadLedger'])->name('
 
 Route::post('/trial-balance', [StatementsController::class, 'generateTrialBalance'])->name('generateTrialBalance');
 Route::get('/trial-balance-form', [StatementsController::class, 'showTBForm'])->name('showTBForm');
-// Route::get('/trial-balance', function () {
-//     return view('pages.trial-balance');
+Route::get('/profit-and-loss', [StatementsController::class, 'generateIncomeStatement'])->name('generateIncomeStatement');
+// Route::get('/profit-and-loss', function () {
+//     return view('pages.profit-and-loss');
 // });
 
 Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->name('addLeadForm');
