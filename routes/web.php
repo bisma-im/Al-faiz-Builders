@@ -100,6 +100,7 @@ Route::post('/add-booking', [BookingController::class, 'addBooking'])->name('add
 Route::get('/bookings', [BookingController::class, 'showBookings'])->name('showBookings');
 Route::get('/bookings/{id}', [BookingController::class, 'showBookingForm'])->name('updateBookingForm');
 Route::post('/update-booking', [BookingController::class, 'updateBooking'])->name('updateBooking');
+Route::post('/cancel-booking', [BookingController::class, 'cancelBooking'])->name('cancelBooking');
 Route::post('/get-plots-for-booking', [BookingController::class, 'getPlotsForBooking']);
 Route::post('/get-phases-for-booking', [BookingController::class, 'getPhasesForBooking']);
 Route::get('/get-installments/{bookingId}', [BookingController::class, 'getInstallments']);

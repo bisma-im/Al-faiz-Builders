@@ -16,22 +16,46 @@
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-xxl">
+                @if (isset($bookingData) && $isCancelled)
+                    {{-- <h3 class="fw-bold m-0">{{ 'Booking No. ' . $bookingData->id . ' - CANCELLED' }}</h3> --}}
+                    <!--begin::Notice-->
+                    <div class="notice d-flex bg-light-danger rounded border-danger border border-dashed m-0 p-6">
+                        <!--begin::Icon-->
+                        <i class="ki-duotone ki-information fs-2tx text-danger me-4">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                        </i>
+                        <!--end::Icon-->
+                        <!--begin::Wrapper-->
+                        <div class="d-flex flex-stack flex-grow-1">
+                            <!--begin::Content-->
+                            <div class="fw-semibold">
+                                <h4 class="text-gray-900 fw-bold">{{'This booking of plot no. ' . $bookingData->plot_no . ' is cancelled.'}}</h4>
+                                <div class="fs-6 text-gray-700">This record has been blocked permanently and can not be edited.</div>
+                            </div>
+                            <!--end::Content-->
+                        </div>
+                        <!--end::Wrapper-->
+                    </div>
+                    <!--end::Notice-->
+                @else
                     <h3 class="fw-bold m-0">Generate New Booking</h3>
+                @endif
+                    
                     <!--begin::Card header-->
                     <!--begin::Content-->
                     <div id="kt_new_account" class="collapse show">
+                        @if (isset($bookingData))
+                            <input type="hidden" id="id" name="id" value="{{ $bookingData->id }}">
+                            <input type="hidden" id="customer_id" name="customer_id" value="{{ $bookingData->customer_id }}">
+                        @endif
+                        <input type="hidden" id="isLocked" name="isLocked" value="{{ $isLockedMode ? 'true' : 'false' }}">
                         <!--begin::Form-->
                         <form id="kt_new_booking_form" class="form" data-kt-redirect="{{ route('showBookings') }}" action="{{ route('addBooking') }}" method="POST">
-                        {{-- <form id="kt_new_booking_form" class="form" > --}}
                             @csrf
                             <!--begin::Card body-->
                             <div class="d-flex flex-column gap-7 gap-lg-10">
-                                @if (isset($bookingData) && $bookingData->id)
-                                    <input type="hidden" id="id" name="id" value="{{ $bookingData->id }}">
-                                    <input type="hidden" id="customer_id" name="customer_id" value="{{ $bookingData->customer_id }}">
-                                @endif
-                                <input type="hidden" id="isLocked" name="isLocked" value="{{ $isLockedMode ? 'true' : 'false' }}">
-                                
                                 <!--begin::Input group-->
                                 <div id="bookingForm" 
                                 data-selected-plot="{{ $bookingData->plot_id ?? '' }}"
@@ -40,8 +64,8 @@
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Plot Details Card-->
-                                <div class="d-flex flex-column gap-7 gap-lg-10">
-                                    <div class="card card-flush py-4">
+                                <div class="d-flex flex-column gap-7 gap-lg-10 ">
+                                    <div class="card card-flush py-4" >
                                         <!--begin::Card header-->
                                         <div class="card-header">
                                             <div class="card-title">
@@ -499,6 +523,7 @@
                                         <!--end::Card body-->
                                     </div>
                                 </div>
+                                
                             </div>
                             <!--end::Card body-->
                             <!--begin::Actions-->
@@ -508,10 +533,164 @@
                             <!--end::Actions-->
                         </form>
                         <!--end::Form-->
+                        <!--begin::Cancel Booking  Card-->
+                        @if ($isLockedMode && !$isCancelled)
+                        <div class="d-flex flex-column gap-7 gap-lg-10">
+                            <div class="card card-flush py-4">
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h2>Cancel Booking</h2>
+                                    </div>
+                                </div>
+                                <!--end::Card header-->
+                                <!--begin::Card body-->
+                                <!--begin::Card body-->
+                                <div class="card-body border-top p-9">
+                                    <!--begin::Notice-->
+                                    <div class="notice d-flex bg-light-danger rounded border-danger border border-dashed mb-9 p-6">
+                                        <!--begin::Icon-->
+                                        <i class="ki-duotone ki-information fs-2tx text-danger me-4">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                        <!--end::Icon-->
+                                        <!--begin::Wrapper-->
+                                        <div class="d-flex flex-stack flex-grow-1">
+                                            <!--begin::Content-->
+                                            <div class="fw-semibold">
+                                                <h4 class="text-gray-900 fw-bold">You Are Canceling a Booking. Press the Cancel Booking button to cancel the booking.</h4>
+                                                <div class="fs-6 text-gray-700">This action can not be undone.</div>
+                                            </div>
+                                            <!--end::Content-->
+                                        </div>
+                                        <!--end::Wrapper-->
+                                    </div>
+                                    <!--end::Notice-->
+                                </div>
+                                <!--end::Card body-->
+                                <!--begin::Card footer-->
+                                <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                    <a class="btn btn-danger fw-semibold" data-bs-toggle="modal" data-bs-target="#kt_modal_cancel_booking">Cancel Booking</a>
+                                </div>
+                                <!--end::Card footer-->
+                            </div>
+                        </div>
+                        @endif
+                        <!--end::Cancel Booking Card-->
                     </div>
                     <!--end::Content-->
-                
                 <!--end::Basic info-->
+                @if ($isLockedMode)
+                    <!--begin::Modal - Cancel - Booking-->
+                    <div class="modal fade" id="kt_modal_cancel_booking" tabindex="-1" aria-hidden="true">
+                        <!--begin::Modal dialog-->
+                        <div class="modal-dialog modal-dialog-centered mw-650px">
+                            <!--begin::Modal content-->
+                            <div class="modal-content">
+                                <!--begin::Form-->
+                                <form id="kt_modal_cancel_booking_form" class="form" data-kt-redirect="/bookings" method="POST">
+                                    @csrf
+                                    <!--begin::Modal header-->
+                                    <div class="modal-header" id="kt_modal_add_customer_header">
+                                        <!--begin::Modal title-->
+                                        <h2 class="fw-bold">Cancel Booking</h2>
+                                        <!--end::Modal title-->
+                                        <!--begin::Close-->
+                                        <div id="kt_modal_cancel_booking_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                                            <i class="ki-duotone ki-cross fs-1">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </div>
+                                        <!--end::Close-->
+                                    </div>
+                                    <!--end::Modal header-->
+                                    <!--begin::Modal body-->
+                                    <div class="modal-body py-10 px-lg-17">
+                                        <!--begin::Scroll-->
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_customer_header" data-kt-scroll-wrappers="#kt_modal_add_customer_scroll" data-kt-scroll-offset="300px">
+                                            <div class="fv-row mb-7">
+                                                <label for="plot_details" class="form-label">Plot Details</label>
+                                                <input class="form-control" name="plot_details" id="plot_details" value= "{{ $bookingData->project_title }} - {{ $bookingData->phase_title }} - {{ $bookingData->plot_no }}" disabled />
+                                            </div>
+                                            <!--begin::Input-->
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <label for="cancelled" class="form-label required">Type CANCELLED in the below box.</label>
+                                                <input class="form-control" name="cancelled" id="cancelled" placeholder="type CANCELLED in uppercase" />
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold mb-2 required">Reason for Cancellation</label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="text" class="form-control" placeholder="Reason for Cancellation" name="reason_for_cancellation" id="reason_for_cancellation" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group for Next Call Date Time-->
+                                            <div class="fv-row mb-7">
+                                                <label for="noc" class="form-label">NOC</label>
+                                                <input type="file" name="noc" class="form-control form-control-lg custom-file-input" id="noc">
+                                            </div>
+                                            <div class="fv-row mb-7">
+                                                <label class="form-label">Documents</label>
+                                                <!--begin::Dropzone-->
+                                                <div class="dropzone mb-7" id="kt_cancel_booking_media">
+                                                    <!--begin::Message-->
+                                                    <div class="dz-message needsclick">
+                                                        <!--begin::Icon-->
+                                                        <i class="ki-duotone ki-file-up text-primary fs-3x">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                        </i>
+                                                        <!--end::Icon-->
+                                                        <!--begin::Info-->
+                                                        <div class="ms-4">
+                                                            <h3 class="fs-5 fw-bold text-gray-900 mb-1">Drop files here or click to upload.</h3>
+                                                            <span class="fs-7 fw-semibold text-gray-400">Upload up to 10 files</span>
+                                                        </div>
+                                                        <!--end::Info-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Dropzone-->
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Form input row-->
+                                            <div class="form-check form-check-solid fv-row mb-7">
+                                                <input name="cancel_booking_checkbox" class="form-check-input" type="checkbox" value="" id="cancel_booking_checkbox" />
+                                                <label class="form-check-label fw-semibold ps-2 fs-6 required" for="cancel_booking_checkbox">I confirm to cancel this booking</label>
+                                            </div>
+                                            <!--end::Form input row-->
+                                        </div>
+                                        <!--end::Scroll-->
+                                    </div>
+                                    <!--end::Modal body-->
+                                    <!--begin::Modal footer-->
+                                    <div class="modal-footer flex-center">
+                                        <!--begin::Button-->
+                                        <button type="reset" id="kt_modal_cancel_booking_cancel" class="btn btn-light me-3" >Discard</button>
+                                        <!--end::Button-->
+                                        <!--begin::Button-->
+                                        <button type="submit" id="kt_modal_cancel_booking_submit" class="btn btn-danger">
+                                            <span class="indicator-label">Cancel Booking</span>
+                                            <span class="indicator-progress">Please wait...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+                                    <!--end::Modal footer-->
+                                </form>
+                                <!--end::Form-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Modal - Cancel - Booking-->
+                @endif
             </div>
             <!--end::Content container-->
         </div>
@@ -522,4 +701,5 @@
 @endsection
 @push('scripts')
     <script src="{{ URL::asset('assets/js/custom/account/settings/add-booking.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/custom/account/settings/cancel-booking.js') }}"></script>
 @endpush

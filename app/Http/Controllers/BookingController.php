@@ -13,7 +13,29 @@ class BookingController extends Controller
         $sessionUsername = $req->session()->get('username');
         if(in_array('booking', session('permissions', [])))
         {
-            $bookings = DB::table('booking')
+            $projects = DB::table('projects')
+                ->select('id', 'project_title')
+                ->get();
+
+            $phases = DB::table('phase')
+                ->select('id', 'project_id', 'phase_title')
+                ->get();
+
+            if($req->ajax()){
+                $selectedProjectId = $req->input('selectedProject');
+                $selectedPhaseId = $req->input('selectedPhase');
+                $selectedStatus = $req->input('selectedStatus');
+
+                // dd($selectedProjectId, $selectedPhaseId, $selectedStatus);
+            }
+            else {
+                $selectedProjectId = $projects->first()->id;
+                $selectedPhaseId = $phases->where('project_id', $selectedProjectId)->first()->id;
+                $selectedStatus = 'active';
+            }
+            
+
+            $bookingData = DB::table('booking')
             ->join('customer as c', 'c.id', '=', 'booking.customer_id')
             ->join('projects as pr', 'pr.id', '=', 'booking.project_id')
             ->join('plots_inventory as pl', 'pl.id', '=', 'booking.plot_id')
@@ -21,11 +43,19 @@ class BookingController extends Controller
             ->select('booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title','pl.plot_no', 'booking.total_amount',
                     DB::raw('SUM(CASE WHEN i.installment_status = \'paid\' THEN i.amount ELSE 0 END) as received_amount'),
                     DB::raw('SUM(CASE WHEN i.installment_status = \'pending\' THEN i.amount ELSE 0 END) as pending_amount'))
-            
             ->where('booking.username', $sessionUsername)
+            ->where('booking.status', $selectedStatus)
+            ->where('booking.project_id', $selectedProjectId)
+            ->where('booking.phase_id', $selectedPhaseId)
             ->groupby('booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title','pl.plot_no', 'booking.total_amount')
             ->get();
-            return view('pages.bookings', ['bookingData' => $bookings]);
+
+            if($req->ajax()) {
+                return view('partials.booking_row', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'))->render();
+            } else {
+                return view('pages.bookings', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'));
+            }
+            // return view('pages.bookings', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'));
         }
         else
         {
@@ -39,7 +69,7 @@ class BookingController extends Controller
         try
         {
             $bookingData = null;
-            $isLockedMode = null;
+            $isLockedMode = $isCancelled = null;
             $customers = DB::table('customer')
                 ->get();
 
@@ -59,17 +89,22 @@ class BookingController extends Controller
                     'c.name', 'c.cnic_number','c.address','c.customer_image','c.mobile_number_1',
                     'c.next_of_kin_name', 'c.next_of_kin_relation', 'c.next_of_kin_cnic', 'c.next_of_kin_address', 'c.next_of_kin_mobile_number_1',
                     'ph.completion_date', 'ph.phase_title',
+                    'pr.project_title',
                     'pl.plot_no'
                 )
                 ->where('booking.id', $id)
                 ->first();
-                if($bookingData->isLocked == 1)
+                if($bookingData->isLocked === 1)
                 {
                     $isLockedMode = true;
                 }
+                if($bookingData->status === 'cancelled')
+                {
+                    $isCancelled = true;
+                }
             }
 
-            return view('pages.add-booking', compact('customers','projects','bookingData','isLockedMode'));
+            return view('pages.add-booking', compact('customers','projects','bookingData','isLockedMode' , 'isCancelled'));
         }
         catch (\Exception $e) 
         {
@@ -98,14 +133,10 @@ class BookingController extends Controller
     {   
         $project_id = $req->project_id;
         $phase_id = $req->phase_id;
-        $bookedPlotIds = DB::table('booking')
-                            // ->where('project_id', $project_id)
-                            ->where('phase_id', $phase_id)
-                            ->pluck('plot_id');
         $availablePlots = DB::table('plots_inventory')
                             // ->where('project_id', $project_id)
                             ->where('phase_id', $phase_id)
-                            ->whereNotIn('id', $bookedPlotIds)
+                            ->where('isBooked', 'n')
                             ->get(['id', 'plot_no']);
 
         return response()->json($availablePlots);
@@ -244,29 +275,90 @@ class BookingController extends Controller
         return $installmentsData;
             
     }
-    
-    
-
-
     public function getInstallments($bookingId) {
         $installments = DB::table('installment')
             ->where('booking_id', $bookingId)
             ->orderBy('due_date', 'asc')
             ->get();
-
-        // dd($installments);
-    
         return response()->json([
             'success' => true,
             'data' => $installments,
         ]);
     }
+
+    public function getCancelledBooking(Request $req){
+        $cancelledBooking = [
+            'booking_id' => $req->input('bookingId'),
+            'plot_id' => $req->input('plotId'),
+            'reason' => $req->input('reason_for_cancellation'),
+            'date_and_time' => now(),
+            'cancelled_by' => session()->get('username'),
+        ];
+        if ($req->hasFile('noc')) {
+            $nocFile = $req->file('noc');
+            $nocFileName = time() . '.' . $nocFile->getClientOriginalExtension();
+            $destinationPath = public_path('assets/media/cancelled_booking/noc');
+            $nocFile->move($destinationPath, $nocFileName);
+            $cancelledBooking['noc'] = $nocFileName;
+        }
+        // dd($nocFileName);
+        return $cancelledBooking;
+    }
     
+    public function cancelBooking(Request $req){
+        if($req->input('cancelled') === 'CANCELLED' && $req->has('cancel_booking_checkbox')){
+            $cancelledBooking = $this->getCancelledBooking($req);
+            $bookingId = $cancelledBooking['booking_id'];
+            $plotId = $cancelledBooking['plot_id'];
+
+            try 
+            { 
+                \DB::beginTransaction();
+                $cancelledBookingId = DB::table('cancelled_bookings')->insertGetId($cancelledBooking);
+                DB::table('plots_inventory')
+                    ->where('id', $plotId)
+                    ->update(['isBooked' => 'n']);
+
+                DB::table('booking')
+                    ->where('id', $bookingId)
+                    ->update(['status' => 'cancelled']);
+
+                DB::table('installment')
+                    ->where('booking_id', $bookingId)
+                    ->where('plot_id', $plotId)
+                    ->where('installment_status', '!=', 'paid')
+                    ->update(['installment_status' => 'cancelled']);
+
+                if ($req->hasFile('cancelled_booking_media')) {
+                    foreach ($req->file('cancelled_booking_media') as $file) {
+                        $filename = time() . '_' . $file->getClientOriginalName();
+                        $filePath = public_path('assets/media/cancelled_booking/media');
+                        $file->move($filePath, $filename);
+
+                        DB::table('cancelled_bookings_media')->insert([
+                            'cancelled_booking_id' => $cancelledBookingId,
+                            'media_name' => $filename,
+                        ]);
+                    }
+                }
+                \DB::commit();
+                return response()->json(['success' => 'Booking cancelled successfully']);
+            }   
+            catch (\Exception $e) 
+            {   
+                \DB::rollBack();
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+        }
+
+        return response()->json(['error' => $e->getMessage()], 422);
+    }
 
     public function addBooking(Request $req)
     {
         $customerData =$this->getCustomerData($req);
         $bookingData = $this->getBookingData($req);
+        $bookingData['status'] = 'active';
         $customerId= null;
         DB::beginTransaction();
         try
@@ -289,6 +381,10 @@ class BookingController extends Controller
                 $bookingId = DB::table('booking')->insertGetId($bookingData);
                 $installmentsData = $this->getInstallmentsData($req, $bookingId, $customerId);
                 DB::table('installment')->insert($installmentsData);
+                DB::table('plots_inventory')
+                ->where('id', $bookingData['plot_id'])
+                ->limit(1)
+                ->update(array('isBooked' => 'y'));
                 DB::commit();
                 return response()->json(['success' => 'booking added successfully']);
             }

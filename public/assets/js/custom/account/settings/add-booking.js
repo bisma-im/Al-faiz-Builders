@@ -82,10 +82,10 @@ var KTNewBooking = (function () {
             
             let row = `
                 <tr>
-                    <td><input class="form-control form-control-lg form-control-solid" type="number" name="amounts[]" value="${installmentValue.toFixed(2)}" readonly></td>
-                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly></td>
-                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly></td>
-                    <td><input class="form-control form-control-lg form-control-solid" type="text" name="statuses[]" value="pending" readonly></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="number" name="amounts[]" value="${installmentValue.toFixed(2)}" readonly disabled></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly disabled></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly disabled></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="text" name="statuses[]" value="pending" readonly disabled></td>
                 </tr>
             `;
             tableBody.append(row);
@@ -133,10 +133,10 @@ var KTNewBooking = (function () {
             let row = `
                 <tr>
                     <input type="hidden" name="installment_ids[]" value="${installment.id || ''}">
-                    <td><input type="text" name="amounts[]" value="${Number(installment.amount).toFixed(2)}" class="form-control" readonly></td>
-                    <td><input type="date" name="due_dates[]" value="${installment.due_date}" class="form-control" readonly></td>
-                    <td><input type="date" name="intimation_dates[]" value="${installment.intimation_date}" class="form-control" readonly></td>
-                    <td><input type="text" name="statuses[]" value="${installment.installment_status}" class="form-control" readonly></td>
+                    <td><input type="text" name="amounts[]" value="${Number(installment.amount).toFixed(2)}" class="form-control" readonly disabled></td>
+                    <td><input type="date" name="due_dates[]" value="${installment.due_date}" class="form-control" readonly disabled></td>
+                    <td><input type="date" name="intimation_dates[]" value="${installment.intimation_date}" class="form-control" readonly disabled></td>
+                    <td><input type="text" name="statuses[]" value="${installment.installment_status}" class="form-control" readonly disabled></td>
                 </tr>
             `;
             tableBody.append(row);
@@ -249,7 +249,10 @@ var KTNewBooking = (function () {
             e = document.querySelector("#kt_new_booking_submit");// Ensure this ID matches your plot dropdown ID
             var isLocked = document.getElementById('isLocked').value; 
             function makeInputsReadonly() {
-                $(t).find('input, select, textarea, button[type="submit"], input[type="submit"]').attr('readonly', true).attr('disabled', 'disabled');
+                // $('form:not(.kt_account_deactivate_form)').find('input, select, textarea, button[type="submit"], input[type="submit"]').attr('readonly', true).attr('disabled', 'disabled');
+                $('form#kt_new_booking_form').find('input, select, textarea, button[type="submit"], input[type="submit"]')
+                .attr('readonly', true)
+                .attr('disabled', 'disabled');
             };
             r = FormValidation.formValidation(t, {
                 fields: {
@@ -337,6 +340,7 @@ var KTNewBooking = (function () {
                     $('#customerExistsCheck').hide();
                     makeInputsReadonly();
                     bookingId = document.getElementById('id').value;
+                    console.log(bookingId);
                     if(bookingId) {
                         fetchInstallments(bookingId);
                     }

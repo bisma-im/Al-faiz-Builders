@@ -34,16 +34,20 @@ class StatementsController extends Controller
         // Calculate the total debits and credits for the trial balance
         $totalDebits = 0;
         $totalCredits = 0;
+        $debitAccounts = [];
+        $creditAcconts = [];
 
         foreach ($accountBalances as $accountBalance) {
             // Assuming 'A' and 'E' head types should be debits and the rest should be credits
             if (in_array(substr($accountBalance->account_code, 0, 1), ['1', '5']) || $accountBalance->account_code == '4-001-002' || $accountBalance->account_code == '6-001-001') {
                 $totalDebits += $accountBalance->balance;
+                $debitAccounts[$accountBalance->Account_Title] = $accountBalance->balance;
             } else {
                 $totalCredits += $accountBalance->balance;
+                $creditAcconts[$accountBalance->Account_Title] = $accountBalance->balance;
             }
         }
-        // dd($accountBalances, $totalDebits,$totalCredits);
+        // dd($debitAccounts, $creditAcconts);
         $data = [
             'accountBalances' => $accountBalances,
             'totalDebits' => $totalDebits,
@@ -51,11 +55,22 @@ class StatementsController extends Controller
             'startDate' => $startDate,
             'endDate' => $endDate
         ];
-                        
+
+        // $this->generatePdf($data, 'trial-balance');
         $pdf = Pdf::loadView('pages.trial-balance', $data)->setPaper('a4', 'landscape');
-        $filename = 'trial-balance-' . $endDate . '.pdf';
+        $filename = 'trial-balance-' . $data['endDate'] . '.pdf';
         return $pdf->download($filename);
     }
+
+    public function generatePdf($data, $pageName){
+        $pdf = Pdf::loadView('pages.trial-balance', $data)->setPaper('a4', 'landscape');
+        $filename = 'trial-balance-' . $data['endDate'] . '.pdf';
+        return $pdf->download($filename);
+    }
+
+    // $pdf = Pdf::loadView(`pages.trial-balance`, $data)->setPaper('a4', 'landscape');
+    //     $filename = 'trial-balance-' . $data['endDate'] . '.pdf';
+    //     return $pdf->download($filename);
 
     public function generateIncomeStatement(Request $request) {
         // $startDate = Carbon::createFromFormat('d-m-Y', $request->input('start_date'))->format('Y-m-d');
@@ -126,6 +141,8 @@ class StatementsController extends Controller
         }
         $grossProfit =0;
         $salesBalance =0;
+        $cogsBalance =0;
+        $insertIndex = null;
         // Assign the aggregated balances to the headings
         foreach ($headings as $index => $heading) {
             $heading->underoverline = false;
@@ -134,17 +151,11 @@ class StatementsController extends Controller
             }
             if ($heading->Account_Code == '4-001') { // Replace '4-001' with your specific sales account code
                 $salesBalance = $heading->net_balance;
+                $insertIndex = $index +1;
             } elseif ($heading->Account_Code == '6-001') { // Replace '6-001' with your specific COGS account code
                 $cogsBalance = $heading->net_balance;
                 $heading->net_balance = $heading->net_balance * -1;
-                $grossProfit = $salesBalance - $cogsBalance;
-                $grossProfitHeading = (object)[
-                    'Account_Title' => 'Gross Profit',
-                    'Account_Code' => 'GP-001', // This can be any unique identifier
-                    'net_balance' => $grossProfit,
-                    'underoverline' => true
-                ];
-                $headings->splice($index + 1, 0, [$grossProfitHeading]);
+                $insertIndex = $index +1;
             }
         }
 
@@ -154,13 +165,20 @@ class StatementsController extends Controller
         $totalOtherIncome = $headings->filter(function ($item) {
             return strpos($item->Account_Code, '4') === 0 && $item->Account_Code !== '4-001';
         })->sum('net_balance');
-        // $totalExpensesHeading = (object)[
-        //     'Account_Title' => 'Total Expenses',
-        //     'Account_Code' => 'TE-001',
-        //     'net_balance' => $totalExpenses,
-        //     'underoverline' => true
-        // ];
 
+        $grossProfit = $salesBalance - abs($cogsBalance);
+
+        // Insert Gross Profit into the headings array
+        $grossProfitHeading = (object)[
+            'Account_Title' => 'Gross Profit',
+            'Account_Code' => 'GP-001', // Unique identifier for Gross Profit
+            'net_balance' => $grossProfit,
+            'underoverline' => true
+        ];
+
+        if ($insertIndex !== null) {
+            $headings->splice($insertIndex, 0, [$grossProfitHeading]);
+        }
         $incomeBeforeTaxes = $grossProfit + $totalOtherIncome - abs($totalExpenses);
         $incomeBeforeTaxesHeading = (object)[
             'Account_Title' => 'Income Before Taxes',
@@ -169,12 +187,6 @@ class StatementsController extends Controller
             'underoverline' => true
         ];
         $headings->push($incomeBeforeTaxesHeading);
-
-        
-        
-        
-        // $netProfit = $grossProfit - 
-        // dd($headings, $details);
         return view('pages.profit-and-loss', compact('headings','details', 'endDate'));
     }
 

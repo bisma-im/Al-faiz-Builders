@@ -139,111 +139,39 @@
                 <div class="card">
                     <!--begin::Card header-->
                     <div class="card-header border-0 pt-6">
-                        <!--begin::Card title-->
-                        <div class="card-title">
-                            <!--begin::Search-->
-                            <div class="d-flex align-items-center position-relative my-1">
-                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
-                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Users" />
+                        <!--begin::Search-->
+                        <div class="d-flex align-items-center position-relative my-1 row">
+                            <!--begin::Col-->
+                            <div class="col-lg-4 fv-row">
+                                <select name="project_id" id="selectedProject" aria-label="Select Project" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select project...">
+                                    <option value="" selected disabled>Select Project...</option>
+                                    @foreach ($projects as $project)
+                                        <option value="{{ $project->id }}" {{ (isset($selectedProjectId) && $selectedProjectId == $project->id) ? 'selected' : '' }}>
+                                            {{ $project->project_title }}</option>
+                                    @endforeach
+                                </select>                                        
                             </div>
-                            <!--end::Search-->
+                            <div class="col-lg-4 fv-row">
+                                <select name="phase_id" id="selectedPhase" data-selected-phase-id="{{ $selectedPhaseId }}" aria-label="Select Phase" class="form-select form-select-solid form-select-lg fw-semibold" data-placeholder="Select phase.." data-control="select2">
+                                    <option value="" selected disabled>Select Phase...</option>
+                                    @foreach ($phases as $phase)
+                                        <option value="{{ $phase->id }}" {{ (isset($selectedPhaseId) && $selectedPhaseId == $phase->id) ? 'selected' : '' }}>
+                                            {{ $phase->phase_title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-4 fv-row">
+                                <select name="selectedStatus" id="selectedStatus" class="form-select form-select-solid form-select-lg fw-semibold" data-placeholder="Select status.." data-control="select2">
+                                    <option value="active" {{ (isset($selectedStatus) && $selectedStatus == 'active') ? 'selected' : '' }}>Active</option>
+                                    <option value="cancelled" {{ (isset($selectedStatus) && $selectedStatus == 'cancelled') ? 'selected' : '' }}>Cancelled</option>
+                                </select>
+                            </div>
                         </div>
-                        <!--begin::Card title-->
+                        <!--end::Search-->
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                <!--begin::Filter-->
-                                <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                <i class="ki-duotone ki-filter fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>Filter</button>
-                                <!--begin::Menu 1-->
-                                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
-                                    <!--begin::Header-->
-                                    <div class="px-7 py-5">
-                                        <div class="fs-4 text-dark fw-bold">Filter Options</div>
-                                    </div>
-                                    <!--end::Header-->
-                                    <!--begin::Separator-->
-                                    <div class="separator border-gray-200"></div>
-                                    <!--end::Separator-->
-                                    <!--begin::Content-->
-                                    <div class="px-7 py-5">
-                                        <!--begin::Input group-->
-                                        <div class="mb-10">
-                                            <!--begin::Label-->
-                                            <label class="form-label fs-5 fw-semibold mb-3">Month:</label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-customer-table-filter="month" data-dropdown-parent="#kt-toolbar-filter">
-                                                <option></option>
-                                                <option value="aug">August</option>
-                                                <option value="sep">September</option>
-                                                <option value="oct">October</option>
-                                                <option value="nov">November</option>
-                                                <option value="dec">December</option>
-                                            </select>
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="mb-10">
-                                            <!--begin::Label-->
-                                            <label class="form-label fs-5 fw-semibold mb-3">Payment Type:</label>
-                                            <!--end::Label-->
-                                            <!--begin::Options-->
-                                            <div class="d-flex flex-column flex-wrap fw-semibold" data-kt-customer-table-filter="payment_type">
-                                                <!--begin::Option-->
-                                                <label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
-                                                    <input class="form-check-input" type="radio" name="payment_type" value="all" checked="checked" />
-                                                    <span class="form-check-label text-gray-600">All</span>
-                                                </label>
-                                                <!--end::Option-->
-                                                <!--begin::Option-->
-                                                <label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
-                                                    <input class="form-check-input" type="radio" name="payment_type" value="visa" />
-                                                    <span class="form-check-label text-gray-600">Visa</span>
-                                                </label>
-                                                <!--end::Option-->
-                                                <!--begin::Option-->
-                                                <label class="form-check form-check-sm form-check-custom form-check-solid mb-3">
-                                                    <input class="form-check-input" type="radio" name="payment_type" value="mastercard" />
-                                                    <span class="form-check-label text-gray-600">Mastercard</span>
-                                                </label>
-                                                <!--end::Option-->
-                                                <!--begin::Option-->
-                                                <label class="form-check form-check-sm form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="radio" name="payment_type" value="american_express" />
-                                                    <span class="form-check-label text-gray-600">American Express</span>
-                                                </label>
-                                                <!--end::Option-->
-                                            </div>
-                                            <!--end::Options-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Actions-->
-                                        <div class="d-flex justify-content-end">
-                                            <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                            <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
-                                        </div>
-                                        <!--end::Actions-->
-                                    </div>
-                                    <!--end::Content-->
-                                </div>
-                                <!--end::Menu 1-->
-                                <!--end::Filter-->
-                                <!--begin::Export-->
-                                <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal">
-                                <i class="ki-duotone ki-exit-up fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>Export</button>
-                                <!--end::Export-->
                                 <!--begin::Add customer-->
                                 <a href="/add-booking-form" class="btn btn-primary" role="button">Add Booking</a>
                                 <!--end::Add customer-->
@@ -280,43 +208,8 @@
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="fw-semibold text-gray-600">
-                                @foreach ($bookingData as $id => $booking)
-                                <tr>
-                                    <td>
-                                        <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                            <input class="form-check-input" type="checkbox" value="1" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('updateBookingForm', ['id' => $booking->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $booking->name }}</a>
-                                    </td>
-                                    <td>{{ $booking->mobile_number_1 }}</td>
-                                    <td>{{ $booking->project_title }}</td>
-                                    <td>{{ $booking->plot_no }}</td>
-                                    {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $booking->received_amount }}</td>
-                                    <td>{{ $booking->pending_amount }}</td>
-                                    <td class="text-end">
-                                        <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                        <!--begin::Menu-->
-                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3">View</a>
-                                            </div>
-                                            <!--end::Menu item-->
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
-                                            </div>
-                                            <!--end::Menu item-->
-                                        </div>
-                                        <!--end::Menu-->
-                                    </td>
-                                </tr>
-                                @endforeach
+                            <tbody class="fw-semibold text-gray-600" id="bookingList">
+                                @include('partials.booking_row', ['bookingData' => $bookingData])
                             </tbody>
                         </table>
                         <!--end::Table-->
@@ -446,7 +339,7 @@
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
 		<script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
-        <script src="{{ URL::asset('assets/js/custom/apps/customers/list/list.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/apps/bookings/list/booking-list.js') }}"></script>
         <script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
         <script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
         <script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
