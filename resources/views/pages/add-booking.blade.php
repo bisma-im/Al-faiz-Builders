@@ -52,8 +52,7 @@
                         @endif
                         <input type="hidden" id="isLocked" name="isLocked" value="{{ $isLockedMode ? 'true' : 'false' }}">
                         <!--begin::Form-->
-                        {{-- <form id="kt_new_booking_form" class="form" data-kt-redirect="{{ route('showBookings') }}" action="{{ route('addBooking') }}" method="POST"> --}}
-                            <form id="kt_new_booking_form" class="form" action="/add-booking" method="POST">
+                        <form id="kt_new_booking_form" class="form" data-kt-redirect="{{ route('showBookings') }}" action="{{ route('addBooking') }}" method="POST">
                             @csrf
                             <!--begin::Card body-->
                             <div class="d-flex flex-column gap-7 gap-lg-10">

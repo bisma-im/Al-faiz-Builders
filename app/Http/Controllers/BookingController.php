@@ -362,8 +362,6 @@ class BookingController extends Controller
 
     public function addBooking(Request $req)
     {
-        dd($req);
-        exit;
         $customerData =$this->getCustomerData($req);
         $bookingData = $this->getBookingData($req);
         $bookingData['status'] = 'active';
@@ -371,7 +369,7 @@ class BookingController extends Controller
         DB::beginTransaction();
         try
         {
-            if(DB::table('booking')->where('plot_id', $bookingData['plot_id'])->first())
+            if(DB::table('booking')->where('plot_id', $bookingData['plot_id'])->where('status', 'active')->first())
             {
                 return response()->json(['error' => 'Plot already booked']);
             }
@@ -387,9 +385,9 @@ class BookingController extends Controller
                 
                 $bookingData['customer_id'] = $customerId;
                 $bookingId = DB::table('booking')->insertGetId($bookingData);
-                dd($req->input('amounts', []));
+                // dd($req->input('amounts', []));
                 $installmentsData = $this->getInstallmentsData($req, $bookingId, $customerId);
-                dd($installmentsData);
+                // dd($installmentsData);
                 DB::table('installment')->insert($installmentsData);
                 DB::table('plots_inventory')
                 ->where('id', $bookingData['plot_id'])

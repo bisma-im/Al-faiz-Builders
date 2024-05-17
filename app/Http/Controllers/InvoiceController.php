@@ -9,7 +9,6 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\App;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
@@ -115,10 +114,7 @@ class InvoiceController extends Controller
                         ->where('b.id', $invoiceData['booking_id'])
                         ->select('customer.name', 'customer.id')
                         ->get();
-        $data = [
-            'invoiceData' => $invoiceData,
-            'customerData' => $customerData,
-        ];
+        
         try
         {
             
@@ -137,10 +133,14 @@ class InvoiceController extends Controller
                     
                 } 
 
-                $data['invoiceItems'] = $invoiceItems;
-
                 DB::table('invoice_item')->insert($invoiceItems);
                 DB::commit();
+
+                $data = [
+                    'invoiceData' => $invoiceData,
+                    'customerData' => $customerData,
+                    'invoiceItems' => $invoiceItems,
+                ];
 
                 $reportId = Str::random(40);
                 Cache::put($reportId, $data, now()->addMinutes(30));
@@ -172,16 +172,10 @@ class InvoiceController extends Controller
         $data = Cache::get($reportId);
     
         if ($data) {
-            // Proceed with PDF generation using the retrieved data
-            // $pdf = App::make('dompdf.wrapper');
-            // $pdf->loadView('pages.invoice-challan', $data);
-            // $pdf->setPaper('a4', 'portrait'); // Set paper to landscape mode
-            // return $pdf->stream('invoice-challan.pdf');
-            
-            $pdf = PDF::loadView('pages.invoice-challan', $data)->setPaper('a4', 'portrait');
-            $pdf->setOptions(['dpi' => 96, 'defaultFont' => 'sans-serif']);
-            $pdf->set_option('isHtml5ParserEnabled', true);
-            return $pdf->stream('invoice-challan.pdf');
+            $pdf = PDF::loadView('pages.invoice-challan', $data)->setPaper('a4', 'landscape');
+            $pdf->setOptions(['defaultFont' => 'sans-serif']);
+            $fileName = 'invoice-challan-' . $data['invoiceData']['id'] . '.pdf';
+            return $pdf->stream($fileName);
         } else {
             // Handle the case where there is no data (e.g., invalid reportId or cache expired)
             return response()->json(['error' => 'Invoice not found or has expired.'], 404);
