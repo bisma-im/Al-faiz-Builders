@@ -44,7 +44,7 @@
         }
         .signature-line {
             width: 137px;
-            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
             display: inline-block;
             margin-right: 10px;
         }

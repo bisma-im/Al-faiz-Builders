@@ -4922,6 +4922,20 @@ License: For each use you must have a valid license purchased only from above li
 											</div>
 											<!--end:Menu item-->
 											<!--begin:Menu item-->
+											@if (session('role') == 'accounts-officer' || in_array('accounting', session('permissions', [])))
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link" href="{{ route('showVouchers') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Vouchers</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<!--end:Menu item-->
+											@endif
+											<!--begin:Menu item-->
 											<div class="menu-item">
 												<!--begin:Menu link-->
 												<a class="menu-link" href="/users">
@@ -5004,87 +5018,89 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end:Menu sub-->
 									</div>
 									<!--end:Menu item Listings-->
-									<!--begin:Menu item Voucher-->
-									<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-										<!--begin:Menu link-->
-										<span class="menu-link">
-											<span class="menu-icon">
-												<i class="ki-duotone ki-address-book fs-2">
-													<span class="path1"></span>
-													<span class="path2"></span>
-													<span class="path3"></span>
-												</i>
+									@if (session('role') == 'accounts-officer' || in_array('accounting', session('permissions', [])))
+										<!--begin:Menu item Voucher-->
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+											<!--begin:Menu link-->
+											<span class="menu-link">
+												<span class="menu-icon">
+													<i class="ki-duotone ki-address-book fs-2">
+														<span class="path1"></span>
+														<span class="path2"></span>
+														<span class="path3"></span>
+													</i>
+												</span>
+												<span class="menu-title">Voucher</span>
+												<span class="menu-arrow"></span>
 											</span>
-											<span class="menu-title">Voucher</span>
-											<span class="menu-arrow"></span>
-										</span>
-										<!--end:Menu link-->
-										<!--begin:Menu sub-->
-										<div class="menu-sub menu-sub-accordion">
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'CPV']) }}">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Cash Payment Voucher</span>
-												</a>
-												<!--end:Menu link-->
+											<!--end:Menu link-->
+											<!--begin:Menu sub-->
+											<div class="menu-sub menu-sub-accordion">
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'CPV']) }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Cash Payment Voucher</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'CRV']) }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Cash Received Voucher</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'BPV']) }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Bank Payment Voucher</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'BRV']) }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Bank Received Voucher</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'JV']) }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Journal Voucher</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->
 											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'CRV']) }}">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Cash Received Voucher</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'BPV']) }}">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Bank Payment Voucher</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'BRV']) }}">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Bank Received Voucher</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
-											<!--begin:Menu item-->
-											<div class="menu-item">
-												<!--begin:Menu link-->
-												<a class="menu-link" href="{{ route('showVoucherForm', ['voucher_type' => 'JV']) }}">
-													<span class="menu-bullet">
-														<span class="bullet bullet-dot"></span>
-													</span>
-													<span class="menu-title">Journal Voucher</span>
-												</a>
-												<!--end:Menu link-->
-											</div>
-											<!--end:Menu item-->
+											<!--end:Menu sub-->
 										</div>
-										<!--end:Menu sub-->
-									</div>
-									<!--end:Menu item Voucher-->
+										<!--end:Menu item Voucher-->
+									@endif
 									<!--begin:Menu item System-->
 									<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 										<!--begin:Menu link-->
@@ -5184,6 +5200,73 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end:Menu sub-->
 									</div>
 									<!--end:Menu item Documents-->
+									<!--begin:Menu item Reports-->
+									@if (session('role') == 'accounts-officer' || in_array('accounting', session('permissions', [])))
+										<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+											<!--begin:Menu link-->
+											<span class="menu-link">
+												<span class="menu-icon">
+													<i class="ki-duotone ki-address-book fs-2">
+														<span class="path1"></span>
+														<span class="path2"></span>
+														<span class="path3"></span>
+													</i>
+												</span>
+												<span class="menu-title">Financial Reports</span>
+												<span class="menu-arrow"></span>
+											</span>
+											<!--end:Menu link-->
+											<!--begin:Menu sub-->
+											<div class="menu-sub menu-sub-accordion">
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{ route('showTBForm') }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Trial Balance</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->
+											</div>
+											<!--end:Menu sub-->
+											<!--begin:Menu sub-->
+											<div class="menu-sub menu-sub-accordion">
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{ route('generateIncomeStatement') }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Profit and Loss Statement</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->
+											</div>
+											<!--end:Menu sub-->
+											<!--begin:Menu sub-->
+											<div class="menu-sub menu-sub-accordion">
+												<!--begin:Menu item-->
+												<div class="menu-item">
+													<!--begin:Menu link-->
+													<a class="menu-link" href="{{ route('showLedgerForm') }}">
+														<span class="menu-bullet">
+															<span class="bullet bullet-dot"></span>
+														</span>
+														<span class="menu-title">Ledger</span>
+													</a>
+													<!--end:Menu link-->
+												</div>
+												<!--end:Menu item-->
+											</div>
+											<!--end:Menu sub-->
+										</div>
+									@endif
+									<!--end:Menu item Reports-->
 								</div>
 								<!--end::Menu-->
 							</div>

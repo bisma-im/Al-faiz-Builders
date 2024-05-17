@@ -273,9 +273,9 @@
                                     </th>
                                     <th class="min-w-125px">Customer</th>
                                     <th class="min-w-125px">Invoice ID</th>
-                                    <th class="min-w-125px">Project</th>
+                                    <th class="min-w-125px">Booking ID</th>
                                     <th class="min-w-125px">Plot No</th>
-                                    <th class="min-w-125px">Invoice Date and Time</th>
+                                    <th class="min-w-125px">Created At</th>
                                     <th class="min-w-125px">Total Amount</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
@@ -292,10 +292,10 @@
                                         <a href="{{ route('updateInvoiceForm', ['id' => $invoice->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $invoice->name }}</a>
                                     </td>
                                     <td>{{ $invoice->id }}</td>
-                                    <td>{{ $invoice->project_title }}</td>
+                                    <td>{{ $invoice->booking_id }}</td>
                                     <td>{{ $invoice->plot_no }}</td>
                                     {{-- <td data-filter="mastercard"> --}}
-                                    <td>{{ $invoice->invoice_date . ' ' . $invoice->invoice_time }}</td>
+                                    <td>{{ $invoice->created_at }}</td>
                                     <td>{{ $invoice->total_amount }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions

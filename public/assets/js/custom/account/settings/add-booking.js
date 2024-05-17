@@ -1,7 +1,7 @@
 "use strict";
 
 var KTNewBooking = (function () {
-    var t, e, r, installmentAmount, numberOfInstallments, totalAmount, bookingId, customerImageWrapper, partPaymentInput;
+    var isLocked, t, e, r, installmentAmount, numberOfInstallments, totalAmount, bookingId, customerImageWrapper, partPaymentInput;
     var numberOfInstallmentsInput = document.getElementById('num_of_installments');
     var discountAmountInput = document.getElementById('discount_amount');
     var discountPercentageInput = document.getElementById('discount_percentage');
@@ -10,7 +10,7 @@ var KTNewBooking = (function () {
         var paymentPlan = $('#paymentPlan').val();
         let tableBody = $('#installmentTable tbody');
         tableBody.empty(); 
-        numberOfInstallmentsInput.value = '';
+        if(!isLocked){numberOfInstallmentsInput.value = '';}
         $('#customerDropdown, #numOfInstallmentsInput, #installmentAmountInput, #installmentTableCard, #installments').hide();
         $('#discountType').hide();
         $('#partPaymentInput').hide();
@@ -82,10 +82,10 @@ var KTNewBooking = (function () {
             
             let row = `
                 <tr>
-                    <td><input class="form-control form-control-lg form-control-solid" type="number" name="amounts[]" value="${installmentValue.toFixed(2)}" readonly disabled></td>
-                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly disabled></td>
-                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly disabled></td>
-                    <td><input class="form-control form-control-lg form-control-solid" type="text" name="statuses[]" value="pending" readonly disabled></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="number" name="amounts[]" value="${installmentValue.toFixed(2)}" readonly></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly></td>
+                    <td><input class="form-control form-control-lg form-control-solid" type="text" name="statuses[]" value="pending" readonly></td>
                 </tr>
             `;
             tableBody.append(row);
@@ -228,7 +228,6 @@ var KTNewBooking = (function () {
                 const value = input.value;
                 const discountValue = value ? parseFloat(value, 10) : 0;
                 const totalAmount = parseFloat(document.getElementById('total_amount').value, 10);
-                console.log("Discount Value:", value, "Total Amount:", totalAmount);
                 if (discountValue > totalAmount) {
                     return {
                         valid: false,
@@ -247,7 +246,7 @@ var KTNewBooking = (function () {
         init: function () {
             t = document.querySelector("#kt_new_booking_form");
             e = document.querySelector("#kt_new_booking_submit");// Ensure this ID matches your plot dropdown ID
-            var isLocked = document.getElementById('isLocked').value; 
+            isLocked = document.getElementById('isLocked').value; 
             function makeInputsReadonly() {
                 // $('form:not(.kt_account_deactivate_form)').find('input, select, textarea, button[type="submit"], input[type="submit"]').attr('readonly', true).attr('disabled', 'disabled');
                 $('form#kt_new_booking_form').find('input, select, textarea, button[type="submit"], input[type="submit"]')
@@ -411,6 +410,7 @@ var KTNewBooking = (function () {
                         e.setAttribute("data-kt-indicator", "on");
                             e.disabled = true;
                             var formData = new FormData(t);
+                            console.log(formData);
                             bookingId = $('#id').val(); 
                             var url = bookingId ? '/update-booking' : '/add-booking';
                             fetch(url, {

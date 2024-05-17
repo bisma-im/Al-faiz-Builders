@@ -38,7 +38,7 @@
                                 @if (isset($invoiceData) && $invoiceData->id)
                                     <input type="hidden" id="id" name="id" value="{{ $invoiceData->id }}">
                                 @endif
-                                <input type="hidden" id="date_and_time" name="date_and_time" value="{{ $invoiceData->formattedDateTime ?? '' }}"/>
+                                {{-- <input type="hidden" id="date_and_time" name="date_and_time" value="{{ $invoiceData->formattedDateTime ?? '' }}"/> --}}
                                 <!--begin::Input group-->
                                 <div id="invoiceForm" 
                                 data-update-mode="{{ isset($invoiceData) ? 'true' : 'false' }}" 
@@ -50,8 +50,8 @@
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                        <span class="required">Customer</span>
+                                    <label class="col-lg-3 col-form-label fw-semibold fs-6">
+                                        <span class="required">Booking</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate role">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
@@ -62,12 +62,12 @@
                                     </label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
-                                        <select name="customer_id" aria-label="Select Customer" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select customer...">
-                                            <option value="">Select Customer...</option>
-                                            @foreach ($customers as $customer)
-                                                <option value="{{ $customer->id }}" {{ (isset($invoiceData) && $invoiceData->customer_id == $customer->id) ? 'selected' : '' }}>
-                                                    {{ $customer->name }} (CNIC {{ $customer->cnic_number }})
+                                    <div class="col-lg-9 fv-row">
+                                        <select name="booking_id" id="bookingDropdown" aria-label="Select Booking" class="form-select form-select-lg fw-semibold" data-control="select2" data-placeholder="Select Booking...">
+                                            <option value="">Select Booking...</option>
+                                            @foreach ($bookings as $booking)
+                                                <option value="{{ $booking->id }}" {{ (isset($invoiceData) && $invoiceData->booking_id == $booking->id) ? 'selected' : '' }}>
+                                                    {{ $booking->name }} - CNIC: {{ $booking->cnic_number }} - Booking: {{ $booking->id }} 
                                                 </option>
                                             @endforeach
                                         </select>
@@ -77,100 +77,80 @@
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                        <span class="required">Project</span>
-                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate role">
-                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                                <span class="path3"></span>
-                                            </i>
-                                        </span>
+                                    <label class="col-lg-3 col-form-label fw-semibold fs-6">
+                                        <span>Plot Details</span>
                                     </label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
-                                        <select name="project_id" id="projectDropdown" aria-label="Select Project" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select project...">
-                                            <option value="">Select Project...</option>
-                                            @foreach ($projects as $project)
-                                                <option value="{{ $project->id }}" {{ (isset($invoiceData) && $invoiceData->project_id == $project->id) ? 'selected' : '' }}>
-                                                    {{ $project->project_title }}</option>
-                                            @endforeach
-                                        </select>
+                                    <div class="col-lg-3 fv-row">
+                                        <input class="form-control" name="project" id="project" class="form-control form-control-lg form-control-solid" 
+                                        disabled placeholder="Project" value="{{ isset($invoiceData) ? $invoiceData->project_title : '' }}"/>
                                     </div>    
+                                    <div class="col-lg-3 fv-row">
+                                        <input class="form-control" name="phase" id="phase" class="form-control form-control-lg form-control-solid" disabled 
+                                        placeholder="Phase" value="{{ isset($invoiceData) ? $invoiceData->phase_title : '' }}"/>
+                                    </div> 
+                                    <div class="col-lg-3 fv-row">
+                                        <input class="form-control" name="plot_no" id="plot_no" class="form-control form-control-lg form-control-solid" disabled 
+                                        placeholder="Plot Number" value="{{ isset($invoiceData) ? $invoiceData->plot_no : '' }}"/>
+                                    </div> 
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                        <span class="required">Plot Number</span>
-                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate role">
-                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                                <span class="path3"></span>
-                                            </i>
-                                        </span>
+                                    <label class="col-lg-3 col-form-label fw-semibold fs-6 mb-6">
+                                        <span>Invoice Items</span>
                                     </label>
                                     <!--end::Label-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
-                                        <select name="plot_id" id="plotDropdown" aria-label="Select Plot Number" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2">
-                                        </select>
-                                    </div>    
-                                </div>
-                                <!--end::Input group-->
-                                
-                                <!--begin::Input group-->
-									<div class="row mb-6">
-										<label for="kt_ecommerce_add_invoice_datepicker" class="col-lg-4 col-form-label fw-semibold fs-6">
-                                            <span class="required">Invoice date and time</span>
-                                        </label>
-                                        
-                                        <div class="col-lg-8 fv-row">
-                                            <input class="form-control" name="invoice_date_time" id="kt_ecommerce_add_invoice_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date & time"/>
-                                            
+                                    <div id="invoiceData" style="display:none;" data-items="{{$invoiceItems}}"></div>
+                                    <div class="col-lg-9 fv-row" data-kt-ecommerce-catalog-add-project="auto-options">
+                                        <!--begin::Repeater-->
+                                        <div id="kt_ecommerce_add_item_options">
+                                            <!--begin::Form group-->
+                                            <div class="form-group">
+                                                <div data-repeater-list="kt_ecommerce_add_item_options" class="d-flex flex-column gap-3">
+                                                    <div data-repeater-item="" class="form-group d-flex flex-wrap align-items-center gap-5">
+                                                        <!--begin::Input-->
+                                                        <div class="col-lg-6 fv-row">
+                                                            <input required type="text" name="description" class="form-control form-control-lg" placeholder="Description" />
+                                                        </div>
+                                                        <div class="col-lg-3 fv-row">
+                                                            <input required type="text" name="amount" class="form-control form-control-lg" placeholder="Amount"  />
+                                                        </div>
+                                                        <!--end::Input-->
+                                                        <button type="button" data-repeater-delete="" class="btn btn-sm btn-icon btn-light-danger">
+                                                            <i class="ki-duotone ki-cross fs-1">
+                                                                <span class="path1"></span>
+                                                                <span class="path2"></span>
+                                                            </i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--end::Form group-->
+                                            <!--begin::Form group-->
+                                            <div class="form-group mt-5">
+                                                <button type="button" data-repeater-create="" class="btn btn-sm btn-light-primary">
+                                                <i class="ki-duotone ki-plus fs-2"></i>Add an item</button>
+                                            </div>
+                                            <!--end::Form group-->
                                         </div>
+                                        <!--end::Repeater-->
                                     </div>
-								<!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="row mb-6">
-                                    <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Created By</label>
-                                    <!--end::Label-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
-                                        <input type="text" name="created_by" class="form-control form-control-lg form-control-solid" placeholder="Created By" value="{{ $invoiceData->created_by ?? '' }}" />
-                                        
-                                    </div>
-                                    <!--end::Col-->
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Description</label>
+                                    <label class="col-lg-3 col-form-label fw-semibold fs-6">Total Amount
+                                    </label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
-                                        <input type="text" name="description" class="form-control form-control-lg form-control-solid" placeholder="Description" value="{{ $invoiceData->description ?? '' }}" />
-                                        
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="row mb-6">
-                                    <!--begin::Label-->
-                                    <label class="col-lg-4 col-form-label required fw-semibold fs-6">Total Amount</label>
-                                    <!--end::Label-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-8 fv-row">
-                                        <input type="number" step="any" name="total_amount" class="form-control form-control-lg form-control-solid" placeholder="Total Amount" value="{{ $invoiceData->total_amount ?? '' }}" />
-                                        
-                                    </div>
-                                    <!--end::Col-->
+                                    <div class="col-lg-9 fv-row">
+                                        <input type="hidden" id="totalAmount" name="total_amount" value="{{ isset($invoiceData) ? $invoiceData->total_amount : '' }}"/>
+                                        <input type="number" step="any" id="total" name="total" class="form-control form-control-lg" placeholder="Total Amount" disabled value="{{ isset($invoiceData) ? $invoiceData->total_amount : '' }}"/>
+                                    </div>    
                                 </div>
                                 <!--end::Input group-->
                             </div>
@@ -196,4 +176,11 @@
 @endsection
 @push('scripts')
     <script src="{{ URL::asset('assets/js/custom/account/settings/add-invoice.js') }}"></script>
+    <script src="{{ asset('assets/plugins/custom/formrepeater/formrepeater.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
 @endpush

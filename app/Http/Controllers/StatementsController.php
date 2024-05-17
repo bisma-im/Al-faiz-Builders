@@ -62,16 +62,6 @@ class StatementsController extends Controller
         return $pdf->download($filename);
     }
 
-    public function generatePdf($data, $pageName){
-        $pdf = Pdf::loadView('pages.trial-balance', $data)->setPaper('a4', 'landscape');
-        $filename = 'trial-balance-' . $data['endDate'] . '.pdf';
-        return $pdf->download($filename);
-    }
-
-    // $pdf = Pdf::loadView(`pages.trial-balance`, $data)->setPaper('a4', 'landscape');
-    //     $filename = 'trial-balance-' . $data['endDate'] . '.pdf';
-    //     return $pdf->download($filename);
-
     public function generateIncomeStatement(Request $request) {
         // $startDate = Carbon::createFromFormat('d-m-Y', $request->input('start_date'))->format('Y-m-d');
         // $endDate = Carbon::createFromFormat('d-m-Y', $request->input('end_date'))->format('Y-m-d');
@@ -187,7 +177,15 @@ class StatementsController extends Controller
             'underoverline' => true
         ];
         $headings->push($incomeBeforeTaxesHeading);
-        return view('pages.profit-and-loss', compact('headings','details', 'endDate'));
+
+        $data = [
+            'headings' => $headings,
+            'details' => $details,
+            'endDate' => $endDate,
+        ];
+        $pdf = Pdf::loadView('pages.profit-and-loss', $data)->setPaper('a4', 'landscape');
+        $filename = 'profit-and-loss-' . $endDate . '.pdf';
+        return $pdf->download($filename);
     }
 
     private function isReturnOrExpense($accountCode)

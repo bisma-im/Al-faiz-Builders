@@ -1,33 +1,74 @@
 "use strict";
 
 var KTNewInvoice = (function () {
+    const a = (listData) => {
+        const repeater = $("#kt_ecommerce_add_item_options").repeater({
+            initEmpty: false,
+            defaultValues: { "text-input": "foo" },
+            show: function () {
+                $(this).slideDown();
+                c();  // Ensure function 'c' is defined or remove this if not needed
+            },
+            hide: function (e) {
+                $(this).slideUp(e);
+            },
+        });
+    
+        // Use setList if listData is provided and is an array
+        if (Array.isArray(listData) && listData.length > 0) {
+            repeater.setList(listData);
+        }
+    },
+    c = () => {
+        document.querySelectorAll('[data-kt-ecommerce-catalog-add-project="project_option"]').forEach((e) => {
+            $(e).hasClass("select2-hidden-accessible") || $(e).select2({ minimumResultsForSearch: -1 });
+        });
+    };
+
+    function calculateTotal() {
+        var total = 0;
+        const repeaterItems = document.querySelectorAll('[data-repeater-item]');
+        repeaterItems.forEach((item, index) => {
+            // Using attribute selector to match any input name that contains 'serial_number'
+            const amountInput = item.querySelector('input[name*="amount"]');
+            
+            if (amountInput) {
+                total+= parseFloat(amountInput.value) || 0;
+            } else {
+                console.log('Error');
+            }
+        });
+        $('#totalAmount').val(total.toFixed(2));  // Assuming you want to fix to two decimal places
+        $('#total').val(total.toFixed(2));
+    }
+    function generatePdf(reportId) {
+        const pdfUrl = `/generate-invoice-pdf?reportId=${reportId}`;
+        window.open(pdfUrl, '_blank');
+    } 
     var t, e, r;
     return {
         init: function () {
             t = document.querySelector("#kt_new_invoice_form");
             e = document.querySelector("#kt_new_invoice_submit");// Ensure this ID matches your plot dropdown ID
-            var invoiceDateTime = document.getElementById('date_and_time').value;
-        $("#kt_ecommerce_add_invoice_datepicker").flatpickr({
-            enableTime: true,
-            altInput: true,
-            defaultDate: invoiceDateTime,
-            dateFormat: "Y-m-d H:i",
-            onClose: function(selectedDates, dateStr, instance) {
-                // You can handle any actions here after the date is selected
-                console.log('DatePicker closed');
-            }
-        });
+                        
+            a();
+
+            $(document).on('focusout', 'input[name*="amount"]', function() {
+                console.log('Focus out detected on dynamically added element');
+                calculateTotal();
+            });
+
+            document.querySelector('#kt_ecommerce_add_item_options').addEventListener('click', function(event) {
+                if (event.target.matches('[data-repeater-delete], [data-repeater-delete] *')) {
+                    console.log('category deleted');
+                    setTimeout(calculateTotal, 1000); // Delay update to ensure DOM has updated
+                }
+            });
             
             // Initialize form validation
             r = FormValidation.formValidation(t, {
                 fields: {
-                    customer_id: { validators: { notEmpty: { message: "Customer is required" } } },
-                    project_id: { validators: { notEmpty: { message: "Project is required" } } },
-                    plot_id: { validators: { notEmpty: { message: "Plot is required" } } },
-                    description: { validators: { notEmpty: { message: "Description is required" } } },
-                    total_amount: { validators: { notEmpty: { message: "Total amount is required" } } },
-                    created_by: { validators: { notEmpty: { message: "created_by is required" } } },
-                    invoice_date_time: { validators: { notEmpty: { message: "invoice_date_time is required" } } },
+                    booking_id: { validators: { notEmpty: { message: "Booking is required" } } },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -35,44 +76,38 @@ var KTNewInvoice = (function () {
                     bootstrap: new FormValidation.plugins.Bootstrap5({ rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: "" }),
                 },
             });
-            $(document).ready(function(){
-                var selectedPlot = parseInt($('#invoiceForm').data('selected-plot'), 10);
-
-                // Trigger change event to load plots if there's a preselected project
-                if ($('#projectDropdown').val() !== "") {
-                    loadPlots($('#projectDropdown').val());
-                }
             
-                // Function to load plots
-                function loadPlots(projectId) {
-                    $.ajax({
-                        url: '/get-plots',
-                        type: "POST",
-                        data: {
-                            project_id: projectId,
-                            _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        },
-                        dataType: 'json',
-                        success: function(result){
-                            $('#plotDropdown').html('<option value="">Select plot number...</option>');
-                            
-                            $.each(result, function(index, plot){ 
-                                if(plot.id==selectedPlot)
-                                    var option = $('<option>').val(plot.id).text(plot.plot_no).attr('selected','selected');
-                                else
-                                    var option = $('<option>').val(plot.id).text(plot.plot_no);
-                                
-                                $('#plotDropdown').append(option);
-                            });
-                        }
-                    });
-                }
-                $('#projectDropdown').on('change', function(e){
-                    var projectId = e.target.value;
-                    loadPlots(projectId);
+            var invoiceDataElement = document.getElementById('invoiceData');
+            var itemsJson = invoiceDataElement.getAttribute('data-items');
+            if (itemsJson) {
+                var items = JSON.parse(itemsJson); 
+                console.log(items);
+                a(items);
+            }
+
+            $('#bookingDropdown').on('change', function(e){
+                var bookingId = e.target.value;
+                $.ajax({
+                    url: '/get-booking-details',
+                    type: "POST",
+                    data: {
+                        booking_id: bookingId,
+                        _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        // Assuming 'response' is already an object; if not, use JSON.parse(response)
+                        // response = JSON.parse(response);
+                        $('#project').val(response[0].project_title);  // Update the project title
+                        $('#phase').val(response[0].phase_title);      // Update the phase title
+                        $('#plot_no').val(response[0].plot_no);           // Update the plot number
+                    },
+                    error: function(error) {
+                        console.log("Error fetching data:", error);
+                        // Handle errors here
+                    }
                 });
             });
-            
             e.addEventListener("click", function (a) {
                 a.preventDefault();
                 r.validate().then(function (r) {
@@ -100,14 +135,15 @@ var KTNewInvoice = (function () {
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            window.location.href = t.getAttribute('data-kt-redirect'); // Replace with your desired path
+                                            generatePdf(data.reportId);
                                         }
                                     });
                                 }
                                 else {
+                                    console.log(data.message);
                                     Swal.fire({
                                         title: 'Error!',
-                                        text: 'There was a problem generating the invoice',
+                                        text: data.message,
                                         icon: 'error',
                                         confirmButtonText: 'OK'
                                     });

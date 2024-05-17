@@ -40,17 +40,23 @@ class BookingController extends Controller
             ->join('projects as pr', 'pr.id', '=', 'booking.project_id')
             ->join('plots_inventory as pl', 'pl.id', '=', 'booking.plot_id')
             ->join('installment as i', 'booking.id', '=', 'i.booking_id')
-            ->select('booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title','pl.plot_no', 'booking.total_amount',
-                    DB::raw('SUM(CASE WHEN i.installment_status = \'paid\' THEN i.amount ELSE 0 END) as received_amount'),
-                    DB::raw('SUM(CASE WHEN i.installment_status = \'pending\' THEN i.amount ELSE 0 END) as pending_amount'))
+            ->join('phase as ph', 'ph.id', '=', 'pl.phase_id')
+            ->select(
+                'booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title',
+                'pl.plot_no', 'booking.total_amount',
+                DB::raw('SUM(CASE WHEN i.installment_status = \'paid\' THEN i.amount ELSE 0 END) as received_amount'),
+                DB::raw('SUM(CASE WHEN i.installment_status = \'pending\' THEN i.amount ELSE 0 END) as pending_amount')
+            )
             ->where('booking.username', $sessionUsername)
             ->where('booking.status', $selectedStatus)
             ->where('booking.project_id', $selectedProjectId)
-            ->where('booking.phase_id', $selectedPhaseId)
-            ->groupby('booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title','pl.plot_no', 'booking.total_amount')
+            ->where('ph.id', $selectedPhaseId)
+            ->groupBy('booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title', 'pl.plot_no', 'booking.total_amount')
             ->get();
-
+            // dd($bookingData);
             if($req->ajax()) {
+                // dd($sessionUsername, $selectedStatus, $selectedProjectId, $selectedPhaseId);
+                // dd($bookingData);
                 return view('partials.booking_row', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'))->render();
             } else {
                 return view('pages.bookings', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'));
@@ -252,9 +258,9 @@ class BookingController extends Controller
         $installmentsData = [];
         // Assuming you have installment data in the request...
         foreach ($request->input('amounts', []) as $key => $amount) {
-            $dueDate = $request->input('due_dates', [])[$key] ?? null;
+            $dueDate = $request->input('due_dates', [])[$key];
             $status = $request->input('statuses', [])[$key] ?? 'pending';
-            $intimationDate = $request->input('intimation_dates', [])[$key] ?? null;
+            $intimationDate = $request->input('intimation_dates', [])[$key];
     
             $installmentsData[] = [
                 'booking_id' => $bookingId,
@@ -356,6 +362,8 @@ class BookingController extends Controller
 
     public function addBooking(Request $req)
     {
+        dd($req);
+        exit;
         $customerData =$this->getCustomerData($req);
         $bookingData = $this->getBookingData($req);
         $bookingData['status'] = 'active';
@@ -379,7 +387,9 @@ class BookingController extends Controller
                 
                 $bookingData['customer_id'] = $customerId;
                 $bookingId = DB::table('booking')->insertGetId($bookingData);
+                dd($req->input('amounts', []));
                 $installmentsData = $this->getInstallmentsData($req, $bookingId, $customerId);
+                dd($installmentsData);
                 DB::table('installment')->insert($installmentsData);
                 DB::table('plots_inventory')
                 ->where('id', $bookingData['plot_id'])
