@@ -32,7 +32,7 @@
                 </div>
                 <!--end::Page title-->
                 <!--begin::Actions-->
-                <div class="d-flex align-items-center gap-2 gap-lg-3">
+                {{-- <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Filter menu-->
                     <div class="m-0">
                         <!--begin::Menu toggle-->
@@ -125,7 +125,7 @@
                     <!--begin::Primary button-->
                     <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Create</a>
                     <!--end::Primary button-->
-                </div>
+                </div> --}}
                 <!--end::Actions-->
             </div>
             <!--end::Toolbar container-->
@@ -157,13 +157,13 @@
                             <!--begin::Toolbar-->
                             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                                 <!--begin::Filter-->
-                                <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                {{-- <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                 <i class="ki-duotone ki-filter fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
-                                </i>Filter</button>
+                                </i>Filter</button> --}}
                                 <!--begin::Menu 1-->
-                                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
+                                {{-- <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
                                     <!--begin::Header-->
                                     <div class="px-7 py-5">
                                         <div class="fs-4 text-dark fw-bold">Filter Options</div>
@@ -234,15 +234,15 @@
                                         <!--end::Actions-->
                                     </div>
                                     <!--end::Content-->
-                                </div>
+                                </div> --}}
                                 <!--end::Menu 1-->
                                 <!--end::Filter-->
                                 <!--begin::Export-->
-                                <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal">
+                                {{-- <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal">
                                 <i class="ki-duotone ki-exit-up fs-2">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
-                                </i>Export</button>
+                                </i>Export</button> --}}
                                 <!--end::Export-->
                                 <!--begin::Add customer-->
                                 <a href="/add-user-form" class="btn btn-primary" role="button">Add User</a>
@@ -871,7 +871,7 @@
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
 		<script src="assets/js/custom/apps/customers/list/export.js"></script>
-		<script src="assets/js/custom/apps/customers/list/list.js"></script>
+		<script src="assets/js/custom/account/settings/users-list.js"></script>
 		<script src="assets/js/custom/apps/customers/add.js"></script>
 		<script src="assets/js/widgets.bundle.js"></script>
 		<script src="assets/js/custom/widgets.js"></script>

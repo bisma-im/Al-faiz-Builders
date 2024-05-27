@@ -1,12 +1,18 @@
 "use strict";
 var KTAppEcommerceSaveProduct = (function () {
-
+var quill;
     return {
         init: function () {
-            ["#kt_ecommerce_add_project_description", "#kt_ecommerce_add_project_meta_description"].forEach((e) => {
-                let t = document.querySelector(e);
-                t && (t = new Quill(e, { modules: { toolbar: [[{ header: [1, 2, !1] }], ["bold", "italic", "underline"], ["image", "code-block"]] }, placeholder: "Type your text here...", theme: "snow" }));
-            }),
+            let a = document.querySelector("#kt_ecommerce_add_project_description");
+            if(a){
+                quill = new Quill("#kt_ecommerce_add_project_description", { modules: { toolbar: [[{ header: [1, 2, !1] }], ["bold", "italic", "underline"], ["image", "code-block"]] }, placeholder: "Type your text here...", theme: "snow" })
+            
+                let fetchedDescription = document.querySelector('#fetchedDescription');
+                if (fetchedDescription) {
+                    let content = fetchedDescription.value || fetchedDescription.innerHTML; // Check if it's an input or another element
+                    quill.root.innerHTML = content;
+                }
+            }
                 
                 new Dropzone("#kt_ecommerce_add_project_media", {
                     url: "https://keenthemes.com/scripts/void.php",
@@ -88,6 +94,8 @@ var KTAppEcommerceSaveProduct = (function () {
                                         // console.log("validated!"),
                                             if(e === "Valid"){
                                                 const formData = new FormData(t);
+                                                var content = quill.root.innerHTML;
+                                                formData.append('description', content);
                                                 var projectId = formData.get('id'); // Get the user ID from the form data
                                                 var url = projectId ? '/update-project' : '/add-project';
                                                 const dropzoneElement = document.querySelector('#kt_ecommerce_add_project_media');

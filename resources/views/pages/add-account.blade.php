@@ -53,11 +53,19 @@
                                     <div class="col-lg-8 fv-row">
                                         <select name="account_head_id" aria-label="Select an Account Head" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select an account head...">
                                             <option value="">Select an Account Head...</option>
-                                            <option value="1">Assets</option>
-                                            <option value="2">Liabilities</option>
-                                            <option value="3">Revenue</option>
-                                            <option value="4">Expenses</option>
-                                            <option value="5">Equity</option>
+                                            @foreach ($headings as $i => $heading)
+                                                @php
+                                                    // Find all details that belong to the current heading
+                                                    $childAccounts = $accounts->filter(function ($account) use ($i) {
+                                                        return Str::startsWith($account->Account_Code, $i+1);
+                                                    });
+                                                @endphp
+                                                <optgroup label ="{{ $heading }}">
+                                                    @foreach ($childAccounts as $account)
+                                                        <option value="{{ $account->Account_Code }}">{{ $account->Account_Title }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endforeach
                                         </select>
                                     </div>    
                                 </div>

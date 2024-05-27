@@ -19,7 +19,7 @@ var KTAppEcommerceSaveProduct = (function () {
         };
     return {
         init: function () {
-            var o, a;
+            // var o, a;
             var phaseCompletionDate = document.getElementById('phase_completion_date').value;
             $("#kt_ecommerce_phase_complete_datepicker").flatpickr({
                 enableTime: false,
@@ -27,16 +27,16 @@ var KTAppEcommerceSaveProduct = (function () {
                 defaultDate: phaseCompletionDate,
                 dateFormat: "Y-m-d",
             });
-                ["#kt_ecommerce_add_product_category", "#kt_ecommerce_add_project_tags"].forEach((e) => {
-                    const t = document.querySelector(e);
-                    t && new Tagify(t, { whitelist: ["new", "trending", "sale", "discounted", "selling fast", "last 10"], dropdown: { maxItems: 20, classname: "tagify__inline__suggestions", enabled: 0, closeOnSelect: !1 } });
-                }),
-                (o = document.querySelector("#kt_ecommerce_add_product_discount_slider")),
-                (a = document.querySelector("#kt_ecommerce_add_product_discount_label")),
-                noUiSlider.create(o, { start: [10], connect: !0, range: { min: 1, max: 100 } }),
-                o.noUiSlider.on("update", function (e, t) {
-                    (a.innerHTML = Math.round(e[t])), t && (a.innerHTML = Math.round(e[t]));
-                }),
+                // ["#kt_ecommerce_add_product_category", "#kt_ecommerce_add_project_tags"].forEach((e) => {
+                //     const t = document.querySelector(e);
+                //     t && new Tagify(t, { whitelist: ["new", "trending", "sale", "discounted", "selling fast", "last 10"], dropdown: { maxItems: 20, classname: "tagify__inline__suggestions", enabled: 0, closeOnSelect: !1 } });
+                // }),
+                // (o = document.querySelector("#kt_ecommerce_add_product_discount_slider")),
+                // (a = document.querySelector("#kt_ecommerce_add_product_discount_label")),
+                // noUiSlider.create(o, { start: [10], connect: !0, range: { min: 1, max: 100 } }),
+                // o.noUiSlider.on("update", function (e, t) {
+                //     (a.innerHTML = Math.round(e[t])), t && (a.innerHTML = Math.round(e[t]));
+                // }),
                 e(),
                 new Dropzone("#kt_ecommerce_add_phase_media", {
                     url: "https://keenthemes.com/scripts/void.php",
@@ -103,13 +103,13 @@ var KTAppEcommerceSaveProduct = (function () {
                         });
                     });
                 })(),
-                (() => {
-                    const e = document.getElementById("kt_ecommerce_add_product_shipping_checkbox"),
-                        t = document.getElementById("kt_ecommerce_add_product_shipping");
-                    e.addEventListener("change", (e) => {
-                        e.target.checked ? t.classList.remove("d-none") : t.classList.add("d-none");
-                    });
-                })(),
+                // (() => {
+                //     const e = document.getElementById("kt_ecommerce_add_product_shipping_checkbox"),
+                //         t = document.getElementById("kt_ecommerce_add_product_shipping");
+                //     e.addEventListener("change", (e) => {
+                //         e.target.checked ? t.classList.remove("d-none") : t.classList.add("d-none");
+                //     });
+                // })(),
                 (() => {
                     let e;
                     

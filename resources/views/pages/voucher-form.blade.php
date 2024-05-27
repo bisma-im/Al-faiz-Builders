@@ -30,7 +30,7 @@
                     <!--begin::Content-->
                     <div id="kt_new_voucher" class="collapse show">
                         <!--begin::Form-->
-                        <form id="kt_new_voucher_form" class="form" data-kt-redirect="#" action="{{ route('addVoucher') }}" method="POST">
+                        <form id="kt_new_voucher_form" class="form" data-kt-redirect="/vouchers" action="{{ route('addVoucher') }}" method="POST">
                             @csrf
                             <input type="hidden" name="voucher_type" value="{{ $voucherType }}">
                             <!--begin::Card body-->

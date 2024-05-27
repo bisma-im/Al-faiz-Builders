@@ -40,7 +40,7 @@
                     <!--begin::Actions-->
                     <div class="d-flex align-items-center gap-2 gap-lg-3">
                         <!--begin::Filter menu-->
-                        <div class="m-0">
+                        {{-- <div class="m-0">
                             <!--begin::Menu toggle-->
                             <a href="#" class="btn btn-sm btn-flex bg-body btn-color-gray-700 btn-active-color-primary fw-bold" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                             <i class="ki-duotone ki-filter fs-6 text-muted me-1">
@@ -124,12 +124,12 @@
                                 <!--end::Form-->
                             </div>
                             <!--end::Menu 1-->
-                        </div>
+                        </div> --}}
                         <!--end::Filter menu-->
                         <!--begin::Secondary button-->
                         <!--end::Secondary button-->
                         <!--begin::Primary button-->
-                        <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Create</a>
+                        {{-- <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Create</a> --}}
                         <!--end::Primary button-->
                     </div>
                     <!--end::Actions-->
@@ -146,6 +146,7 @@
                         @csrf
                         @if (isset($projectData) && $projectData->id)
                             <input type="hidden" id="id" name="id" value="{{ $projectData->id }}">
+                            <input type="hidden" id="fetchedDescription" name="fetchedDescription" value="{{ $projectData->project_description }}">
                             <input type="hidden" name="existing_project_logo" id="existing_project_logo" value="{{ $projectData->project_logo }}">
                         @endif
                         <!--begin::Aside column-->
@@ -292,7 +293,6 @@
                                                     <div id="kt_ecommerce_add_project_description" name="kt_ecommerce_add_project_description" class="min-h-200px mb-2"></div>
                                                     <!--end::Editor-->
                                                     <!--begin::Description-->
-                                                    
                                                     <div class="text-muted fs-7">Set a description to the project for better visibility.</div>
                                                     <!--end::Description-->
                                                 </div>

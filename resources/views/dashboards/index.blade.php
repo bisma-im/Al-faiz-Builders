@@ -32,14 +32,14 @@
                 </div>
                 <!--end::Page title-->
                 <!--begin::Actions-->
-                <div class="d-flex align-items-center gap-2 gap-lg-3">
+                {{-- <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Secondary button-->
                     <a href="#" class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
                     <!--end::Secondary button-->
                     <!--begin::Primary button-->
                     <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Add Target</a>
                     <!--end::Primary button-->
-                </div>
+                </div> --}}
                 <!--end::Actions-->
             </div>
             <!--end::Toolbar container-->
@@ -56,7 +56,7 @@
                     @php
                         $colorIndex = $index % count($colors); // This will cycle through 0, 1, 2, 3, and back to 0
                         $currentColor = $colors[$colorIndex];
-                        $percentage = ($phase->booked_plots/$phase->total_plots)*100
+                        $percentage = round(($phase->booked_plots/$phase->total_plots)*100)
                     @endphp
                     <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
                         <!--begin::Card widget 20-->
@@ -98,7 +98,7 @@
                 </div>
                 <!--end::Row-->
                 <!--begin::Row-->
-                <div class="row gx-5 gx-xl-10">
+                {{-- <div class="row gx-5 gx-xl-10">
                     <!--begin::Col-->
                     <div class="col-xl-6 mb-5 mb-xl-10">
                         <!--begin::Tables widget 16-->
@@ -1169,7 +1169,7 @@
                         <!--end::LIst widget 26-->
                     </div>
                     <!--end::Col-->
-                </div>
+                </div> --}}
                 <!--end::Row-->
             </div>
             <!--end::Content container-->

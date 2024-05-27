@@ -99,7 +99,8 @@ Route::get('/generate-invoice-pdf', [InvoiceController::class, 'generateInvoiceP
 
 Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm')->middleware('admin.auth');
 Route::post('/add-booking', [BookingController::class, 'addBooking'])->name('addBooking')->middleware('admin.auth');
-Route::get('/bookings', [BookingController::class, 'showBookings'])->name('showBookings')->middleware('admin.auth');
+Route::get('/active-bookings', [BookingController::class, 'showBookings'])->name('showActiveBookings')->middleware('admin.auth');
+Route::get('/cancelled-bookings', [BookingController::class, 'showBookings'])->name('showCancelledBookings')->middleware('admin.auth');
 Route::get('/bookings/{id}', [BookingController::class, 'showBookingForm'])->name('updateBookingForm')->middleware('admin.auth');
 Route::post('/update-booking', [BookingController::class, 'updateBooking'])->name('updateBooking')->middleware('admin.auth');
 Route::post('/cancel-booking', [BookingController::class, 'cancelBooking'])->name('cancelBooking')->middleware('admin.auth');
@@ -111,7 +112,7 @@ Route::get('/get-customer/{customerId}', [BookingController::class, 'getCustomer
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount')->middleware('admin.auth');
 Route::get('/accounts', [AccountsController::class, 'showAccounts'])->name('showAccounts')->middleware('admin.auth');
-Route::view('/add-account-form', 'pages.add-account')->name('addAccountForm')->middleware('admin.auth');
+Route::get('/add-account-form', [AccountsController::class, 'showAddAccountForm'])->name('addAccountForm')->middleware('admin.auth');
 
 Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments')->middleware('admin.auth');
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument')->middleware('admin.auth');

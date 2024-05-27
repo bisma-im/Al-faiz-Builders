@@ -147,7 +147,7 @@
             <div class="footer" style="border: 1px solid #000; padding: 5px; height: 20px;"></div>
             <div class="footer" style="border: 1px solid #000; padding: 5px;">
                 <strong><p style="text-align: left;">For Customer Information</p></strong>
-                <p style="text-align: left;">Invoice Outstanding as of {{ $invoiceData['created_at'] }} : Rs. 0</p>
+                <p style="text-align: left;">Invoice Outstanding as of {{ $invoiceData['created_at']->format('d-M-Y') . ' : Rs. ' .  number_format($invoiceData['total_amount'], 2) }}</p>
             </div>
             <div class="footer">
                 <p style="font-size: 10px;">A company set up u/s 42 of the Companies Act, 2017 Regd. Address: Faiz House: C-151, Gulshan-e-Iqbal Block-09, Karachi, Pakistan, 75300.</p>

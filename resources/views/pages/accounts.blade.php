@@ -165,7 +165,7 @@
                                             <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_accounts_table .form-check-input" value="1" />
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Account Head</th>
+                                    <th class="min-w-125px">Account Code</th>
                                     <th class="min-w-125px">Account Title</th>
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
@@ -179,9 +179,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-gray-600 text-hover-primary mb-1">{{ $account->account_head_id }}</a>
+                                        <a href="#" class="text-gray-600 text-hover-primary mb-1">{{ $account->Account_Code }}</a>
                                     </td>
-                                    <td>{{ $account->account_title }}</td>
+                                    <td>{{ $account->Account_Title }}</td>
                                     <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>

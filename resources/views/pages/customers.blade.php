@@ -245,7 +245,7 @@
                                 </i>Export</button>
                                 <!--end::Export-->
                                 <!--begin::Add customer-->
-                                <a href="/add-customer-form" class="btn btn-primary" role="button">Add Customer</a>
+                                {{-- <a href="/add-customer-form" class="btn btn-primary" role="button">Add Customer</a> --}}
                                 <!--end::Add customer-->
                             </div>
                             <!--end::Toolbar-->

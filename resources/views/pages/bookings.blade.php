@@ -135,6 +135,20 @@
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-xxl">
+                <div class="card">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 pt-6" style="background: transparent;">
+                        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+                            <!--begin::Nav item-->
+                            <li class="nav-item mt-2">
+                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'active' ? 'active' : '' }}" href="{{ route('showActiveBookings') }}">Active</a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'cancelled' ? 'active' : '' }}" href="{{ route('showCancelledBookings') }}">Cancelled</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <!--begin::Card-->
                 <div class="card">
                     <!--begin::Card header-->
@@ -142,30 +156,43 @@
                         <!--begin::Search-->
                         <div class="d-flex align-items-center position-relative my-1 row">
                             <!--begin::Col-->
-                            <div class="col-lg-4 fv-row">
+                            <div class="col-lg-3 fv-row">
+                                <input type="hidden" id="selectedStatus" value="{{ $selectedStatus }}"/>
                                 <select name="project_id" id="selectedProject" aria-label="Select Project" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select project...">
                                     <option value="" selected disabled>Select Project...</option>
                                     @foreach ($projects as $project)
                                         <option value="{{ $project->id }}" {{ (isset($selectedProjectId) && $selectedProjectId == $project->id) ? 'selected' : '' }}>
                                             {{ $project->project_title }}</option>
                                     @endforeach
+                                    <option value="all">All</option>
                                 </select>                                        
                             </div>
-                            <div class="col-lg-4 fv-row">
+                            <div class="col-lg-3 fv-row">
                                 <select name="phase_id" id="selectedPhase" data-selected-phase-id="{{ $selectedPhaseId }}" aria-label="Select Phase" class="form-select form-select-solid form-select-lg fw-semibold" data-placeholder="Select phase.." data-control="select2">
                                     <option value="" selected disabled>Select Phase...</option>
                                     @foreach ($phases as $phase)
                                         <option value="{{ $phase->id }}" {{ (isset($selectedPhaseId) && $selectedPhaseId == $phase->id) ? 'selected' : '' }}>
                                             {{ $phase->phase_title }}</option>
                                     @endforeach
+                                    <option value="all">All</option>
                                 </select>
                             </div>
-                            <div class="col-lg-4 fv-row">
+                            {{-- <div class="col-lg-3 fv-row">
                                 <select name="selectedStatus" id="selectedStatus" class="form-select form-select-solid form-select-lg fw-semibold" data-placeholder="Select status.." data-control="select2">
                                     <option value="active" {{ (isset($selectedStatus) && $selectedStatus == 'active') ? 'selected' : '' }}>Active</option>
                                     <option value="cancelled" {{ (isset($selectedStatus) && $selectedStatus == 'cancelled') ? 'selected' : '' }}>Cancelled</option>
+                                    <option value="all">All</option>
                                 </select>
+                            </div> --}}
+                            <!--begin::Search-->
+                            <div class="d-flex align-items-center position-relative my-1 col-lg-3 fv-row">
+                                <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Bookings" />
                             </div>
+                            <!--end::Search-->
                         </div>
                         <!--end::Search-->
                         <!--begin::Card toolbar-->
@@ -200,12 +227,12 @@
                                         </div>
                                     </th>
                                     <th class="min-w-125px">Customer Name</th>
+                                    <th class="min-w-125px">CNIC</th>
                                     <th class="min-w-125px">Contact</th>
                                     <th class="min-w-125px">Project</th>
                                     <th class="min-w-125px">Plot No</th>
                                     <th class="min-w-125px">Received Amount</th>
                                     <th class="min-w-125px">Pending Amount</th>
-                                    <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600" id="bookingList">

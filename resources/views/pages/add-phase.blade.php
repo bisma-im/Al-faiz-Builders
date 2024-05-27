@@ -38,7 +38,7 @@
                     </div>
                     <!--end::Page title-->
                     <!--begin::Actions-->
-                    <div class="d-flex align-items-center gap-2 gap-lg-3">
+                    {{-- <div class="d-flex align-items-center gap-2 gap-lg-3">
                         <!--begin::Filter menu-->
                         <div class="m-0">
                             <!--begin::Menu toggle-->
@@ -131,7 +131,7 @@
                         <!--begin::Primary button-->
                         <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Create</a>
                         <!--end::Primary button-->
-                    </div>
+                    </div> --}}
                     <!--end::Actions-->
                 </div>
                 <!--end::Toolbar container-->
@@ -251,7 +251,7 @@
                             </div>
                             <!--end::Status-->
                             <!--begin::Category & tags-->
-                            <div class="card card-flush py-4">
+                            {{-- <div class="card card-flush py-4">
                                 <!--begin::Card header-->
                                 <div class="card-header">
                                     <!--begin::Card title-->
@@ -303,10 +303,10 @@
                                     <!--end::Input group-->
                                 </div>
                                 <!--end::Card body-->
-                            </div>
+                            </div> --}}
                             <!--end::Category & tags-->
                             <!--begin::Weekly sales-->
-                            <div class="card card-flush py-4">
+                            {{-- <div class="card card-flush py-4">
                                 <!--begin::Card header-->
                                 <div class="card-header">
                                     <!--begin::Card title-->
@@ -321,10 +321,10 @@
                                     <span class="text-muted">No data available. Sales data will begin capturing once product has been published.</span>
                                 </div>
                                 <!--end::Card body-->
-                            </div>
+                            </div> --}}
                             <!--end::Weekly sales-->
                             <!--begin::Template settings-->
-                            <div class="card card-flush py-4">
+                            {{-- <div class="card card-flush py-4">
                                 <!--begin::Card header-->
                                 <div class="card-header">
                                     <!--begin::Card title-->
@@ -353,7 +353,7 @@
                                     <!--end::Description-->
                                 </div>
                                 <!--end::Card body-->
-                            </div>
+                            </div> --}}
                             <!--end::Template settings-->
                         </div>
                         <!--end::Aside column-->
@@ -420,10 +420,8 @@
                                                     <label for="kt_ecommerce_phase_complete_datepicker" class="form-label">
                                                         <span class="required">Phase Completion Date</span>
                                                     </label>
-                                                    
                                                     <div class="col-lg-8 fv-row">
                                                         <input name="completion_date" id="kt_ecommerce_phase_complete_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date & time"/>
-                                                        
                                                     </div>
                                                 </div>
                                                 <!--end::Input group-->
@@ -536,7 +534,7 @@
                                                 </div>
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
-                                                <div class="fv-row mb-10">
+                                                {{-- <div class="fv-row mb-10">
                                                     <!--begin::Label-->
                                                     <label class="fs-6 fw-semibold mb-2">Discount Type
                                                     <span class="ms-1" data-bs-toggle="tooltip" title="Select a discount type that will be applied to this product">
@@ -605,10 +603,10 @@
                                                         <!--end::Col-->
                                                     </div>
                                                     <!--end::Row-->
-                                                </div>
+                                                </div> --}}
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
-                                                <div class="d-none mb-10 fv-row" id="kt_ecommerce_add_product_discount_percentage">
+                                                {{-- <div class="d-none mb-10 fv-row" id="kt_ecommerce_add_product_discount_percentage">
                                                     <!--begin::Label-->
                                                     <label class="form-label">Set Discount Percentage</label>
                                                     <!--end::Label-->
@@ -624,10 +622,10 @@
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set a percentage discount to be applied on this product.</div>
                                                     <!--end::Description-->
-                                                </div>
+                                                </div> --}}
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
-                                                <div class="d-none mb-10 fv-row" id="kt_ecommerce_add_product_discount_fixed">
+                                                {{-- <div class="d-none mb-10 fv-row" id="kt_ecommerce_add_product_discount_fixed">
                                                     <!--begin::Label-->
                                                     <label class="form-label">Fixed Discounted Price</label>
                                                     <!--end::Label-->
@@ -637,10 +635,10 @@
                                                     <!--begin::Description-->
                                                     <div class="text-muted fs-7">Set the discounted product price. The product will be reduced at the determined fixed price</div>
                                                     <!--end::Description-->
-                                                </div>
+                                                </div> --}}
                                                 <!--end::Input group-->
                                                 <!--begin::Tax-->
-                                                <div class="d-flex flex-wrap gap-5">
+                                                {{-- <div class="d-flex flex-wrap gap-5">
                                                     <!--begin::Input group-->
                                                     <div class="fv-row w-100 flex-md-root">
                                                         <!--begin::Label-->
@@ -672,7 +670,7 @@
                                                         <!--end::Description-->
                                                     </div>
                                                     <!--end::Input group-->
-                                                </div>
+                                                </div> --}}
                                                 <!--end:Tax-->
                                             </div>
                                             <!--end::Card header-->
@@ -772,7 +770,7 @@
                                         </div>
                                         <!--end::Inventory-->
                                         <!--begin::Shipping-->
-                                        <div class="card card-flush py-4">
+                                        {{-- <div class="card card-flush py-4">
                                             <!--begin::Card header-->
                                             <div class="card-header">
                                                 <div class="card-title">
@@ -831,10 +829,10 @@
                                                 <!--end::Shipping form-->
                                             </div>
                                             <!--end::Card header-->
-                                        </div>
+                                        </div> --}}
                                         <!--end::Shipping-->
                                         <!--begin::Meta options-->
-                                        <div class="card card-flush py-4">
+                                        {{-- <div class="card card-flush py-4">
                                             <!--begin::Card header-->
                                             <div class="card-header">
                                                 <div class="card-title">
@@ -886,7 +884,7 @@
                                                 <!--end::Input group-->
                                             </div>
                                             <!--end::Card header-->
-                                        </div>
+                                        </div> --}}
                                         <!--end::Meta options-->
                                     </div>
                                 </div>

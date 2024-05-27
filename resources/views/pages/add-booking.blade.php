@@ -52,7 +52,7 @@
                         @endif
                         <input type="hidden" id="isLocked" name="isLocked" value="{{ $isLockedMode ? 'true' : 'false' }}">
                         <!--begin::Form-->
-                        <form id="kt_new_booking_form" class="form" data-kt-redirect="{{ route('showBookings') }}" action="{{ route('addBooking') }}" method="POST">
+                        <form id="kt_new_booking_form" class="form" data-kt-redirect="{{ route('showActiveBookings') }}" action="{{ route('addBooking') }}" method="POST">
                             @csrf
                             <!--begin::Card body-->
                             <div class="d-flex flex-column gap-7 gap-lg-10">
@@ -63,6 +63,35 @@
                                 <!-- Your form content -->
                                 </div>
                                 <!--end::Input group-->
+                                <!--booking date-->
+                                <div class="d-flex flex-column gap-7 gap-lg-10 ">
+                                    <div class="card card-flush py-4" >
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h2>Booking Date</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <!--begin::Input group Project-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label--> 
+                                                <label class="col-lg-3 col-form-label fw-semibold fs-6">
+                                                    <span class="required">Booking Date (Only for old projects)</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-9 fv-row">
+                                                    <input name="booking_date" id="kt_ecommerce_booking_datepicker" class="form-control form-control-lg form-control-solid" placeholder="Pick date & time"/>       
+                                                    <input type="hidden" id="fetchedBookingDate" value="{{ $bookingData->created_on ?? '' }}"/>                      
+                                                </div>
+                                            </div>
+                                            <!--end::Input group Project-->
+                                        </div>
+                                    </div>
+                                </div> 
                                 <!--begin::Plot Details Card-->
                                 <div class="d-flex flex-column gap-7 gap-lg-10 ">
                                     <div class="card card-flush py-4" >
@@ -344,7 +373,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-9 fv-row">
-                                                    <input type="number" step="any" name="unit_cost" class="form-control form-control-lg form-control-solid" placeholder="Base Unit Cost" value="{{ $bookingData->unit_cost ?? '' }}" />
+                                                    <input type="number" step="any" id="unit_cost" name="unit_cost" class="form-control form-control-lg form-control-solid" placeholder="Base Unit Cost" value="{{ $bookingData->unit_cost ?? '' }}" />
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
@@ -356,11 +385,11 @@
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-3 fv-row">
-                                                    <input type="number" step="any" name="extra_charges" class="form-control form-control-lg form-control-solid" placeholder="Extra Charges" value="{{ $bookingData->extra_charges ?? '' }}" />
+                                                    <input type="number" step="any" id="extra_charges" name="extra_charges" class="form-control form-control-lg form-control-solid" placeholder="Extra Charges" value="{{ $bookingData->extra_charges ?? '' }}" />
                                                 </div>
                                                 <!--end::Col-->
                                                 <div class="col-lg-3 fv-row">
-                                                    <input type="number" step="any" name="development_charges" class="form-control form-control-lg form-control-solid" placeholder="Development Charges" value="{{ $bookingData->development_charges ?? '' }}" />
+                                                    <input type="number" step="any" id="development_charges" name="development_charges" class="form-control form-control-lg form-control-solid" placeholder="Development Charges" value="{{ $bookingData->development_charges ?? '' }}" />
                                                 </div>
                                             </div>
                                             <!--end::Input group extra charges-->
@@ -590,7 +619,7 @@
                             <!--begin::Modal content-->
                             <div class="modal-content">
                                 <!--begin::Form-->
-                                <form id="kt_modal_cancel_booking_form" class="form" data-kt-redirect="/bookings" method="POST">
+                                <form id="kt_modal_cancel_booking_form" class="form" data-kt-redirect="/active-bookings" method="POST">
                                     @csrf
                                     <!--begin::Modal header-->
                                     <div class="modal-header" id="kt_modal_add_customer_header">

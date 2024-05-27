@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
@@ -14,54 +15,60 @@ class BookingController extends Controller
         if(in_array('booking', session('permissions', [])))
         {
             $projects = DB::table('projects')
-                ->select('id', 'project_title')
-                ->get();
+            ->join('phase', 'phase.project_id', '=', 'projects.id')
+            ->select('projects.id', 'projects.project_title')
+            ->distinct()
+            ->get();
 
             $phases = DB::table('phase')
                 ->select('id', 'project_id', 'phase_title')
                 ->get();
 
-            if($req->ajax()){
-                $selectedProjectId = $req->input('selectedProject');
-                $selectedPhaseId = $req->input('selectedPhase');
-                $selectedStatus = $req->input('selectedStatus');
-
-                // dd($selectedProjectId, $selectedPhaseId, $selectedStatus);
-            }
-            else {
-                $selectedProjectId = $projects->first()->id;
-                $selectedPhaseId = $phases->where('project_id', $selectedProjectId)->first()->id;
-                $selectedStatus = 'active';
-            }
+            $selectedProjectId = $req->input('selectedProject') ? : $projects->first()->id;
+            $selectedPhaseId = $req->input('selectedPhase') ? : $phases->where('project_id', $selectedProjectId)->first()->id;
             
+            $routeName = $req->route()->getName();
+            $selectedStatus = $routeName == 'showCancelledBookings' ? 'cancelled' : 'active';
 
-            $bookingData = DB::table('booking')
-            ->join('customer as c', 'c.id', '=', 'booking.customer_id')
-            ->join('projects as pr', 'pr.id', '=', 'booking.project_id')
-            ->join('plots_inventory as pl', 'pl.id', '=', 'booking.plot_id')
-            ->join('installment as i', 'booking.id', '=', 'i.booking_id')
+            $query = DB::table('booking as b')
+            ->join('customer as c', 'c.id', '=', 'b.customer_id')
+            ->join('projects as pr', 'pr.id', '=', 'b.project_id')
+            ->join('plots_inventory as pl', 'pl.id', '=', 'b.plot_id')
             ->join('phase as ph', 'ph.id', '=', 'pl.phase_id')
+            ->leftJoin('installment as i', 'i.booking_id', '=', 'b.id')
             ->select(
-                'booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title',
-                'pl.plot_no', 'booking.total_amount',
-                DB::raw('SUM(CASE WHEN i.installment_status = \'paid\' THEN i.amount ELSE 0 END) as received_amount'),
-                DB::raw('SUM(CASE WHEN i.installment_status = \'pending\' THEN i.amount ELSE 0 END) as pending_amount')
+                'b.id',
+                'b.total_amount',
+                'c.name', // Alias is applied here directly
+                'cnic_number',
+                'c.mobile_number_1',
+                'pr.project_title',
+                'pl.plot_no',
+                DB::raw("SUM(CASE WHEN i.installment_status = 'paid' THEN i.amount ELSE 0 END) as received_amount"),
+                DB::raw("SUM(CASE WHEN i.installment_status = 'pending' THEN i.amount ELSE 0 END) as pending_amount")
             )
-            ->where('booking.username', $sessionUsername)
-            ->where('booking.status', $selectedStatus)
-            ->where('booking.project_id', $selectedProjectId)
-            ->where('ph.id', $selectedPhaseId)
-            ->groupBy('booking.id', 'c.name', 'c.mobile_number_1', 'pr.project_title', 'pl.plot_no', 'booking.total_amount')
-            ->get();
+            ->where('b.username', $sessionUsername)
+            ->where('b.status', $selectedStatus);
+
+            // Apply project filter only if not 'all'
+            if ($selectedProjectId !== 'all') {
+                $query->where('b.project_id', $selectedProjectId);
+            }
+
+            // Apply phase filter only if not 'all'
+            if ($selectedPhaseId !== 'all') {
+                $query->where('ph.id', $selectedPhaseId);
+            }
+
+           $bookingData = $query->groupBy('b.id', 'c.name','c.cnic_number', 'c.mobile_number_1', 'pr.project_title', 'pl.plot_no', 'b.total_amount')->get();
             // dd($bookingData);
             if($req->ajax()) {
-                // dd($sessionUsername, $selectedStatus, $selectedProjectId, $selectedPhaseId);
-                // dd($bookingData);
-                return view('partials.booking_row', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'))->render();
+                // return view('partials.booking_row', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'))->render();
+                // response()->json(['success' => 'booking added successfully', 'data' => $bookingData]);
+                return response()->json($bookingData);
             } else {
                 return view('pages.bookings', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'));
             }
-            // return view('pages.bookings', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'));
         }
         else
         {
@@ -151,14 +158,31 @@ class BookingController extends Controller
     public function getPhasesForBooking(Request $req)
     {   
         $project_id = $req->project_id;
-        $phases = DB::table('phase')
+        if($project_id === 'all'){
+            $phases = DB::table('phase')
+                    ->join('projects as pr', 'pr.id', '=', 'phase.project_id')
+                    ->get(['phase.id', 'phase.phase_title', 'phase.completion_date', 'pr.project_title']);
+
+            // dd($phases);
+        } else{
+            $phases = DB::table('phase')
                     ->where('project_id', $project_id)
                     ->get(['id', 'phase_title', 'completion_date']);
+        }
+        
         return response()->json($phases);
     }
 
     public function getBookingData(Request $req)
     {
+        $bookingDate = Carbon::createFromFormat('Y-m-d', $req->input('booking_date'));
+        $currentTime = Carbon::now('Asia/Karachi');
+
+        // Set the time to the current time
+        $bookingDate->hour($currentTime->hour)
+                    ->minute($currentTime->minute)
+                    ->second($currentTime->second);
+
         $bookingData = [
             'project_id' => $req->input('project_id'),
             'phase_id' => $req->input('phase_id'),
@@ -176,7 +200,7 @@ class BookingController extends Controller
             'number_of_installments' => $req->input('num_of_installments'),
             'installment_amount' => $req->input('installment_amount'),
             'username' => session()->get('username'),
-            'created_on' => now(),
+            'created_on' => $bookingDate->toDateTimeString(),
         ];
         return $bookingData; 
     }
@@ -384,6 +408,7 @@ class BookingController extends Controller
                 }
                 
                 $bookingData['customer_id'] = $customerId;
+                // dd($bookingData)
                 $bookingId = DB::table('booking')->insertGetId($bookingData);
                 // dd($req->input('amounts', []));
                 $installmentsData = $this->getInstallmentsData($req, $bookingId, $customerId);
@@ -409,17 +434,25 @@ class BookingController extends Controller
 
     public function updateBooking(Request $req)
     {   
-        $bookingData = $this->getBookingData($req);
-        $customerData =$this->getCustomerData($req);
+        // $bookingData = $this->getBookingData($req);
+        // $customerData =$this->getCustomerData($req);
 
         $id = $req->input('id');
-        $customerId = $req->input('customer_id');
+        // $customerId = $req->input('customer_id');
+        $installmentIds = $req->input('installment_ids', []);
+        $amounts = $req->input('amounts', []);
 
         DB::beginTransaction();
         try {
-            DB::table('customer')->where('id', $customerId)->update($customerData);
-            DB::table('booking')->where('id', $id)->update($bookingData);
-            $this->getInstallmentsData($req, $id, $customerId);
+            // DB::table('customer')->where('id', $customerId)->update($customerData);
+            // DB::table('booking')->where('id', $id)->update($bookingData);
+            foreach ($installmentIds as $index => $installmentId) {
+                if (isset($amounts[$index])) { // Check if the amount index exists to avoid index errors
+                    DB::table('installment')->where('id', $installmentId)
+                        ->update(['amount' => $amounts[$index], 'updated_at' => now()]);
+                }
+            }
+
             DB::commit();
             return response()->json(['success' => 'Booking updated successfully']);
         } catch (\Exception $e) {

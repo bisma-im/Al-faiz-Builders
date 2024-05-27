@@ -273,9 +273,6 @@
                                     </i>Export</button>
                                 </form>
                                     <!--end::Export-->
-                                <!--begin::Add customer-->
-                                <a href="/add-voucher-form" class="btn btn-primary" role="button" style="max-width: 130px;">Add Voucher</a>
-                                <!--end::Add customer-->
                             </div>
                             <!--end::Toolbar-->
                         
@@ -343,7 +340,8 @@
                             <!--begin::Modal body-->
                             <div class="modal-body py-10 px-lg-17">
                                 <!--begin::Scroll-->
-                                <div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_customer_header" data-kt-scroll-wrappers="#kt_modal_add_customer_scroll" data-kt-scroll-offset="300px">
+                                <div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll" data-kt-scroll="true" 
+                                data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_customer_header" data-kt-scroll-wrappers="#kt_modal_add_customer_scroll" data-kt-scroll-offset="300px">
                                     <table class="voucher-table">
                                         <colgroup>
                                             <col style="width: 20%;">  <!-- Smaller width for the Date column -->

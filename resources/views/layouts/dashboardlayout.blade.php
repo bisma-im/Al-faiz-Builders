@@ -76,7 +76,7 @@ License: For each use you must have a valid license purchased only from above li
 							<!--begin::Menu wrapper-->
 							<div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="app-header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_app_header_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="{default: 'append', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}">
 								<!--begin::Menu-->
-								<div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0" id="kt_app_header_menu" data-kt-menu="true">
+								{{-- <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0" id="kt_app_header_menu" data-kt-menu="true">
 									<!--begin:Menu item-->
 									<div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
 										<!--begin:Menu link-->
@@ -3052,14 +3052,14 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end:Menu sub-->
 									</div>
 									<!--end:Menu item-->
-								</div>
+								</div> --}}
 								<!--end::Menu-->
 							</div>
 							<!--end::Menu wrapper-->
 							<!--begin::Navbar-->
 							<div class="app-navbar flex-shrink-0">
 								<!--begin::Search-->
-								<div class="app-navbar-item align-items-stretch ms-1 ms-md-3">
+								{{-- <div class="app-navbar-item align-items-stretch ms-1 ms-md-3">
 									<!--begin::Search-->
 									<div id="kt_header_search" class="header-search d-flex align-items-stretch" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-menu-trigger="auto" data-kt-menu-overflow="false" data-kt-menu-permanent="true" data-kt-menu-placement="bottom-end">
 										<!--begin::Search toggle-->
@@ -3730,10 +3730,10 @@ License: For each use you must have a valid license purchased only from above li
 										<!--end::Menu-->
 									</div>
 									<!--end::Search-->
-								</div>
+								</div> --}}
 								<!--end::Search-->
 								<!--begin::Activities-->
-								<div class="app-navbar-item ms-1 ms-md-3">
+								{{-- <div class="app-navbar-item ms-1 ms-md-3">
 									<!--begin::Drawer toggle-->
 									<div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px" id="kt_activities_toggle">
 										<i class="ki-duotone ki-chart-simple fs-2 fs-lg-1">
@@ -3744,10 +3744,10 @@ License: For each use you must have a valid license purchased only from above li
 										</i>
 									</div>
 									<!--end::Drawer toggle-->
-								</div>
+								</div> --}}
 								<!--end::Activities-->
 								<!--begin::Notifications-->
-								<div class="app-navbar-item ms-1 ms-md-3">
+								{{-- <div class="app-navbar-item ms-1 ms-md-3">
 									<!--begin::Menu- wrapper-->
 									<div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end" id="kt_menu_item_wow">
 										<i class="ki-duotone ki-abstract-4 fs-2 fs-lg-1">
@@ -4259,7 +4259,7 @@ License: For each use you must have a valid license purchased only from above li
 									</div>
 									<!--end::Menu-->
 									<!--end::Menu wrapper-->
-								</div>
+								</div> --}}
 								<!--end::Notifications-->
 								<!--begin::Chat-->
 								<div class="app-navbar-item ms-1 ms-md-3">
@@ -4276,7 +4276,7 @@ License: For each use you must have a valid license purchased only from above li
 								</div>
 								<!--end::Chat-->
 								<!--begin::My apps links-->
-								<div class="app-navbar-item ms-1 ms-md-3">
+								{{-- <div class="app-navbar-item ms-1 ms-md-3">
 									<!--begin::Menu wrapper-->
 									<div class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-30px h-30px w-md-40px h-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
 										<i class="ki-duotone ki-element-11 fs-2 fs-lg-1">
@@ -4539,7 +4539,7 @@ License: For each use you must have a valid license purchased only from above li
 									</div>
 									<!--end::My apps-->
 									<!--end::Menu wrapper-->
-								</div>
+								</div> --}}
 								<!--end::My apps links-->
 								<!--begin::Theme mode-->
 								<div class="app-navbar-item ms-1 ms-md-3">
@@ -4963,7 +4963,7 @@ License: For each use you must have a valid license purchased only from above li
 											@if (in_array('booking', session('permissions', [])))
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="{{ route('showBookings') }}">
+												<a class="menu-link" href="{{ route('showActiveBookings') }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
@@ -5274,15 +5274,15 @@ License: For each use you must have a valid license purchased only from above li
 						</div>
 						<!--end::sidebar menu-->
 						<!--begin::Footer-->
-						<div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-							<a href="#" class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click" title="200+ in-house components and 3rd-party plugins">
-								<span class="btn-label">Docs & Components</span>
-								<i class="ki-duotone ki-document btn-icon fs-2 m-0">
-									<span class="path1"></span>
-									<span class="path2"></span>
-								</i>
-							</a>
-						</div>
+						{{--// <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
+						// 	<a href="#" class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click" title="200+ in-house components and 3rd-party plugins">
+						// 		<span class="btn-label">Docs & Components</span>
+						// 		<i class="ki-duotone ki-document btn-icon fs-2 m-0">
+						// 			<span class="path1"></span>
+						// 			<span class="path2"></span>
+						// 		</i>
+						// 	</a>
+						// </div>--}}
 						<!--end::Footer-->
 					</div>
 					<!--end::Sidebar-->
@@ -5299,14 +5299,14 @@ License: For each use you must have a valid license purchased only from above li
 							</div>
 							<!--end::Copyright-->
 							<!--begin::Menu-->
-							<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
+							{{--<ul class="menu menu-gray-600 menu-hover-primary fw-semibold order-1">
 								<li class="menu-item">
 									<a href="#" target="_blank" class="menu-link px-2">About</a>
 								</li>
 								<li class="menu-item">
 									<a href="#" target="_blank" class="menu-link px-2">Support</a>
 								</li>
-							</ul>
+							</ul>--}}
 							<!--end::Menu-->
 						</div>
 						<!--end::Footer container-->

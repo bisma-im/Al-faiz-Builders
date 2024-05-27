@@ -180,7 +180,7 @@ class ProjectController extends Controller
 
         $projectData = [
             'project_title' => $req->input('project_title'),
-            'project_description' => $req->input('project_description'),
+            'project_description' => $req->input('description'),
             'status' => $req->input('status'),
         ];
     
@@ -206,7 +206,7 @@ class ProjectController extends Controller
         DB::beginTransaction();
         try 
         {   
-            DB::table('projects')->insert($projectData);
+            $projectId = DB::table('projects')->insertGetId($projectData);
             if ($req->hasFile('project_media')) {
                 foreach ($req->file('project_media') as $file) {
                     $filename = time() . '_' . $file->getClientOriginalName();

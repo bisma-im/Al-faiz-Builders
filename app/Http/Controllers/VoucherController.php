@@ -86,18 +86,8 @@ class VoucherController extends Controller
         ]);
     }
 
-    public function voucherPdf(Request $req){
+    public function downloadVoucher(Request $req){
         $voucherId = $req->input('voucher_id');
-        $voucherData = DB::table('voucher')->where('voucher_id', $voucherId)->get();
-        $totals = DB::table('voucher')
-                    ->selectRaw('SUM(debit_amount) as totalDebitAmount, SUM(credit_amount) as totalCreditAmount')
-                    ->where('voucher_id', $voucherId)
-                    ->first();
-        return view('pages.voucher-pdf', compact('voucherData', 'voucherId', 'totals'));
-    }
-
-    public function downloadVoucher(){
-        $voucherId = '2024/3/9';
         $voucherData = DB::table('voucher')->where('voucher_id', $voucherId)->get();
         $totals = DB::table('voucher')
                     ->selectRaw('SUM(debit_amount) as totalDebitAmount, SUM(credit_amount) as totalCreditAmount')

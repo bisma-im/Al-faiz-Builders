@@ -31,12 +31,13 @@
         .header-section {
             text-align: center;
             margin-bottom: 20px;
+            margin-top: 10px;
         }
         .header-section h1 {
             margin: 0;
         }
         .header-section h2 {
-            margin: 10px 0;
+            margin: 0;
         }
         .date-range {
             position: fixed;
@@ -50,10 +51,11 @@
         <h1>Al-faiz Builders</h1>
         <h2>General Journal</h2>
         <p>From {{ $fromDate }} to {{ $toDate }}</p>
+        <div class="date-range">
+            <p>Printing Date: {{ date('d-M-Y') }}<br>Printed By: {{ Session::get('username') }}</p>
+        </div>
     </div>
-    <div class="date-range">
-        <p>Printing Date: {{ date('Y-m-d') }}<br>Printed By: {{ Session::get('username') }}</p>
-    </div>
+    
 
     <table class="journal-table">
         <thead>
@@ -71,14 +73,14 @@
                     @php $currentVoucherId = $voucher->voucher_id; @endphp
                     <tr>
                         <td>{{ $voucher->date }}</td>
-                        <td>{{ $voucher->HeadName . ' - ' . $voucher->account_code }}</td>
+                        <td>{{ $voucher->Account_Title . ' - ' . $voucher->account_code }}</td>
                         <td>{{ number_format($voucher->debit_amount, 2) ?? '' }}</td>
                         <td></td>
                     </tr>
                 @else
                     <tr>
                         <td></td>
-                        <td>{{ $voucher->HeadName . ' - ' . $voucher->account_code }}</td>
+                        <td>{{ $voucher->Account_Title . ' - ' . $voucher->account_code }}</td>
                         <td></td>
                         <td>{{ number_format($voucher->credit_amount, 2) ?? '' }}</td>
                     </tr>

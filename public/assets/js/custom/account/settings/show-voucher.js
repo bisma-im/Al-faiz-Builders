@@ -14,7 +14,7 @@ var KTModalLogsAdd = (function () {
                     $tr.append($('<td>').text(''));
                 }
                 $tr.append(
-                    $('<td>').text(entry.HeadName),
+                    $('<td>').text(entry.Account_Title),
                     $('<td>').text(entry.debit_amount),
                     $('<td>').text(entry.credit_amount)
                 );
@@ -40,6 +40,7 @@ var KTModalLogsAdd = (function () {
                         type: 'GET',
                         success: function(response) {
                             if (response.success) {
+                                console.log(response.data);
                                 populateVoucherDetails(response.data);
                             } else {
                                 console.error('Failed to fetch voucher.');

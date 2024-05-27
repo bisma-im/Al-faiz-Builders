@@ -52,6 +52,26 @@
             text-align: right;
             font-size: 16px;
         }
+        footer {
+            width: 100%;
+            position: fixed; 
+            bottom: -60px; 
+            left: 0px; 
+            right: 0px;
+            height: 100px; 
+            color: #000;
+            line-height: 35px;
+            border-top: 1px solid black;
+            font-size: 12px;
+        }
+        .footer-left {
+            float: left;
+            padding: 20px; /* Adjust as needed */
+        }
+        .footer-right {
+            float: right;
+            padding: 20px; /* Adjust as needed */
+        }
     </style>
 </head>
 <body>
@@ -95,5 +115,13 @@
             <div  class="signature-area">Recorded by: <span class="signature-line"></span> Signature: <span class="signature-line"></span> Date: <span class="signature-line"></span></div>
         </div>
     </div>
+    <footer>
+        <div class="footer-left">
+            Printed by: {{ Session::get('username') }} 
+        </div>
+        <div class="footer-right">
+            Date and Time: {{ now() }}
+        </div>
+    </footer>
 </body>
 </html>

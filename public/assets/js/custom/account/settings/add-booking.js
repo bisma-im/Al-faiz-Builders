@@ -82,7 +82,7 @@ var KTNewBooking = (function () {
             
             let row = `
                 <tr>
-                    <td><input class="form-control form-control-lg form-control-solid" type="number" name="amounts[]" value="${installmentValue.toFixed(2)}" readonly></td>
+                    <td><input class="form-control form-control-lg form-control-solid installment-input" type="number" name="amounts[]" value="${installmentValue.toFixed(2)}" data-index="${i}"></td>
                     <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly></td>
                     <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly></td>
                     <td><input class="form-control form-control-lg form-control-solid" type="text" name="statuses[]" value="pending" readonly></td>
@@ -90,6 +90,7 @@ var KTNewBooking = (function () {
             `;
             tableBody.append(row);
         }
+        attachEventListeners();
     }
 
     function handleInstallments(){
@@ -124,23 +125,70 @@ var KTNewBooking = (function () {
         }
     }
 
+    function updateInstallments(inputElement) {
+        totalAmount = parseFloat(document.getElementById('total_amount').value); // Total contract value
+        const inputs = Array.from(document.querySelectorAll('input[name="amounts[]"]'));
+        const statuses = Array.from(document.querySelectorAll('input[name="statuses[]"]'));
+    
+        const changedIndex = parseInt(inputElement.getAttribute('data-index'));
+        const changedStatus = statuses[changedIndex].value;
+    
+        // Exit if the changed installment is not pending
+        if (changedStatus !== 'pending') {
+            return;
+        }
+    
+        // Compute the total paid or fixed up to the changed installment
+        const paidTotal = inputs.slice(0, changedIndex + 1).reduce((acc, input, index) => {
+            return acc + parseFloat(input.value);
+        }, 0);
+    
+        let remainingAmount = totalAmount - paidTotal;
+        const unpaidIndexes = inputs.slice(changedIndex + 1).reduce((acc, input, index) => {
+            const realIndex = changedIndex + 1 + index;
+            if (statuses[realIndex].value === 'pending') {
+                acc.push(realIndex);
+            }
+            return acc;
+        }, []);
+    
+        // Adjust future 'pending' installments
+        if (unpaidIndexes.length > 0) {
+            const newInstallmentAmount = remainingAmount / unpaidIndexes.length;
+            unpaidIndexes.forEach(index => {
+                inputs[index].value = newInstallmentAmount.toFixed(2);
+            });
+        }
+    }
+    
+    function attachEventListeners() {
+        // Attach the change event listener to only editable (pending) installment inputs
+        $('#installmentTable').on('change', 'input.installment-input', function() {
+            updateInstallments(this);
+        });
+    }
+    
+
     function renderInstallments(installments) {
         let tableBody = $('#installmentTable tbody');
         tableBody.empty(); // Clear the table first
-    
+        let i = 0;
         installments.forEach(installment => {
-    
+            const isEditable = installment.installment_status === 'pending' || installment.installment_status === 'unpaid';
             let row = `
                 <tr>
                     <input type="hidden" name="installment_ids[]" value="${installment.id || ''}">
-                    <td><input type="text" name="amounts[]" value="${Number(installment.amount).toFixed(2)}" class="form-control" readonly disabled></td>
+                    <td><input type="number" name="amounts[]" value="${Number(installment.amount).toFixed(2)}" class="form-control ${isEditable ? 'installment-input' : ''}" ${isEditable ? '' : 'readonly disabled'} data-index="${i}"></td>
                     <td><input type="date" name="due_dates[]" value="${installment.due_date}" class="form-control" readonly disabled></td>
                     <td><input type="date" name="intimation_dates[]" value="${installment.intimation_date}" class="form-control" readonly disabled></td>
                     <td><input type="text" name="statuses[]" value="${installment.installment_status}" class="form-control" readonly disabled></td>
                 </tr>
             `;
             tableBody.append(row);
+            i++;
         });
+
+        attachEventListeners();
     }
     
     function fetchInstallments(bookingId) {
@@ -240,16 +288,33 @@ var KTNewBooking = (function () {
         }
     };
     FormValidation.validators.checkDiscount = checkDiscount;
-        
+    
+    function calculateTotalAmount(){
+        var extraCharges = parseFloat(document.getElementById('extra_charges').value) || 0;
+        var developmentCharges = parseFloat(document.getElementById('development_charges').value) || 0;
+        var unitCost = parseFloat(document.getElementById('unit_cost').value) || 0;
+
+        document.getElementById('total_amount').value = extraCharges + developmentCharges + unitCost;
+    }
 
     return {
         init: function () {
+            document.getElementById('extra_charges').addEventListener('keyup', calculateTotalAmount);
+            document.getElementById('development_charges').addEventListener('keyup', calculateTotalAmount);
+            document.getElementById('unit_cost').addEventListener('keyup', calculateTotalAmount);
+            var bookingDate = document.getElementById('fetchedBookingDate').value;
+            $("#kt_ecommerce_booking_datepicker").flatpickr({
+                enableTime: false,
+                altInput: true,
+                defaultDate: bookingDate ? bookingDate : new Date(),
+                dateFormat: "Y-m-d",
+            });
             t = document.querySelector("#kt_new_booking_form");
             e = document.querySelector("#kt_new_booking_submit");// Ensure this ID matches your plot dropdown ID
             isLocked = document.getElementById('isLocked').value; 
             function makeInputsReadonly() {
                 // $('form:not(.kt_account_deactivate_form)').find('input, select, textarea, button[type="submit"], input[type="submit"]').attr('readonly', true).attr('disabled', 'disabled');
-                $('form#kt_new_booking_form').find('input, select, textarea, button[type="submit"], input[type="submit"]')
+                $('form#kt_new_booking_form').find('input, select, textarea')
                 .attr('readonly', true)
                 .attr('disabled', 'disabled');
             };
@@ -426,7 +491,7 @@ var KTNewBooking = (function () {
                                 if (data.success) {
                                     Swal.fire({
                                         title: 'Success!',
-                                        text: 'Booking generated successfully',
+                                        text: 'Booking saved successfully',
                                         icon: 'success',
                                         confirmButtonText: 'OK'
                                     }).then((result) => {

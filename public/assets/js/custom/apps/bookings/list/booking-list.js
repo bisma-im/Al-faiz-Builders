@@ -62,6 +62,7 @@ var KTCustomersList = (function () {
             },
             dataType: 'json',
             success: function(result){
+                console.log(result);
                 var $selectedPhase = $('#selectedPhase');
                 var selectedPhaseId = $selectedPhase.data('selected-phase-id');
     
@@ -72,13 +73,18 @@ var KTCustomersList = (function () {
                 result.forEach(phase => {
                     var option = $('<option>', {
                         value: phase.id,
-                        text: phase.phase_title
+                        text: projectId === "all" ? phase.phase_title +'-' + phase.project_title : phase.phase_title
                     });
                     if (phase.id == selectedPhaseId) {
                         option.prop('selected', true);
                     }
                     $selectedPhase.append(option);
                 });
+                var option = $('<option>', {
+                    value: "all",
+                    text: "All"
+                });
+                $selectedPhase.append(option);
                 var firstPhaseId = result.length > 0 ? result[0].id : null;
                 $selectedPhase.val(firstPhaseId).trigger('change');
             }
@@ -106,34 +112,92 @@ var KTCustomersList = (function () {
                     e[5].setAttribute("data-order", o);
                 }),
                 (t = $(n).DataTable({
+                    // pageLength: 10,
                     info: !1,
                     order: [],
+                    paging: true, // Ensure paging is enabled
+                    responsive: true,
                     columnDefs: [
                         { orderable: !1, targets: 0 },
-                        { orderable: !1, targets: 6 },
                     ],
                 })).on("draw", function () {
                     r(), l(), KTMenu.init();
                 }),
-                r());
-                $('#selectedPhase, #selectedStatus').on('change', function () {
+                r()),
+                document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", function (e) {
+                    t.search(e.target.value).draw();
+                });
+               
+                $('#selectedPhase').on('change', function () {
                     var project = $('#selectedProject').val();
                     var phase = $('#selectedPhase').val();
                     var status = $('#selectedStatus').val();
-
+                
                     $.ajax({
-                        url: '/bookings', // Adjust the URL as necessary
+                        url: status === 'active' ? '/active-bookings' : '/cancelled-bookings',
                         type: 'GET',
                         data: {
                             selectedProject: project,
                             selectedPhase: phase,
-                            selectedStatus: status
                         },
                         success: function(data) {
-                            $('#bookingList').html(data);
+                            if ($.fn.DataTable.isDataTable('#kt_users_table')) {
+                                $('#kt_users_table').DataTable().clear().destroy(); // Clear and destroy the existing table
+                            }
+                
+                            t = $('#kt_users_table').DataTable({
+                                data: data, // use the data from the AJAX response
+                                columns: [
+                                    {
+                                        data: null,
+                                        defaultContent: '',
+                                        orderable: false,
+                                        targets: 0,
+                                        render: function (data, type, row, meta) {
+                                            return '<div class="form-check form-check-sm form-check-custom form-check-solid">' +
+                                                       '<input class="form-check-input" type="checkbox" value="' + row.id + '" />' +
+                                                   '</div>';
+                                        }
+                                    },
+                                    {
+                                        data: 'name',
+                                        render: function(data, type, row) {
+                                            // Replace 'your-url-here' with the actual URL you want to use
+                                            // You can also dynamically set the URL based on other data properties from 'row'
+                                            return '<a href="/bookings/' + row.id + '" class="text-gray-600 text-hover-primary mb-1">' + data + '</a>';
+                                        }
+                                    },
+                                    { data: 'cnic_number' },
+                                    { data: 'mobile_number_1' },
+                                    { data: 'project_title' },
+                                    { data: 'plot_no' },
+                                    { data: 'received_amount' },
+                                    { data: 'pending_amount' }
+                                ],
+                                paging: true,
+                                responsive: true,
+                                searching: true,
+                                destroy: true // Ensure you can reinitialize without issues
+                            }).on("draw", function () {
+                                r(), l(), KTMenu.init();
+                            });
+                            
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error occurred: " + error);
+                            $('#bookingList').html('<tr><td colspan="8">No data found</td></tr>');
                         }
                     });
-                }); 
+
+                    r(),
+                    document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", function (e) {
+                        console.log('searching');
+                        t.search(e.target.value).draw();
+                    });
+                });
+                
+                
+                
         },
     };
 })();
