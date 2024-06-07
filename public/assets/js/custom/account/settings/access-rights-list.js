@@ -1,29 +1,20 @@
 "use strict";
 
 var KTCustomersList = (function () {
-    var t,
-        e,
-        o,
-        n,
-        c = () => {
-            n.querySelectorAll('[data-kt-customer-table-filter="delete_row"]').forEach((e) => {
-                e.addEventListener("click", function (e) {
-                    e.preventDefault();
-                    // Remove the deletion functionality
-                });
-            });
-        },
-        r = () => {
-            const e = n.querySelectorAll('[type="checkbox"]');
+    var n,t;
+    //     e,
+    //     o,
+    //     n,
+    //     r = () => {
+    //         const e = n.querySelectorAll('[type="checkbox"]');
 
-            e.forEach((t) => {
-                t.addEventListener("click", function () {
-                    setTimeout(function () {
-                        l();
-                    }, 50);
-                });
-            });
-        };
+    //         e.forEach((t) => {
+    //             t.addEventListener("click", function () {
+    //                 setTimeout(function () { l()
+    //                 }, 50);
+    //             });
+    //         });
+    //     };
     // const l = () => {
     //     const t = document.querySelector('[data-kt-customer-table-toolbar="base"]'),
     //         e = document.querySelector('[data-kt-customer-table-toolbar="selected"]');
@@ -41,9 +32,8 @@ var KTCustomersList = (function () {
                     paging: false,
                     scrollY: "auto",
                 })).on("draw", function () {
-                    r(), c(), l(), KTMenu.init();
-                }),
-                r(),
+                    KTMenu.init();
+                });
                 // document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", function (e) {
                 //     t.search(e.target.value).draw();
                 // }),
@@ -58,7 +48,7 @@ var KTCustomersList = (function () {
                 //     const r = n + " " + c;
                 //     t.search(r).draw();
                 // }),
-                c();
+                // c();
                 // document.querySelector('[data-kt-customer-table-filter="reset"]').addEventListener("click", function () {
                 //     e.val(null).trigger("change"), (o[0].checked = !0), t.search("").draw();
                 // });

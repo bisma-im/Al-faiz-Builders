@@ -177,13 +177,6 @@
                                     <option value="all">All</option>
                                 </select>
                             </div>
-                            {{-- <div class="col-lg-3 fv-row">
-                                <select name="selectedStatus" id="selectedStatus" class="form-select form-select-solid form-select-lg fw-semibold" data-placeholder="Select status.." data-control="select2">
-                                    <option value="active" {{ (isset($selectedStatus) && $selectedStatus == 'active') ? 'selected' : '' }}>Active</option>
-                                    <option value="cancelled" {{ (isset($selectedStatus) && $selectedStatus == 'cancelled') ? 'selected' : '' }}>Cancelled</option>
-                                    <option value="all">All</option>
-                                </select>
-                            </div> --}}
                             <!--begin::Search-->
                             <div class="d-flex align-items-center position-relative my-1 col-lg-3 fv-row">
                                 <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
@@ -236,7 +229,11 @@
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600" id="bookingList">
-                                @include('partials.booking_row', ['bookingData' => $bookingData])
+                                @if (isset($bookingData))
+                                    @include('partials.booking_row', ['bookingData' => $bookingData])
+                                @else
+                                    <tr><td colspan="8">No data found</td></tr>
+                                @endif
                             </tbody>
                         </table>
                         <!--end::Table-->

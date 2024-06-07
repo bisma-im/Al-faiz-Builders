@@ -17,11 +17,11 @@ class AdminController extends Controller
                     ->leftJoin('booking as b', 'b.phase_id', '=', 'phase.id')
                     ->select(
                         'pr.project_title',
-                        'phase.phase_title',
+                        'phase.phase_title', 'phase.id', 'phase.project_id',
                         DB::raw('COUNT(DISTINCT pi.id) as total_plots'),
                         DB::raw('COUNT(DISTINCT b.plot_id) as booked_plots')
                     )
-                    ->groupBy('phase.id', 'pr.project_title', 'phase.phase_title')
+                    ->groupBy('phase.id', 'pr.project_title', 'phase.phase_title', 'phase.project_id')
                     ->get();
         $colors = ['#32BFAF', '#f74d89', '#e95ecd', '#2596be'];
         return view('dashboards.index', compact('phases', 'colors'));
@@ -46,6 +46,7 @@ class AdminController extends Controller
                     'booking' => isset($permissions['booking']) && $permissions['booking'] == "on" ? 1 : 0,
                     'leads' => isset($permissions['leads']) && $permissions['leads'] == "on" ? 1 : 0,
                     'accounting' => isset($permissions['accounting']) && $permissions['accounting'] == "on" ? 1 : 0,
+                    'updated_at' => now(),
                 ];
                 DB::table('user') 
                     ->where('id', $id)
@@ -136,7 +137,7 @@ class AdminController extends Controller
         // All checks passed, update the password
         DB::table('user')
             ->where('username', $username)
-            ->update(['password' =>  $newPassword]);
+            ->update(['password' =>  $newPassword, 'updated_at' => now()]);
     
         return response()->json(['success' => 'Password changed successfully']);
     }

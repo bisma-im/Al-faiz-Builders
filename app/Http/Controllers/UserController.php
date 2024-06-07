@@ -33,6 +33,7 @@ class UserController extends Controller
             'password' => $req->input('password'), // Remember to hash passwords
             'mobile_no' => $req->input('mobile_no'),
             'user_access_level' => $req->input('user_access_level'),
+            'updated_at' => now(),
         ];
 
         switch($req->input('user_access_level'))
@@ -71,6 +72,7 @@ class UserController extends Controller
     
     public function addUser(Request $req){
         $userData = $this->getUserData($req);
+        $userData['created_at'] = now();
         try 
         {   
             if (!preg_match('/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/', $userData['password'])) {

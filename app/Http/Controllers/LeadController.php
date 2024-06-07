@@ -88,9 +88,9 @@ class LeadController extends Controller
     
             // $callLogData = $isViewMode ? DB::table('call_logs')->where('lead_id', $id)->get() : [];
             $callLogData = DB::table('call_logs')->where('lead_id', $id)->get();
-        }
+        } 
 
-        if (!$leadData) {
+        if (!$leadData && !(in_array('leads', session('permissions', [])))) {
             return redirect()->route('showLeads');
         }
     
@@ -99,6 +99,13 @@ class LeadController extends Controller
 
 
     public function getLeadData(Request $req){
+        $source_of_information = '';
+        if ($req->input('source_of_information') === 'other') {
+            // Combining 'Other' with user-entered text
+            $source_of_information = 'Other: ' . $req->input('other_source');
+        } else {
+            $source_of_information = $req->input('source_of_information');
+        }
         $leadData = [
             'name' => $req->input('name'),
             'mobile_number_1' => $req->input('mobile_no_1'),
@@ -121,17 +128,11 @@ class LeadController extends Controller
 
     public function addLead(Request $req){
         $leadData = $this->getLeadData($req);
+        $leadData['mature'] = 0;
         try 
-        {   if(DB::table('leads')->where('email', $leadData['email'])->first())
-            {
-                return response()->json(['error' => 'Lead already exists']);
-            }
-            else
-            {
-                $inserted = DB::table('leads')->insert($leadData);
-                return response()->json(['success' => 'Lead added successfully']);
-            }
-            
+        {   
+            $inserted = DB::table('leads')->insert($leadData);
+            return response()->json(['success' => 'Lead added successfully']);
         } 
         catch (\Exception $e) 
         {
@@ -208,4 +209,54 @@ class LeadController extends Controller
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }        
     }
+
+    public function importLeadsCSV(Request $request){
+        if (!$request->hasFile('leadsImportCSV')) {
+            return response()->json(['error' => 'No file was uploaded.'], 400);
+        }
+    
+        $file = $request->file('leadsImportCSV');
+        if (!$file->isValid()) {
+            return response()->json(['error' => 'File is not valid.'], 400);
+        }
+        $file = $request->file('leadsImportCSV');
+        $fileContents = file($file->getPathname());
+        $batchData = [];
+        $isHeader = true; // Variable to check if it's the first row
+    
+        foreach ($fileContents as $line) {
+            if ($isHeader) {
+                // Skip the first row and then set $isHeader to false
+                $isHeader = false;
+                continue;
+            }
+    
+            $data = str_getcsv($line);
+    
+            $batchData[] = [
+                'name' => $data[0],
+                'mobile_number_1' => $data[1],
+                'mobile_number_2' => $data[2],
+                'landline_number_1' => $data[3],
+                'landline_number_2' => $data[4],
+                'email' => $data[5],
+                'source_of_information' => $data[6],
+                'details' => $data[7],
+                'username' => session()->get('username'),
+                'mature' => 0,
+            ];
+        }
+    
+        try{
+            DB::beginTransaction();
+            DB::table('leads')->insert($batchData);
+            DB::commit();
+            return response()->json(['success' => true,'message' => 'CSV file imported successfully.']);
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }  
+    }
+    
 }

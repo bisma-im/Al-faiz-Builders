@@ -42,7 +42,7 @@ class InvoiceController extends Controller
                     ->join('plots_inventory as pl', 'pl.id', '=', 'b.plot_id')
                     ->where('invoice.id', $id)
                     ->select('pr.project_title', 'ph.phase_title', 'pl.plot_no', 
-                    'invoice.id', 'invoice.booking_id', 'invoice.total_amount')
+                    'invoice.*')
                     ->first();
 
                 $invoiceItems = DB::table('invoice_item')
@@ -80,12 +80,72 @@ class InvoiceController extends Controller
         // $invoiceDateTime = Carbon::createFromFormat('Y-m-d H:i', $req->input('invoice_date_time'));
         $invoiceData=[
             'booking_id' => $req->input('booking_id'),
-            'created_at' => now(),
+            'updated_at' => now(),
             'created_by' => session()->get('username'),
             'total_amount' => $req->input('total_amount'),
+            'payment_status' => $req->input('payment_status'),
         ];
 
         return $invoiceData;
+    }
+
+    public function addInstallmentInvoice(Request $req){
+        $installmentId = $req->input('installmentId');
+        $installment = DB::table('installment')->where('id', $installmentId)->first();
+
+        $invoiceData = [
+            'booking_id' => $installment->booking_id,
+            'created_at' => now(),
+            'created_by' => session()->get('username'),
+            'total_amount' => $installment->amount,
+            'payment_status' => 'unpaid',
+            'isInstallment' => 'y',
+        ];
+
+        $customerData = DB::table('customer')
+                    ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+                    ->where('b.id', $invoiceData['booking_id'])
+                    ->select('customer.name', 'customer.id')
+                    ->get();
+
+        try
+        {
+            DB::beginTransaction();
+            $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
+            DB::table('installment')->where('id', $installmentId)->update(['invoice_id' => $invoiceId]);
+            $invoiceData['id'] = $invoiceId;
+
+            $invoiceItems[] = [
+                'invoice_id' => $invoiceId,
+                'description' => 'installment due for booking ' . $invoiceData['booking_id'],
+                'amount' => (float)$invoiceData['total_amount'],
+            ];
+
+            DB::table('invoice_item')->insert($invoiceItems);
+            DB::commit();
+
+            $data = [
+                'invoiceData' => $invoiceData,
+                'customerData' => $customerData,
+                'invoiceItems' => $invoiceItems,
+            ];
+
+            $reportId = Str::random(40);
+            Cache::put($reportId, $data, now()->addMinutes(30));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invoice added successfully. Your invoice ID is ' . $invoiceId,
+                'reportId' => $reportId,
+            ]);
+            
+        }
+        catch (\Exception $e) 
+        {
+            DB::rollBack();
+            return new JsonResponse(['error' => $e->getMessage()], 500);
+        }      
+        
     }
 
     public function addInvoice(Request $req)
@@ -106,6 +166,8 @@ class InvoiceController extends Controller
         }
         // dd(now());
         $invoiceData= $this->getInvoiceData($req);
+        $invoiceData['isInstallment'] = 'n';
+        $invoiceData['created_at'] = now();
         $totalAmount = 0;
         $invoiceItems = [];
         $items = $req->input('kt_ecommerce_add_item_options');
@@ -188,29 +250,72 @@ class InvoiceController extends Controller
         $id = $req->input('id'); // Get the user ID from the request
         $invoiceItems = [];
         $items = $req->input('kt_ecommerce_add_item_options');
-
-        foreach($items as $item)
-        {
+        $isInstallment = $req->input('isInstallment');
+        $customerData = DB::table('customer')
+        ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+        ->where('b.id', $invoiceData['booking_id'])
+        ->select('customer.name', 'customer.id')
+        ->get();
+        if(!$isInstallment){
+            foreach($items as $item)
+            {
+                $invoiceItems[] = [
+                    'invoice_id' => $id,
+                    'description' => $item['description'],
+                    'amount' => (float)$item['amount'],
+                ];         
+            } 
+        } else {
+            $items = DB::table('invoice_item')
+           ->where('invoice_id', $id)
+           ->get();
+           foreach ($items as $item) {
             $invoiceItems[] = [
                 'invoice_id' => $id,
-                'description' => $item['description'],
-                'amount' => (float)$item['amount'],
-            ];         
-        }  
+                'description' => $item->description,
+                'amount' => (float) $item->amount,
+            ];
+        }
+        }
         try {
             DB::beginTransaction();
             $updated = DB::table('invoice')
                 ->where('id', $id)
                 ->update($invoiceData);
 
-            DB::table('invoice_item')
+            if(!$isInstallment){
+                DB::table('invoice_item')
                 ->where('invoice_id', $id)
                 ->delete();  
                 
-            DB::table('invoice_item')->insert($invoiceItems);
+                DB::table('invoice_item')->insert($invoiceItems);
+            } 
+            else {
+                DB::table('installment')->where('invoice_id', $id)
+                ->update([
+                    'installment_status' => $invoiceData['payment_status'], 
+                    'updated_at' => now(),
+                ]);
+            }
 
             DB::commit();
-            return response()->json(['success' => 'User updated successfully']);
+
+            $invoiceData['id'] = $id;
+            $invoiceData['created_at'] = $invoiceData['updated_at'];
+            $data = [
+                'invoiceData' => $invoiceData,
+                'customerData' => $customerData,
+                'invoiceItems' => $invoiceItems,
+            ];
+
+            $reportId = Str::random(40);
+            Cache::put($reportId, $data, now()->addMinutes(30));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invoice updated successfully.',
+                'reportId' => $reportId,
+            ]);
         } 
         catch (\Exception $e) {
             DB::rollBack();

@@ -44,6 +44,11 @@ var KTNewInvoice = (function () {
     function generatePdf(reportId) {
         const pdfUrl = `/generate-invoice-pdf?reportId=${reportId}`;
         window.open(pdfUrl, '_blank');
+
+        // Redirect the current window after a short delay.
+        setTimeout(function() {
+            window.location.href = '/invoices';
+        }, 500);
     } 
     var t, e, r;
     return {
@@ -58,6 +63,21 @@ var KTNewInvoice = (function () {
                 calculateTotal();
             });
 
+            const isInstallment = document.getElementById('isInstallment') ? document.getElementById('isInstallment').value : false;
+
+            if(isInstallment){
+                const inputs = document.querySelectorAll('#kt_ecommerce_add_item_options input');
+                inputs.forEach(function(input) {
+                    input.disabled = true;
+                });
+
+                // Disable all buttons in the repeater
+                const buttons = document.querySelectorAll('#kt_ecommerce_add_item_options button[data-repeater-delete], #kt_ecommerce_add_item_options button[data-repeater-create]');
+                buttons.forEach(function(button) {
+                    button.style.display = 'none';
+                });
+            }
+
             document.querySelector('#kt_ecommerce_add_item_options').addEventListener('click', function(event) {
                 if (event.target.matches('[data-repeater-delete], [data-repeater-delete] *')) {
                     console.log('category deleted');
@@ -69,6 +89,7 @@ var KTNewInvoice = (function () {
             r = FormValidation.formValidation(t, {
                 fields: {
                     booking_id: { validators: { notEmpty: { message: "Booking is required" } } },
+                    payment_status: { validators: { notEmpty: { message: "Payment Status is required" } } },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -130,7 +151,7 @@ var KTNewInvoice = (function () {
                                 if (data.success) {
                                     Swal.fire({
                                         title: 'Success!',
-                                        text: 'Invoice generated successfully',
+                                        text: data.message,
                                         icon: 'success',
                                         confirmButtonText: 'OK'
                                     }).then((result) => {

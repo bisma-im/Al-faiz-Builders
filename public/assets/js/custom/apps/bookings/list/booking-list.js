@@ -52,7 +52,7 @@ var KTCustomersList = (function () {
         }),
             r ? ((o.innerHTML = l), t.classList.add("d-none"), e.classList.remove("d-none")) : (t.classList.remove("d-none"), e.classList.add("d-none"));
     };
-    function loadPhases(projectId){
+    function loadPhases(projectId, preserveSelected = false){
         $.ajax({
             url: '/get-phases-for-booking',
             type: "POST",
@@ -62,10 +62,10 @@ var KTCustomersList = (function () {
             },
             dataType: 'json',
             success: function(result){
-                console.log(result);
+                
                 var $selectedPhase = $('#selectedPhase');
-                var selectedPhaseId = $selectedPhase.data('selected-phase-id');
-    
+                var selectedPhaseId = preserveSelected ? $selectedPhase.val() : $selectedPhase.data('selected-phase-id');
+                console.log(selectedPhaseId);
                 // Clear existing options except the first one
                 $selectedPhase.find('option:not(:first)').remove();
     
@@ -84,9 +84,12 @@ var KTCustomersList = (function () {
                     value: "all",
                     text: "All"
                 });
-                $selectedPhase.append(option);
-                var firstPhaseId = result.length > 0 ? result[0].id : null;
-                $selectedPhase.val(firstPhaseId).trigger('change');
+                if (result.length === 0 || !result.some(phase => phase.id === selectedPhaseId)) {
+                    $selectedPhase.append('<option value="all">All</option>');
+                    $selectedPhase.val("all").trigger('change');
+                } else {
+                    $selectedPhase.val(selectedPhaseId).trigger('change'); // Ensure selected value is set correctly
+                }
             }
         });
     }
@@ -97,7 +100,7 @@ var KTCustomersList = (function () {
             $('#selectedProject').on('change', function(e){
                 // $('#selectedPhase').val('').trigger('change');
                 var projectId = e.target.value;
-                loadPhases(projectId);
+                loadPhases(projectId, true);
                 console.log($('#selectedPhase').val());
             });
 
@@ -134,6 +137,7 @@ var KTCustomersList = (function () {
                     var status = $('#selectedStatus').val();
                 
                     $.ajax({
+                        
                         url: status === 'active' ? '/active-bookings' : '/cancelled-bookings',
                         type: 'GET',
                         data: {

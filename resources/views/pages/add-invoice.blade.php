@@ -37,6 +37,7 @@
                             <div class="card-body border-top p-9">
                                 @if (isset($invoiceData) && $invoiceData->id)
                                     <input type="hidden" id="id" name="id" value="{{ $invoiceData->id }}">
+                                    <input type="hidden" id="isInstallment" name="isInstallment" value="{{ $invoiceData->isInstallment === 'y' ?  true: false}}">
                                 @endif
                                 {{-- <input type="hidden" id="date_and_time" name="date_and_time" value="{{ $invoiceData->formattedDateTime ?? '' }}"/> --}}
                                 <!--begin::Input group-->
@@ -99,7 +100,7 @@
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-3 col-form-label fw-semibold fs-6 mb-6">
+                                    <label class="required col-lg-3 col-form-label fw-semibold fs-6 mb-6">
                                         <span>Invoice Items</span>
                                     </label>
                                     <!--end::Label-->
@@ -150,6 +151,22 @@
                                     <div class="col-lg-9 fv-row">
                                         <input type="hidden" id="totalAmount" name="total_amount" value="{{ isset($invoiceData) ? $invoiceData->total_amount : '' }}"/>
                                         <input type="number" step="any" id="total" name="total" class="form-control form-control-lg" placeholder="Total Amount" disabled value="{{ isset($invoiceData) ? $invoiceData->total_amount : '' }}"/>
+                                    </div>    
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group-->
+                                <div class="row mb-6">
+                                    <!--begin::Label-->
+                                    <label class="required col-lg-3 col-form-label fw-semibold fs-6">Payment Status</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-9 fv-row">
+                                        <input class="mt-3 form-check-input" type="radio" name="payment_status" id="paid" value="paid" {{ isset($invoiceData) && $invoiceData->payment_status === 'paid' ? 'checked' : '' }}/>
+                                        <label for="paid" class="mt-3 pe-5 ps-1 fw-semibold fs-6">Paid</label>
+                                        <input class="mt-3 form-check-input" type="radio" name="payment_status" id="unpaid" value="unpaid" {{ isset($invoiceData) && $invoiceData->payment_status === 'unpaid' ? 'checked' : '' }}/>
+                                        <label for="unpaid" class="mt-3 pe-5 ps-1 fw-semibold fs-6">Unpaid</label>
+                                        <input class="mt-3 form-check-input" type="radio" name="payment_status" id="cancelled" value="cancelled" {{ isset($invoiceData) && $invoiceData->payment_status === 'cancelled' ? 'checked' : '' }}/>
+                                        <label for="cancelled" class="mt-3 pe-5 ps-1 fw-semibold fs-6">Cancelled</label>
                                     </div>    
                                 </div>
                                 <!--end::Input group-->

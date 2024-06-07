@@ -155,6 +155,25 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                            <!--begin::Input group Project-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label--> 
+                                                <label class="col-lg-3 col-form-label fw-semibold fs-6">
+                                                    <span class="required">Registration Number</span>
+                                                    <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate role">
+                                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                    </span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-9 fv-row">
+                                                    <input type="text" id="file_reg_number" name="file_reg_number" class="form-control form-control-lg form-control-solid" value="{{ $bookingData->file_reg_number ?? '' }}" placeholder="Registration Number"/>
+                                                </div>
+                                            </div>
                                             <!--end::Input group Project-->
                                         </div>
                                     </div>
@@ -542,6 +561,7 @@
                                                         <th class="min-w-125px">Due Date</th>
                                                         <th class="min-w-125px">Intimation Date</th>
                                                         <th class="min-w-125px">Status</th>
+                                                        <th class="min-w-125px">Invoice</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="fw-semibold text-gray-600">

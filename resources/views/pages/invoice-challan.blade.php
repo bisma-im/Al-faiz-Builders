@@ -97,7 +97,7 @@
                     <p class="right">{{ $type }}</p>
                 </div>
                 <div class="details"> 
-                    <p>Invoice No: <span class="under-line">{{ 12 }}</span></p>
+                    <p>Invoice No: <span class="under-line">{{ $invoiceData['id'] }}</span></p>
                     <p class="right">Bill ID: <span class="under-line">????????</span></p>
                 </div>
                 <h5>Credit to Al Faiz, Main Collection A/c at State Life Cash Management Branch 0011-12345678-03</h5>

@@ -2,7 +2,7 @@
 
 var KTAccountSettingsProfileDetails = (function () {
     var form, validator, submitButton;
-
+    var otherInput = document.getElementById('otherSource');
     function matureLeadExists(){
         if ($('#mature').is(':checked')) {
             $('#transferTo').show();
@@ -15,6 +15,11 @@ var KTAccountSettingsProfileDetails = (function () {
         init: function () {
             form = document.getElementById("kt_leads_form");
             submitButton = form.querySelector("#kt_leads_submit");
+
+            $('#sourceSelect').on('change', function(e) {
+                otherInput.style.display = e.target.value === 'other' ? 'block' : 'none';
+            });
+            otherInput.style.display = $('#sourceSelect').val() === 'other' ? 'block' : 'none';
 
             if (form) {
                 validator = FormValidation.formValidation(form, {

@@ -5,6 +5,7 @@ var KTNewBooking = (function () {
     var numberOfInstallmentsInput = document.getElementById('num_of_installments');
     var discountAmountInput = document.getElementById('discount_amount');
     var discountPercentageInput = document.getElementById('discount_percentage');
+    var fileRegNumber = document.getElementById('file_reg_number');
 
     function updatePaymentPlanDisplay() {
         var paymentPlan = $('#paymentPlan').val();
@@ -60,7 +61,7 @@ var KTNewBooking = (function () {
 
         let adjustedInstallmentsCount = Math.ceil(discountAmount / installmentAmount);
         let lastInstallmentsAdjustment = Array(numberOfInstallments).fill(0);
-
+        
         for (let i = 0; i < adjustedInstallmentsCount; i++) {
             let index = numberOfInstallments - 1 - i; // Start adjusting from the last installment backwards
             let adjustment = (discountAmount > installmentAmount) ? installmentAmount : discountAmount;
@@ -68,12 +69,22 @@ var KTNewBooking = (function () {
             discountAmount -= adjustment;
         }
 
+        let initialBookingDate = new Date(bookingDate);
+
         for (let i = 0; i < numberOfInstallments; i++) {
-            let dueDate = new Date(bookingDate);
-            dueDate.setMonth(dueDate.getMonth() + i); // Increment month by i
+            let dueDate = new Date(initialBookingDate);
+
+            if (i === 0) {
+                dueDate.setDate(dueDate.getDate() + 7); // First installment one week later
+            } else {
+                dueDate.setMonth(dueDate.getMonth() + i, 15); // Subsequent installments on the 15th of each month
+            }
 
             let intimationDate = new Date(dueDate.getTime());
-            intimationDate.setDate(dueDate.getDate() + 5);
+            intimationDate.setDate(dueDate.getDate() - 5);
+
+            let formattedDueDate = formatDate(dueDate); // Format due date
+            let formattedIntimationDate = formatDate(intimationDate);
 
             let installmentValue = i === 0 ? partPayment - lastInstallmentsAdjustment[i] : installmentAmount - lastInstallmentsAdjustment[i];
             if (installmentValue <= 0) {
@@ -83,14 +94,25 @@ var KTNewBooking = (function () {
             let row = `
                 <tr>
                     <td><input class="form-control form-control-lg form-control-solid installment-input" type="number" name="amounts[]" value="${installmentValue.toFixed(2)}" data-index="${i}"></td>
-                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}" readonly></td>
-                    <td><input class="form-control form-control-lg form-control-solid" type="date" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}" readonly></td>
+                    <td>
+                        <input type="hidden" name="due_dates[]" value="${dueDate.toISOString().split('T')[0]}">
+                        <span class="date-display">${formattedDueDate}</span>
+                    </td>
+                    <td>
+                        <input type="hidden" name="intimation_dates[]" value="${intimationDate.toISOString().split('T')[0]}">
+                        <span class="date-display">${formattedIntimationDate}</span>
+                    </td>
                     <td><input class="form-control form-control-lg form-control-solid" type="text" name="statuses[]" value="pending" readonly></td>
                 </tr>
             `;
             tableBody.append(row);
         }
         attachEventListeners();
+    }
+
+    function formatDate(date) {
+        const options = { day: 'numeric', month: 'short', year: 'numeric' };
+        return date.toLocaleDateString('en-GB', options);  // Adjust the locale as needed
     }
 
     function handleInstallments(){
@@ -121,7 +143,8 @@ var KTNewBooking = (function () {
             }
 
             document.getElementById('installment_amount').value = installmentAmount;
-            generateInstallmentTable(partPaymentInput, numberOfInstallments, installmentAmount, new Date());
+            var selectedBookingDate = document.getElementById('kt_ecommerce_booking_datepicker').value;
+            generateInstallmentTable(partPaymentInput, numberOfInstallments, installmentAmount, selectedBookingDate);
         }
     }
 
@@ -175,13 +198,22 @@ var KTNewBooking = (function () {
         let i = 0;
         installments.forEach(installment => {
             const isEditable = installment.installment_status === 'pending' || installment.installment_status === 'unpaid';
+            let formattedDueDate = formatDate(new Date(installment.due_date)); // Format the due date
+            let formattedIntimationDate = formatDate(new Date(installment.intimation_date)); // Format the intimation date
             let row = `
                 <tr>
                     <input type="hidden" name="installment_ids[]" value="${installment.id || ''}">
                     <td><input type="number" name="amounts[]" value="${Number(installment.amount).toFixed(2)}" class="form-control ${isEditable ? 'installment-input' : ''}" ${isEditable ? '' : 'readonly disabled'} data-index="${i}"></td>
-                    <td><input type="date" name="due_dates[]" value="${installment.due_date}" class="form-control" readonly disabled></td>
-                    <td><input type="date" name="intimation_dates[]" value="${installment.intimation_date}" class="form-control" readonly disabled></td>
+                    <td>
+                        <input type="hidden" name="due_dates[]" value="${installment.due_date}">
+                        <span class="date-display">${formattedDueDate}</span>
+                    </td>
+                    <td>
+                        <input type="hidden" name="intimation_dates[]" value="${installment.intimation_date}">
+                        <span class="date-display">${formattedIntimationDate}</span>
+                    </td>
                     <td><input type="text" name="statuses[]" value="${installment.installment_status}" class="form-control" readonly disabled></td>
+                    <td><a href="#" data-installmentId = "${installment.id || ''}" class="btn btn-light">Generate Invoice</a></td>
                 </tr>
             `;
             tableBody.append(row);
@@ -190,7 +222,44 @@ var KTNewBooking = (function () {
 
         attachEventListeners();
     }
-    
+
+    function generateInvoicePdf(reportId) {
+        const pdfUrl = `/generate-invoice-pdf?reportId=${reportId}`;
+        window.open(pdfUrl, '_blank');
+    }
+
+    function generateInvoice(installmentId){
+        console.log(installmentId);
+        // Example: Suppose you need to send this ID to a server
+        $.ajax({
+            url: '/installment-invoice',  // Your server endpoint to handle the invoice generation
+            type: 'POST',
+            data: { 
+                installmentId: installmentId,
+                _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            },
+            success: function(response) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Invoice generated successfully',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        generateInvoicePdf(response.reportId);
+                    }
+                });
+            },
+            error: function() {
+                Swal.fire({
+                    title: 'Error!',
+                    text: response.message,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
     function fetchInstallments(bookingId) {
         $.ajax({
             url: `/get-installments/${bookingId}`,
@@ -309,6 +378,13 @@ var KTNewBooking = (function () {
                 defaultDate: bookingDate ? bookingDate : new Date(),
                 dateFormat: "Y-m-d",
             });
+            $('#installmentTable').on('click', 'a.btn-light', function(event) {
+                event.preventDefault();  // Prevent the default anchor click behavior
+                var installmentId = this.getAttribute('data-installmentId');  // Get the installment ID from the data attribute
+                generateInvoice(installmentId);
+                // Now you can use the installmentId to do whatever you need, like making an AJAX call
+                console.log('Installment ID:', installmentId);
+            });
             t = document.querySelector("#kt_new_booking_form");
             e = document.querySelector("#kt_new_booking_submit");// Ensure this ID matches your plot dropdown ID
             isLocked = document.getElementById('isLocked').value; 
@@ -334,6 +410,7 @@ var KTNewBooking = (function () {
                     total_amount: { validators: { notEmpty: { message: "Total Amount is required" } } },
                     token_amount: { validators: { notEmpty: { message: "Token Amount is required" } } },
                     advance_amount: { validators: { notEmpty: { message: "Advance Amount is required" } } },
+                    file_reg_number: { validators: { notEmpty: { message: "File Registration No. is required" } } },
                     discount_percentage: {
                         validators: {
                             greaterThan: {message: 'The value must be greater than or equal to 0', min: 0},
@@ -349,7 +426,7 @@ var KTNewBooking = (function () {
             });
             
             $(document).ready(function(){
-                var selectedPlot = parseInt($('#bookingForm').data('selected-plot'), 10);
+                // var selectedPlot = parseInt($('#bookingForm').data('selected-plot'), 10);
                 var selectedPhase = $('#bookingForm').data('selected-phase');
                 $('input[name="customer_exists"]').on('change', customerExists);
                 updatePaymentPlanDisplay();
@@ -362,14 +439,41 @@ var KTNewBooking = (function () {
                         console.log('no customer');
                     }
                 });
+                $('#plotDropdown').on('change', function(e){
+                    var selectedPlotId = e.target.value;
+                    if(selectedPlotId){
+                        $.ajax({
+                            url: `/get-registration-number/${selectedPlotId}`,  // Your server endpoint to handle the invoice generation
+                            type: 'GET',
+                            success: function(response) {
+                                if (response.success) {
+                                    if (response.data !== null && response.data !== '') {
+                                        fileRegNumber.value = response.data;
+                                        fileRegNumber.setAttribute('readonly', true);
+                                    } else {
+                                        fileRegNumber.value = '';
+                                        fileRegNumber.removeAttribute('readonly');
+                                    }
+                                } else {
+                                    console.error('Failed to fetch registration number.');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error fetching registration number:', error);
+                            }
+                        });
+                    }
+                });
                 $('#projectDropdown').on('change', function(e){
                     $('#phaseDropdown').val('').trigger('change');
-                    $('#plotDropdown').val('').trigger('change');
+                    // $('#plotDropdown').val('').trigger('change');
+                    $('#plotDropdown').val('');
                     var projectId = e.target.value;
                     loadPhases(projectId);
                 });
                 $('#phaseDropdown').on('change', function(e){
-                    $('#plotDropdown').val('').trigger('change');
+                    // $('#plotDropdown').val('').trigger('change');
+                    $('#plotDropdown').val('');
                     var phaseId = e.target.value;
                     loadPlots(phaseId);
                 });

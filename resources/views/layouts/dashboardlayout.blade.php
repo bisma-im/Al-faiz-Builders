@@ -4653,7 +4653,7 @@ License: For each use you must have a valid license purchased only from above li
 										</div>
 										<!--end::Menu item-->
 										<!--begin::Menu item-->
-										<div class="menu-item px-5">
+										{{--<div class="menu-item px-5">
 											<a href="../../demo1/dist/apps/projects/list.html" class="menu-link px-5">
 												<span class="menu-text">My Projects</span>
 												<span class="menu-badge">
@@ -4773,7 +4773,7 @@ License: For each use you must have a valid license purchased only from above li
 												<!--end::Menu item-->
 											</div>
 											<!--end::Menu sub-->
-										</div>
+										</div>--}}
 										<!--end::Menu item-->
 										<!--begin::Menu item-->
 										<div class="menu-item px-5 my-1">

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
-    public function showBookings(Request $req)
+    public function showBookings(Request $req, $phaseId = null, $projectId = null)
     {
         $sessionUsername = $req->session()->get('username');
         if(in_array('booking', session('permissions', [])))
@@ -23,10 +23,17 @@ class BookingController extends Controller
             $phases = DB::table('phase')
                 ->select('id', 'project_id', 'phase_title')
                 ->get();
-
-            $selectedProjectId = $req->input('selectedProject') ? : $projects->first()->id;
-            $selectedPhaseId = $req->input('selectedPhase') ? : $phases->where('project_id', $selectedProjectId)->first()->id;
             
+            if($phaseId && $projectId){
+                $selectedPhaseId = $phaseId;
+                $selectedProjectId = $projectId;
+            }
+            else {
+                $selectedProjectId = $req->input('selectedProject') ? : $projects->first()->id;
+                $selectedPhaseId = $req->input('selectedPhase') ? : $phases->where('project_id', $selectedProjectId)->first()->id;
+            }
+            
+            // dd($phaseId, $projectId, $selectedProjectId, $selectedPhaseId);
             $routeName = $req->route()->getName();
             $selectedStatus = $routeName == 'showCancelledBookings' ? 'cancelled' : 'active';
 
@@ -49,24 +56,28 @@ class BookingController extends Controller
             )
             ->where('b.username', $sessionUsername)
             ->where('b.status', $selectedStatus);
-
+            // dd($phaseId, $projectId);
             // Apply project filter only if not 'all'
             if ($selectedProjectId !== 'all') {
                 $query->where('b.project_id', $selectedProjectId);
             }
-
+            // dd($phaseId, $projectId, $selectedProjectId, $selectedPhaseId, $projects, $phases);
             // Apply phase filter only if not 'all'
             if ($selectedPhaseId !== 'all') {
                 $query->where('ph.id', $selectedPhaseId);
             }
-
-           $bookingData = $query->groupBy('b.id', 'c.name','c.cnic_number', 'c.mobile_number_1', 'pr.project_title', 'pl.plot_no', 'b.total_amount')->get();
+            $bookingData = $query->groupBy('b.id', 'c.name','c.cnic_number', 'c.mobile_number_1', 'pr.project_title', 'pl.plot_no', 'b.total_amount')->get();
             // dd($bookingData);
-            if($req->ajax()) {
+            $fromHref = $req->query('fromHref', false);
+            if($req->ajax() && !$fromHref) {
                 // return view('partials.booking_row', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'))->render();
                 // response()->json(['success' => 'booking added successfully', 'data' => $bookingData]);
+                // dd('this is ajax call');
                 return response()->json($bookingData);
-            } else {
+                
+            } 
+            else {
+                // dd($bookingData);
                 return view('pages.bookings', compact('bookingData', 'projects', 'phases', 'selectedProjectId', 'selectedPhaseId', 'selectedStatus'));
             }
         }
@@ -103,7 +114,7 @@ class BookingController extends Controller
                     'c.next_of_kin_name', 'c.next_of_kin_relation', 'c.next_of_kin_cnic', 'c.next_of_kin_address', 'c.next_of_kin_mobile_number_1',
                     'ph.completion_date', 'ph.phase_title',
                     'pr.project_title',
-                    'pl.plot_no'
+                    'pl.plot_no', 'pl.file_reg_number'
                 )
                 ->where('booking.id', $id)
                 ->first();
@@ -305,6 +316,17 @@ class BookingController extends Controller
         return $installmentsData;
             
     }
+
+    public function getRegistrationNumber($plotId){
+        $plot = DB::table('plots_inventory')->where('id', $plotId)->first();
+        $regNumber = $plot ? $plot->file_reg_number : null;  // This will be null if no plot or no regNumber
+
+        return response()->json([
+            'success' => $plot !== null,
+            'data' => $regNumber,
+        ]);
+    }
+
     public function getInstallments($bookingId) {
         $installments = DB::table('installment')
             ->where('booking_id', $bookingId)
@@ -388,6 +410,7 @@ class BookingController extends Controller
     {
         $customerData =$this->getCustomerData($req);
         $bookingData = $this->getBookingData($req);
+        $regNumber = $req->input('file_reg_number');
         $bookingData['status'] = 'active';
         $customerId= null;
         DB::beginTransaction();
@@ -417,7 +440,7 @@ class BookingController extends Controller
                 DB::table('plots_inventory')
                 ->where('id', $bookingData['plot_id'])
                 ->limit(1)
-                ->update(array('isBooked' => 'y'));
+                ->update(array('isBooked' => 'y', 'file_reg_number' => $regNumber));
                 DB::commit();
                 return response()->json(['success' => 'booking added successfully']);
             }

@@ -113,7 +113,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="mobile_no_2" class="form-control form-control-lg form-control-solid" placeholder="Mobile Number 2" value="{{ $leadData->mobile_no_2 ?? '' }}" {{ $isViewMode ? 'readonly' : '' }}/>
+                                        <input type="text" name="mobile_no_2" class="form-control form-control-lg form-control-solid" placeholder="Mobile Number 2" value="{{ $leadData->mobile_number_2 ?? '' }}" {{ $isViewMode ? 'readonly' : '' }}/>
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -125,7 +125,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="landline_no_1" class="form-control form-control-lg form-control-solid" placeholder="Landline Number 1" value="{{ $leadData->landline_no_1 ?? '' }}" {{ $isViewMode ? 'readonly' : '' }}/>
+                                        <input type="text" name="landline_no_1" class="form-control form-control-lg form-control-solid" placeholder="Landline Number 1" value="{{ $leadData->landline_number_1 ?? '' }}" {{ $isViewMode ? 'readonly' : '' }}/>
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -137,7 +137,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <input type="text" name="landline_no_2" class="form-control form-control-lg form-control-solid" placeholder="Landline Number 2" value="{{ $leadData->landline_no_2 ?? '' }}" {{ $isViewMode ? 'readonly' : '' }}/>
+                                        <input type="text" name="landline_no_2" class="form-control form-control-lg form-control-solid" placeholder="Landline Number 2" value="{{ $leadData->landline_number_2 ?? '' }}" {{ $isViewMode ? 'readonly' : '' }}/>
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -170,7 +170,7 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-8 fv-row">
-                                        <select name="source_of_information" aria-label="Select a Source of Information" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select a Source of Information..." {{ $isViewMode ? 'disabled' : '' }}>
+                                        <select id="sourceSelect" name="source_of_information" aria-label="Select a Source of Information" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select a Source of Information..." {{ $isViewMode ? 'disabled' : '' }}>
                                             <option value="">Select a Source of Information...</option>
                                             <option value="brochure" {{ (isset($leadData) && $leadData->source_of_information === 'brochure') ? 'selected' : '' }}>Brochure</option>
                                             <option value="pamphlet" {{ (isset($leadData) && $leadData->source_of_information === 'pamphlet') ? 'selected' : '' }}>Pamphlet</option>
@@ -178,10 +178,23 @@
                                             <option value="tv" {{ (isset($leadData) && $leadData->source_of_information === 'tv') ? 'selected' : '' }}>TV</option>
                                             <option value="internet" {{ (isset($leadData) && $leadData->source_of_information === 'internet') ? 'selected' : '' }}>Internet</option>
                                             <option value="phone_call" {{ (isset($leadData) && $leadData->source_of_information === 'phone_call') ? 'selected' : '' }}>Phone Call</option>
+                                            <option value="other" {{ (isset($leadData) && strpos($leadData->source_of_information, 'Other:') === 0) ? 'selected' : '' }}>Other</option>
                                         </select>
-                                    </div>                                 
+                                    </div>                   
                                     <!--end::Col-->
                                 </div>
+                                
+                                <div class="row mb-6" id="otherSource" style="display: none;">
+                                    <div class="col-lg-12">
+                                        <div class="form-group d-flex align-items-center">
+                                            <label class="col-lg-4 col-form-label fw-semibold fs-6 m-0">Other</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" name="other_source" class="form-control form-control-lg form-control-solid" placeholder="Please specify" value="{{ str_replace('Other: ', '', $leadData->source_of_information ?? '') }}" {{ $isViewMode ? 'readonly' : '' }}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <!--end::Input group-->
                                 <!--begin::Input group Full Name-->
                                 <div class="row mb-6">
@@ -241,7 +254,7 @@
                     <!--end::Content-->
                 </div>
                 <!--end::Basic info-->
-                {{-- @if($isViewMode) --}}
+                @if($isViewMode)
                 <!--begin::Call Logs Table-->
                 <div class="card mb-5 mb-xl-10">
                     <!--begin::Card header-->
@@ -539,7 +552,7 @@
                     <!--end::Content-->
                 </div>
                 <!--end::Call Logs Table-->
-                {{-- @endif --}}
+                @endif
                 <!--begin::Delete Account-->
                 <div class="card">
                     <!--begin::Card header-->

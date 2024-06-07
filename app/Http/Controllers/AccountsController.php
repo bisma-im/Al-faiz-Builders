@@ -65,6 +65,7 @@ class AccountsController extends Controller
         ];
         return $accountData;
     }
+    
     public function addAccount(Request $req){
         $accountData = $this->getAccountData($req);
         try 

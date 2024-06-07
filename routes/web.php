@@ -87,6 +87,7 @@ Route::get('/leads', [LeadController::class, 'showLeads'])->name('showLeads')->m
 Route::get('/leads/{id}', [LeadController::class, 'showLeadForm'])->name('updateLeadForm')->middleware('admin.auth');
 Route::get('/leads/view/{id}', [LeadController::class, 'showLeadForm'])->name('viewLead')->middleware('admin.auth');
 Route::post('/add-call-log', [LeadController::class, 'addCallLog'])->name('addCallLog')->middleware('admin.auth');
+Route::post('/import-leads-csv', [LeadController::class, 'importLeadsCSV'])->name('importLeadsCSV')->middleware('admin.auth');
 
 Route::get('/add-invoice-form', [InvoiceController::class, 'showAddInvoiceForm'])->name('addInvoiceForm')->middleware('admin.auth');
 Route::post('/get-plots', [InvoiceController::class, 'getPlotsForProject'])->middleware('admin.auth');
@@ -97,9 +98,12 @@ Route::get('/invoices/{id}', [InvoiceController::class, 'showAddInvoiceForm'])->
 Route::post('/update-invoice', [InvoiceController::class, 'updateInvoice'])->name('updateInvoice')->middleware('admin.auth');
 Route::get('/generate-invoice-pdf', [InvoiceController::class, 'generateInvoicePdf'])->name('generateInvoicePdf')->middleware('admin.auth');
 
+Route::post('/installment-invoice', [InvoiceController::class, 'addInstallmentInvoice'])->name('addInstallmentInvoice')->middleware('admin.auth');
+
+
 Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm')->middleware('admin.auth');
 Route::post('/add-booking', [BookingController::class, 'addBooking'])->name('addBooking')->middleware('admin.auth');
-Route::get('/active-bookings', [BookingController::class, 'showBookings'])->name('showActiveBookings')->middleware('admin.auth');
+Route::get('/active-bookings/{phaseId?}/{projectId?}', [BookingController::class, 'showBookings'])->name('showActiveBookings')->middleware('admin.auth');
 Route::get('/cancelled-bookings', [BookingController::class, 'showBookings'])->name('showCancelledBookings')->middleware('admin.auth');
 Route::get('/bookings/{id}', [BookingController::class, 'showBookingForm'])->name('updateBookingForm')->middleware('admin.auth');
 Route::post('/update-booking', [BookingController::class, 'updateBooking'])->name('updateBooking')->middleware('admin.auth');
@@ -108,11 +112,10 @@ Route::post('/get-plots-for-booking', [BookingController::class, 'getPlotsForBoo
 Route::post('/get-phases-for-booking', [BookingController::class, 'getPhasesForBooking'])->middleware('admin.auth');
 Route::get('/get-installments/{bookingId}', [BookingController::class, 'getInstallments'])->middleware('admin.auth');
 Route::get('/get-customer/{customerId}', [BookingController::class, 'getCustomer'])->middleware('admin.auth');
-
+Route::get('/get-registration-number/{plotId}', [BookingController::class, 'getRegistrationNumber'])->middleware('admin.auth');
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount')->middleware('admin.auth');
 Route::get('/accounts', [AccountsController::class, 'showAccounts'])->name('showAccounts')->middleware('admin.auth');
 Route::get('/add-account-form', [AccountsController::class, 'showAddAccountForm'])->name('addAccountForm')->middleware('admin.auth');
-
 Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments')->middleware('admin.auth');
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument')->middleware('admin.auth');

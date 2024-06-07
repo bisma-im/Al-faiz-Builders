@@ -155,88 +155,15 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Toolbar-->
-                            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                                <!--begin::Filter-->
-                                <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                <i class="ki-duotone ki-filter fs-2">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>Filter</button>
-                                <!--begin::Menu 1-->
-                                <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter">
-                                    <!--begin::Header-->
-                                    <div class="px-7 py-5">
-                                        <div class="fs-4 text-dark fw-bold">Filter Options</div>
-                                    </div>
-                                    <!--end::Header-->
-                                    <!--begin::Separator-->
-                                    <div class="separator border-gray-200"></div>
-                                    <!--end::Separator-->
-                                    <!--begin::Content-->
-                                    <div class="px-7 py-5">
-                                        <!--begin::Input group-->
-                                        <div class="mb-10">
-                                            <!--begin::Label-->
-                                            <label class="form-label fs-5 fw-semibold mb-3">Month:</label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <select class="form-select form-select-solid fw-bold" data-kt-select2="true" data-placeholder="Select option" data-allow-clear="true" data-kt-customer-table-filter="month" data-dropdown-parent="#kt-toolbar-filter">
-                                                <option></option>
-                                                <option value="aug">August</option>
-                                                <option value="sep">September</option>
-                                                <option value="oct">October</option>
-                                                <option value="nov">November</option>
-                                                <option value="dec">December</option>
-                                            </select>
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="mb-10">
-                                            <!--begin::Label-->
-                                            <label class="form-label fs-5 fw-semibold mb-3">Payment Type:</label>
-                                            <!--end::Label-->
-                                            <!--begin::Options-->
-                                            <div class="d-flex flex-column flex-wrap fw-semibold" data-kt-customer-table-filter="payment_type">
-                                                <!--begin::Option-->
-                                                <label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
-                                                    <input class="form-check-input" type="radio" name="payment_type" value="all" checked="checked" />
-                                                    <span class="form-check-label text-gray-600">All</span>
-                                                </label>
-                                                <!--end::Option-->
-                                                <!--begin::Option-->
-                                                <label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5">
-                                                    <input class="form-check-input" type="radio" name="payment_type" value="visa" />
-                                                    <span class="form-check-label text-gray-600">Visa</span>
-                                                </label>
-                                                <!--end::Option-->
-                                                <!--begin::Option-->
-                                                <label class="form-check form-check-sm form-check-custom form-check-solid mb-3">
-                                                    <input class="form-check-input" type="radio" name="payment_type" value="mastercard" />
-                                                    <span class="form-check-label text-gray-600">Mastercard</span>
-                                                </label>
-                                                <!--end::Option-->
-                                                <!--begin::Option-->
-                                                <label class="form-check form-check-sm form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="radio" name="payment_type" value="american_express" />
-                                                    <span class="form-check-label text-gray-600">American Express</span>
-                                                </label>
-                                                <!--end::Option-->
-                                            </div>
-                                            <!--end::Options-->
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Actions-->
-                                        <div class="d-flex justify-content-end">
-                                            <button type="reset" class="btn btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true" data-kt-customer-table-filter="reset">Reset</button>
-                                            <button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
-                                        </div>
-                                        <!--end::Actions-->
-                                    </div>
-                                    <!--end::Content-->
-                                </div>
-                                <!--end::Menu 1-->
-                                <!--end::Filter-->
+                            
+                            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base" data-bs-toggle="modal" data-bs-target="#import_csv" >
+                                <!--begin::Import-->
+                                <button type="button" class="btn btn-light-primary me-3">
+                                    <i class="ki-duotone ki-exit-down fs-2">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                    </i>Import</button>
+                                <!--end::Import-->
                                 <!--begin::Export-->
                                 <button type="button" class="btn btn-light-primary me-3" data-bs-toggle="modal" data-bs-target="#kt_customers_export_modal">
                                 <i class="ki-duotone ki-exit-up fs-2">
@@ -325,6 +252,62 @@
                     <!--end::Card body-->
                 </div>
                 <!--end::Card-->
+                <!--begin::Modal - Import CSV-->
+                <div class="modal fade" id="import_csv" tabindex="-1" aria-hidden="true">
+                    <!--begin::Modal dialog-->
+                    <div class="modal-dialog modal-dialog-centered mw-650px">
+                        <!--begin::Modal content-->
+                        <div class="modal-content">
+                            <!--begin::Modal header-->
+                            <div class="modal-header">
+                                <!--begin::Modal title-->
+                                <h2 class="fw-bold">Import Leads</h2>
+                                <!--end::Modal title-->
+                                <!--begin::Close-->
+                                <div id="import_csv_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                                    <i class="ki-duotone ki-cross fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+                            <!--end::Modal header-->
+                            <!--begin::Modal body-->
+                            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                                <!--begin::Form-->
+                                <form id="import_csv_form" class="form" action="{{ route('importLeadsCSV') }}" enctype="multipart/form-data" method="POST">
+                                    @csrf
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-10">
+                                        <!--begin::Label-->
+                                        <label class="fs-5 fw-semibold form-label mb-5">Select CSV File</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input required type="file" name="leadsImportCSV" class="form-control form-control-lg custom-file-input" id="leadsImportCSV">
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Actions-->
+                                    <div class="text-center">
+                                        <button type="reset" id="import_csv_cancel" class="btn btn-light me-3">Discard</button>
+                                        <button type="submit" id="import_csv_submit" class="btn btn-primary">
+                                            <span class="indicator-label">Submit</span>
+                                            <span class="indicator-progress">Please wait...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        </button>
+                                    </div>
+                                    <!--end::Actions-->
+                                </form>
+                                <!--end::Form-->
+                            </div>
+                            <!--end::Modal body-->
+                        </div>
+                        <!--end::Modal content-->
+                    </div>
+                    <!--end::Modal dialog-->
+                </div>
+                <!--end::Modal - Import CSV-->
                 <!--begin::Modal - Adjust Balance-->
                 <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->
@@ -446,7 +429,8 @@
 	<!--end::Vendors Javascript-->
 	<!--begin::Custom Javascript(used for this page only)-->
     <script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
-    <script src="{{ URL::asset('assets/js/custom/apps/customers/list/list.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/custom/account/settings/leads-list.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/custom/account/settings/import-leads.js') }}"></script>
 	<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
 	<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
     <script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
