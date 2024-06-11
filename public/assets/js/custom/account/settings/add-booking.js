@@ -1,7 +1,8 @@
 "use strict";
 
 var KTNewBooking = (function () {
-    var isLocked, t, e, r, installmentAmount, numberOfInstallments, totalAmount, bookingId, customerImageWrapper, partPaymentInput;
+    var isLocked, t, e, r, installmentAmount, numberOfInstallments, totalAmount, totalAmountforInstallment, bookingId, customerImageWrapper, partPaymentInput; 
+    var totalAmountAfterAdvAndToken = document.getElementById('remaining_amount');
     var numberOfInstallmentsInput = document.getElementById('num_of_installments');
     var discountAmountInput = document.getElementById('discount_amount');
     var discountPercentageInput = document.getElementById('discount_percentage');
@@ -18,10 +19,10 @@ var KTNewBooking = (function () {
         $('#discountPlan').hide();
         if (paymentPlan === 'full_cash') {
             $('#installmentTableCard').show();
-            totalAmount = parseInt(document.getElementById('total_amount').value, 10);
+            totalAmountforInstallment = parseInt(totalAmountAfterAdvAndToken.value, 10);
             numberOfInstallmentsInput.value = '1';
-            document.getElementById('installment_amount').value = (totalAmount/1);
-            generateInstallmentTable(null, 1, totalAmount, new Date());
+            document.getElementById('installment_amount').value = (totalAmountforInstallment/1);
+            generateInstallmentTable(null, 1, totalAmountforInstallment, new Date());
         } else if (paymentPlan === 'installment') {
             $('#numOfInstallmentsInput').show(); 
             $('#installmentAmountInput').show(); 
@@ -133,8 +134,8 @@ var KTNewBooking = (function () {
             });                        
         } else {
             if($('#paymentPlan').val() === 'installment'){
-                totalAmount = parseFloat(document.getElementById('total_amount').value, 10);
-                installmentAmount = totalAmount/parseInt(numberOfInstallments,10);
+                totalAmountforInstallment = parseFloat(totalAmountAfterAdvAndToken.value, 10);
+                installmentAmount = totalAmountforInstallment/parseInt(numberOfInstallments,10);
                 partPaymentInput = null;
             } else if($('#paymentPlan').val() === 'part_payment'){
                 totalAmount = document.getElementById('pending_amount').value;
@@ -149,7 +150,7 @@ var KTNewBooking = (function () {
     }
 
     function updateInstallments(inputElement) {
-        totalAmount = parseFloat(document.getElementById('total_amount').value); // Total contract value
+        totalAmountforInstallment = parseFloat(totalAmountAfterAdvAndToken.value, 10); // Total contract value
         const inputs = Array.from(document.querySelectorAll('input[name="amounts[]"]'));
         const statuses = Array.from(document.querySelectorAll('input[name="statuses[]"]'));
     
@@ -166,7 +167,7 @@ var KTNewBooking = (function () {
             return acc + parseFloat(input.value);
         }, 0);
     
-        let remainingAmount = totalAmount - paidTotal;
+        let remainingAmount = totalAmountforInstallment - paidTotal;
         const unpaidIndexes = inputs.slice(changedIndex + 1).reduce((acc, input, index) => {
             const realIndex = changedIndex + 1 + index;
             if (statuses[realIndex].value === 'pending') {
@@ -366,11 +367,28 @@ var KTNewBooking = (function () {
         document.getElementById('total_amount').value = extraCharges + developmentCharges + unitCost;
     }
 
+    function calculateTotalAmountAfterAdvAndToken(){
+        var tokenAmount = parseFloat(document.getElementById('token_amount').value) || 0;
+        var advanceAmount = parseFloat(document.getElementById('advance_amount').value) || 0;
+        var totalAmount = parseFloat(document.getElementById('total_amount').value) || 0;
+
+        totalAmountAfterAdvAndToken.value = totalAmount - tokenAmount - advanceAmount;
+    }
+
     return {
         init: function () {
             document.getElementById('extra_charges').addEventListener('keyup', calculateTotalAmount);
             document.getElementById('development_charges').addEventListener('keyup', calculateTotalAmount);
             document.getElementById('unit_cost').addEventListener('keyup', calculateTotalAmount);
+
+            //Calculate remaining amount on entry of advance and
+            document.getElementById('advance_amount').addEventListener('keyup', calculateTotalAmountAfterAdvAndToken);
+            document.getElementById('token_amount').addEventListener('keyup', calculateTotalAmountAfterAdvAndToken);
+
+            if(document.getElementById('isLocked').value === 'true'){
+                calculateTotalAmountAfterAdvAndToken();
+            }
+
             var bookingDate = document.getElementById('fetchedBookingDate').value;
             $("#kt_ecommerce_booking_datepicker").flatpickr({
                 enableTime: false,

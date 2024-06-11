@@ -15,14 +15,22 @@ class LeadController extends Controller
         $sessionRole = $req->session()->get('role');
         $sessionUserId = $req->session()->get('userId');
         $leads = null;
+        $salesAgents = null;
 
         if($sessionRole == 'sales-manager')
         {
             $leads = DB::table('leads')
             ->where('mature', 1)
             ->get();
+
+            $salesAgents = DB::table('user')
+            ->select('id', 'full_name')
+            ->where('user_access_level', 'sales-agent')
+            ->get();
+
+            // dd($salesAgents);
         
-            return view('pages.leads', ['data' => $leads]);
+            return view('pages.leads', ['data' => $leads, 'salesAgents' => $salesAgents]);
         }
 
         else if($sessionRole == 'sales-agent')
@@ -51,6 +59,12 @@ class LeadController extends Controller
         
     }
     
+
+    public function getSalesAgents()
+    {
+        $salesAgents = SalesAgent::all(); // Fetch your data from the database or any source
+        return response()->json($salesAgents);
+    }
     public function showLeadForm(Request $request, $id = null)
     {
         $leadData = $callLogData = null;

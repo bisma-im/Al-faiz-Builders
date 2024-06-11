@@ -170,6 +170,19 @@
                                     </div>    
                                 </div>
                                 <!--end::Input group-->
+                                <div class="row mb-6" style="display: none;" id="paymentDate">
+                                    <label class="col-lg-3 col-form-label fw-semibold fs-6 required">
+                                        Payment Date
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Select the appropriate date">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6"></i>
+                                        </span>
+                                    </label>
+                                    <div class="col-lg-9">
+                                        <input type="hidden" id="fetchedDate" value="{{ $invoiceData->payment_date ?? '' }}"/>
+                                        <input class="form-control" name="payment_date" id="kt_ecommerce_payment_datepicker" placeholder="Pick date & time" />
+                                    </div>
+                                </div>
+                                
                             </div>
                             <!--end::Card body-->
                             <!--begin::Actions-->

@@ -180,10 +180,10 @@
                             </div>
                             <!--end::Toolbar-->
                             <!--begin::Group actions-->
-                            <div class="d-flex justify-content-end align-items-center d-none" data-kt-customer-table-toolbar="selected">
+                            <div class="d-flex justify-content-end align-items-center d-none {{ Session::get('role') == 'sales-manager' ? 'is-sales-manager' : '' }}" data-kt-customer-table-toolbar="selected" data-bs-toggle="modal" data-bs-target="#transfer_leads" >
                                 <div class="fw-bold me-5">
                                 <span class="me-2" data-kt-customer-table-select="selected_count"></span>Selected</div>
-                                <button type="button" class="btn btn-danger" data-kt-customer-table-select="delete_selected">Delete Selected</button>
+                                <button type="button" class="btn btn-light-primary" data-kt-customer-table-select="transfer_selected">Transfer Selected</button>
                             </div>
                             <!--end::Group actions-->
                         </div>
@@ -252,6 +252,68 @@
                     <!--end::Card body-->
                 </div>
                 <!--end::Card-->
+                <!--begin::Modal - Transfer Leads-->
+                <div class="modal fade" id="transfer_leads" tabindex="-1" aria-hidden="true">
+                    <!--begin::Modal dialog-->
+                    <div class="modal-dialog modal-dialog-centered mw-650px">
+                        <!--begin::Modal content-->
+                        <div class="modal-content">
+                            <!--begin::Modal header-->
+                            <div class="modal-header">
+                                <!--begin::Modal title-->
+                                <h2 class="fw-bold">Transfer Leads</h2>
+                                <!--end::Modal title-->
+                                <!--begin::Close-->
+                                <div id="import_csv_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                                    <i class="ki-duotone ki-cross fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </div>
+                                <!--end::Close-->
+                            </div>
+                            <!--end::Modal header-->
+                            <!--begin::Modal body-->
+                            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                                <!--begin::Form-->
+                                <form id="transfer_leads_form" class="form" action="{{ route('importLeadsCSV') }}" method="POST">
+                                    @csrf
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-10">
+                                        <!--begin::Label-->
+                                        <label class="fs-5 fw-semibold form-label mb-5">Select Agent</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <select name="sales_agent" id="salesAgentDropdown" aria-label="Select Sales Manager" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select sales agent...">
+                                            <option value="" selected disabled>Select sales agent...</option>
+                                            @foreach ($salesAgents as $salesAgent)
+                                                <option value="{{ $salesAgent->id }}" {{ (isset($leadData) && $leadData->transferred_to_user_id == $salesAgent->id) ? 'selected' : '' }}>
+                                                    {{ $salesAgent->full_name }}</option>
+                                            @endforeach
+                                        </select>  
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Actions-->
+                                    <div class="text-center">
+                                        <button type="reset" id="import_csv_cancel" class="btn btn-light me-3">Discard</button>
+                                        <button type="submit" id="import_csv_submit" class="btn btn-primary">
+                                            <span class="indicator-label">Submit</span>
+                                            <span class="indicator-progress">Please wait...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        </button>
+                                    </div>
+                                    <!--end::Actions-->
+                                </form>
+                                <!--end::Form-->
+                            </div>
+                            <!--end::Modal body-->
+                        </div>
+                        <!--end::Modal content-->
+                    </div>
+                    <!--end::Modal dialog-->
+                </div>
+                <!--end::Modal - Transfer Leads-->
                 <!--begin::Modal - Import CSV-->
                 <div class="modal fade" id="import_csv" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->

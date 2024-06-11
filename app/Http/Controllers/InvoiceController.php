@@ -45,6 +45,14 @@ class InvoiceController extends Controller
                     'invoice.*')
                     ->first();
 
+                if (!empty($invoiceData->payment_date)) {
+                    $formattedDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $invoiceData->payment_date)->format('Y-m-d H:i:s');
+                    $invoiceData->payment_date = $formattedDateTime;
+                } else {
+                    $invoiceData->payment_date = null; // Ensure it's null or set a default value if needed
+                }
+                // dd($invoiceData->payment_date);
+
                 $invoiceItems = DB::table('invoice_item')
                 ->where('invoice_id', $id)
                 ->select('description', 'amount')
@@ -84,7 +92,12 @@ class InvoiceController extends Controller
             'created_by' => session()->get('username'),
             'total_amount' => $req->input('total_amount'),
             'payment_status' => $req->input('payment_status'),
+            'payment_date' => $req->input('payment_date'),
         ];
+
+        if ($req->input('payment_status') === 'paid') {
+            $invoiceData['payment_date'] = $req->input('payment_date');
+        }
 
         return $invoiceData;
     }
@@ -156,6 +169,9 @@ class InvoiceController extends Controller
         ], [
             'kt_ecommerce_add_item_options.*.description.required_with' => 'A description is required when an amount is provided.',
             'kt_ecommerce_add_item_options.*.amount.required_with' => 'An amount is required when a description is provided.',
+        ], [
+            'payment_status' => 'required',
+            'payment_date' => 'required_if:payment_status,paid|date',
         ]);
     
         if ($validator->fails()) {

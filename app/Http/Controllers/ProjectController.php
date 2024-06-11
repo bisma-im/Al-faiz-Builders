@@ -25,7 +25,7 @@ class ProjectController extends Controller
         $plots = DB::table('plots_inventory as p')
                     ->leftJoin('booking as b', 'p.id', '=', 'b.plot_id')
                     ->leftJoin('customer as c', 'c.id', '=', 'b.customer_id')
-                    ->select('b.id as booking_id', 'p.id', 'p.plot_no', 'p.amount', 'p.category', DB::raw('IFNULL(b.created_on, "Not Booked") as created_on'), DB::raw('IFNULL(c.name, "Not Booked") as name'))
+                    ->select('b.id as booking_id', 'p.*', DB::raw('IFNULL(b.created_on, "Not Booked") as created_on'), DB::raw('IFNULL(c.name, "Not Booked") as name'))
                     ->where('p.phase_id', $id)
                     ->get();
         $lastPlotIds = DB::table('plots_inventory')
@@ -35,6 +35,49 @@ class ProjectController extends Controller
                      ->pluck('last_id', 'category')->all();
         // dd($lastPlotIds);
         return view('pages.plots', compact('categories','plots', 'lastPlotIds'));
+    }
+
+    public function updatePlot(Request $req) {
+        $plotId = $req->input('plot_id');
+        $serialNo = $req->input('serial_no');
+        $prefix =$req->input('prefix');
+        $newPlotNo = $prefix . $serialNo;
+
+        // First, check if the new plot number exists elsewhere in the phase
+        $plotExists = DB::table('plots_inventory')
+        ->where('plot_no', '=', $newPlotNo)
+        ->where('id', '!=', $plotId)  // Exclude the current plot from the check
+        ->exists();
+
+        if ($plotExists) {
+            return response()->json([
+                'error' => 'The plot number ' . $newPlotNo . ' already exists in the phase.'
+            ], 409);  // 409 Conflict
+        }
+
+        $plotData = [
+            'category' => $req->input('category'),
+            'serial_no' => $serialNo,
+            'prefix' => $prefix,
+            'amount' => $req->input('amount'),
+            'plot_or_shop' => $req->input('plot_or_shop'),
+            'plot_no' => $newPlotNo,
+        ];
+
+        // dd($plotId);
+
+        try{
+            DB::beginTransaction();
+            $updated = DB::table('plots_inventory')->where('id', $plotId)->update($plotData);
+            DB::commit();
+            if($updated){return response()->json(['success' => 'Plot updated successfully']);}
+        }
+        catch (\Exception $e) 
+        {   
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+
     }
 
     public function deletePlot(Request $req){
@@ -183,7 +226,6 @@ class ProjectController extends Controller
                 }
 
             }
-            
             $insertedPlots = DB::table('plots_inventory')->insert($plotInventory);
             if ($req->hasFile('phase_media')) {
                 foreach ($req->file('phase_media') as $file) {
@@ -280,61 +322,61 @@ class ProjectController extends Controller
         $phaseData = $this->getPhaseData($req);
         $projectId= $phaseData['project_id'];
         $id = $req->input('id'); // Get the customer ID from the request
-        $numberingType = $req->input('numbering_type');
+        // $numberingType = $req->input('numbering_type');
         try {
             DB::beginTransaction();
             $updated = DB::table('phase')
             ->where('id', $id)
             ->update($phaseData);
         
-            DB::table('plots_inventory')
-            ->where('phase_id', $id)
-            ->where('isBooked', 'n')
-            ->whereNull('file_reg_number')
-            ->delete();
-            if($numberingType === "auto"){
-                $categories = $req->input('kt_ecommerce_add_plot_options');
-                foreach($categories as $category)
-                {
-                    $totalPlots = $category['no_of_plots'];
-                    $plotPrefix = $category['plot_prefix'];
-                    $amount = $category['amount'];
-                    $cat = $category['category'];
-                    $type = $category['plot_or_shop'];
-                    for($i = 1; $i <= $totalPlots; $i++)
-                    {
-                        $plotInventory[] = [
-                            'category' => $cat,
-                            'project_id' => $projectId,
-                            'phase_id' => $id,
-                            'amount' => (float)$amount,
-                            'plot_or_shop' => $type,
-                            'plot_no' => $plotPrefix . $i,
-                            'prefix' => $plot['plot_prefix'],
-                            'serial_no' => $i,
-                        ];
-                    }
-                }
-            } else if($numberingType === "manual"){
-                $plots = $req->input('kt_ecommerce_manual_add_plot_options');
-                foreach($plots as $plot){
-                    $plotInventory[] = [
-                        'category' => $plot['category'],
-                        'project_id' => $projectId,
-                        'phase_id' => $id,
-                        'amount' => (float)$plot['amount'],
-                        'plot_or_shop' => $plot['plot_or_shop'],
-                        'plot_no' => $plot['prefix'] . $plot['serial_no'],
-                        'prefix' => $plot['prefix'],
-                        'serial_no' => $plot['serial_no'],
-                    ];
-                }
+            // DB::table('plots_inventory')
+            // ->where('phase_id', $id)
+            // ->where('isBooked', 'n')
+            // ->whereNull('file_reg_number')
+            // ->delete();
+            // if($numberingType === "auto"){
+            //     $categories = $req->input('kt_ecommerce_add_plot_options');
+            //     foreach($categories as $category)
+            //     {
+            //         $totalPlots = $category['no_of_plots'];
+            //         $plotPrefix = $category['plot_prefix'];
+            //         $amount = $category['amount'];
+            //         $cat = $category['category'];
+            //         $type = $category['plot_or_shop'];
+            //         for($i = 1; $i <= $totalPlots; $i++)
+            //         {
+            //             $plotInventory[] = [
+            //                 'category' => $cat,
+            //                 'project_id' => $projectId,
+            //                 'phase_id' => $id,
+            //                 'amount' => (float)$amount,
+            //                 'plot_or_shop' => $type,
+            //                 'plot_no' => $plotPrefix . $i,
+            //                 'prefix' => $plot['plot_prefix'],
+            //                 'serial_no' => $i,
+            //             ];
+            //         }
+            //     }
+            // } else if($numberingType === "manual"){
+            //     $plots = $req->input('kt_ecommerce_manual_add_plot_options');
+            //     foreach($plots as $plot){
+            //         $plotInventory[] = [
+            //             'category' => $plot['category'],
+            //             'project_id' => $projectId,
+            //             'phase_id' => $id,
+            //             'amount' => (float)$plot['amount'],
+            //             'plot_or_shop' => $plot['plot_or_shop'],
+            //             'plot_no' => $plot['prefix'] . $plot['serial_no'],
+            //             'prefix' => $plot['prefix'],
+            //             'serial_no' => $plot['serial_no'],
+            //         ];
+            //     }
 
-            }
+            // }
             
-            $insertedPlots = DB::table('plots_inventory')->insert($plotInventory);
+            // $insertedPlots = DB::table('plots_inventory')->insert($plotInventory);
             DB::commit();
-            if ($insertedPlots) {
+            if ($updated) {
                 return response()->json(['success' => 'Phase updated successfully']);
             }
             else{

@@ -1,6 +1,11 @@
 "use strict";
 
 var KTNewInvoice = (function () {
+    var paidRadio = document.getElementById('paid');
+    var unpaidRadio = document.getElementById('unpaid');
+    var cancelledRadio = document.getElementById('cancelled');
+    var paymentDateDiv = document.getElementById('paymentDate');
+    var datePickerInput = document.getElementById('kt_ecommerce_payment_datepicker') ;     
     const a = (listData) => {
         const repeater = $("#kt_ecommerce_add_item_options").repeater({
             initEmpty: false,
@@ -50,13 +55,36 @@ var KTNewInvoice = (function () {
             window.location.href = '/invoices';
         }, 500);
     } 
+    function togglePaymentDate() {
+        datePickerInput.value = ''; // Clear the datepicker input
+        if (paidRadio.checked) {
+            paymentDateDiv.style.display = 'flex'; // Show the payment date div
+        } else {
+            paymentDateDiv.style.display = 'none'; // Hide the payment date div
+        }
+    }
     var t, e, r;
     return {
         init: function () {
+            var paymentDate = document.getElementById('fetchedDate').value;
+            $("#kt_ecommerce_payment_datepicker").flatpickr({
+                enableTime: true,
+                altInput: true,
+                dateFormat: "Y-m-d H:i:s",
+                defaultDate: paymentDate,
+            });
             t = document.querySelector("#kt_new_invoice_form");
             e = document.querySelector("#kt_new_invoice_submit");// Ensure this ID matches your plot dropdown ID
-                        
+             
             a();
+
+            // Event listeners for radio buttons
+            paidRadio.addEventListener('change', togglePaymentDate);
+            unpaidRadio.addEventListener('change', togglePaymentDate);
+            cancelledRadio.addEventListener('change', togglePaymentDate);
+
+            // Initial check on page load
+            togglePaymentDate();
 
             $(document).on('focusout', 'input[name*="amount"]', function() {
                 console.log('Focus out detected on dynamically added element');

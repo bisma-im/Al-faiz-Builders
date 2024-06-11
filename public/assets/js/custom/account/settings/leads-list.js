@@ -1,6 +1,6 @@
 "use strict";
 var KTCustomersList = (function () {
-    var t,
+    var t, salesAgentsElement, salesAgents,
         e,
         o,
         n,
@@ -30,41 +30,14 @@ var KTCustomersList = (function () {
         },
         r = () => {
             const e = n.querySelectorAll('[type="checkbox"]'),
-                o = document.querySelector('[data-kt-customer-table-select="delete_selected"]');
+                o = document.querySelector('[data-kt-customer-table-select="transfer_selected"]');
             e.forEach((t) => {
                 t.addEventListener("click", function () {
                     setTimeout(function () {
                         l();
                     }, 50);
                 });
-            }),
-                o.addEventListener("click", function () {
-                    Swal.fire({
-                        text: "Are you sure you want to delete selected customers?",
-                        icon: "warning",
-                        showCancelButton: !0,
-                        buttonsStyling: !1,
-                        confirmButtonText: "Yes, delete!",
-                        cancelButtonText: "No, cancel",
-                        customClass: { confirmButton: "btn fw-bold btn-danger", cancelButton: "btn fw-bold btn-active-light-primary" },
-                    }).then(function (o) {
-                        o.value
-                            ? Swal.fire({ text: "You have deleted all selected customers!.", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } }).then(
-                                  function () {
-                                      e.forEach((e) => {
-                                          e.checked &&
-                                              t
-                                                  .row($(e.closest("tbody tr")))
-                                                  .remove()
-                                                  .draw();
-                                      });
-                                      n.querySelectorAll('[type="checkbox"]')[0].checked = !1;
-                                  }
-                              )
-                            : "cancel" === o.dismiss &&
-                              Swal.fire({ text: "Selected customers was not deleted.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } });
-                    });
-                });
+            })
         };
     const l = () => {
         const t = document.querySelector('[data-kt-customer-table-toolbar="base"]'),
@@ -75,11 +48,74 @@ var KTCustomersList = (function () {
             l = 0;
         c.forEach((t) => {
             t.checked && ((r = !0), l++);
-        }),
-            r ? ((o.innerHTML = l), t.classList.add("d-none"), e.classList.remove("d-none")) : (t.classList.remove("d-none"), e.classList.add("d-none"));
+        });
+        if (r && e.classList.contains('is-sales-manager')) {
+            o.innerHTML = l; // Update the selected count display
+            t.classList.add("d-none"); // Hide the base toolbar
+            e.classList.remove("d-none"); // Show the selected items toolbar
+        } else {
+            t.classList.remove("d-none"); // Show the base toolbar
+            e.classList.add("d-none"); // Hide the selected items toolbar
+        }
     };
+
+    // function showSalesAgentDialog(checkboxes) {
+    //     fetch('/get-sales-agents', {
+    //         method: 'GET',
+    //         headers: {
+    //             'X-Requested-With': 'XMLHttpRequest',
+    //             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+    //         }
+    //     })
+    //     .then(response => response.json())
+    //     .then(salesAgents => {
+    //         // console.log('Sales Agents:', data);
+    //         let options = salesAgents.reduce((obj, agent) => {
+    //             obj[agent.id] = agent.full_name; // Use agent.id as key and agent.full_name as value
+    //             return obj;
+    //         }, {});
+
+    //         Swal.fire({
+    //             title: 'Select a Sales Agent',
+    //             input: 'select',
+    //             inputOptions: options,
+    //             inputPlaceholder: 'Select an agent',
+    //             showCancelButton: true,
+    //             confirmButtonText: "Transfer leads!",
+    //             inputValidator: (value) => {
+    //                 if (!value) {
+    //                     return 'You need to choose an agent!';
+    //                 }
+    //             },
+    //             customClass: { confirmButton: "btn fw-bold btn-danger", cancelButton: "btn fw-bold btn-active-light-primary", input: "form-select form-select-solid form-select-lg fw-semibold" },
+    //         }).then(function (result) {
+    //             if (result.value) {
+    //                 transferSelectedLeads(checkboxes, result.value);
+    //             }
+    //         });
+    //     })
+    //     .catch(error => console.error('Error fetching sales agents:', error));
+        
+    // }
+
+    // function transferSelectedLeads(checkboxes, agentId) {
+    //     const selectedLeads = Array.from(checkboxes).filter(chk => chk.checked).map(chk => chk.closest("tr").getAttribute('data-lead-id'));
+    //     console.log("Transferring leads:", selectedLeads, "to agent:", agentId);
+    //     // Here, implement the POST request to your server to update the leads
+    //     // Example with fetch, adjust URL and method as needed:
+    //     fetch('/api/transfer-leads', {
+    //         method: 'POST',
+    //         headers: {'Content-Type': 'application/json'},
+    //         body: JSON.stringify({leads: selectedLeads, agentId: agentId})
+    //     }).then(response => response.json())
+    //       .then(data => console.log(data));
+    //     // Handle UI update or notification post-transfer
+    // }
     return {
         init: function () {
+            // salesAgentsElement = document.getElementById('salesAgentsData');
+            // salesAgents = salesAgentsElement.getAttribute('data-agents');
+            // console.log(salesAgents);
             (n = document.querySelector("#kt_users_table")) &&
                 (n.querySelectorAll("tbody tr").forEach((t) => {
                     const e = t.querySelectorAll("td"),
@@ -100,17 +136,6 @@ var KTCustomersList = (function () {
                 document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", function (e) {
                     t.search(e.target.value).draw();
                 }),
-                // (e = $('[data-kt-customer-table-filter="month"]')),
-                // (o = document.querySelectorAll('[data-kt-customer-table-filter="payment_type"] [name="payment_type"]')),
-                // document.querySelector('[data-kt-customer-table-filter="filter"]').addEventListener("click", function () {
-                //     const n = e.val();
-                //     let c = "";
-                //     o.forEach((t) => {
-                //         t.checked && (c = t.value), "all" === c && (c = "");
-                //     });
-                //     const r = n + " " + c;
-                //     t.search(r).draw();
-                // }),
                 c());
         },
     };

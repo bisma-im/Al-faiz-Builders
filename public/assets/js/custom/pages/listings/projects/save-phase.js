@@ -1,10 +1,10 @@
 "use strict";
 var KTAppEcommerceSaveProduct = (function () {
-    const autoInput = document.getElementById('auto');
-    const manualInput = document.getElementById('manual');
-    const autoSection = document.getElementById('kt_ecommerce_auto_add_plot_options');
-    const manualSection = document.getElementById('kt_ecommerce_manual_add_plot_options');
-    const e = (repeaterId, plotData) => {
+        const autoInput = document.getElementById('auto');
+        const manualInput = document.getElementById('manual');
+        const autoSection = document.getElementById('kt_ecommerce_auto_add_plot_options');
+        const manualSection = document.getElementById('kt_ecommerce_manual_add_plot_options');
+        const e = (repeaterId) => {
             const repeater = $("#" + repeaterId).repeater({
                 initEmpty: !1,
                 defaultValues: { "text-input": "foo"},
@@ -15,11 +15,6 @@ var KTAppEcommerceSaveProduct = (function () {
                     $(this).slideUp(e);
                 },
             });
-
-            if (Array.isArray(plotData) && plotData.length > 0) {
-                repeater.setList(plotData);
-                
-            }
         },
         initializeSelect2 = () => {
             $('.plot_or_shop').select2({  // Ensure this class matches your select class in the HTML
@@ -31,7 +26,6 @@ var KTAppEcommerceSaveProduct = (function () {
                 $(e).hasClass("select2-hidden-accessible") || $(e).select2({ minimumResultsForSearch: -1 });
             });
         };
-        
     return {
         init: function () {
             // var o, a;
@@ -42,7 +36,6 @@ var KTAppEcommerceSaveProduct = (function () {
                 defaultDate: phaseCompletionDate,
                 dateFormat: "Y-m-d",
             });
-            
             function toggleInput() {
                 if (autoInput.checked) {
                     e('kt_ecommerce_auto_add_plot_options');
@@ -59,8 +52,6 @@ var KTAppEcommerceSaveProduct = (function () {
         
             autoInput.addEventListener('change', toggleInput);
             manualInput.addEventListener('change', toggleInput);
-
-            
                 // ["#kt_ecommerce_add_product_category", "#kt_ecommerce_add_project_tags"].forEach((e) => {
                 //     const t = document.querySelector(e);
                 //     t && new Tagify(t, { whitelist: ["new", "trending", "sale", "discounted", "selling fast", "last 10"], dropdown: { maxItems: 20, classname: "tagify__inline__suggestions", enabled: 0, closeOnSelect: !1 } });
@@ -71,7 +62,6 @@ var KTAppEcommerceSaveProduct = (function () {
                 // o.noUiSlider.on("update", function (e, t) {
                 //     (a.innerHTML = Math.round(e[t])), t && (a.innerHTML = Math.round(e[t]));
                 // }),
-                
                 new Dropzone("#kt_ecommerce_add_phase_media", {
                     url: "https://keenthemes.com/scripts/void.php",
                     autoProcessQueue: false,
@@ -222,15 +212,6 @@ var KTAppEcommerceSaveProduct = (function () {
                             });
                         });
             })();
-            var plotDataElement = document.getElementById('plotData');
-            if (plotDataElement) {
-                var itemsJson = plotDataElement.getAttribute('data-items');
-                if (itemsJson) {
-                    var items = JSON.parse(itemsJson);
-                    toggleInput();  // Ensure this function handles any necessary UI toggles
-                    e('kt_ecommerce_manual_add_plot_options', items);
-                }
-            }
         },
     };
 })();

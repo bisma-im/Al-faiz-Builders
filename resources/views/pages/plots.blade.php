@@ -10,7 +10,7 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Project List</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Plots List</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -147,7 +147,7 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Users" />
+                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Plots" />
                             </div>
                             <!--end::Search-->
                         </div>
@@ -275,20 +275,24 @@
                                                 <th class="min-w-125px">Booked By</th>
                                                 <th class="min-w-125px">Booking Date Time</th>
                                                 <th class="min-w-125px">Amount</th>
+                                                <th class="min-w-125px">Edit</th>
                                                 <th class="min-w-125px"></th>
                                             </tr>
                                         </thead>
                                         <tbody class="fw-semibold text-gray-600">
                                             @foreach ($plots as $id => $plot)
                                                 @if ($plot->category == $category->category)
-                                                <tr data-plot-id="{{ $plot->id }}" data-category="{{ $plot->category }}">
+                                                <tr data-plot-id="{{ $plot->id }}" data-category="{{ $plot->category }}" >
+                                                    <input type="hidden" class="serialNo" value="{{ $plot->serial_no }}" />
+                                                    <input type="hidden" class="plotOrShop" value="{{ $plot->plot_or_shop }}" />
+                                                    <input type="hidden" class="prefix" value="{{ $plot->prefix }}" />
                                                         <td>
                                                             <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                                 <input class="form-check-input" type="checkbox" value="1" />
                                                             </div>
                                                         </td>
                                                         @if ($plot->created_on == 'Not Booked')
-                                                            <td>{{ $plot->plot_no }}</td>
+                                                            <td class="plotNumber">{{ $plot->plot_no }}</td>
                                                         @else
                                                             <td>
                                                                 <a href="{{ route('updateBookingForm', ['id' => $plot->booking_id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $plot->plot_no }}</a>
@@ -296,7 +300,12 @@
                                                         @endif
                                                         <td>{{ $plot->name }}</td>
                                                         <td>{{ $plot->created_on }}</td>
-                                                        <td>{{ $plot->amount }}</td>
+                                                        <td class="amount">{{ $plot->amount }}</td>
+                                                        @if ($plot->created_on == 'Not Booked')
+                                                            <td><button id="editButton" type="button" class="btn btn-light-primary fw-semibold" data-bs-toggle="modal" data-bs-target="#editPlotModal">Edit</button></td>
+                                                        @else
+                                                            <td></td>
+                                                        @endif
                                                         <td>
                                                             @if (isset($lastPlotIds[$category->category]) && $plot->id === $lastPlotIds[$category->category])
                                                                 <form method="POST" id="deleteForm">
@@ -322,7 +331,7 @@
                 <!--end::Card-->
                 <!--begin::Modals-->
                 <!--begin::Modal - Adjust Balance-->
-                <div class="modal fade" id="kt_customers_export_modal" tabindex="-1" aria-hidden="true">
+                <div class="modal fade" id="editPlotModal" tabindex="-1" aria-hidden="true">
                     <!--begin::Modal dialog-->
                     <div class="modal-dialog modal-dialog-centered mw-650px">
                         <!--begin::Modal content-->
@@ -330,10 +339,10 @@
                             <!--begin::Modal header-->
                             <div class="modal-header">
                                 <!--begin::Modal title-->
-                                <h2 class="fw-bold">Export Customers</h2>
+                                <h2 class="fw-bold">Edit Plot</h2>
                                 <!--end::Modal title-->
                                 <!--begin::Close-->
-                                <div id="kt_customers_export_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                                <div id="edit_plot_close" class="btn btn-icon btn-sm btn-active-icon-primary">
                                     <i class="ki-duotone ki-cross fs-1">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
@@ -345,71 +354,67 @@
                             <!--begin::Modal body-->
                             <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                                 <!--begin::Form-->
-                                <form id="kt_customers_export_form" class="form" action="#">
+                                <form id="editPlotForm" class="form" action="#">
+                                    @csrf
+                                    <input type="hidden" name="plot_id" id="modalPlotId">
                                     <!--begin::Input group-->
                                     <div class="fv-row mb-10">
                                         <!--begin::Label-->
-                                        <label class="fs-5 fw-semibold form-label mb-5">Select Export Format:</label>
+                                        <label class="fs-5 fw-semibold form-label mb-5">Plot Size</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <select data-control="select2" data-placeholder="Select a format" data-hide-search="true" name="format" class="form-select form-select-solid">
-                                            <option value="excell">Excel</option>
-                                            <option value="pdf">PDF</option>
-                                            <option value="cvs">CVS</option>
-                                            <option value="zip">ZIP</option>
-                                        </select>
+                                        <input class="form-control form-control-solid" name="category" id="category" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="fv-row mb-10">
                                         <!--begin::Label-->
-                                        <label class="fs-5 fw-semibold form-label mb-5">Select Date Range:</label>
+                                        <label class="fs-5 fw-semibold form-label mb-5">Plot Type</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input class="form-control form-control-solid" placeholder="Pick a date" name="date" />
+                                        <select name="plot_or_shop" id="plot_or_shop" aria-label="Select Plot Type" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select plot type...">
+                                            <option value="" selected disabled>Select plot type...</option>
+                                            <option value="plot">Plot</option>
+                                            <option value="shop">Shop</option>
+                                        </select>  
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
-                                    <!--begin::Row-->
-                                    <div class="row fv-row mb-15">
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-10">
                                         <!--begin::Label-->
-                                        <label class="fs-5 fw-semibold form-label mb-5">Payment Type:</label>
+                                        <label class="fs-5 fw-semibold form-label mb-5">Plot Number</label>
                                         <!--end::Label-->
-                                        <!--begin::Radio group-->
-                                        <div class="d-flex flex-column">
-                                            <!--begin::Radio button-->
-                                            <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                <input class="form-check-input" type="checkbox" value="1" checked="checked" name="payment_type" />
-                                                <span class="form-check-label text-gray-600 fw-semibold">All</span>
-                                            </label>
-                                            <!--end::Radio button-->
-                                            <!--begin::Radio button-->
-                                            <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                <input class="form-check-input" type="checkbox" value="2" checked="checked" name="payment_type" />
-                                                <span class="form-check-label text-gray-600 fw-semibold">Visa</span>
-                                            </label>
-                                            <!--end::Radio button-->
-                                            <!--begin::Radio button-->
-                                            <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                <input class="form-check-input" type="checkbox" value="3" name="payment_type" />
-                                                <span class="form-check-label text-gray-600 fw-semibold">Mastercard</span>
-                                            </label>
-                                            <!--end::Radio button-->
-                                            <!--begin::Radio button-->
-                                            <label class="form-check form-check-custom form-check-sm form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="4" name="payment_type" />
-                                                <span class="form-check-label text-gray-600 fw-semibold">American Express</span>
-                                            </label>
-                                            <!--end::Radio button-->
-                                        </div>
-                                        <!--end::Input group-->
+                                        <!--begin::Input-->
+                                        <input class="form-control form-control-solid" name="serial_no" id="serial_no" />
+                                        <!--end::Input-->
                                     </div>
-                                    <!--end::Row-->
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-10">
+                                        <!--begin::Label-->
+                                        <label class="fs-5 fw-semibold form-label mb-5">Prefix</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input class="form-control form-control-solid" name="prefix" id="prefix" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+                                    <!--begin::Input group-->
+                                    <div class="fv-row mb-10">
+                                        <!--begin::Label-->
+                                        <label class="fs-5 fw-semibold form-label mb-5">Amount</label>
+                                        <!--end::Label-->
+                                        <!--begin::Input-->
+                                        <input class="form-control form-control-solid" name="amount" id="amount" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
                                     <!--begin::Actions-->
                                     <div class="text-center">
-                                        <button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3">Discard</button>
-                                        <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
+                                        <button type="reset" id="edit_plot_cancel" class="btn btn-light me-3">Discard</button>
+                                        <button type="submit" id="edit_plot_submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
                                             <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
@@ -441,7 +446,7 @@
 		<script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
+		{{-- <script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script> --}}
         <script src="{{ URL::asset('assets/js/custom/pages/listings/projects/plots.js') }}"></script>
 		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
         <script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>

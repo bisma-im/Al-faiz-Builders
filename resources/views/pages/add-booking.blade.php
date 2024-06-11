@@ -432,7 +432,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-9 fv-row">
-                                                    <input type="number" step="any" name="token_amount" class="form-control form-control-lg form-control-solid" placeholder="Token Amount" value="{{ $bookingData->token_amount ?? '' }}" />
+                                                    <input type="number" step="any" id="token_amount" name="token_amount" class="form-control form-control-lg form-control-solid" placeholder="Token Amount" value="{{ $bookingData->token_amount ?? '' }}" />
                                                     
                                                 </div>
                                                 <!--end::Col-->
@@ -445,12 +445,22 @@
                                                 <!--end::Label-->
                                                 <!--begin::Col-->
                                                 <div class="col-lg-9 fv-row">
-                                                    <input type="number" step="any" name="advance_amount" class="form-control form-control-lg form-control-solid" placeholder="Advance Amount" value="{{ $bookingData->advance_amount ?? '' }}" />
+                                                    <input type="number" step="any" id="advance_amount" name="advance_amount" class="form-control form-control-lg form-control-solid" placeholder="Advance Amount" value="{{ $bookingData->advance_amount ?? '' }}" />
                                                     
                                                 </div>
                                                 <!--end::Col-->
                                             </div>
                                             <!--end::Input group advance amount-->
+                                            <div class="row mb-6">
+                                                <!--begin::Label-->
+                                                <label class="col-lg-3 col-form-label required fw-semibold fs-6">Remaining Amount</label>
+                                                <!--end::Label-->
+                                                <!--begin::Col-->
+                                                <div class="col-lg-9 fv-row">
+                                                    <input type="number" step="any" name="remaining_amount" id="remaining_amount" class="form-control form-control-lg form-control-solid" placeholder="Remaining Amount" disabled />
+                                                </div>
+                                                <!--end::Col-->
+                                            </div>
                                             <div class="row mb-6">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-3 col-form-label fw-semibold fs-6">

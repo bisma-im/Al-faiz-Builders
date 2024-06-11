@@ -1,6 +1,7 @@
 "use strict";
 var KTCustomersList = (function () {
-    var t,
+    var t, plotId,
+        x,
         e,
         o,
         n,
@@ -80,6 +81,118 @@ var KTCustomersList = (function () {
     };
     return {
         init: function () {
+            // Modal and form references
+            var modalInstance = new bootstrap.Modal(document.querySelector("#editPlotModal"));
+            var form = $("#editPlotForm");
+            var submitButton = $("#edit_plot_submit");
+            var cancelButton = $("#edit_plot_cancel");
+            var closeButton = $("#edit_plot_close");
+
+            const editButtons = document.querySelectorAll('#editButton');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    plotId = row.dataset.plotId;
+                    const category = row.dataset.category;
+                    const serialNo = row.querySelector('.serialNo').value; // Corrected to use .value for input
+                    const plotOrShop = row.querySelector('.plotOrShop').value; // Corrected to use .value for input
+                    const prefix = row.querySelector('.prefix').value;
+                    const amount = row.querySelector('.amount').textContent;
+
+                    // // Set data in the modal fields
+                    document.getElementById('category').value = category;
+                    document.getElementById('serial_no').value = serialNo;
+                    document.getElementById('prefix').value = prefix;
+                    document.getElementById('amount').value = amount;
+
+                    var selectElement = document.getElementById('plot_or_shop');
+                    selectElement.value = plotOrShop;
+
+                    // If using Select2, you may need to trigger a change event for Select2 to display the value
+                    $(selectElement).trigger('change');
+                });
+            });
+            (x = FormValidation.formValidation(form[0], {
+                fields: {
+                    category: { validators: { notEmpty: { message: "Category is required" } } },
+                    serial_no: { validators: { notEmpty: { message: "Plot Number is required" } } },
+                    prefix: { validators: { notEmpty: { message: "Prefix is required" } } },
+                    amount: { validators: { notEmpty: { message: "Amount is required" } } },
+                    plot_or_shop: { validators: { notEmpty: { message: "Plot type is required" } } },
+                },
+                plugins: { trigger: new FormValidation.plugins.Trigger(), bootstrap: new FormValidation.plugins.Bootstrap5({ rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: "" }) },
+            })),
+
+            // Submit button event
+            submitButton.click(function (e) {
+                e.preventDefault();
+                x.validate().then(function (status) {
+                    if (status === "Valid") {
+                        var formData = new FormData(form[0]);
+                        formData.append('plot_id', plotId);
+                        $.ajax({
+                            url: '/update-plot', // Replace with your endpoint URL
+                            type: 'POST',
+                            processData: false,  // tell jQuery not to process the data
+                            contentType: false,
+                            data: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            beforeSend: function () {
+                                submitButton.attr("data-kt-indicator", "on");
+                                submitButton.prop("disabled", true);
+                            },
+                            success: function (response) {
+                                Swal.fire({
+                                    text: 'Plot updated successfully',
+                                    icon: "success",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: { confirmButton: "btn btn-primary" }
+                                }).then(function (result) {
+                                    if (result.isConfirmed) {
+                                        modalInstance.hide();
+                                        submitButton.prop("disabled", false);
+                                        window.location.reload();
+                                    }
+                                });
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                var message = "An error occurred"; // Default error message
+                                if (xhr.responseJSON && xhr.responseJSON.error) {
+                                    message = xhr.responseJSON.error; // Message from server
+                                }
+                            
+                                Swal.fire({
+                                    text: message,
+                                    icon: "error",
+                                    buttonsStyling: false,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: { confirmButton: "btn btn-primary" }
+                                }).then(function () {
+                                    submitButton.prop("disabled", false); // Re-enable the submit button
+                                });
+                            },
+                            complete: function () {
+                                submitButton.removeAttr("data-kt-indicator");
+                                submitButton.prop("disabled", false);
+                            }
+                        });
+                        
+                    } else {
+                        Swal.fire({
+                            text: "Sorry, looks like there are some errors detected, please try again.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: { confirmButton: "btn btn-primary" }
+                        });
+                    }
+                });
+            });
+
             (n = document.querySelector("#kt_users_table")) &&
             (
                 (t = $(n).DataTable({
@@ -176,7 +289,57 @@ var KTCustomersList = (function () {
                         });
                     }
                 });
-            }   
+            } 
+            
+            // Cancel button event
+            cancelButton.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $('input').blur();
+                Swal.fire({
+                    text: "Are you sure you would like to cancel?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    confirmButtonText: "Yes, cancel it!",
+                    cancelButtonText: "No, return",
+                    customClass: { confirmButton: "btn btn-primary", cancelButton: "btn btn-active-light" }
+                }).then(function (result) {
+                    if (result.value) {
+                        form[0].reset();
+                        modalInstance.hide();
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        Swal.fire({
+                            text: "Your form has not been cancelled!",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: { confirmButton: "btn btn-primary" }
+                        });
+                    }
+                });
+            });
+
+            // Close button event
+            closeButton.click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $('input').blur();
+                Swal.fire({
+                    text: "Are you sure you would like to close?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    confirmButtonText: "Yes, close it!",
+                    cancelButtonText: "No, keep it",
+                    customClass: { confirmButton: "btn btn-primary", cancelButton: "btn btn-active-light" }
+                }).then(function (result) {
+                    if (result.value) {
+                        form[0].reset();
+                        modalInstance.hide();
+                    }
+                });
+            });
         },
     };
 })();

@@ -165,7 +165,7 @@
                                 <!--end::Card header-->
                                 <!--begin::Card body-->
                                 <div class="card-body text-center pt-0">
-                                    <input type="hidden" name="existing_phase_logo" id="existing_phase_logo" value="{{ $phaseData->phase_logo }}">
+                                    <input type="hidden" name="existing_phase_logo" id="existing_phase_logo" value="{{ $phaseData->phase_logo ?? '' }}">
                                     <!--begin::Image input-->
                                     <!--begin::Image input placeholder-->
                                     <style>.image-input-placeholder { background-image: url('assets/media/svg/files/blank-image.svg'); } [data-bs-theme="dark"] .image-input-placeholder { background-image: url('assets/media/svg/files/blank-image-dark.svg'); }</style>
@@ -708,106 +708,108 @@
                                                 </div>
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
-                                                <div class="mb-10 fv-row mx-auto">
-                                                    <!--begin::Label-->
-                                                    <label class="form-label required">Plots</label>
-                                                    <!--end::Label-->
-                                                    <div class="col-lg-6 fv-row" style="{{ isset($phaseData) ? 'display:none;' : ''}}">
-                                                        <input class=" mt-3 form-check-input" type="radio" name="numbering_type" id="auto" value="auto" />
-                                                        <label for="paid" class="mt-3 pe-5 ps-1 fw-semibold fs-6">Auto Numbering</label>
-                                                        <input class=" mt-3 form-check-input" type="radio" name="numbering_type" id="manual" value="manual" {{ isset($phaseData) ? 'checked' : ''}}/>
-                                                        <label for="unpaid" class="mt-3 pe-5 ps-1 fw-semibold fs-6">Manual Numbering</label>
-                                                    </div> 
-                                                </div>
-                                                <!--end::Input group-->
                                                 <div class="mb-10 fv-row">
-                                                    {{-- @if(isset($phaseData))
+                                                    <div class="mb-10 fv-row mx-auto">
+                                                        <!--begin::Label-->
+                                                        <label class="form-label required">Plots</label>
+                                                        <!--end::Label-->
+                                                        <div class="col-lg-6 fv-row" style="{{ isset($phaseData) ? 'display:none;' : ''}}">
+                                                            <input class=" mt-3 form-check-input" type="radio" name="numbering_type" id="auto" value="auto" />
+                                                            <label for="paid" class="mt-3 pe-5 ps-1 fw-semibold fs-6">Auto Numbering</label>
+                                                            <input class=" mt-3 form-check-input" type="radio" name="numbering_type" id="manual" value="manual" {{ isset($phaseData) ? 'checked' : ''}}/>
+                                                            <label for="unpaid" class="mt-3 pe-5 ps-1 fw-semibold fs-6">Manual Numbering</label>
+                                                        </div> 
+                                                    </div>
+                                                    @if(isset($phaseData))
                                                         <div class="d-flex gap-3">
                                                             <button type="button" class="btn btn-primary mb-7" onclick="location.href='{{ route('showPlots', ['id' => $phaseData->id]) }}'">Show Details</button>
                                                         </div>
-                                                    @else --}}
-                                                    <div class="" data-kt-ecommerce-catalog-add-project="auto-options">
+                                                    @else
+                                                        <!--begin::Input group-->
+                                                        <div class="" data-kt-ecommerce-catalog-add-project="auto-options">
                                                         
-                                                        <div id="plotData" style="display:none;" data-items="{{$plotData}}"></div>
-                                                        <!--begin::Repeater-->
-                                                        <div id="kt_ecommerce_auto_add_plot_options" style="display:none;">
-                                                            <!--begin::Form group-->
-                                                            <div class="form-group">
-                                                                <div data-repeater-list="kt_ecommerce_auto_add_plot_options" class="d-flex flex-column gap-3">
-                                                                    <div data-repeater-item="" class="form-group d-flex flex-wrap align-items-center gap-5">
-                                                                        <!--begin::Input-->
-                                                                        <input type="text" name="category" class="form-control mw-100 w-200px" placeholder="Plot Size" />
-                                                                        <!--begin::Select2-->
-                                                                        <div class="w-100 w-md-200px">
-                                                                            <select class="form-select" name="plot_or_shop" data-placeholder="Select type" data-kt-ecommerce-catalog-add-project="project_option">
-                                                                                <option></option>
-                                                                                <option value="plot">Plot</option>
-                                                                                <option value="shop">Shop</option>
-                                                                            </select>
+                                                            <div id="plotData" style="display:none;" data-items="{{$plotData}}"></div>
+                                                            <!--begin::Repeater-->
+                                                            <div id="kt_ecommerce_auto_add_plot_options" style="display:none;">
+                                                                <!--begin::Form group-->
+                                                                <div class="form-group">
+                                                                    <div data-repeater-list="kt_ecommerce_auto_add_plot_options" class="d-flex flex-column gap-3">
+                                                                        <div data-repeater-item="" class="form-group d-flex flex-wrap align-items-center gap-5">
+                                                                            <!--begin::Input-->
+                                                                            <input type="text" name="category" class="form-control mw-100 w-200px" placeholder="Plot Size" />
+                                                                            <!--begin::Select2-->
+                                                                            <div class="w-100 w-md-200px">
+                                                                                <select class="form-select" name="plot_or_shop" data-placeholder="Select type" data-kt-ecommerce-catalog-add-project="project_option">
+                                                                                    <option></option>
+                                                                                    <option value="plot">Plot</option>
+                                                                                    <option value="shop">Shop</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <!--end::Select2-->
+                                                                            <input type="number" name="no_of_plots" class="form-control mw-100 w-200px" placeholder="Number of Plots"  />
+                                                                            <input type="text" name="plot_prefix" class="form-control mw-100 w-200px" placeholder="Plot Prefix" />
+                                                                            <input type="number" step="any" name="amount" class="form-control mw-100 w-200px" placeholder="Amount per plot"  />
+                                                                            <!--end::Input-->
+                                                                            <button type="button" data-repeater-delete="" class="btn btn-sm btn-icon btn-light-danger">
+                                                                                <i class="ki-duotone ki-cross fs-1">
+                                                                                    <span class="path1"></span>
+                                                                                    <span class="path2"></span>
+                                                                                </i>
+                                                                            </button>
                                                                         </div>
-                                                                        <!--end::Select2-->
-                                                                        <input type="number" name="no_of_plots" class="form-control mw-100 w-200px" placeholder="Number of Plots"  />
-                                                                        <input type="text" name="plot_prefix" class="form-control mw-100 w-200px" placeholder="Plot Prefix" />
-                                                                        <input type="number" step="any" name="amount" class="form-control mw-100 w-200px" placeholder="Amount per plot"  />
-                                                                        <!--end::Input-->
-                                                                        <button type="button" data-repeater-delete="" class="btn btn-sm btn-icon btn-light-danger">
-                                                                            <i class="ki-duotone ki-cross fs-1">
-                                                                                <span class="path1"></span>
-                                                                                <span class="path2"></span>
-                                                                            </i>
-                                                                        </button>
                                                                     </div>
                                                                 </div>
+                                                                <!--end::Form group-->
+                                                                <!--begin::Form group-->
+                                                                <div class="form-group mt-5">
+                                                                    <button type="button" data-repeater-create="" class="btn btn-sm btn-light-primary">
+                                                                    <i class="ki-duotone ki-plus fs-2"></i>Add another category</button>
+                                                                </div>
+                                                                <!--end::Form group-->
                                                             </div>
-                                                            <!--end::Form group-->
-                                                            <!--begin::Form group-->
-                                                            <div class="form-group mt-5">
-                                                                <button type="button" data-repeater-create="" class="btn btn-sm btn-light-primary">
-                                                                <i class="ki-duotone ki-plus fs-2"></i>Add another category</button>
-                                                            </div>
-                                                            <!--end::Form group-->
-                                                        </div>
-                                                        <!--end::Repeater-->
-                                                        <!--begin::Repeater-->
-                                                        <div id="kt_ecommerce_manual_add_plot_options" style="display:none;">
-                                                            <!--begin::Form group-->
-                                                            <div class="form-group">
-                                                                <div data-repeater-list="kt_ecommerce_manual_add_plot_options" class="d-flex flex-column gap-3">
-                                                                    <div data-repeater-item="" class="form-group d-flex flex-wrap align-items-center gap-5">
-                                                                        <!--begin::Input-->
-                                                                        <input type="text" name="category" class="form-control mw-100 w-200px" placeholder="Plot Size" />
-                                                                        <div class="w-100 w-md-200px">
-                                                                            <select class="form-select" id="plot_or_shop" name="plot_or_shop" data-placeholder="Select type" data-kt-ecommerce-catalog-add-project="project_option" value="">
-                                                                                <option value="">Select type</option>
-                                                                                <option value="plot">Plot</option>
-                                                                                <option value="shop">Shop</option>
-                                                                            </select>
+                                                            <!--end::Repeater-->
+                                                            <!--begin::Repeater-->
+                                                            <div id="kt_ecommerce_manual_add_plot_options" style="display:none;">
+                                                                <!--begin::Form group-->
+                                                                <div class="form-group">
+                                                                    <div data-repeater-list="kt_ecommerce_manual_add_plot_options" class="d-flex flex-column gap-3">
+                                                                        <div data-repeater-item="" class="form-group d-flex flex-wrap align-items-center gap-5">
+                                                                            <!--begin::Input-->
+                                                                            <input type="text" name="category" class="form-control mw-100 w-200px" placeholder="Plot Size" />
+                                                                            <div class="w-100 w-md-200px">
+                                                                                <select class="form-select" id="plot_or_shop" name="plot_or_shop" data-placeholder="Select type" data-kt-ecommerce-catalog-add-project="project_option" value="">
+                                                                                    <option value="">Select type</option>
+                                                                                    <option value="plot">Plot</option>
+                                                                                    <option value="shop">Shop</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <input type="text" name="serial_no" class="form-control mw-100 w-200px" placeholder="Plot Number"  />
+                                                                            <input type="text" name="prefix" class="form-control mw-100 w-200px" placeholder="Plot Prefix" />
+                                                                            <input type="text" name="amount" class="form-control mw-100 w-200px" placeholder="Amount"  />
+                                                                            <!--end::Input-->
+                                                                            <button type="button" data-repeater-delete="" class="btn btn-sm btn-icon btn-light-danger">
+                                                                                <i class="ki-duotone ki-cross fs-1">
+                                                                                    <span class="path1"></span>
+                                                                                    <span class="path2"></span>
+                                                                                </i>
+                                                                            </button>
                                                                         </div>
-                                                                        <input type="text" name="serial_no" class="form-control mw-100 w-200px" placeholder="Plot Number"  />
-                                                                        <input type="text" name="prefix" class="form-control mw-100 w-200px" placeholder="Plot Prefix" />
-                                                                        <input type="text" name="amount" class="form-control mw-100 w-200px" placeholder="Amount"  />
-                                                                        <!--end::Input-->
-                                                                        <button type="button" data-repeater-delete="" class="btn btn-sm btn-icon btn-light-danger">
-                                                                            <i class="ki-duotone ki-cross fs-1">
-                                                                                <span class="path1"></span>
-                                                                                <span class="path2"></span>
-                                                                            </i>
-                                                                        </button>
                                                                     </div>
                                                                 </div>
+                                                                <!--end::Form group-->
+                                                                <!--begin::Form group-->
+                                                                <div class="form-group mt-5">
+                                                                    <button type="button" data-repeater-create="" class="btn btn-sm btn-light-primary">
+                                                                    <i class="ki-duotone ki-plus fs-2"></i>Add another plot</button>
+                                                                </div>
+                                                                <!--end::Form group-->
                                                             </div>
-                                                            <!--end::Form group-->
-                                                            <!--begin::Form group-->
-                                                            <div class="form-group mt-5">
-                                                                <button type="button" data-repeater-create="" class="btn btn-sm btn-light-primary">
-                                                                <i class="ki-duotone ki-plus fs-2"></i>Add another plot</button>
-                                                            </div>
-                                                            <!--end::Form group-->
+                                                            <!--end::Repeater-->
                                                         </div>
-                                                        <!--end::Repeater-->
-                                                    </div>
-                                                    {{-- @endif --}}
+                                                        <!--end::Input group-->
+                                                    @endif
                                                 </div>
+                                                <!--end::Input group-->
                                             </div>
                                             <!--end::Card header-->
                                         </div>

@@ -52,6 +52,7 @@ Route::get('/projects/{id}', [ProjectController::class, 'showAddProjectForm'])->
 Route::get('/add-project-form', [ProjectController::class, 'showAddProjectForm'])->name('showAddProjectForm')->middleware('admin.auth');
 Route::post('/update-project', [ProjectController::class, 'updateProject'])->name('updateProject')->middleware('admin.auth');
 Route::get('{id}/plots', [ProjectController::class, 'showPlots'])->name('showPlots')->middleware('admin.auth');
+Route::post('/update-plot', [ProjectController::class, 'updatePlot'])->name('updatePlot')->middleware('admin.auth');
 Route::post('/delete-project/{id}', [ProjectController::class, 'deleteProject'])->name('deleteProject')->middleware('admin.auth');
 Route::post('/delete-plot', [ProjectController::class, 'deletePlot'])->name('deletePlot')->middleware('admin.auth');
 
@@ -88,6 +89,7 @@ Route::get('/leads/{id}', [LeadController::class, 'showLeadForm'])->name('update
 Route::get('/leads/view/{id}', [LeadController::class, 'showLeadForm'])->name('viewLead')->middleware('admin.auth');
 Route::post('/add-call-log', [LeadController::class, 'addCallLog'])->name('addCallLog')->middleware('admin.auth');
 Route::post('/import-leads-csv', [LeadController::class, 'importLeadsCSV'])->name('importLeadsCSV')->middleware('admin.auth');
+Route::get('/get-sales-agents', [LeadController::class, 'getSA'])->name('getSA')->middleware('admin.auth');
 
 Route::get('/add-invoice-form', [InvoiceController::class, 'showAddInvoiceForm'])->name('addInvoiceForm')->middleware('admin.auth');
 Route::post('/get-plots', [InvoiceController::class, 'getPlotsForProject'])->middleware('admin.auth');
