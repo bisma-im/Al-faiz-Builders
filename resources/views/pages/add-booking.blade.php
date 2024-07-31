@@ -398,7 +398,7 @@
                                             </div>
                                             <!--end::Input group base unit cost-->
                                             <!--begin::Input group extra charges-->
-                                            <div class="row mb-6">
+                                            {{-- <div class="row mb-6">
                                                 <!--begin::Label-->
                                                 <label class="col-lg-3 col-form-label required fw-semibold fs-6">Charges</label>
                                                 <!--end::Label-->
@@ -410,7 +410,7 @@
                                                 <div class="col-lg-3 fv-row">
                                                     <input type="number" step="any" id="development_charges" name="development_charges" class="form-control form-control-lg form-control-solid" placeholder="Development Charges" value="{{ $bookingData->development_charges ?? '' }}" />
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <!--end::Input group extra charges-->
                                             <!--begin::Input group per month installment-->
                                             <div class="row mb-6">
@@ -550,7 +550,55 @@
                                     </div>
                                 </div>
                                 <!--end::Payment Details Card-->
-
+                                <!--begin::Dev Charges Details Card-->
+                                @if ($isLockedMode)
+                                <div class="d-flex flex-column gap-7 gap-lg-10"  >
+                                    <div class="card card-flush py-4" id="devChargesCard" style="display: none;">
+                                        <!--begin::Card header-->
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h2>Development/Extra Charges</h2>
+                                            </div>
+                                        </div>
+                                        <!--end::Card header-->
+                                        <!--begin::Card body-->
+                                        <div class="card-body pt-0">
+                                            <!-- Installment Table -->
+                                            <table id="devChargesTable" class="table align-middle table-row-dashed fs-6 gy-5" >
+                                                <thead>
+                                                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 ">
+                                                        <th class="min-w-125px">Id</th>
+                                                        <th class="min-w-125px">Amount</th>
+                                                        <th class="min-w-125px">Description</th>
+                                                        <th class="min-w-125px">Timestamp</th>
+                                                        <th class="min-w-125px">Invoice</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="fw-semibold text-gray-600">
+                                                    @forelse ($devCharges as $devCharge)
+                                                        <tr>
+                                                            <td>{{ $devCharge->id }}</td>
+                                                            <td>{{ $devCharge->amount }}</td>
+                                                            <td>{{ $devCharge->description }}</td>
+                                                            <td>{{ $devCharge->timestamp }}</td>
+                                                            <td><a href="#" data-devChargesId = "{{ $devCharge->id }}" data-bookingId= "{{ $devCharge->booking_id }}" class="btn btn-light">Generate Invoice</a></td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="4" class="text-center">No entries found</td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                            <div class="d-flex justify-content-end">
+                                                <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_add_charges">Add New</a>
+                                            </div>
+                                        </div>
+                                        <!--end::Card body-->
+                                    </div>
+                                </div>
+                                @endif
+                                <!--end::Dev Charges Details Card-->
                                 <!--begin::Payment Details Card-->
                                 <div class="d-flex flex-column gap-7 gap-lg-10"  >
                                     <div class="card card-flush py-4" id="installmentTableCard" style="display: none;">
@@ -749,6 +797,73 @@
                         </div>
                     </div>
                     <!--end::Modal - Cancel - Booking-->
+                    <!--begin::Modal - Charges - Add-->
+                    <div class="modal fade" id="kt_modal_add_charges" tabindex="-1" aria-hidden="true">
+                        <!--begin::Modal dialog-->
+                        <div class="modal-dialog modal-dialog-centered mw-650px">
+                            <!--begin::Modal content-->
+                            <div class="modal-content">
+                                <!--begin::Form-->
+                                <form id="kt_modal_add_charges_form" class="form" data-kt-redirect="/add-charges" method="POST">
+                                    @csrf
+                                    @if(@isset($bookingData))
+                                        <input type="hidden" id="id" name="id" value="{{ $bookingData->id }}">
+                                    @endif
+                                    <!--begin::Modal header-->
+                                    <div class="modal-header" id="kt_modal_add_customer_header">
+                                        <!--begin::Modal title-->
+                                        <h2 class="fw-bold">Add Development/Extra Charges</h2>
+                                        <!--end::Modal title-->
+                                        <!--begin::Close-->
+                                        <div id="kt_modal_add_charges_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                                            <i class="ki-duotone ki-cross fs-1">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </div>
+                                        <!--end::Close-->
+                                    </div>
+                                    <!--end::Modal header-->
+                                    <!--begin::Modal body-->
+                                    <div class="modal-body py-10 px-lg-17">
+                                        <!--begin::Scroll-->
+                                        <div class="scroll-y me-n7 pe-7" id="kt_modal_add_customer_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_add_customer_header" data-kt-scroll-wrappers="#kt_modal_add_customer_scroll" data-kt-scroll-offset="300px">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <label for="dev_charges" class="form-label required">Amount</label>
+                                                <input type="number" step="any" class="form-control" name="dev_charges" id="dev_charges" placeholder="Enter amount" />
+                                            </div>
+                                            <!--end::Input group-->
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <label class="fs-6 fw-semibold mb-2 required">Description</label>
+                                                <input type="text" class="form-control" placeholder="Enter description" name="dev_charges_description" id="dev_charges_description" />
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Scroll-->
+                                    </div>
+                                    <!--end::Modal body-->
+                                    <!--begin::Modal footer-->
+                                    <div class="modal-footer flex-center">
+                                        <!--begin::Button-->
+                                        <button type="reset" id="kt_modal_add_charges_cancel" class="btn btn-light me-3" >Discard</button>
+                                        <!--end::Button-->
+                                        <!--begin::Button-->
+                                        <button type="submit" id="kt_modal_add_charges_submit" class="btn btn-primary">
+                                            <span class="indicator-label">Submit</span>
+                                            <span class="indicator-progress">Please wait...
+                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                        </button>
+                                        <!--end::Button-->
+                                    </div>
+                                    <!--end::Modal footer-->
+                                </form>
+                                <!--end::Form-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Modal - Charges - Add-->
                 @endif
             </div>
             <!--end::Content container-->
@@ -762,5 +877,6 @@
     <script src="{{ URL::asset('assets/js/custom/account/settings/add-booking.js') }}"></script>
     @if ($isLockedMode)
         <script src="{{ URL::asset('assets/js/custom/account/settings/cancel-booking.js') }}"></script>
+        <script src="{{ URL::asset('assets/js/custom/account/settings/add-development-charges.js') }}"></script>
     @endif
 @endpush

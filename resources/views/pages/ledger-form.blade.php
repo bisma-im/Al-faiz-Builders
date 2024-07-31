@@ -54,7 +54,7 @@
                                         <select name="account_head_code" aria-label="Select an account" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select an account...">
                                             <option value="">Select an account...</option>
                                             @foreach ($accounts as $account)
-                                                <option value="{{ $account->HeadCode }}">{{ $account->HeadName . ' - ' . $account->HeadCode }}</option>
+                                                <option value="{{ $account->Account_Code }}">{{ $account->Account_Title . ' - ' . $account->Account_Code }}</option>
                                             @endforeach
                                         </select>
                                     </div>    

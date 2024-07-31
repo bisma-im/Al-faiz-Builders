@@ -286,10 +286,12 @@
                                         <!--begin::Input-->
                                         <select name="sales_agent" id="salesAgentDropdown" aria-label="Select Sales Manager" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select sales agent...">
                                             <option value="" selected disabled>Select sales agent...</option>
-                                            @foreach ($salesAgents as $salesAgent)
-                                                <option value="{{ $salesAgent->id }}" {{ (isset($leadData) && $leadData->transferred_to_user_id == $salesAgent->id) ? 'selected' : '' }}>
-                                                    {{ $salesAgent->full_name }}</option>
-                                            @endforeach
+                                            @if(isset($salesAgents))
+                                                @foreach ($salesAgents as $salesAgent)
+                                                    <option value="{{ $salesAgent->id }}" {{ (isset($leadData) && $leadData->transferred_to_user_id == $salesAgent->id) ? 'selected' : '' }}>
+                                                        {{ $salesAgent->full_name }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>  
                                         <!--end::Input-->
                                     </div>

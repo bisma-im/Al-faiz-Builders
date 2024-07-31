@@ -58,13 +58,7 @@ class LeadController extends Controller
         }
         
     }
-    
 
-    public function getSalesAgents()
-    {
-        $salesAgents = SalesAgent::all(); // Fetch your data from the database or any source
-        return response()->json($salesAgents);
-    }
     public function showLeadForm(Request $request, $id = null)
     {
         $leadData = $callLogData = null;
@@ -272,5 +266,6 @@ class LeadController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }  
     }
+
     
 }

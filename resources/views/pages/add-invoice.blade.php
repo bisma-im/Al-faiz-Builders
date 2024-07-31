@@ -38,6 +38,7 @@
                                 @if (isset($invoiceData) && $invoiceData->id)
                                     <input type="hidden" id="id" name="id" value="{{ $invoiceData->id }}">
                                     <input type="hidden" id="isInstallment" name="isInstallment" value="{{ $invoiceData->isInstallment === 'y' ?  true: false}}">
+                                    <input type="hidden" id="isCharges" name="isCharges" value="{{ $invoiceData->isCharges === 'y' ?  true: false}}">
                                 @endif
                                 {{-- <input type="hidden" id="date_and_time" name="date_and_time" value="{{ $invoiceData->formattedDateTime ?? '' }}"/> --}}
                                 <!--begin::Input group-->

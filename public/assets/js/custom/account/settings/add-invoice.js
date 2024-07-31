@@ -92,8 +92,9 @@ var KTNewInvoice = (function () {
             });
 
             const isInstallment = document.getElementById('isInstallment') ? document.getElementById('isInstallment').value : false;
+            const isCharges = document.getElementById('isCharges') ? document.getElementById('isCharges').value : false;
 
-            if(isInstallment){
+            if(isInstallment || isCharges){
                 const inputs = document.querySelectorAll('#kt_ecommerce_add_item_options input');
                 inputs.forEach(function(input) {
                     input.disabled = true;

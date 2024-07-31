@@ -101,7 +101,7 @@ Route::post('/update-invoice', [InvoiceController::class, 'updateInvoice'])->nam
 Route::get('/generate-invoice-pdf', [InvoiceController::class, 'generateInvoicePdf'])->name('generateInvoicePdf')->middleware('admin.auth');
 
 Route::post('/installment-invoice', [InvoiceController::class, 'addInstallmentInvoice'])->name('addInstallmentInvoice')->middleware('admin.auth');
-
+Route::post('/charges-invoice', [InvoiceController::class, 'addChargesInvoice'])->name('addInstallmentInvoice')->middleware('admin.auth');
 
 Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm')->middleware('admin.auth');
 Route::post('/add-booking', [BookingController::class, 'addBooking'])->name('addBooking')->middleware('admin.auth');
@@ -115,6 +115,7 @@ Route::post('/get-phases-for-booking', [BookingController::class, 'getPhasesForB
 Route::get('/get-installments/{bookingId}', [BookingController::class, 'getInstallments'])->middleware('admin.auth');
 Route::get('/get-customer/{customerId}', [BookingController::class, 'getCustomer'])->middleware('admin.auth');
 Route::get('/get-registration-number/{plotId}', [BookingController::class, 'getRegistrationNumber'])->middleware('admin.auth');
+Route::post('/add-charges', [BookingController::class, 'addDevCharges'])->name('addDevCharges')->middleware('admin.auth');
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount')->middleware('admin.auth');
 Route::get('/accounts', [AccountsController::class, 'showAccounts'])->name('showAccounts')->middleware('admin.auth');

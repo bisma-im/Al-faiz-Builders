@@ -29,8 +29,16 @@ class BookingController extends Controller
                 $selectedProjectId = $projectId;
             }
             else {
-                $selectedProjectId = $req->input('selectedProject') ? : $projects->first()->id;
-                $selectedPhaseId = $req->input('selectedPhase') ? : $phases->where('project_id', $selectedProjectId)->first()->id;
+                // Check if there are any projects before trying to access the first one
+            $selectedProjectId = $req->input('selectedProject') ?: ($projects->isNotEmpty() ? $projects->first()->id : null);
+            
+                // Ensure there is a selected project ID before attempting to find phases
+                if ($selectedProjectId) {
+                    $selectedPhase = $phases->where('project_id', $selectedProjectId)->first();
+                    $selectedPhaseId = $req->input('selectedPhase') ?: ($selectedPhase ? $selectedPhase->id : null);
+                } else {
+                    $selectedPhaseId = null;
+                }
             }
             
             // dd($phaseId, $projectId, $selectedProjectId, $selectedPhaseId);
@@ -93,7 +101,7 @@ class BookingController extends Controller
         try
         {
             $bookingData = null;
-            $isLockedMode = $isCancelled = null;
+            $isLockedMode = $isCancelled = $devCharges = null;
             $customers = DB::table('customer')
                 ->get();
 
@@ -118,6 +126,9 @@ class BookingController extends Controller
                 )
                 ->where('booking.id', $id)
                 ->first();
+
+                $devCharges = DB::table('development_charges')->where('booking_id', $id)->get();
+
                 if($bookingData->isLocked === 1)
                 {
                     $isLockedMode = true;
@@ -128,7 +139,7 @@ class BookingController extends Controller
                 }
             }
 
-            return view('pages.add-booking', compact('customers','projects','bookingData','isLockedMode' , 'isCancelled'));
+            return view('pages.add-booking', compact('customers','projects','bookingData','isLockedMode' , 'isCancelled', 'devCharges'));
         }
         catch (\Exception $e) 
         {
@@ -199,8 +210,8 @@ class BookingController extends Controller
             'phase_id' => $req->input('phase_id'),
             'plot_id' => $req->input('plot_id'),
             'unit_cost' => $req->input('unit_cost'),
-            'extra_charges' => $req->input('extra_charges'),
-            'development_charges' => $req->input('development_charges'),
+            // 'extra_charges' => $req->input('extra_charges'),
+            // 'development_charges' => $req->input('development_charges'),
             'total_amount' => $req->input('total_amount'),
             'token_amount' => $req->input('token_amount'),
             'advance_amount' => $req->input('advance_amount'),
@@ -289,7 +300,8 @@ class BookingController extends Controller
         return $customerData;
     }
 
-    public function getInstallmentsData(Request $request, $bookingId, $customerId) {
+    public function getInstallmentsData(Request $request, $bookingId, $customerId) 
+    {
         $installmentsData = [];
         // Assuming you have installment data in the request...
         foreach ($request->input('amounts', []) as $key => $amount) {
@@ -317,7 +329,8 @@ class BookingController extends Controller
             
     }
 
-    public function getRegistrationNumber($plotId){
+    public function getRegistrationNumber($plotId)
+    {
         $plot = DB::table('plots_inventory')->where('id', $plotId)->first();
         $regNumber = $plot ? $plot->file_reg_number : null;  // This will be null if no plot or no regNumber
 
@@ -327,7 +340,8 @@ class BookingController extends Controller
         ]);
     }
 
-    public function getInstallments($bookingId) {
+    public function getInstallments($bookingId) 
+    {
         $installments = DB::table('installment')
             ->where('booking_id', $bookingId)
             ->orderBy('due_date', 'asc')
@@ -338,7 +352,8 @@ class BookingController extends Controller
         ]);
     }
 
-    public function getCancelledBooking(Request $req){
+    public function getCancelledBooking(Request $req)
+    {
         $cancelledBooking = [
             'booking_id' => $req->input('bookingId'),
             'plot_id' => $req->input('plotId'),
@@ -357,7 +372,8 @@ class BookingController extends Controller
         return $cancelledBooking;
     }
     
-    public function cancelBooking(Request $req){
+    public function cancelBooking(Request $req)
+    {
         if($req->input('cancelled') === 'CANCELLED' && $req->has('cancel_booking_checkbox')){
             $cancelledBooking = $this->getCancelledBooking($req);
             $bookingId = $cancelledBooking['booking_id'];
@@ -365,7 +381,7 @@ class BookingController extends Controller
 
             try 
             { 
-                \DB::beginTransaction();
+                DB::beginTransaction();
                 $cancelledBookingId = DB::table('cancelled_bookings')->insertGetId($cancelledBooking);
                 DB::table('plots_inventory')
                     ->where('id', $plotId)
@@ -393,17 +409,17 @@ class BookingController extends Controller
                         ]);
                     }
                 }
-                \DB::commit();
+                DB::commit();
                 return response()->json(['success' => 'Booking cancelled successfully']);
             }   
             catch (\Exception $e) 
             {   
-                \DB::rollBack();
+                DB::rollBack();
                 return response()->json(['error' => $e->getMessage()], 500);
             }
         }
 
-        return response()->json(['error' => $e->getMessage()], 422);
+        return response()->json(['error' => 'error'], 422);
     }
 
     public function addBooking(Request $req)
@@ -482,5 +498,30 @@ class BookingController extends Controller
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function addDevCharges(Request $req)
+    {
+        $devChargesData = [
+            'booking_id' => $req->id,
+            'amount' => $req->dev_charges,
+            'description' => $req->dev_charges_description,
+            'timestamp' => now(),
+        ];
+
+        // dd($devChargesData);
+
+        DB::beginTransaction();
+        try
+        {
+            DB::table('development_charges')->insert($devChargesData);
+            DB::commit();
+            return response()->json(['success' => 'charges added successfully']);
+        }
+        catch (\Exception $e) 
+        {
+            DB::rollBack();
+            return new JsonResponse(['error' => $e->getMessage()], 500);
+        } 
     }
 }

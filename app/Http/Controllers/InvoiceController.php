@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -102,17 +102,20 @@ class InvoiceController extends Controller
         return $invoiceData;
     }
 
-    public function addInstallmentInvoice(Request $req){
+    public function addInstallmentInvoice(Request $req)
+    {
         $installmentId = $req->input('installmentId');
         $installment = DB::table('installment')->where('id', $installmentId)->first();
 
         $invoiceData = [
             'booking_id' => $installment->booking_id,
             'created_at' => now(),
+            'updated_at' => now(),
             'created_by' => session()->get('username'),
             'total_amount' => $installment->amount,
             'payment_status' => 'unpaid',
             'isInstallment' => 'y',
+            'isCharges' => 'n',
         ];
 
         $customerData = DB::table('customer')
@@ -161,6 +164,68 @@ class InvoiceController extends Controller
         
     }
 
+    public function addChargesInvoice(Request $req)
+    {
+        $devChargesId = $req->input('devChargesId');
+        $devCharge = DB::table('development_charges')->where('id', $devChargesId)->first();
+        $bookingId = $req->input('bookingId');
+
+        $invoiceData = [
+            'booking_id' => $bookingId,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'created_by' => session()->get('username'),
+            'total_amount' => $devCharge->amount,
+            'payment_status' => 'unpaid',
+            'isInstallment' => 'n',
+            'isCharges' => 'y',
+        ];
+
+        $customerData = DB::table('customer')
+                    ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+                    ->where('b.id', $bookingId)
+                    ->select('customer.name', 'customer.id')
+                    ->get();
+
+        try
+        {
+            DB::beginTransaction();
+            $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
+            DB::table('development_charges')->where('id', $devChargesId)->update(['invoice_id' => $invoiceId]);
+            $invoiceData['id'] = $invoiceId;
+
+            $invoiceItems[] = [
+                'invoice_id' => $invoiceId,
+                'description' => 'Development/Extra charges due for booking ' . $bookingId,
+                'amount' => (float)$invoiceData['total_amount'],
+            ];
+
+            DB::table('invoice_item')->insert($invoiceItems);
+            DB::commit();
+
+            $data = [
+                'invoiceData' => $invoiceData,
+                'customerData' => $customerData,
+                'invoiceItems' => $invoiceItems,
+            ];
+
+            $reportId = Str::random(40);
+            Cache::put($reportId, $data, now()->addMinutes(30));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invoice added successfully. Your invoice ID is ' . $invoiceId,
+                'reportId' => $reportId,
+            ]);
+            
+        }
+        catch (\Exception $e) 
+        {
+            DB::rollBack();
+            return new JsonResponse(['error' => $e->getMessage()], 500);
+        }  
+    }
+
     public function addInvoice(Request $req)
     {   
         $validator = Validator::make($req->all(), [
@@ -183,6 +248,7 @@ class InvoiceController extends Controller
         // dd(now());
         $invoiceData= $this->getInvoiceData($req);
         $invoiceData['isInstallment'] = 'n';
+        $invoiceData['isCharges'] = 'n';
         $invoiceData['created_at'] = now();
         $totalAmount = 0;
         $invoiceItems = [];
@@ -267,12 +333,13 @@ class InvoiceController extends Controller
         $invoiceItems = [];
         $items = $req->input('kt_ecommerce_add_item_options');
         $isInstallment = $req->input('isInstallment');
+        $isCharges =$req->input('isCharges');
         $customerData = DB::table('customer')
         ->join('booking as b', 'b.customer_id', '=', 'customer.id')
         ->where('b.id', $invoiceData['booking_id'])
         ->select('customer.name', 'customer.id')
         ->get();
-        if(!$isInstallment){
+        if(!$isInstallment && !$isCharges){
             foreach($items as $item)
             {
                 $invoiceItems[] = [
@@ -285,13 +352,14 @@ class InvoiceController extends Controller
             $items = DB::table('invoice_item')
            ->where('invoice_id', $id)
            ->get();
+
            foreach ($items as $item) {
-            $invoiceItems[] = [
-                'invoice_id' => $id,
-                'description' => $item->description,
-                'amount' => (float) $item->amount,
-            ];
-        }
+                $invoiceItems[] = [
+                    'invoice_id' => $id,
+                    'description' => $item->description,
+                    'amount' => (float) $item->amount,
+                ];
+            }   
         }
         try {
             DB::beginTransaction();
@@ -299,14 +367,14 @@ class InvoiceController extends Controller
                 ->where('id', $id)
                 ->update($invoiceData);
 
-            if(!$isInstallment){
+            if(!$isInstallment && !$isCharges){
                 DB::table('invoice_item')
                 ->where('invoice_id', $id)
                 ->delete();  
                 
                 DB::table('invoice_item')->insert($invoiceItems);
             } 
-            else {
+            else if($isInstallment) {
                 DB::table('installment')->where('invoice_id', $id)
                 ->update([
                     'installment_status' => $invoiceData['payment_status'], 

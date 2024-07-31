@@ -14,12 +14,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class LedgerController extends Controller
 {
     public function showLedgerForm(){
-        $accounts = DB::table('acc_coa')->select('HeadCode', 'HeadName')->get();
+        $accounts = DB::table('chart_of_accounts')->select('Account_Code', 'Account_Title')->get();
         return view('pages.ledger-form', compact('accounts'));
     }
     
     protected function fetchDataForPdf($startDate, $endDate, $accountCode) {
-        $accountName = DB::table('acc_coa')->select('HeadName')->where('HeadCode', $accountCode)->first();
+        $accountName = DB::table('chart_of_accounts')->select('Account_Title')->where('Account_Code', $accountCode)->first();
         $transactions = DB::table('voucher')
                             ->where('account_code', $accountCode)
                             ->where('date', '>=', $startDate)
@@ -29,7 +29,7 @@ class LedgerController extends Controller
     
         return [
             'transactions' => $transactions,
-            'accountName' => $accountName->HeadName, // Adjust based on your actual structure
+            'accountName' => $accountName->Account_Title, // Adjust based on your actual structure
             'startDate' => $startDate,
             'endDate' => $endDate,
             'accountCode' => $accountCode

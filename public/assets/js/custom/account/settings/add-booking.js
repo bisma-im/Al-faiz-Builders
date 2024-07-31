@@ -251,7 +251,7 @@ var KTNewBooking = (function () {
                     }
                 });
             },
-            error: function() {
+            error: function(response) {
                 Swal.fire({
                     title: 'Error!',
                     text: response.message,
@@ -360,11 +360,11 @@ var KTNewBooking = (function () {
     FormValidation.validators.checkDiscount = checkDiscount;
     
     function calculateTotalAmount(){
-        var extraCharges = parseFloat(document.getElementById('extra_charges').value) || 0;
-        var developmentCharges = parseFloat(document.getElementById('development_charges').value) || 0;
+        // var extraCharges = parseFloat(document.getElementById('extra_charges').value) || 0;
+        // var developmentCharges = parseFloat(document.getElementById('development_charges').value) || 0;
         var unitCost = parseFloat(document.getElementById('unit_cost').value) || 0;
 
-        document.getElementById('total_amount').value = extraCharges + developmentCharges + unitCost;
+        document.getElementById('total_amount').value = unitCost;
     }
 
     function calculateTotalAmountAfterAdvAndToken(){
@@ -377,8 +377,8 @@ var KTNewBooking = (function () {
 
     return {
         init: function () {
-            document.getElementById('extra_charges').addEventListener('keyup', calculateTotalAmount);
-            document.getElementById('development_charges').addEventListener('keyup', calculateTotalAmount);
+            // document.getElementById('extra_charges').addEventListener('keyup', calculateTotalAmount);
+            // document.getElementById('development_charges').addEventListener('keyup', calculateTotalAmount);
             document.getElementById('unit_cost').addEventListener('keyup', calculateTotalAmount);
 
             //Calculate remaining amount on entry of advance and
@@ -407,7 +407,6 @@ var KTNewBooking = (function () {
             e = document.querySelector("#kt_new_booking_submit");// Ensure this ID matches your plot dropdown ID
             isLocked = document.getElementById('isLocked').value; 
             function makeInputsReadonly() {
-                // $('form:not(.kt_account_deactivate_form)').find('input, select, textarea, button[type="submit"], input[type="submit"]').attr('readonly', true).attr('disabled', 'disabled');
                 $('form#kt_new_booking_form').find('input, select, textarea')
                 .attr('readonly', true)
                 .attr('disabled', 'disabled');
@@ -423,8 +422,8 @@ var KTNewBooking = (function () {
                     customer_address: { validators: { notEmpty: { message: "Customer Address is required" } } },
                     mobile_no: { validators: { notEmpty: { message: "Customer Mobile Number is required" } } },
                     unit_cost: { validators: { notEmpty: { message: "Customer Mobile Number is required" } } },
-                    extra_charges: { validators: { notEmpty: { message: "Extra Charges is required" } } },
-                    development_charges: { validators: { notEmpty: { message: "Development Charges is required" } } },
+                    // extra_charges: { validators: { notEmpty: { message: "Extra Charges is required" } } },
+                    // development_charges: { validators: { notEmpty: { message: "Development Charges is required" } } },
                     total_amount: { validators: { notEmpty: { message: "Total Amount is required" } } },
                     token_amount: { validators: { notEmpty: { message: "Token Amount is required" } } },
                     advance_amount: { validators: { notEmpty: { message: "Advance Amount is required" } } },
@@ -524,6 +523,7 @@ var KTNewBooking = (function () {
                 else if(isLocked === 'true')
                 {
                     $('#customerExistsCheck').hide();
+                    $('#devChargesCard').show();
                     makeInputsReadonly();
                     bookingId = document.getElementById('id').value;
                     console.log(bookingId);
