@@ -9,7 +9,7 @@
             height: 100%;
             margin: 0;
             font-family: Arial, sans-serif;
-            font-size: 12px;
+            font-size: 10px;
         }
         .container {
             width: 100%;
@@ -29,8 +29,7 @@
         }
         .header h3 {
             margin: 5px;
-            padding-bottom: 5px;
-            font-size: 15px;
+            font-size: 9px;
         }
         h5 {
             text-align: center;
@@ -84,13 +83,13 @@
 <body>
     <div class="container">
         @php
-            $types = ['Customer Copy', 'Bank Copy', 'Accounts Copy'];
+            $types = ['Customer Copy', 'Office Copy', 'Bank Copy'];
         @endphp
         @foreach($types as $index => $type)
         <div class="column">
             <div class="header">
-                <h3 style="float: left;">Habib Bank</h3>
-                <h3 style="float: right;">Al Faiz Builders, Karachi, <br>Pakistan</h3>
+                <h3 style="float: left;"><img style="width:200px; height: 70px;" src="{{ $imageSrc }}" alt="FaysalBankLogo"></h3>
+                <h3 style="float: right;"><div style="padding-top: 30px;">Al Faiz Builders, Karachi, Pakistan</div></h3>
                 <div style="clear: both;"></div>
                 <div class="details"> 
                     <p>Challan Date: <span class="under-line">{{ $invoiceData['created_at']->format('d-M-Y') }}</span></p>
@@ -98,15 +97,15 @@
                 </div>
                 <div class="details"> 
                     <p>Invoice No: <span class="under-line">{{ $invoiceData['id'] }}</span></p>
-                    <p class="right">Bill ID: <span class="under-line">????????</span></p>
+                    <p class="right">Faysal Transit: <span class="under-line">_______________</span></p>
                 </div>
                 <h5>Credit to Al Faiz, Main Collection A/c at State Life Cash Management Branch 0011-12345678-03</h5>
-                <div class="details">
-                    <p>Customer Name: <span class="under-line">{{ $customerData[0]->name }}</span></p>
+                <div class="details"  style="margin-top: 15px;">
+                    <p>Customer Name: <span class="under-line ms-auto">{{ $customerData[0]->name }}</span></p>
                 </div>
                 <div class="details"> 
-                    <p>Customer ID: <span class="under-line">{{ $customerData[0]->id }}</span></p>
-                    <p class="right">Booking ID: <span class="under-line">{{ $invoiceData['booking_id'] }}</span></p>
+                    <p>REG ID: <span class="under-line"> 2912311 </span></p>
+                    <p class="right">Plot No: <span class="under-line">{{ $customerData[0]->plot_no }}</span></p>
                 </div>
                 <div class="table-container">
                     <table>
@@ -124,8 +123,16 @@
                                 </tr>
                             @endforeach
                             <tr>
-                                <th colspan="1">TOTAL</th>
+                                <th colspan="1"><strong>Total Amount Payable Within Due Date</strong></th>
                                 <td style="text-align: right">{{ number_format($invoiceData['total_amount'], 2) }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="1">Installment Payment After {{ $invoiceData['due_date'] }}</td>
+                                <td style="text-align: right">500</td>
+                            </tr>
+                            <tr>
+                                <th colspan="1"><strong>Total Amount Payable After {{ $invoiceData['due_date'] }}</strong></th>
+                                <td style="text-align: right">{{ number_format($invoiceData['total_amount'] + 500, 2) }}</td>
                             </tr>
                         </tbody>
                     </table>

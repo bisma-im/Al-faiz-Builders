@@ -28,8 +28,9 @@
         }
         .header h3 {
             margin: 5px;
-            padding-bottom: 10px;
-            font-size: 15px;
+            font-size: 12px;
+            align-content: center;
+            align-items: center;
         }
         h5 {
             text-align: center;
@@ -91,8 +92,8 @@
             @foreach($types as $index => $type)
             <div class="column" style="border-right-style: dashed">
                 <div class="header">
-                    <h3 style="float: left;">Habib Bank</h3>
-                    <h3 style="float: right;">Al Faiz Builders, Karachi, <br>Pakistan</h3>
+                    <h3 style="float: left;"><img style="width:200px; height: 70px;" src="{{ asset('assets/media/logos/faysalbanklogo.png') }}" alt=""></h3>
+                    <h3 style="float: right;"><div style="padding-top: 30px;">Al Faiz Builders, Karachi, Pakistan</div></h3>
                     <div style="clear: both;"></div>
                     <div class="details"> 
                         <p>Challan Date: <span class="under-line">2124134</span></p>

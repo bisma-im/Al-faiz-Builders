@@ -106,7 +106,6 @@ class InvoiceController extends Controller
     {
         $installmentId = $req->input('installmentId');
         $installment = DB::table('installment')->where('id', $installmentId)->first();
-
         $invoiceData = [
             'booking_id' => $installment->booking_id,
             'created_at' => now(),
@@ -121,7 +120,8 @@ class InvoiceController extends Controller
         $customerData = DB::table('customer')
                     ->join('booking as b', 'b.customer_id', '=', 'customer.id')
                     ->where('b.id', $invoiceData['booking_id'])
-                    ->select('customer.name', 'customer.id')
+                    ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
+                    ->select('customer.name', 'customer.id', 'pl.plot_no')
                     ->get();
 
         try
@@ -140,10 +140,17 @@ class InvoiceController extends Controller
             DB::table('invoice_item')->insert($invoiceItems);
             DB::commit();
 
+            $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
+            $imageSrc = 'data:image/png;base64,' . $imageData;
+
+            
+            $invoiceData['due_date'] = Carbon::parse($installment->due_date)->format('d-M-Y');
+
             $data = [
                 'invoiceData' => $invoiceData,
                 'customerData' => $customerData,
                 'invoiceItems' => $invoiceItems,
+                'imageSrc' => $imageSrc,
             ];
 
             $reportId = Str::random(40);
@@ -183,8 +190,9 @@ class InvoiceController extends Controller
 
         $customerData = DB::table('customer')
                     ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+                    ->join('plots_inventory as pl', 'b.plot_id','=', 'pl.id')
                     ->where('b.id', $bookingId)
-                    ->select('customer.name', 'customer.id')
+                    ->select('customer.name', 'customer.id', 'pl.plot_no')
                     ->get();
 
         try
@@ -203,10 +211,15 @@ class InvoiceController extends Controller
             DB::table('invoice_item')->insert($invoiceItems);
             DB::commit();
 
+            $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
+            $imageSrc = 'data:image/png;base64,' . $imageData;
+            $invoiceData['due_date'] = Carbon::parse($devCharge->due_date)->format('d-M-Y');
+
             $data = [
                 'invoiceData' => $invoiceData,
                 'customerData' => $customerData,
                 'invoiceItems' => $invoiceItems,
+                'imageSrc' => $imageSrc,
             ];
 
             $reportId = Str::random(40);
@@ -255,10 +268,11 @@ class InvoiceController extends Controller
         $items = $req->input('kt_ecommerce_add_item_options');
         $customerData = DB::table('customer')
                         ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+                        ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
                         ->where('b.id', $invoiceData['booking_id'])
-                        ->select('customer.name', 'customer.id')
+                        ->select('customer.name', 'customer.id', 'pl.plot_no')
                         ->get();
-        
+        $invoiceData['due_date'] = Carbon::now()->addMonth()->toDateString();
         try
         {
             
@@ -279,11 +293,14 @@ class InvoiceController extends Controller
 
                 DB::table('invoice_item')->insert($invoiceItems);
                 DB::commit();
+                $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
+                $imageSrc = 'data:image/png;base64,' . $imageData;
 
                 $data = [
                     'invoiceData' => $invoiceData,
                     'customerData' => $customerData,
                     'invoiceItems' => $invoiceItems,
+                    'imageSrc' => $imageSrc,
                 ];
 
                 $reportId = Str::random(40);

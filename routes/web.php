@@ -122,3 +122,6 @@ Route::get('/accounts', [AccountsController::class, 'showAccounts'])->name('show
 Route::get('/add-account-form', [AccountsController::class, 'showAddAccountForm'])->name('addAccountForm')->middleware('admin.auth');
 Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments')->middleware('admin.auth');
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument')->middleware('admin.auth');
+
+
+Route::view('/testing', 'pages.invoice-challan')->name('invoiceChallan');

@@ -506,6 +506,7 @@ class BookingController extends Controller
             'booking_id' => $req->id,
             'amount' => $req->dev_charges,
             'description' => $req->dev_charges_description,
+            'due_date' => Carbon::now()->addMonth()->toDateString(),
             'timestamp' => now(),
         ];
 
