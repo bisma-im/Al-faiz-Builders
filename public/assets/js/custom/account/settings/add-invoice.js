@@ -5,7 +5,7 @@ var KTNewInvoice = (function () {
     var unpaidRadio = document.getElementById('unpaid');
     var cancelledRadio = document.getElementById('cancelled');
     var paymentDateDiv = document.getElementById('paymentDate');
-    var datePickerInput = document.getElementById('kt_ecommerce_payment_datepicker') ;     
+    var datePickerInput = document.getElementById('kt_ecommerce_payment_datepicker');
     const a = (listData) => {
         const repeater = $("#kt_ecommerce_add_item_options").repeater({
             initEmpty: false,
@@ -18,17 +18,17 @@ var KTNewInvoice = (function () {
                 $(this).slideUp(e);
             },
         });
-    
+
         // Use setList if listData is provided and is an array
         if (Array.isArray(listData) && listData.length > 0) {
             repeater.setList(listData);
         }
     },
-    c = () => {
-        document.querySelectorAll('[data-kt-ecommerce-catalog-add-project="project_option"]').forEach((e) => {
-            $(e).hasClass("select2-hidden-accessible") || $(e).select2({ minimumResultsForSearch: -1 });
-        });
-    };
+        c = () => {
+            document.querySelectorAll('[data-kt-ecommerce-catalog-add-project="project_option"]').forEach((e) => {
+                $(e).hasClass("select2-hidden-accessible") || $(e).select2({ minimumResultsForSearch: -1 });
+            });
+        };
 
     function calculateTotal() {
         var total = 0;
@@ -36,9 +36,9 @@ var KTNewInvoice = (function () {
         repeaterItems.forEach((item, index) => {
             // Using attribute selector to match any input name that contains 'serial_number'
             const amountInput = item.querySelector('input[name*="amount"]');
-            
+
             if (amountInput) {
-                total+= parseFloat(amountInput.value) || 0;
+                total += parseFloat(amountInput.value) || 0;
             } else {
                 console.log('Error');
             }
@@ -51,10 +51,10 @@ var KTNewInvoice = (function () {
         window.open(pdfUrl, '_blank');
 
         // Redirect the current window after a short delay.
-        setTimeout(function() {
+        setTimeout(function () {
             window.location.href = '/invoices';
         }, 500);
-    } 
+    }
     function togglePaymentDate() {
         datePickerInput.value = ''; // Clear the datepicker input
         if (paidRadio.checked) {
@@ -75,7 +75,7 @@ var KTNewInvoice = (function () {
             });
             t = document.querySelector("#kt_new_invoice_form");
             e = document.querySelector("#kt_new_invoice_submit");// Ensure this ID matches your plot dropdown ID
-             
+
             a();
 
             // Event listeners for radio buttons
@@ -86,7 +86,7 @@ var KTNewInvoice = (function () {
             // Initial check on page load
             togglePaymentDate();
 
-            $(document).on('focusout', 'input[name*="amount"]', function() {
+            $(document).on('focusout', 'input[name*="amount"]', function () {
                 console.log('Focus out detected on dynamically added element');
                 calculateTotal();
             });
@@ -94,26 +94,26 @@ var KTNewInvoice = (function () {
             const isInstallment = document.getElementById('isInstallment') ? document.getElementById('isInstallment').value : false;
             const isCharges = document.getElementById('isCharges') ? document.getElementById('isCharges').value : false;
 
-            if(isInstallment || isCharges){
+            if (isInstallment || isCharges) {
                 const inputs = document.querySelectorAll('#kt_ecommerce_add_item_options input');
-                inputs.forEach(function(input) {
+                inputs.forEach(function (input) {
                     input.disabled = true;
                 });
 
                 // Disable all buttons in the repeater
                 const buttons = document.querySelectorAll('#kt_ecommerce_add_item_options button[data-repeater-delete], #kt_ecommerce_add_item_options button[data-repeater-create]');
-                buttons.forEach(function(button) {
+                buttons.forEach(function (button) {
                     button.style.display = 'none';
                 });
             }
 
-            document.querySelector('#kt_ecommerce_add_item_options').addEventListener('click', function(event) {
+            document.querySelector('#kt_ecommerce_add_item_options').addEventListener('click', function (event) {
                 if (event.target.matches('[data-repeater-delete], [data-repeater-delete] *')) {
                     console.log('category deleted');
                     setTimeout(calculateTotal, 1000); // Delay update to ensure DOM has updated
                 }
             });
-            
+
             // Initialize form validation
             r = FormValidation.formValidation(t, {
                 fields: {
@@ -126,16 +126,16 @@ var KTNewInvoice = (function () {
                     bootstrap: new FormValidation.plugins.Bootstrap5({ rowSelector: ".fv-row", eleInvalidClass: "", eleValidClass: "" }),
                 },
             });
-            
+
             var invoiceDataElement = document.getElementById('invoiceData');
             var itemsJson = invoiceDataElement.getAttribute('data-items');
             if (itemsJson) {
-                var items = JSON.parse(itemsJson); 
+                var items = JSON.parse(itemsJson);
                 console.log(items);
                 a(items);
             }
 
-            $('#bookingDropdown').on('change', function(e){
+            $('#bookingDropdown').on('change', function (e) {
                 var bookingId = e.target.value;
                 $.ajax({
                     url: '/get-booking-details',
@@ -145,14 +145,14 @@ var KTNewInvoice = (function () {
                         _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                     },
                     dataType: 'json',
-                    success: function(response) {
+                    success: function (response) {
                         // Assuming 'response' is already an object; if not, use JSON.parse(response)
                         // response = JSON.parse(response);
                         $('#project').val(response[0].project_title);  // Update the project title
                         $('#phase').val(response[0].phase_title);      // Update the phase title
                         $('#plot_no').val(response[0].plot_no);           // Update the plot number
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log("Error fetching data:", error);
                         // Handle errors here
                     }
@@ -163,18 +163,18 @@ var KTNewInvoice = (function () {
                 r.validate().then(function (r) {
                     if (r === "Valid") {
                         e.setAttribute("data-kt-indicator", "on");
-                            e.disabled = true;
-                            var formData = new FormData(t);
-                            var invoiceId = formData.get('id');
-                            var url = invoiceId ? '/update-invoice' : '/add-invoice';
-                            fetch(url, {
-                                method: 'POST',
-                                body: formData,
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest',
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                                }
-                            })
+                        e.disabled = true;
+                        var formData = new FormData(t);
+                        var invoiceId = formData.get('id');
+                        var url = invoiceId ? '/update-invoice' : '/add-invoice';
+                        fetch(url, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            }
+                        })
                             .then(response => response.json())
                             .then(data => {
                                 if (data.success) {
@@ -184,8 +184,11 @@ var KTNewInvoice = (function () {
                                         icon: 'success',
                                         confirmButtonText: 'OK'
                                     }).then((result) => {
-                                        if (result.isConfirmed) {
+                                        if (result.isConfirmed && data.reportId !== null) {
                                             generatePdf(data.reportId);
+                                        }
+                                        else {
+                                            window.location.href = '/invoices';
                                         }
                                     });
                                 }
@@ -212,7 +215,7 @@ var KTNewInvoice = (function () {
                                 e.removeAttribute("data-kt-indicator");
                                 e.disabled = false;
                             });
-                        
+
                     } else {
                         Swal.fire({
                             text: "Sorry, looks like there are some errors detected, please try again.",

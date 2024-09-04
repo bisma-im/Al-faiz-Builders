@@ -124,4 +124,4 @@ Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->nam
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument')->middleware('admin.auth');
 
 
-Route::view('/testing', 'pages.invoice-challan')->name('invoiceChallan');
+Route::view('/testing', 'pages.alfaiz-paymentvoucher')->name('voucher');

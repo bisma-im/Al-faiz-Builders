@@ -32,7 +32,7 @@ var KTModalLogsAdd = (function () {
                     var anchor = $(event.relatedTarget); 
                     var voucherId = anchor.data('voucher-id');
                     var modal = $(this);
-                    modal.find('#voucher-id-placeholder').text('/'+voucherId);
+                    modal.find('#voucher-id-placeholder').text(voucherId);
                     modal.find('#voucher-type-placeholder').text(anchor.data('voucher-type'));
                     var safeVoucherId = voucherId.replace(/\//g, '-');
                     $.ajax({

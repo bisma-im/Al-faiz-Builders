@@ -1,127 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receipt Voucher</title>
+    <title>Alfaiz Payment Voucher</title>
     <style>
-        body {
-            font-family: 'Times New Roman', serif;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        .voucher-container {
-            width: 100%;
-            max-width: 677px;
-            margin: 0 auto;
-        }
-        .header {
+
+        body {
+            font-family: 'Calibri', sans-serif;
+            background-color: #fff;
             text-align: center;
+        }
+
+        .voucher-wrapper {
+            width: 800px;
+            margin: 20px auto;
+            border: 3px solid black;
+            padding: 20px;
+        }
+
+        header {
             margin-bottom: 20px;
         }
-        .header h1 .header h2{
-            margin: 0;
-            font-size: 24px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 30px;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        .text-right {
-            text-align: right;
-        }
-        .signature-area {
-            margin-top: 30px;
-            margin-bottom: 20px;
-        }
-        .signature-line {
-            width: 137px;
-            border-bottom: 1px solid #000;
+
+        .header-box {
             display: inline-block;
-            margin-right: 10px;
+            width: 30%;
+            vertical-align: top;
+            text-align: center;
         }
-        .voucher-number {
-            text-align: right;
+
+        .header-box img {
+            max-width: 100%;
+            height: 90px;
+        }
+
+        .header-box h4 {
             font-size: 16px;
+            text-decoration: underline;
+            margin-bottom: 10px;
         }
-        footer {
-            width: 100%;
-            position: fixed; 
-            bottom: -60px; 
-            left: 0px; 
-            right: 0px;
-            height: 100px; 
-            color: #000;
-            line-height: 35px;
-            border-top: 1px solid black;
+
+        .header-box p {
             font-size: 12px;
         }
-        .footer-left {
-            float: left;
-            padding: 20px; /* Adjust as needed */
+
+        .voucher-heading {
+            font-size: 24px;
+            font-style: italic;
+            background-color: chocolate;
+            border: 1px solid black;
+            padding: 20px 0;
+            /* margin-bottom: 20px; */
         }
-        .footer-right {
-            float: right;
-            padding: 20px; /* Adjust as needed */
+
+        .customer-copy-type {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .customer-copy-type p {
+            display: inline-block;
+            border: 2px solid black;
+            width: 160px;
+            text-align: center;
+            height: 22px;
+            line-height: 22px;
+            font-weight: 700;
+        }
+
+        .voucher-details {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .voucher-details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .voucher-details th,
+        .voucher-details td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .voucher-details th {
+            background-color: #f0f0f0;
+        }
+
+        .voucher-details .inline {
+            text-align: center;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .totalAmount-Content {
+        display: inline-block; /* This keeps the container fitting to the content */
+        height: 30px; /* Maintain the height if needed */
+        border: 2px solid #555; /* Border styling */
+        font-size: 22px; /* Font styling */
+        font-weight: 900; /* Font styling */
+        padding: 5px; /* Padding around the content */
+    }
+
+    .totalAmount {
+        text-align: right; /* Aligns the container to the right */
+        margin-bottom: 20px; /* Bottom margin for spacing */
+    }
+
+        .sig-section {
+            margin-top: 100px;
+        }
+
+        .sig-section div {
+            display: inline-block;
+            width: 25%;
+            margin: 0 20px;
+            padding-top: 10px;
+            border-top: 2px solid black;
+            font-weight: 900;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .no-border {
+            border: none !important;
         }
     </style>
 </head>
+
 <body>
-    <div class="voucher-container">
-        <div class="header">
-            <h1>The Owners Incorporation of XXX Building</h1>
-            <h2>RECEIPT VOUCHER</h2>
-            <div class="voucher-number">
-                Voucher No.: {{ $voucherId }}
+    <div class="voucher-wrapper">
+        <header>
+            <div class="header-box">
+                <h4>HEAD OFFICE</h4>
+                <p>Faiz House C-151, Block-9, Gulshan-e-Iqbal, Karachi.</p>
+                <p>UAN: 021 111 11 FAIZ (3249)</p>
+            </div>
+            <div class="header-box">
+                <img src="{{ $imageSrc }}" alt="Alfaiz Logo">
+            </div>
+            <div class="header-box">
+                <h4>BRANCH OFFICE</h4>
+                <p>Main Disco Mor, Orangi Town, Karachi.</p>
+                <p>Email: <a href="mailto:info@alfaizbuilders.com">info@alfaizbuilders.com</a></p>
+                <p>Ph: 021 36668116</p>
+            </div>
+        </header>
+
+        <div class="voucher-heading">
+            {{ $voucherData[0]->voucher_type === 'BPV' || $voucherData[0]->voucher_type === 'CPV' ? 'PAYMENT VOUCHER' : 'RECEIPT VOUCHER'}}
+        </div>
+        <div class="customer-copy-type">
+            <p>ORIGINAL COPY</p>
+        </div>
+        
+
+        <div class="voucher-details">
+            <table>
+                <tr class="inline">
+                    <td class="no-border">Voucher No.: {{ $voucherId }}</td>
+                    <td class="no-border">Ref Slip No.: 000000000</td>
+                    <td class="no-border">Date: {{ \Carbon\Carbon::parse($voucherData[0]->added_on)->format('d-M-Y') }}</td>
+                </tr>
+                <tr>
+                    <th>{{$voucherData[0]->voucher_type === 'BPV' || $voucherData[0]->voucher_type === 'CPV' ? 'Paid To: ' : 'Received From'}}</th>
+                    <td>{{ $payee }}</td>
+                    <th>Amount in Rs.</th>
+                    <td>{{ number_format($totals->totalDebitAmount, 2) }}</td>
+                </tr>
+                <tr>
+                    <th>Amount in Words</th>
+                    <td colspan="3">{{ $amountInWords }}</td>
+                </tr>
+                <tr>
+                    <th>In Cash/Cheque No.</th>
+                    <td>{{ $voucherData[0]->voucher_type === 'CPV' || $voucherData[0]->voucher_type === 'CRV' ? 'In Cash' : $voucherData[0]->cheque_no }}</td>
+                    <th>Drawn on Bank</th>
+                    <td>{{ $voucherData[0]->drawn_on_bank }}</td>
+                </tr>
+                <tr>
+                    <th>On Account of</th>
+                    <td colspan="3">{{ $voucherData[0]->description }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="totalAmount">
+            <div class="totalAmount-Content">
+                <span>PKR {{ number_format($totals->totalDebitAmount, 2) }}</span> <!-- Use span for inline display -->
             </div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Account Code</th>
-                    <th>Particulars</th>
-                    <th class="text-right">Debit PKR</th>
-                    <th class="text-right">Credit PKR</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{-- Rows will be inserted here --}}
-                @foreach ($voucherData as $entry)
-                <tr>
-                    <td>{{ $entry->account_code }}</td>
-                    <td>{{ $entry->description }}</td>
-                    <td class="text-right">{{ number_format($entry->debit_amount, 2) }}</td>
-                    <td class="text-right">{{ number_format($entry->credit_amount, 2) }}</td>
-                </tr>
-                @endforeach
-                <tr>
-                    <th colspan="2">TOTAL</th>
-                    <td class="text-right">{{ number_format($totals->totalDebitAmount, 2) }}</td>
-                    <td class="text-right">{{ number_format($totals->totalCreditAmount, 2) }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <div>
-            <div  class="signature-area">Prepared by: <span class="signature-line"></span> Signature: <span class="signature-line"></span> Date: <span class="signature-line"></span></div>
-            <div  class="signature-area">Approved by: <span class="signature-line"></span> Signature: <span class="signature-line"></span> Date: <span class="signature-line"></span></div>
-            <div  class="signature-area">Recorded by: <span class="signature-line"></span> Signature: <span class="signature-line"></span> Date: <span class="signature-line"></span></div>
+
+        <div class="sig-section">
+            <div>Accountant</div>
+            <div>Finance Manager</div>
+            <div>Received by</div>
         </div>
     </div>
-    <footer>
-        <div class="footer-left">
-            Printed by: {{ Session::get('username') }} 
-        </div>
-        <div class="footer-right">
-            Date and Time: {{ now() }}
-        </div>
-    </footer>
 </body>
+
 </html>

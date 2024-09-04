@@ -117,25 +117,7 @@ var KTCustomersList = (function () {
                 })).on("draw", function () {
                     r(), c(), l(), KTMenu.init();
                 }),
-                r(),
-                document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", function (e) {
-                    t.search(e.target.value).draw();
-                }),
-                (e = $('[data-kt-customer-table-filter="month"]')),
-                (o = document.querySelectorAll('[data-kt-customer-table-filter="payment_type"] [name="payment_type"]')),
-                document.querySelector('[data-kt-customer-table-filter="filter"]').addEventListener("click", function () {
-                    const n = e.val();
-                    let c = "";
-                    o.forEach((t) => {
-                        t.checked && (c = t.value), "all" === c && (c = "");
-                    });
-                    const r = n + " " + c;
-                    t.search(r).draw();
-                }),
-                c(),
-                document.querySelector('[data-kt-customer-table-filter="reset"]').addEventListener("click", function () {
-                    e.val(null).trigger("change"), (o[0].checked = !0), t.search("").draw();
-                }));
+                r());
                 $('#kt_datepicker_start, #kt_datepicker_end').on('change', function () {
                     var startDate = $('#kt_datepicker_start').val();
                     var endDate = $('#kt_datepicker_end').val();

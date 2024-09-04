@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -13,36 +14,39 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
-    public function showInvoices(){
+    public function showInvoices()
+    {
         $invoices = DB::table('invoice')
-        ->join('booking as b', 'b.id', '=', 'invoice.booking_id')
-        ->join('customer as c', 'c.id', '=', 'b.customer_id')
-        ->join('plots_inventory as pl', 'pl.id', '=', 'b.plot_id')
-        ->select('invoice.id', 'invoice.booking_id', 'c.name', 'invoice.created_at', 'pl.plot_no', 'invoice.total_amount')
-        ->get();
+            ->join('booking as b', 'b.id', '=', 'invoice.booking_id')
+            ->join('customer as c', 'c.id', '=', 'b.customer_id')
+            ->join('plots_inventory as pl', 'pl.id', '=', 'b.plot_id')
+            ->select('invoice.id', 'invoice.booking_id', 'c.name', 'invoice.created_at', 'pl.plot_no', 'invoice.total_amount')
+            ->get();
         return view('pages.invoices', ['invoiceData' => $invoices]);
     }
 
-    public function showAddInvoiceForm(Request $req, $id=null)
+    public function showAddInvoiceForm(Request $req, $id = null)
     {
-        try
-        {   
+        try {
             $invoiceData = $invoiceItems =  null;
             $bookings = DB::table('booking')
                 ->join('customer as c', 'c.id', '=', 'booking.customer_id')
                 ->select('booking.id', 'c.name', 'c.cnic_number')
                 ->get();
 
-            if($id)
-            {
+            if ($id) {
                 $invoiceData = DB::table('invoice')
                     ->join('booking as b', 'b.id', '=', 'invoice.booking_id')
                     ->join('projects as pr', 'pr.id', '=', 'b.project_id')
                     ->join('phase as ph', 'ph.id', '=', 'b.phase_id')
                     ->join('plots_inventory as pl', 'pl.id', '=', 'b.plot_id')
                     ->where('invoice.id', $id)
-                    ->select('pr.project_title', 'ph.phase_title', 'pl.plot_no', 
-                    'invoice.*')
+                    ->select(
+                        'pr.project_title',
+                        'ph.phase_title',
+                        'pl.plot_no',
+                        'invoice.*'
+                    )
                     ->first();
 
                 if (!empty($invoiceData->payment_date)) {
@@ -54,23 +58,20 @@ class InvoiceController extends Controller
                 // dd($invoiceData->payment_date);
 
                 $invoiceItems = DB::table('invoice_item')
-                ->where('invoice_id', $id)
-                ->select('description', 'amount')
-                ->get();
+                    ->where('invoice_id', $id)
+                    ->select('description', 'amount')
+                    ->get();
                 // dd($invoiceItems);
             }
 
-            return view('pages.add-invoice', compact('bookings','invoiceData', 'invoiceItems'));
-        
-        }
-        catch (\Exception $e) 
-        {
+            return view('pages.add-invoice', compact('bookings', 'invoiceData', 'invoiceItems'));
+        } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
     public function getBookingDetails(Request $req)
-    {   
+    {
         $bookingId = $req->booking_id;
         $bookingDetails = DB::table('booking')
             ->join('projects as pr', 'pr.id', '=', 'booking.project_id')
@@ -86,7 +87,7 @@ class InvoiceController extends Controller
     public function getInvoiceData(Request $req)
     {
         // $invoiceDateTime = Carbon::createFromFormat('Y-m-d H:i', $req->input('invoice_date_time'));
-        $invoiceData=[
+        $invoiceData = [
             'booking_id' => $req->input('booking_id'),
             'updated_at' => now(),
             'created_by' => session()->get('username'),
@@ -118,14 +119,13 @@ class InvoiceController extends Controller
         ];
 
         $customerData = DB::table('customer')
-                    ->join('booking as b', 'b.customer_id', '=', 'customer.id')
-                    ->where('b.id', $invoiceData['booking_id'])
-                    ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
-                    ->select('customer.name', 'customer.id', 'pl.plot_no')
-                    ->get();
+            ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+            ->where('b.id', $invoiceData['booking_id'])
+            ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
+            ->select('customer.name', 'customer.id', 'pl.plot_no')
+            ->get();
 
-        try
-        {
+        try {
             DB::beginTransaction();
             $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
             DB::table('installment')->where('id', $installmentId)->update(['invoice_id' => $invoiceId]);
@@ -143,7 +143,7 @@ class InvoiceController extends Controller
             $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
             $imageSrc = 'data:image/png;base64,' . $imageData;
 
-            
+
             $invoiceData['due_date'] = Carbon::parse($installment->due_date)->format('d-M-Y');
 
             $data = [
@@ -161,14 +161,10 @@ class InvoiceController extends Controller
                 'message' => 'Invoice added successfully. Your invoice ID is ' . $invoiceId,
                 'reportId' => $reportId,
             ]);
-            
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             DB::rollBack();
             return new JsonResponse(['error' => $e->getMessage()], 500);
-        }      
-        
+        }
     }
 
     public function addChargesInvoice(Request $req)
@@ -189,14 +185,13 @@ class InvoiceController extends Controller
         ];
 
         $customerData = DB::table('customer')
-                    ->join('booking as b', 'b.customer_id', '=', 'customer.id')
-                    ->join('plots_inventory as pl', 'b.plot_id','=', 'pl.id')
-                    ->where('b.id', $bookingId)
-                    ->select('customer.name', 'customer.id', 'pl.plot_no')
-                    ->get();
+            ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+            ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
+            ->where('b.id', $bookingId)
+            ->select('customer.name', 'customer.id', 'pl.plot_no')
+            ->get();
 
-        try
-        {
+        try {
             DB::beginTransaction();
             $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
             DB::table('development_charges')->where('id', $devChargesId)->update(['invoice_id' => $invoiceId]);
@@ -230,17 +225,14 @@ class InvoiceController extends Controller
                 'message' => 'Invoice added successfully. Your invoice ID is ' . $invoiceId,
                 'reportId' => $reportId,
             ]);
-            
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             DB::rollBack();
             return new JsonResponse(['error' => $e->getMessage()], 500);
-        }  
+        }
     }
 
     public function addInvoice(Request $req)
-    {   
+    {
         $validator = Validator::make($req->all(), [
             'kt_ecommerce_add_item_options.*.description' => 'required_with:kt_ecommerce_add_item_options.*.amount',
             'kt_ecommerce_add_item_options.*.amount' => 'required_with:kt_ecommerce_add_item_options.*.description',
@@ -251,7 +243,7 @@ class InvoiceController extends Controller
             'payment_status' => 'required',
             'payment_date' => 'required_if:payment_status,paid|date',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -259,7 +251,7 @@ class InvoiceController extends Controller
             ]);
         }
         // dd(now());
-        $invoiceData= $this->getInvoiceData($req);
+        $invoiceData = $this->getInvoiceData($req);
         $invoiceData['isInstallment'] = 'n';
         $invoiceData['isCharges'] = 'n';
         $invoiceData['created_at'] = now();
@@ -267,29 +259,25 @@ class InvoiceController extends Controller
         $invoiceItems = [];
         $items = $req->input('kt_ecommerce_add_item_options');
         $customerData = DB::table('customer')
-                        ->join('booking as b', 'b.customer_id', '=', 'customer.id')
-                        ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
-                        ->where('b.id', $invoiceData['booking_id'])
-                        ->select('customer.name', 'customer.id', 'pl.plot_no')
-                        ->get();
+            ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+            ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
+            ->where('b.id', $invoiceData['booking_id'])
+            ->select('customer.name', 'customer.id', 'pl.plot_no')
+            ->get();
         $invoiceData['due_date'] = Carbon::now()->addMonth()->toDateString();
-        try
-        {
-            
+        try {
+
             DB::beginTransaction();
             $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
             $invoiceData['id'] = $invoiceId;
-            if($items)
-            {
-                foreach($items as $item)
-                {
-                        $invoiceItems[] = [
-                            'invoice_id' => $invoiceId,
-                            'description' => $item['description'],
-                            'amount' => (float)$item['amount'],
-                        ];
-                    
-                } 
+            if ($items) {
+                foreach ($items as $item) {
+                    $invoiceItems[] = [
+                        'invoice_id' => $invoiceId,
+                        'description' => $item['description'],
+                        'amount' => (float)$item['amount'],
+                    ];
+                }
 
                 DB::table('invoice_item')->insert($invoiceItems);
                 DB::commit();
@@ -311,27 +299,25 @@ class InvoiceController extends Controller
                     'message' => 'Invoice added successfully. Your invoice ID is ' . $invoiceId,
                     'reportId' => $reportId,
                 ]);
-            }  
-            else{
+            } else {
                 return response()->json([
                     'success' => false,
                     'message' => 'You must add at least one item to generate an invoice.'
                 ]);
             }
-        }
-        catch (\Exception $e) 
-        {
+        } catch (\Exception $e) {
             DB::rollBack();
             return new JsonResponse(['error' => $e->getMessage()], 500);
-        }      
+        }
     }
 
-    public function generateInvoicePdf(Request $request) {
+    public function generateInvoicePdf(Request $request)
+    {
         $reportId = $request->query('reportId');
-    
+
         // Retrieve the cached data using reportId
         $data = Cache::get($reportId);
-    
+
         if ($data) {
             $pdf = PDF::loadView('pages.invoice-challan', $data)->setPaper('a4', 'landscape');
             $pdf->setOptions(['defaultFont' => 'sans-serif']);
@@ -348,35 +334,36 @@ class InvoiceController extends Controller
         $invoiceData = $this->getInvoiceData($req);
         $id = $req->input('id'); // Get the user ID from the request
         $invoiceItems = [];
+        $reportId =null;
         $items = $req->input('kt_ecommerce_add_item_options');
         $isInstallment = $req->input('isInstallment');
-        $isCharges =$req->input('isCharges');
+        $isCharges = $req->input('isCharges');
         $customerData = DB::table('customer')
-        ->join('booking as b', 'b.customer_id', '=', 'customer.id')
-        ->where('b.id', $invoiceData['booking_id'])
-        ->select('customer.name', 'customer.id')
-        ->get();
-        if(!$isInstallment && !$isCharges){
-            foreach($items as $item)
-            {
+            ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+            ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
+            ->where('b.id', $invoiceData['booking_id'])
+            ->select('customer.name', 'customer.id', 'pl.plot_no')
+            ->get();
+        if (!$isInstallment && !$isCharges) {
+            foreach ($items as $item) {
                 $invoiceItems[] = [
                     'invoice_id' => $id,
                     'description' => $item['description'],
                     'amount' => (float)$item['amount'],
-                ];         
-            } 
+                ];
+            }
         } else {
             $items = DB::table('invoice_item')
-           ->where('invoice_id', $id)
-           ->get();
+                ->where('invoice_id', $id)
+                ->get();
 
-           foreach ($items as $item) {
+            foreach ($items as $item) {
                 $invoiceItems[] = [
                     'invoice_id' => $id,
                     'description' => $item->description,
                     'amount' => (float) $item->amount,
                 ];
-            }   
+            }
         }
         try {
             DB::beginTransaction();
@@ -384,44 +371,48 @@ class InvoiceController extends Controller
                 ->where('id', $id)
                 ->update($invoiceData);
 
-            if(!$isInstallment && !$isCharges){
+            if (!$isInstallment && !$isCharges) {
                 DB::table('invoice_item')
-                ->where('invoice_id', $id)
-                ->delete();  
-                
+                    ->where('invoice_id', $id)
+                    ->delete();
+
                 DB::table('invoice_item')->insert($invoiceItems);
-            } 
-            else if($isInstallment) {
+            } else if ($isInstallment) {
                 DB::table('installment')->where('invoice_id', $id)
-                ->update([
-                    'installment_status' => $invoiceData['payment_status'], 
-                    'updated_at' => now(),
-                ]);
+                    ->update([
+                        'installment_status' => $invoiceData['payment_status'],
+                        'updated_at' => now(),
+                    ]);
             }
 
             DB::commit();
+
+            if($invoiceData['payment_status'] !== 'paid'){
+            $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
+            $imageSrc = 'data:image/png;base64,' . $imageData;
+
+            $invoiceData['due_date'] = Carbon::now()->addMonth()->toDateString();
 
             $invoiceData['id'] = $id;
             $invoiceData['created_at'] = $invoiceData['updated_at'];
             $data = [
                 'invoiceData' => $invoiceData,
                 'customerData' => $customerData,
+                'imageSrc' => $imageSrc,
                 'invoiceItems' => $invoiceItems,
             ];
 
             $reportId = Str::random(40);
-            Cache::put($reportId, $data, now()->addMinutes(30));
+            Cache::put($reportId, $data, now()->addMinutes(30));}
 
             return response()->json([
                 'success' => true,
                 'message' => 'Invoice updated successfully.',
-                'reportId' => $reportId,
+                'reportId' => $reportId ?? null,
             ]);
-        } 
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
 }
