@@ -17,16 +17,49 @@ class AccountsController extends Controller
         return view('pages.add-account', ['headings' => $headings, 'accounts' => $accounts]);
     }
 
-    public function showAccounts(Request $req)
+    public function showAccounts(Request $request)
     {
-        $accountData = DB::table('chart_of_accounts')->get();
-        if($req->session()->get('role') === 'admin'){
-            return view('pages.accounts', ['accountData' => $accountData]);
-        }
-        else{
-            return redirect()->back();
-        }
+      return view('pages.accounts');
     }
+
+    public function getAccounts(Request $request)
+    {
+        // Page Length
+        $pageNumber = ( $request->start / $request->length )+1;
+        $pageLength = $request->length;
+        $skip       = ($pageNumber-1) * $pageLength;
+
+        // Page Order
+        $orderColumnIndex = $request->order[0]['column'] ?? '0';
+        $orderBy = $request->order[0]['dir'] ?? 'desc';
+
+        // get data from products table
+        $query = DB::table('chart_of_accounts')->select('*');
+
+        // Search
+        $search = $request->search;
+        $query = $query->where(function($query) use ($search){
+            $query->orWhere('Account_Code', 'like', "%".$search."%");
+            $query->orWhere('Account_Title', 'like', "%".$search."%");
+        });
+
+        $orderByName = 'Account_Code';
+        switch($orderColumnIndex){
+            case '0':
+                $orderByName = 'Account_Code';
+                break;
+            case '1':
+                $orderByName = 'Account_Title';
+                break;
+        
+        }
+        $query = $query->orderBy($orderByName, $orderBy);
+        $recordsFiltered = $recordsTotal = $query->count();
+        $users = $query->skip($skip)->take($pageLength)->get();
+
+        return response()->json(["draw"=> $request->draw, "recordsTotal"=> $recordsTotal, "recordsFiltered" => $recordsFiltered, 'data' => $users], 200);
+    }
+    
 
     public function getAccountData(Request $req){
         $accountHeadId = $req->input('account_head_id');

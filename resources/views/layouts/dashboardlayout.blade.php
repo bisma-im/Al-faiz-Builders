@@ -4971,6 +4971,26 @@ License: For each use you must have a valid license purchased only from above li
 												</a>
 												<!--end:Menu link-->
 											</div>
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link" href="{{ route('addDevChargesForm') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Add Development Charges</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
+											<div class="menu-item">
+												<!--begin:Menu link-->
+												<a class="menu-link" href="{{ route('addDemarcationChargesForm') }}">
+													<span class="menu-bullet">
+														<span class="bullet bullet-dot"></span>
+													</span>
+													<span class="menu-title">Add Demarcation Charges</span>
+												</a>
+												<!--end:Menu link-->
+											</div>
 											@endif
 											<!--begin:Menu item Leads-->
 											@if (in_array('leads', session('permissions', [])))

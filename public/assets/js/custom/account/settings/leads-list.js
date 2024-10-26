@@ -21,8 +21,8 @@ var KTCustomersList = (function () {
                     }).then(function (e) {
                         e.value
                             ? Swal.fire({ text: "You have deleted " + n + "!.", icon: "success", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } }).then(function () {
-                                  t.row($(o)).remove().draw();
-                              })
+                                t.row($(o)).remove().draw();
+                            })
                             : "cancel" === e.dismiss && Swal.fire({ text: n + " was not deleted.", icon: "error", buttonsStyling: !1, confirmButtonText: "Ok, got it!", customClass: { confirmButton: "btn fw-bold btn-primary" } });
                     });
                 });
@@ -95,7 +95,7 @@ var KTCustomersList = (function () {
     //         });
     //     })
     //     .catch(error => console.error('Error fetching sales agents:', error));
-        
+
     // }
 
     // function transferSelectedLeads(checkboxes, agentId) {
@@ -116,27 +116,79 @@ var KTCustomersList = (function () {
             // salesAgentsElement = document.getElementById('salesAgentsData');
             // salesAgents = salesAgentsElement.getAttribute('data-agents');
             // console.log(salesAgents);
-            (n = document.querySelector("#kt_users_table")) &&
-                (n.querySelectorAll("tbody tr").forEach((t) => {
-                    const e = t.querySelectorAll("td"),
-                        o = moment(e[5].innerHTML, "DD MMM YYYY, LT").format();
-                    e[5].setAttribute("data-order", o);
-                }),
-                (t = $(n).DataTable({
-                    info: !1,
-                    order: [],
-                    columnDefs: [
-                        { orderable: !1, targets: 0 },
-                        { orderable: !1, targets: 6 },
-                    ],
-                })).on("draw", function () {
-                    r(), c(), l(), KTMenu.init();
-                }),
-                r(),
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            n = document.querySelector("#kt_users_table");
+            if (n) {
+                t = $(n).DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "/get-leads",
+                        type: "POST",
+                        data: function (data) {
+                            data.search = $('input[data-kt-customer-table-filter="search"]').val();
+                        }
+                    },
+                    order: ['1', 'DESC'],
+                    pageLength: 10,
+                    searching: true,
+                    aoColumns: [
+                        {
+                            data: 'id',
+                            render: function(data, type, row) {
+                                return `<div class="form-check form-check-sm form-check-custom form-check-solid">
+                                            <input class="form-check-input" type="checkbox" value="1" />
+                                        </div>`; //you can add your view route here
+                            }
+                        },
+                        {
+                            data: 'name',
+                            render: function(data, type, row) {
+                                return `<a href="/leads/${row.id}" class="text-gray-600 text-hover-primary mb-1">${row.name}</a>`;
+                            }
+                        },
+                        {
+                            data: 'mobile_number_1',
+                        },
+                        {
+                            data: 'landline_number_1',
+                        },
+                        {
+                            data: 'email',
+                        },
+                        {
+                            data: 'source_of_information',
+                        },
+                        {
+                            data: 'id',
+                            render: function(data, type, row) {
+                                return `<a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                            
+                                            <div class="menu-item px-3">
+                                                <a href="/leads/view/${row.id}" class="menu-link px-3">View</a>
+                                            </div>
+                                            <div class="menu-item px-3">
+                                                <a href="#" class="menu-link px-3" data-kt-customer-table-filter="delete_row">Delete</a>
+                                            </div>
+                                        </div>`;
+                            }
+                        }
+                    ]
+                }).on('draw', function () {
+                    r(), c(), KTMenu.init();
+                });
+                r();
+                c();
                 document.querySelector('[data-kt-customer-table-filter="search"]').addEventListener("keyup", function (e) {
-                    t.search(e.target.value).draw();
-                }),
-                c());
+                    t.search($(this).val()).draw();
+                });
+            }
         },
     };
 })();

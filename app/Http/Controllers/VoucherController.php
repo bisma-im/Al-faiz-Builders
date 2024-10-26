@@ -146,16 +146,19 @@ class VoucherController extends Controller
     {
         $voucherDate = Carbon::createFromFormat('Y-m-d', $req->input('voucher_date'));
         $chequeNum = null;
+        $drawnOnBank =0;
         if ($voucherType === 'BPV' || $voucherType === 'BRV') {
             $chequeNum = $req->input('cheque_no');
+            $drawnOnBank =$req->input('drawn_on_bank');
         }
+        // dd($drawnOnBank);
         $voucherData = [
             'date' => $voucherDate->toDateString(),
             'account_code' => $req->input('debit_account_code'),
             'debit_amount' => $req->input('amount'),
             'description' => $req->input('description'),
             'cheque_no' => $chequeNum,
-            'drawn_on_bank' => $req->input('drawn_on_bank'),
+            'drawn_on_bank' => $drawnOnBank,
             'added_by' => session()->get('username'),
             'added_on' => now(),
             'updated_on' => now(),
@@ -221,6 +224,7 @@ class VoucherController extends Controller
     {
         $voucherType = $req->input('voucher_type');
         $voucherData = $this->getVoucherData($req, $voucherType);
+        // dd($voucherData);
         $today = Carbon::now();
         $currentYearMonth = $today->year . '/' . $today->month;
         $newBalance = $this->calculateNewBalance($voucherData);

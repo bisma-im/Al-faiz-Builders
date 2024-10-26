@@ -84,6 +84,7 @@ Route::get('/add-lead-form/{id?}', [LeadController::class, 'showLeadForm'])->nam
 Route::post('/add-lead', [LeadController::class, 'addLead'])->name('addLead')->middleware('admin.auth');
 Route::post('/update-lead', [LeadController::class, 'updateLead'])->name('updateLead')->middleware('admin.auth');
 Route::post('/delete-lead', [LeadController::class, 'deleteLead'])->name('deleteLead')->middleware('admin.auth');
+Route::post('/get-leads', [LeadController::class, 'getLeads'])->name('getLeads')->middleware('admin.auth');
 Route::get('/leads', [LeadController::class, 'showLeads'])->name('showLeads')->middleware('admin.auth');
 Route::get('/leads/{id}', [LeadController::class, 'showLeadForm'])->name('updateLeadForm')->middleware('admin.auth');
 Route::get('/leads/view/{id}', [LeadController::class, 'showLeadForm'])->name('viewLead')->middleware('admin.auth');
@@ -104,6 +105,8 @@ Route::post('/installment-invoice', [InvoiceController::class, 'addInstallmentIn
 Route::post('/charges-invoice', [InvoiceController::class, 'addChargesInvoice'])->name('addInstallmentInvoice')->middleware('admin.auth');
 
 Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm')->middleware('admin.auth');
+Route::get('/add-dev-charges-form', [BookingController::class, 'addDevChargesForm'])->name('addDevChargesForm')->middleware('admin.auth');
+Route::get('/add-demarcation-charges-form', [BookingController::class, 'addDevChargesForm'])->name('addDemarcationChargesForm')->middleware('admin.auth');
 Route::post('/add-booking', [BookingController::class, 'addBooking'])->name('addBooking')->middleware('admin.auth');
 Route::get('/active-bookings/{phaseId?}/{projectId?}', [BookingController::class, 'showBookings'])->name('showActiveBookings')->middleware('admin.auth');
 Route::get('/cancelled-bookings', [BookingController::class, 'showBookings'])->name('showCancelledBookings')->middleware('admin.auth');
@@ -116,12 +119,14 @@ Route::get('/get-installments/{bookingId}', [BookingController::class, 'getInsta
 Route::get('/get-customer/{customerId}', [BookingController::class, 'getCustomer'])->middleware('admin.auth');
 Route::get('/get-registration-number/{plotId}', [BookingController::class, 'getRegistrationNumber'])->middleware('admin.auth');
 Route::post('/add-charges', [BookingController::class, 'addDevCharges'])->name('addDevCharges')->middleware('admin.auth');
+Route::get('/download-booking-media/{docName}', [BookingController::class, 'downloadBookingMedia'])->name('downloadBookingMedia')->middleware('admin.auth');
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount')->middleware('admin.auth');
 Route::get('/accounts', [AccountsController::class, 'showAccounts'])->name('showAccounts')->middleware('admin.auth');
+Route::post('/get-accounts', [AccountsController::class, 'getAccounts'])->name('getAccounts')->middleware('admin.auth');
 Route::get('/add-account-form', [AccountsController::class, 'showAddAccountForm'])->name('addAccountForm')->middleware('admin.auth');
 Route::get('/user-documents', [DocumentController::class, 'showDocuments'])->name('showDocuments')->middleware('admin.auth');
 Route::get('/download/{docName}', [DocumentController::class, 'downloadDocument'])->name('downloadDocument')->middleware('admin.auth');
 
 
-Route::view('/testing', 'pages.alfaiz-paymentvoucher')->name('voucher');
+Route::view('/testing', 'pages.add-dev-charges')->name('voucher');

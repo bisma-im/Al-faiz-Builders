@@ -24,7 +24,17 @@
                         aria-controls="kt_account_profile_details">
                         <!--begin::Card title-->
                         <div class="card-title m-0">
-                            <h3 class="fw-bold m-0">New Voucher</h3>
+                            @if($voucherType === 'CPV')
+                                <h3 class="fw-bold m-0">Cash Payment Voucher</h3>
+                            @elseif($voucherType === 'CRV')
+                                <h3 class="fw-bold m-0">Cash Receipt Voucher</h3>
+                            @elseif($voucherType === 'BRV')
+                                <h3 class="fw-bold m-0">Bank Receipt Voucher</h3>
+                            @elseif($voucherType === 'BPV')
+                                <h3 class="fw-bold m-0">Bank Payment Voucher</h3>
+                            @elseif($voucherType === 'JV')
+                                <h3 class="fw-bold m-0">Journal Voucher</h3>
+                            @endif
                         </div>
                         <!--end::Card title-->
                     </div>
@@ -35,7 +45,7 @@
                         <form id="kt_new_voucher_form" class="form" data-kt-redirect="/vouchers"
                             action="{{ route('addVoucher') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="voucher_type" value="{{ $voucherType }}">
+                            <input type="hidden" name="voucher_type" id="voucher_type" value="{{ $voucherType }}">
                             <!--begin::Card body-->
                             <div class="card-body border-top p-9">
                                 <!--begin::Input group-->
@@ -126,20 +136,10 @@
                                     <!--end::Input group-->
                                 </div>
                                 <!--end::Input group-->
-                                <!--end::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
-                                    <label class="col-lg-2 col-form-label required fw-semibold fs-6">Drawn on Bank</label>
-                                    <!--end::Label-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-4 fv-row">
-                                        <input type="text" name="drawn_on_bank"
-                                            class="form-control form-control-lg form-control-solid"
-                                            placeholder="Drawn on Bank" value="" />
-                                    </div>
-                                    <!--end::Col-->
-                                    <!--begin::Label-->
-                                    <label class="col-lg-2 col-form-label required fw-semibold fs-6">On account of</label>
+                                    <label class="col-lg-2 col-form-label required fw-semibold fs-6">On account
+                                        of</label>
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-4 fv-row">
@@ -148,28 +148,41 @@
                                             placeholder="Description" value="" />
                                     </div>
                                     <!--end::Col-->
+                                    @if($voucherType === 'BPV' || $voucherType === 'BRV')
+                                    <!--begin::Label-->
+                                    <label class="col-lg-2 col-form-label required fw-semibold fs-6">Drawn on
+                                        Bank</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-4 fv-row">
+                                        <input type="number" name="drawn_on_bank"
+                                            class="form-control form-control-lg form-control-solid"
+                                            placeholder="Drawn on Bank" value="" />
+                                    </div>
+                                    <!--end::Col-->
+                                    @endif
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     @if($voucherType === 'BPV' || $voucherType === 'BRV')
-                                        <!--begin::Label-->
-                                        <label class="col-lg-2 col-form-label required fw-semibold fs-6">Cheque No.</label>
-                                        <!--end::Label-->
-                                        <!--begin::Col-->
-                                        <div class="col-lg-4 fv-row">
-                                            <input type="text" name="cheque_no"
-                                                class="form-control form-control-lg form-control-solid"
-                                                placeholder="Cheque No." value="" />
-                                        </div>
-                                        <!--end::Col-->
+                                    <!--begin::Label-->
+                                    <label class="col-lg-2 col-form-label required fw-semibold fs-6">Cheque No.</label>
+                                    <!--end::Label-->
+                                    <!--begin::Col-->
+                                    <div class="col-lg-4 fv-row">
+                                        <input type="text" name="cheque_no"
+                                            class="form-control form-control-lg form-control-solid"
+                                            placeholder="Cheque No." value="" />
+                                    </div>
+                                    <!--end::Col-->
                                     @endif
                                 </div>
                                 <!--begin::Input group-->
                                 <div class="row mb-6">
                                     <!--begin::Label-->
                                     <label class="col-lg-2 col-form-label fw-semibold fs-6">
-                                        <span class="required">Attach File</span>
+                                        <span>Attach File</span>
                                         <span class="ms-1" data-bs-toggle="tooltip"
                                             title="Select any receipt, bill, cheque copy etc">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">

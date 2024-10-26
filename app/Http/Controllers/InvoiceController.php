@@ -107,6 +107,7 @@ class InvoiceController extends Controller
     {
         $installmentId = $req->input('installmentId');
         $installment = DB::table('installment')->where('id', $installmentId)->first();
+        $invoiceItems = [];
         $invoiceData = [
             'booking_id' => $installment->booking_id,
             'created_at' => now(),
@@ -131,11 +132,27 @@ class InvoiceController extends Controller
             DB::table('installment')->where('id', $installmentId)->update(['invoice_id' => $invoiceId]);
             $invoiceData['id'] = $invoiceId;
 
-            $invoiceItems[] = [
-                'invoice_id' => $invoiceId,
-                'description' => 'installment due for booking ' . $invoiceData['booking_id'],
-                'amount' => (float)$invoiceData['total_amount'],
-            ];
+            if ($installment->advance_and_token === 'y') {
+                $booking = DB::table('booking')->where('id', $installment->booking_id)->first();
+
+                $items = [
+                    'Advance Amount' => $booking->advance_amount,
+                    'Token Amount' => $booking->token_amount
+                ];
+                foreach ($items as $description => $amount) {
+                    $invoiceItems[] = [
+                        'invoice_id' => $invoiceId,
+                        'description' => $description,
+                        'amount' => (float)$amount,
+                    ];
+                }
+            } else {
+                $invoiceItems[] = [
+                    'invoice_id' => $invoiceId,
+                    'description' => 'installment due for booking ' . $invoiceData['booking_id'],
+                    'amount' => (float)$invoiceData['total_amount'],
+                ];
+            }
 
             DB::table('invoice_item')->insert($invoiceItems);
             DB::commit();
@@ -170,48 +187,76 @@ class InvoiceController extends Controller
     public function addChargesInvoice(Request $req)
     {
         $devChargesId = $req->input('devChargesId');
-        $devCharge = DB::table('development_charges')->where('id', $devChargesId)->first();
         $bookingId = $req->input('bookingId');
-
-        $invoiceData = [
-            'booking_id' => $bookingId,
-            'created_at' => now(),
-            'updated_at' => now(),
-            'created_by' => session()->get('username'),
-            'total_amount' => $devCharge->amount,
-            'payment_status' => 'unpaid',
-            'isInstallment' => 'n',
-            'isCharges' => 'y',
-        ];
-
-        $customerData = DB::table('customer')
-            ->join('booking as b', 'b.customer_id', '=', 'customer.id')
-            ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
-            ->where('b.id', $bookingId)
-            ->select('customer.name', 'customer.id', 'pl.plot_no')
-            ->get();
+        $invoiceData = [];
+        $chargeName = '';
+        $amount = null;
 
         try {
             DB::beginTransaction();
-            $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
-            DB::table('development_charges')->where('id', $devChargesId)->update(['invoice_id' => $invoiceId]);
-            $invoiceData['id'] = $invoiceId;
 
+            if ($devChargesId) {
+                // If devChargesId is provided, fetch development charges
+                $devCharge = DB::table('development_charges')->where('id', $devChargesId)->first();
+                $amount = $devCharge->amount;
+                $chargeName = 'Development/Extra Charges';
+            } else {
+                // If devChargesId is null, generate invoice for demarcation charges
+                $booking = DB::table('booking')
+                    ->where('id', $bookingId)
+                    ->first();
+
+                if (!$booking) {
+                    throw new \Exception("Demarcation charges have already been invoiced or booking not found.");
+                }
+                $amount = $booking->demarcation_charges;
+                $chargeName = 'Demarcation Charges';
+            }
+            
+                // Prepare invoice data for development charges
+                $invoiceData = [
+                    'booking_id' => $bookingId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'created_by' => session()->get('username'),
+                    'total_amount' => $amount,
+                    'payment_status' => 'unpaid',
+                    'isInstallment' => 'n',
+                    'isCharges' => 'y',
+                    'due_date' => Carbon::now()->addWeek()->toDateString(),
+                ];
+
+            // Insert the invoice and retrieve the invoice ID
+            $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
+
+            // If handling development charges, update the development_charges table
+            if ($devChargesId) {
+                DB::table('development_charges')->where('id', $devChargesId)->update(['invoice_id' => $invoiceId]);
+            }
+
+            // Insert the invoice items
             $invoiceItems[] = [
                 'invoice_id' => $invoiceId,
-                'description' => 'Development/Extra charges due for booking ' . $bookingId,
+                'description' => $chargeName . ' due for booking ' . $bookingId,
                 'amount' => (float)$invoiceData['total_amount'],
             ];
-
             DB::table('invoice_item')->insert($invoiceItems);
+
             DB::commit();
+
+            // Prepare data for the invoice report
+            $customerData = DB::table('customer')
+                ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+                ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
+                ->where('b.id', $bookingId)
+                ->select('customer.name', 'customer.id', 'pl.plot_no')
+                ->get();
 
             $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
             $imageSrc = 'data:image/png;base64,' . $imageData;
-            $invoiceData['due_date'] = Carbon::parse($devCharge->due_date)->format('d-M-Y');
 
             $data = [
-                'invoiceData' => $invoiceData,
+                'invoiceData' => array_merge($invoiceData, ['id' => $invoiceId]),
                 'customerData' => $customerData,
                 'invoiceItems' => $invoiceItems,
                 'imageSrc' => $imageSrc,
@@ -230,6 +275,7 @@ class InvoiceController extends Controller
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }
     }
+
 
     public function addInvoice(Request $req)
     {
@@ -334,7 +380,7 @@ class InvoiceController extends Controller
         $invoiceData = $this->getInvoiceData($req);
         $id = $req->input('id'); // Get the user ID from the request
         $invoiceItems = [];
-        $reportId =null;
+        $reportId = null;
         $items = $req->input('kt_ecommerce_add_item_options');
         $isInstallment = $req->input('isInstallment');
         $isCharges = $req->input('isCharges');
@@ -387,23 +433,24 @@ class InvoiceController extends Controller
 
             DB::commit();
 
-            if($invoiceData['payment_status'] !== 'paid'){
-            $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
-            $imageSrc = 'data:image/png;base64,' . $imageData;
+            if ($invoiceData['payment_status'] !== 'paid') {
+                $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
+                $imageSrc = 'data:image/png;base64,' . $imageData;
 
-            $invoiceData['due_date'] = Carbon::now()->addMonth()->toDateString();
+                $invoiceData['due_date'] = Carbon::now()->addMonth()->toDateString();
 
-            $invoiceData['id'] = $id;
-            $invoiceData['created_at'] = $invoiceData['updated_at'];
-            $data = [
-                'invoiceData' => $invoiceData,
-                'customerData' => $customerData,
-                'imageSrc' => $imageSrc,
-                'invoiceItems' => $invoiceItems,
-            ];
+                $invoiceData['id'] = $id;
+                $invoiceData['created_at'] = $invoiceData['updated_at'];
+                $data = [
+                    'invoiceData' => $invoiceData,
+                    'customerData' => $customerData,
+                    'imageSrc' => $imageSrc,
+                    'invoiceItems' => $invoiceItems,
+                ];
 
-            $reportId = Str::random(40);
-            Cache::put($reportId, $data, now()->addMinutes(30));}
+                $reportId = Str::random(40);
+                Cache::put($reportId, $data, now()->addMinutes(30));
+            }
 
             return response()->json([
                 'success' => true,

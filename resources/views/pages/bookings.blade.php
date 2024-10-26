@@ -10,7 +10,8 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Booking List</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+                        Booking List</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -36,14 +37,17 @@
                     <!--begin::Filter menu-->
                     <div class="m-0">
                         <!--begin::Menu toggle-->
-                        <a href="#" class="btn btn-sm btn-flex bg-body btn-color-gray-700 btn-active-color-primary fw-bold" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                        <i class="ki-duotone ki-filter fs-6 text-muted me-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                        </i>Filter</a>
+                        <a href="#"
+                            class="btn btn-sm btn-flex bg-body btn-color-gray-700 btn-active-color-primary fw-bold"
+                            data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <i class="ki-duotone ki-filter fs-6 text-muted me-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                            </i>Filter</a>
                         <!--end::Menu toggle-->
                         <!--begin::Menu 1-->
-                        <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true" id="kt_menu_641d512351273">
+                        <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true"
+                            id="kt_menu_641d512351273">
                             <!--begin::Header-->
                             <div class="px-7 py-5">
                                 <div class="fs-5 text-dark fw-bold">Filter Options</div>
@@ -61,7 +65,9 @@
                                     <!--end::Label-->
                                     <!--begin::Input-->
                                     <div>
-                                        <select class="form-select form-select-solid" data-kt-select2="true" data-placeholder="Select option" data-dropdown-parent="#kt_menu_641d512351273" data-allow-clear="true">
+                                        <select class="form-select form-select-solid" data-kt-select2="true"
+                                            data-placeholder="Select option"
+                                            data-dropdown-parent="#kt_menu_641d512351273" data-allow-clear="true">
                                             <option></option>
                                             <option value="1">Approved</option>
                                             <option value="2">Pending</option>
@@ -87,7 +93,8 @@
                                         <!--end::Options-->
                                         <!--begin::Options-->
                                         <label class="form-check form-check-sm form-check-custom form-check-solid">
-                                            <input class="form-check-input" type="checkbox" value="2" checked="checked" />
+                                            <input class="form-check-input" type="checkbox" value="2"
+                                                checked="checked" />
                                             <span class="form-check-label">Customer</span>
                                         </label>
                                         <!--end::Options-->
@@ -101,8 +108,10 @@
                                     <label class="form-label fw-semibold">Notifications:</label>
                                     <!--end::Label-->
                                     <!--begin::Switch-->
-                                    <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                        <input class="form-check-input" type="checkbox" value="" name="notifications" checked="checked" />
+                                    <div
+                                        class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
+                                        <input class="form-check-input" type="checkbox" value="" name="notifications"
+                                            checked="checked" />
                                         <label class="form-check-label">Enabled</label>
                                     </div>
                                     <!--end::Switch-->
@@ -110,8 +119,10 @@
                                 <!--end::Input group-->
                                 <!--begin::Actions-->
                                 <div class="d-flex justify-content-end">
-                                    <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2" data-kt-menu-dismiss="true">Reset</button>
-                                    <button type="submit" class="btn btn-sm btn-primary" data-kt-menu-dismiss="true">Apply</button>
+                                    <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2"
+                                        data-kt-menu-dismiss="true">Reset</button>
+                                    <button type="submit" class="btn btn-sm btn-primary"
+                                        data-kt-menu-dismiss="true">Apply</button>
                                 </div>
                                 <!--end::Actions-->
                             </div>
@@ -123,7 +134,8 @@
                     <!--begin::Secondary button-->
                     <!--end::Secondary button-->
                     <!--begin::Primary button-->
-                    <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Create</a>
+                    <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#kt_modal_create_app">Create</a>
                     <!--end::Primary button-->
                 </div>
                 <!--end::Actions-->
@@ -141,10 +153,12 @@
                         <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
                             <!--begin::Nav item-->
                             <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'active' ? 'active' : '' }}" href="{{ route('showActiveBookings') }}">Active</a>
+                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'active' ? 'active' : '' }}"
+                                    href="{{ route('showActiveBookings') }}">Active</a>
                             </li>
                             <li class="nav-item mt-2">
-                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'cancelled' ? 'active' : '' }}" href="{{ route('showCancelledBookings') }}">Cancelled</a>
+                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'cancelled' ? 'active' : '' }}"
+                                    href="{{ route('showCancelledBookings') }}">Cancelled</a>
                             </li>
                         </ul>
                     </div>
@@ -157,22 +171,29 @@
                         <div class="d-flex align-items-center position-relative my-1 row">
                             <!--begin::Col-->
                             <div class="col-lg-3 fv-row">
-                                <input type="hidden" id="selectedStatus" value="{{ $selectedStatus }}"/>
-                                <select name="project_id" id="selectedProject" aria-label="Select Project" class="form-select form-select-solid form-select-lg fw-semibold" data-control="select2" data-placeholder="Select project...">
+                                <input type="hidden" id="selectedStatus" value="{{ $selectedStatus }}" />
+                                <select name="project_id" id="selectedProject" aria-label="Select Project"
+                                    class="form-select form-select-solid form-select-lg fw-semibold"
+                                    data-control="select2" data-placeholder="Select project...">
                                     <option value="" selected disabled>Select Project...</option>
                                     @foreach ($projects as $project)
-                                        <option value="{{ $project->id }}" {{ (isset($selectedProjectId) && $selectedProjectId == $project->id) ? 'selected' : '' }}>
-                                            {{ $project->project_title }}</option>
+                                    <option value="{{ $project->id }}" {{ (isset($selectedProjectId) &&
+                                        $selectedProjectId==$project->id) ? 'selected' : '' }}>
+                                        {{ $project->project_title }}</option>
                                     @endforeach
                                     <option value="all">All</option>
-                                </select>                                        
+                                </select>
                             </div>
                             <div class="col-lg-3 fv-row">
-                                <select name="phase_id" id="selectedPhase" data-selected-phase-id="{{ $selectedPhaseId }}" aria-label="Select Phase" class="form-select form-select-solid form-select-lg fw-semibold" data-placeholder="Select phase.." data-control="select2">
+                                <select name="phase_id" id="selectedPhase"
+                                    data-selected-phase-id="{{ $selectedPhaseId }}" aria-label="Select Phase"
+                                    class="form-select form-select-solid form-select-lg fw-semibold"
+                                    data-placeholder="Select phase.." data-control="select2">
                                     <option value="" selected disabled>Select Phase...</option>
                                     @foreach ($phases as $phase)
-                                        <option value="{{ $phase->id }}" {{ (isset($selectedPhaseId) && $selectedPhaseId == $phase->id) ? 'selected' : '' }}>
-                                            {{ $phase->phase_title }}</option>
+                                    <option value="{{ $phase->id }}" {{ (isset($selectedPhaseId) &&
+                                        $selectedPhaseId==$phase->id) ? 'selected' : '' }}>
+                                        {{ $phase->phase_title }}</option>
                                     @endforeach
                                     <option value="all">All</option>
                                 </select>
@@ -183,7 +204,9 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Bookings" />
+                                <input type="text" data-kt-customer-table-filter="search"
+                                    class="form-control form-control-solid w-250px ps-12"
+                                    placeholder="Search Bookings" />
                             </div>
                             <!--end::Search-->
                         </div>
@@ -198,10 +221,13 @@
                             </div>
                             <!--end::Toolbar-->
                             <!--begin::Group actions-->
-                            <div class="d-flex justify-content-end align-items-center d-none" data-kt-customer-table-toolbar="selected">
+                            <div class="d-flex justify-content-end align-items-center d-none"
+                                data-kt-customer-table-toolbar="selected">
                                 <div class="fw-bold me-5">
-                                <span class="me-2" data-kt-customer-table-select="selected_count"></span>Selected</div>
-                                <button type="button" class="btn btn-danger" data-kt-customer-table-select="delete_selected">Delete Selected</button>
+                                    <span class="me-2" data-kt-customer-table-select="selected_count"></span>Selected
+                                </div>
+                                <button type="button" class="btn btn-danger"
+                                    data-kt-customer-table-select="delete_selected">Delete Selected</button>
                             </div>
                             <!--end::Group actions-->
                         </div>
@@ -216,23 +242,28 @@
                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
                                     <th class="w-10px pe-2">
                                         <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
-                                            <input class="form-check-input" type="checkbox" data-kt-check="true" data-kt-check-target="#kt_users_table .form-check-input" value="1" />
+                                            <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                                data-kt-check-target="#kt_users_table .form-check-input" value="1" />
                                         </div>
                                     </th>
-                                    <th class="min-w-125px">Customer Name</th>
-                                    <th class="min-w-125px">CNIC</th>
-                                    <th class="min-w-125px">Contact</th>
-                                    <th class="min-w-125px">Project</th>
-                                    <th class="min-w-125px">Plot No</th>
-                                    <th class="min-w-125px">Received Amount</th>
-                                    <th class="min-w-125px">Pending Amount</th>
+                                    <th style="min-width: 10%;">Customer Name</th>
+                                    <th style="min-width: 10%;">CNIC</th>
+                                    <th style="min-width: 10%;">Contact</th>
+                                    <th style="min-width: 10%;">Project</th>
+                                    <th style="min-width: 10%;">Plot No</th>
+                                    <th style="min-width: 10%;">Received Amount</th>
+                                    <th style="min-width: 10%;">Pending Amount</th>
+                                    <th style="min-width: 10%;">Demarcation Charges</th>
+                                    <th style="min-width: 10%;">Development Charges</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600" id="bookingList">
                                 @if (isset($bookingData))
-                                    @include('partials.booking_row', ['bookingData' => $bookingData])
+                                @include('partials.booking_row', ['bookingData' => $bookingData])
                                 @else
-                                    <tr><td colspan="8">No data found</td></tr>
+                                <tr>
+                                    <td colspan="8">No data found</td>
+                                </tr>
                                 @endif
                             </tbody>
                         </table>
@@ -272,7 +303,8 @@
                                         <label class="fs-5 fw-semibold form-label mb-5">Select Export Format:</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <select data-control="select2" data-placeholder="Select a format" data-hide-search="true" name="format" class="form-select form-select-solid">
+                                        <select data-control="select2" data-placeholder="Select a format"
+                                            data-hide-search="true" name="format" class="form-select form-select-solid">
                                             <option value="excell">Excel</option>
                                             <option value="pdf">PDF</option>
                                             <option value="cvs">CVS</option>
@@ -287,7 +319,8 @@
                                         <label class="fs-5 fw-semibold form-label mb-5">Select Date Range:</label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input class="form-control form-control-solid" placeholder="Pick a date" name="date" />
+                                        <input class="form-control form-control-solid" placeholder="Pick a date"
+                                            name="date" />
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
@@ -299,27 +332,36 @@
                                         <!--begin::Radio group-->
                                         <div class="d-flex flex-column">
                                             <!--begin::Radio button-->
-                                            <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                <input class="form-check-input" type="checkbox" value="1" checked="checked" name="payment_type" />
+                                            <label
+                                                class="form-check form-check-custom form-check-sm form-check-solid mb-3">
+                                                <input class="form-check-input" type="checkbox" value="1"
+                                                    checked="checked" name="payment_type" />
                                                 <span class="form-check-label text-gray-600 fw-semibold">All</span>
                                             </label>
                                             <!--end::Radio button-->
                                             <!--begin::Radio button-->
-                                            <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                <input class="form-check-input" type="checkbox" value="2" checked="checked" name="payment_type" />
+                                            <label
+                                                class="form-check form-check-custom form-check-sm form-check-solid mb-3">
+                                                <input class="form-check-input" type="checkbox" value="2"
+                                                    checked="checked" name="payment_type" />
                                                 <span class="form-check-label text-gray-600 fw-semibold">Visa</span>
                                             </label>
                                             <!--end::Radio button-->
                                             <!--begin::Radio button-->
-                                            <label class="form-check form-check-custom form-check-sm form-check-solid mb-3">
-                                                <input class="form-check-input" type="checkbox" value="3" name="payment_type" />
-                                                <span class="form-check-label text-gray-600 fw-semibold">Mastercard</span>
+                                            <label
+                                                class="form-check form-check-custom form-check-sm form-check-solid mb-3">
+                                                <input class="form-check-input" type="checkbox" value="3"
+                                                    name="payment_type" />
+                                                <span
+                                                    class="form-check-label text-gray-600 fw-semibold">Mastercard</span>
                                             </label>
                                             <!--end::Radio button-->
                                             <!--begin::Radio button-->
                                             <label class="form-check form-check-custom form-check-sm form-check-solid">
-                                                <input class="form-check-input" type="checkbox" value="4" name="payment_type" />
-                                                <span class="form-check-label text-gray-600 fw-semibold">American Express</span>
+                                                <input class="form-check-input" type="checkbox" value="4"
+                                                    name="payment_type" />
+                                                <span class="form-check-label text-gray-600 fw-semibold">American
+                                                    Express</span>
                                             </label>
                                             <!--end::Radio button-->
                                         </div>
@@ -328,11 +370,13 @@
                                     <!--end::Row-->
                                     <!--begin::Actions-->
                                     <div class="text-center">
-                                        <button type="reset" id="kt_customers_export_cancel" class="btn btn-light me-3">Discard</button>
+                                        <button type="reset" id="kt_customers_export_cancel"
+                                            class="btn btn-light me-3">Discard</button>
                                         <button type="submit" id="kt_customers_export_submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
                                             <span class="indicator-progress">Please wait...
-                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                                <span
+                                                    class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                                         </button>
                                     </div>
                                     <!--end::Actions-->
@@ -358,17 +402,17 @@
 @endsection
 
 @push('scripts')
-    <!--begin::Vendors Javascript(used for this page only)-->
-        <script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-		<!--end::Vendors Javascript-->
-		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
-        <script src="{{ URL::asset('assets/js/custom/apps/bookings/list/booking-list.js') }}"></script>
-        <script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
-        <script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
-        <script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-        <script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-        <script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
-        <script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-		<!--end::Custom Javascript-->
+<!--begin::Vendors Javascript(used for this page only)-->
+<script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+<!--end::Vendors Javascript-->
+<!--begin::Custom Javascript(used for this page only)-->
+<script src="{{ URL::asset('assets/js/custom/apps/customers/list/export.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/apps/bookings/list/booking-list.js') }}"></script>
+<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+<!--end::Custom Javascript-->
 @endpush

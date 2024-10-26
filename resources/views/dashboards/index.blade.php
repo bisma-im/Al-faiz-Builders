@@ -10,7 +10,8 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Plots Booking Summary</h1>
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Plots
+                        Booking Summary</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -34,10 +35,12 @@
                 <!--begin::Actions-->
                 {{-- <div class="d-flex align-items-center gap-2 gap-lg-3">
                     <!--begin::Secondary button-->
-                    <a href="#" class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
+                    <a href="#" class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
+                        data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
                     <!--end::Secondary button-->
                     <!--begin::Primary button-->
-                    <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Add Target</a>
+                    <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#kt_modal_new_target">Add Target</a>
                     <!--end::Primary button-->
                 </div> --}}
                 <!--end::Actions-->
@@ -53,48 +56,58 @@
                 <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                     <!--begin::Col-->
                     @foreach ($phases as $index => $phase)
-                        @php
-                            $colorIndex = $index % count($colors); // This will cycle through 0, 1, 2, 3, and back to 0
-                            $currentColor = $colors[$colorIndex];
-                            $percentage = round(($phase->booked_plots/$phase->total_plots)*100)
-                        @endphp
-                        <a href="{{ route('showActiveBookings', ['phaseId' => $phase->id, 'projectId' => $phase->project_id, 'fromHref' => true]) }}" class="text-decoration-none col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
-                            {{-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10"> --}}
-                                <!--begin::Card widget 20-->
-                                <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end mb-5 mb-xl-10" style="background-color: {{ $currentColor }};">
-                                    <!--begin::Header-->
-                                    <div class="card-header pt-5">
-                                        <!--begin::Title-->
-                                        <div class="card-title d-flex flex-column">
-                                            <!--begin::Amount-->
-                                            <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">{{ $phase->phase_title }}</span>
-                                            <!--end::Amount-->
-                                            <!--begin::Subtitle-->
-                                            <span class="text-white opacity-75 pt-1 fw-semibold fs-6">{{ $phase->project_title }}</span>
-                                            <!--end::Subtitle-->
-                                        </div>
-                                        <!--end::Title-->
+                    @php
+                        $colorIndex = $index % count($colors); // This will cycle through 0, 1, 2, 3, and back to 0
+                        $currentColor = $colors[$colorIndex];
+                        $percentage = ($phase->total_plots > 0) ? round(($phase->booked_plots / $phase->total_plots) * 100)
+                        : 0;
+                    @endphp
+                    <a href="{{ route('showActiveBookings', ['phaseId' => $phase->id, 'projectId' => $phase->project_id, 'fromHref' => true]) }}"
+                        class="text-decoration-none col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
+                        {{-- <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10"> --}}
+                            <!--begin::Card widget 20-->
+                            <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end mb-5 mb-xl-10"
+                                style="background-color: {{ $currentColor }};">
+                                <!--begin::Header-->
+                                <div class="card-header pt-5">
+                                    <!--begin::Title-->
+                                    <div class="card-title d-flex flex-column">
+                                        <!--begin::Amount-->
+                                        <span class="fs-2hx fw-bold text-white me-2 lh-1 ls-n2">{{ $phase->phase_title
+                                            }}</span>
+                                        <!--end::Amount-->
+                                        <!--begin::Subtitle-->
+                                        <span class="text-white opacity-75 pt-1 fw-semibold fs-6">{{
+                                            $phase->project_title }}</span>
+                                        <!--end::Subtitle-->
                                     </div>
-                                    <!--end::Header-->
-                                    <!--begin::Card body-->
-                                    <div class="card-body d-flex align-items-end pt-0">
-                                        <!--begin::Progress-->
-                                        <div class="d-flex align-items-center flex-column mt-3 w-100">
-                                            <div class="d-flex justify-content-between fw-bold fs-6 text-white opacity-75 w-100 mt-auto mb-2">
-                                                <span>{{ $phase->booked_plots . '/' . $phase->total_plots . ' Booked' }}</span>
-                                                <span>{{ $percentage . '%' }}</span>
-                                            </div>
-                                            <div class="h-8px mx-3 w-100 bg-white bg-opacity-50 rounded">
-                                                <div class="bg-white rounded h-8px" role="progressbar" style="width: {{ $percentage }}%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <!--end::Progress-->
-                                    </div>
-                                    <!--end::Card body-->
+                                    <!--end::Title-->
                                 </div>
-                                <!--end::Card widget 20-->
-                            {{-- </div> --}}
-                        </a>
+                                <!--end::Header-->
+                                <!--begin::Card body-->
+                                <div class="card-body d-flex align-items-end pt-0">
+                                    <!--begin::Progress-->
+                                    <div class="d-flex align-items-center flex-column mt-3 w-100">
+                                        <div
+                                            class="d-flex justify-content-between fw-bold fs-6 text-white opacity-75 w-100 mt-auto mb-2">
+                                            <span>{{ $phase->booked_plots . '/' . $phase->total_plots . ' Booked'
+                                                }}</span>
+                                            <span>{{ $percentage . '%' }}</span>
+                                        </div>
+                                        <div class="h-8px mx-3 w-100 bg-white bg-opacity-50 rounded">
+                                            <div class="bg-white rounded h-8px" role="progressbar"
+                                                style="width: {{ $percentage }}%;" aria-valuenow="50" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                    <!--end::Progress-->
+                                </div>
+                                <!--end::Card body-->
+                            </div>
+                            <!--end::Card widget 20-->
+                            {{--
+                        </div> --}}
+                    </a>
                     <!--end::Col-->
                     @endforeach
                 </div>
@@ -116,7 +129,10 @@
                                 <!--begin::Toolbar-->
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
-                                    <button class="btn btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true">
+                                    <button
+                                        class="btn btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end"
+                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
+                                        data-kt-menu-overflow="true">
                                         <i class="ki-duotone ki-dots-square fs-1 text-gray-300 me-n1">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -125,10 +141,12 @@
                                         </i>
                                     </button>
                                     <!--begin::Menu 2-->
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
+                                        data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
+                                            <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions
+                                            </div>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu separator-->
@@ -145,7 +163,8 @@
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
+                                        <div class="menu-item px-3" data-kt-menu-trigger="hover"
+                                            data-kt-menu-placement="right-start">
                                             <!--begin::Menu item-->
                                             <a href="#" class="menu-link px-3">
                                                 <span class="menu-title">New Group</span>
@@ -202,7 +221,9 @@
                                     <!--begin::Item-->
                                     <li class="nav-item mb-3 me-3 me-lg-6">
                                         <!--begin::Link-->
-                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2 active" id="kt_stats_widget_16_tab_link_1" data-bs-toggle="pill" href="#kt_stats_widget_16_tab_1">
+                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2 active"
+                                            id="kt_stats_widget_16_tab_link_1" data-bs-toggle="pill"
+                                            href="#kt_stats_widget_16_tab_1">
                                             <!--begin::Icon-->
                                             <div class="nav-icon mb-3">
                                                 <i class="ki-duotone ki-car fs-1">
@@ -218,7 +239,8 @@
                                             <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">SaaS</span>
                                             <!--end::Title-->
                                             <!--begin::Bullet-->
-                                            <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
+                                            <span
+                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
                                             <!--end::Bullet-->
                                         </a>
                                         <!--end::Link-->
@@ -227,7 +249,9 @@
                                     <!--begin::Item-->
                                     <li class="nav-item mb-3 me-3 me-lg-6">
                                         <!--begin::Link-->
-                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2" id="kt_stats_widget_16_tab_link_2" data-bs-toggle="pill" href="#kt_stats_widget_16_tab_2">
+                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2"
+                                            id="kt_stats_widget_16_tab_link_2" data-bs-toggle="pill"
+                                            href="#kt_stats_widget_16_tab_2">
                                             <!--begin::Icon-->
                                             <div class="nav-icon mb-3">
                                                 <i class="ki-duotone ki-bitcoin fs-1">
@@ -240,7 +264,8 @@
                                             <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">Crypto</span>
                                             <!--end::Title-->
                                             <!--begin::Bullet-->
-                                            <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
+                                            <span
+                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
                                             <!--end::Bullet-->
                                         </a>
                                         <!--end::Link-->
@@ -249,7 +274,9 @@
                                     <!--begin::Item-->
                                     <li class="nav-item mb-3 me-3 me-lg-6">
                                         <!--begin::Link-->
-                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2" id="kt_stats_widget_16_tab_link_3" data-bs-toggle="pill" href="#kt_stats_widget_16_tab_3">
+                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2"
+                                            id="kt_stats_widget_16_tab_link_3" data-bs-toggle="pill"
+                                            href="#kt_stats_widget_16_tab_3">
                                             <!--begin::Icon-->
                                             <div class="nav-icon mb-3">
                                                 <i class="ki-duotone ki-like fs-1">
@@ -262,7 +289,8 @@
                                             <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">Social</span>
                                             <!--end::Title-->
                                             <!--begin::Bullet-->
-                                            <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
+                                            <span
+                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
                                             <!--end::Bullet-->
                                         </a>
                                         <!--end::Link-->
@@ -271,7 +299,9 @@
                                     <!--begin::Item-->
                                     <li class="nav-item mb-3 me-3 me-lg-6">
                                         <!--begin::Link-->
-                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2" id="kt_stats_widget_16_tab_link_4" data-bs-toggle="pill" href="#kt_stats_widget_16_tab_4">
+                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2"
+                                            id="kt_stats_widget_16_tab_link_4" data-bs-toggle="pill"
+                                            href="#kt_stats_widget_16_tab_4">
                                             <!--begin::Icon-->
                                             <div class="nav-icon mb-3">
                                                 <i class="ki-duotone ki-tablet fs-1">
@@ -285,7 +315,8 @@
                                             <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">Mobile</span>
                                             <!--end::Title-->
                                             <!--begin::Bullet-->
-                                            <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
+                                            <span
+                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
                                             <!--end::Bullet-->
                                         </a>
                                         <!--end::Link-->
@@ -294,7 +325,9 @@
                                     <!--begin::Item-->
                                     <li class="nav-item mb-3 me-3 me-lg-6">
                                         <!--begin::Link-->
-                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2" id="kt_stats_widget_16_tab_link_5" data-bs-toggle="pill" href="#kt_stats_widget_16_tab_5">
+                                        <a class="nav-link btn btn-outline btn-flex btn-color-muted btn-active-color-primary flex-column overflow-hidden w-80px h-85px pt-5 pb-2"
+                                            id="kt_stats_widget_16_tab_link_5" data-bs-toggle="pill"
+                                            href="#kt_stats_widget_16_tab_5">
                                             <!--begin::Icon-->
                                             <div class="nav-icon mb-3">
                                                 <i class="ki-duotone ki-send fs-1">
@@ -307,7 +340,8 @@
                                             <span class="nav-text text-gray-800 fw-bold fs-6 lh-1">Others</span>
                                             <!--end::Title-->
                                             <!--begin::Bullet-->
-                                            <span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
+                                            <span
+                                                class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>
                                             <!--end::Bullet-->
                                         </a>
                                         <!--end::Link-->
@@ -339,11 +373,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-3.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-3.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Guy Hawkins</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Guy
+                                                                        Hawkins</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -351,11 +389,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">78.34%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_1_1" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_1_1"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -363,11 +405,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-2.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-2.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jane Cooper</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jane
+                                                                        Cooper</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -375,11 +421,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">63.83%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_1_2" class="h-50px mt-n8 pe-7" data-kt-chart-color="danger"></div>
+                                                            <div id="kt_table_widget_16_chart_1_2"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="danger">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -387,11 +437,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-9.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-9.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob
+                                                                        Jones</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -399,11 +453,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">92.56%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_1_3" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_1_3"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -411,11 +469,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-7.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-7.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Cody Fishers</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Cody
+                                                                        Fishers</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -423,11 +485,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">63.08%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_1_4" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_1_4"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -461,11 +527,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-25.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-25.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Brooklyn Simmons</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Brooklyn
+                                                                        Simmons</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -473,11 +543,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">85.23%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_2_1" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_2_1"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -485,11 +559,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-24.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-24.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther
+                                                                        Howard</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -497,11 +575,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">74.83%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_2_2" class="h-50px mt-n8 pe-7" data-kt-chart-color="danger"></div>
+                                                            <div id="kt_table_widget_16_chart_2_2"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="danger">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -509,11 +591,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-20.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-20.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Annette Black</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Annette
+                                                                        Black</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -521,11 +607,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">90.06%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_2_3" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_2_3"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -533,11 +623,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-17.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-17.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Marvin McKinney</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Marvin
+                                                                        McKinney</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -545,11 +639,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">54.08%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_2_4" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_2_4"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -583,11 +681,16 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-11.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-11.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">New York</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob
+                                                                        Jones</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">New
+                                                                        York</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -595,11 +698,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">52.34%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_3_1" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_3_1"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -607,11 +714,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-23.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-23.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Ronald Richards</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Madrid</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Ronald
+                                                                        Richards</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Madrid</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -619,11 +730,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">77.65%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_3_2" class="h-50px mt-n8 pe-7" data-kt-chart-color="danger"></div>
+                                                            <div id="kt_table_widget_16_chart_3_2"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="danger">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -631,11 +746,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-4.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-4.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Leslie Alexander</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Pune</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Leslie
+                                                                        Alexander</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Pune</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -643,11 +762,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">82.47%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_3_3" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_3_3"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -655,11 +778,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-1.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Courtney Henry</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Courtney
+                                                                        Henry</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -667,11 +794,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">67.84%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_3_4" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_3_4"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -705,11 +836,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-12.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-12.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Arlene McCoy</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">London</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Arlene
+                                                                        McCoy</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">London</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -717,11 +852,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">53.44%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_4_1" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_4_1"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -729,11 +868,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-21.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-21.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Marvin McKinneyr</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Marvin
+                                                                        McKinneyr</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Monaco</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -741,11 +884,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">74.64%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_4_2" class="h-50px mt-n8 pe-7" data-kt-chart-color="danger"></div>
+                                                            <div id="kt_table_widget_16_chart_4_2"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="danger">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -753,11 +900,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-30.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-30.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">PManila</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob
+                                                                        Jones</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">PManila</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -765,11 +916,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">88.56%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_4_3" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_4_3"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -777,11 +932,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-14.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-14.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Iceland</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther
+                                                                        Howard</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Iceland</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -789,11 +948,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">63.16%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_4_4" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_4_4"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -827,11 +990,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-6.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-6.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jane Cooper</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jane
+                                                                        Cooper</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Haiti</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -839,11 +1006,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">68.54%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_5_1" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_5_1"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -851,11 +1022,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-10.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-10.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther Howard</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Kiribati</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Esther
+                                                                        Howard</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Kiribati</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -863,11 +1038,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">55.83%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_5_2" class="h-50px mt-n8 pe-7" data-kt-chart-color="danger"></div>
+                                                            <div id="kt_table_widget_16_chart_5_2"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="danger">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -875,11 +1054,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-9.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-9.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob Jones</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Jacob
+                                                                        Jones</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Poland</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -887,11 +1070,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">93.46%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_5_3" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_5_3"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -899,11 +1086,15 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
                                                                 <div class="symbol symbol-50px me-3">
-                                                                    <img src="{{ URL::asset('assets/media/avatars/300-3.jpg') }}" class="" alt="" />
+                                                                    <img src="{{ URL::asset('assets/media/avatars/300-3.jpg') }}"
+                                                                        class="" alt="" />
                                                                 </div>
                                                                 <div class="d-flex justify-content-start flex-column">
-                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Ralph Edwards</a>
-                                                                    <span class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
+                                                                    <a href="../../demo1/dist/pages/user-profile/overview.html"
+                                                                        class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">Ralph
+                                                                        Edwards</a>
+                                                                    <span
+                                                                        class="text-gray-400 fw-semibold d-block fs-7">Mexico</span>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -911,11 +1102,15 @@
                                                             <span class="text-gray-600 fw-bold fs-6">64.48%</span>
                                                         </td>
                                                         <td class="text-end pe-0">
-                                                            <div id="kt_table_widget_16_chart_5_4" class="h-50px mt-n8 pe-7" data-kt-chart-color="success"></div>
+                                                            <div id="kt_table_widget_16_chart_5_4"
+                                                                class="h-50px mt-n8 pe-7" data-kt-chart-color="success">
+                                                            </div>
                                                         </td>
                                                         <td class="text-end">
-                                                            <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                                                <i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+                                                            <a href="#"
+                                                                class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                                                <i
+                                                                    class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -936,7 +1131,7 @@
                         <!--end::Tables widget 16-->
                     </div>
                     <!--end::Col-->
-                    
+
                     <!--begin::Col-->
                     <div class="col-md-6 col-lg-6 col-xl-6 col-xxl-3 mb-md-5 mb-xl-10">
                         <!--begin::Card widget 17-->
@@ -955,10 +1150,10 @@
                                         <!--end::Amount-->
                                         <!--begin::Badge-->
                                         <span class="badge badge-light-success fs-base">
-                                        <i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
-                                            <span class="path1"></span>
-                                            <span class="path2"></span>
-                                        </i>2.2%</span>
+                                            <i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>2.2%</span>
                                         <!--end::Badge-->
                                     </div>
                                     <!--end::Info-->
@@ -973,7 +1168,8 @@
                             <div class="card-body pt-2 pb-4 d-flex flex-wrap align-items-center">
                                 <!--begin::Chart-->
                                 <div class="d-flex flex-center me-5 pt-2">
-                                    <div id="kt_card_widget_17_chart" style="min-width: 70px; min-height: 70px" data-kt-size="70" data-kt-line="11"></div>
+                                    <div id="kt_card_widget_17_chart" style="min-width: 70px; min-height: 70px"
+                                        data-kt-size="70" data-kt-line="11"></div>
                                 </div>
                                 <!--end::Chart-->
                                 <!--begin::Labels-->
@@ -1007,7 +1203,8 @@
                                     <!--begin::Label-->
                                     <div class="d-flex fw-semibold align-items-center">
                                         <!--begin::Bullet-->
-                                        <div class="bullet w-8px h-3px rounded-2 me-3" style="background-color: #E4E6EF"></div>
+                                        <div class="bullet w-8px h-3px rounded-2 me-3"
+                                            style="background-color: #E4E6EF"></div>
                                         <!--end::Bullet-->
                                         <!--begin::Label-->
                                         <div class="text-gray-500 flex-grow-1 me-4">Others</div>
@@ -1033,7 +1230,10 @@
                                 <!--begin::Toolbar-->
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
-                                    <button class="btn btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-overflow="true">
+                                    <button
+                                        class="btn btn-icon btn-color-gray-400 btn-active-color-primary justify-content-end"
+                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
+                                        data-kt-menu-overflow="true">
                                         <i class="ki-duotone ki-dots-square fs-1 text-gray-300 me-n1">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -1042,10 +1242,12 @@
                                         </i>
                                     </button>
                                     <!--begin::Menu 2-->
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true">
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
+                                        data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions</div>
+                                            <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Quick Actions
+                                            </div>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu separator-->
@@ -1062,7 +1264,8 @@
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
-                                        <div class="menu-item px-3" data-kt-menu-trigger="hover" data-kt-menu-placement="right-start">
+                                        <div class="menu-item px-3" data-kt-menu-trigger="hover"
+                                            data-kt-menu-placement="right-start">
                                             <!--begin::Menu item-->
                                             <a href="#" class="menu-link px-3">
                                                 <span class="menu-title">New Group</span>
@@ -1120,7 +1323,8 @@
                                     <a href="#" class="text-primary fw-semibold fs-6 me-2">Avg. Client Rating</a>
                                     <!--end::Section-->
                                     <!--begin::Action-->
-                                    <button type="button" class="btn btn-icon btn-sm h-auto btn-color-gray-400 btn-active-color-primary justify-content-end">
+                                    <button type="button"
+                                        class="btn btn-icon btn-sm h-auto btn-color-gray-400 btn-active-color-primary justify-content-end">
                                         <i class="ki-duotone ki-exit-right-corner fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -1138,7 +1342,8 @@
                                     <a href="#" class="text-primary fw-semibold fs-6 me-2">Instagram Followers</a>
                                     <!--end::Section-->
                                     <!--begin::Action-->
-                                    <button type="button" class="btn btn-icon btn-sm h-auto btn-color-gray-400 btn-active-color-primary justify-content-end">
+                                    <button type="button"
+                                        class="btn btn-icon btn-sm h-auto btn-color-gray-400 btn-active-color-primary justify-content-end">
                                         <i class="ki-duotone ki-exit-right-corner fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -1156,7 +1361,8 @@
                                     <a href="#" class="text-primary fw-semibold fs-6 me-2">Google Ads CPC</a>
                                     <!--end::Section-->
                                     <!--begin::Action-->
-                                    <button type="button" class="btn btn-icon btn-sm h-auto btn-color-gray-400 btn-active-color-primary justify-content-end">
+                                    <button type="button"
+                                        class="btn btn-icon btn-sm h-auto btn-color-gray-400 btn-active-color-primary justify-content-end">
                                         <i class="ki-duotone ki-exit-right-corner fs-2">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
@@ -1183,28 +1389,28 @@
 @endsection
 
 @push('scripts')
-    <!--begin::Vendors Javascript(used for this page only)-->
-		<script src="{{ URL::asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
-		<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
-		<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
-		<script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
-		<!--end::Vendors Javascript-->
-		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/new-target.js') }}"></script>
-		<script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
-		<!--end::Custom Javascript-->
+<!--begin::Vendors Javascript(used for this page only)-->
+<script src="{{ URL::asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
+<script src="{{ URL::asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
+<!--end::Vendors Javascript-->
+<!--begin::Custom Javascript(used for this page only)-->
+<script src="{{ URL::asset('assets/js/widgets.bundle.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/widgets.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/apps/chat/chat.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/utilities/modals/create-app.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/utilities/modals/new-target.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+<!--end::Custom Javascript-->
 @endpush

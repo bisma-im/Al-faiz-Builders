@@ -51,7 +51,7 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Users" />
+                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Leads" />
                             </div>
                             <!--end::Search-->
                         </div>
@@ -113,7 +113,7 @@
                                     <th class="text-end min-w-70px">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="fw-semibold text-gray-600">
+                            {{-- <tbody class="fw-semibold text-gray-600">
                                 @foreach ($data as $id => $lead)
                                 <tr>
                                     <td>
@@ -126,7 +126,6 @@
                                     </td>
                                     <td>{{ $lead->mobile_number_1 }}</td>
                                     <td>{{ $lead->landline_number_1 }}</td>
-                                    {{-- <td data-filter="mastercard"> --}}
                                     <td>{{ $lead->email }}</td>
                                     <td>{{ $lead->source_of_information }}</td>
                                     <td class="text-end">
@@ -149,7 +148,7 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                            </tbody>
+                            </tbody> --}}
                         </table>
                         <!--end::Table-->
                     </div>

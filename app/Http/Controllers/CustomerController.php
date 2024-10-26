@@ -9,18 +9,36 @@ use Illuminate\Validation\ValidationException;
 
 class CustomerController extends Controller
 {
-    public function showCustomers(){
-        $customers = DB::table('customer')->get();
-        return view('pages.customers', ['data' => $customers]);
+    public function showCustomers(Request $req){
+        $sessionUsername = $req->session()->get('username');
+        $sessionRole = $req->session()->get('role');
+
+        if ($sessionRole == 'admin') {
+            $customers = DB::table('customer')->get();
+            return view('pages.customers', ['data' => $customers]);
+        } else if (in_array('booking', session('permissions', [])) || $sessionRole == 'dealer') {
+            $customers = DB::table('customer')->where('created_by', $sessionUsername)->get();
+            return view('pages.customers', ['data' => $customers]);
+        } else {
+            return redirect()->back();
+        }
     }
 
-    public function showCustomerDetailsForm($id = null) {
+    public function showCustomerDetailsForm(Request $req, $id = null) {
+        $sessionRole = $req->session()->get('role');
+        $sessionUsername = $req->session()->get('username');
         $customerData = null;
-        if ($id) {
+        $isAdmin = 'n';
+        if ($id && $sessionRole !== 'admin') {
+            $customerData = DB::table('customer')->where('id', $id)->where('created_by', $sessionUsername)->first();
+            if(!$customerData){
+                return redirect()->back();
+            }
+        } else if($id  && $sessionRole === 'admin') {
+            $isAdmin = 'y';
             $customerData = DB::table('customer')->where('id', $id)->first();
-            // Handle case if user is not found
         }
-        return view('pages.customer-details', ['customerData' => $customerData]);
+        return view('pages.customer-details', ['customerData' => $customerData, 'isAdmin' => $isAdmin]);
     }
 
     public function getCustomerData(Request $req){
@@ -45,10 +63,14 @@ class CustomerController extends Controller
             'next_of_kin_mobile_number_2' => $req->input('nok_mobile_no_2'),
             'next_of_kin_landline_number' => $req->input('nok_landline'),
             'next_of_kin_cnic' => $req->input('nok_cnic'),
+            'created_by' => session()->get('username'),
             ];
 
         if (!$req->input('id')) {
-            $customerData['customer_image'] = 'default.jpg';
+            $customerData['customer_image'] = 'blank.png';
+            $customerData['customer_cnic_image'] = 'blank.png';
+            $customerData['nok_cnic_image'] = 'blank.png';
+            $customerData['thumb_impression'] = 'blank.png';
         }
         
         if ($req->hasFile('avatar')) {
@@ -57,7 +79,40 @@ class CustomerController extends Controller
             $destinationPath = public_path('images/customer-images');
             $avatar->move($destinationPath, $avatarName);
             $customerData['customer_image'] = $avatarName;
+        } else if ($req->input('existing_customer_image') != 'default.svg' && !$req->hasFile('avatar')) {
+            $customerData['customer_image'] = $req->input('existing_customer_image');
         }
+
+        if ($req->hasFile('cnic_image')) {
+            $cnicImage = $req->file('cnic_image');
+            $cnicImageName = time() . '.' . $cnicImage->getClientOriginalExtension();
+            $destinationPath = public_path('images/customer/customer-cnic');
+            $cnicImage->move($destinationPath, $cnicImageName);
+            $customerData['customer_cnic_image'] = $cnicImageName;
+        } else if ($req->input('existing_cnic_image') != 'blank.png' && !$req->hasFile('cnic_image')) {
+            $customerData['customer_cnic_image'] = $req->input('existing_cnic_image');
+        }
+
+        if ($req->hasFile('nok_cnic_image')) {
+            $cnicImage = $req->file('nok_cnic_image');
+            $cnicImageName = time() . '.' . $cnicImage->getClientOriginalExtension();
+            $destinationPath = public_path('images/customer/nok-cnic');
+            $cnicImage->move($destinationPath, $cnicImageName);
+            $customerData['nok_cnic_image'] = $cnicImageName;
+        } else if ($req->input('existing_nok_cnic_image') != 'blank.png' && !$req->hasFile('nok_cnic_image')) {
+            $customerData['nok_cnic_image'] = $req->input('existing_nok_cnic_image');
+        }
+
+        if ($req->hasFile('thumb_impression')) {
+            $thumbImpression = $req->file('thumb_impression');
+            $imageName = time() . '.' . $thumbImpression->getClientOriginalExtension();
+            $destinationPath = public_path('images/customer/thumb-impression');
+            $thumbImpression->move($destinationPath, $imageName);
+            $customerData['thumb_impression'] = $imageName;
+        } else if ($req->input('existing_thumb_impression') != 'blank.png' && !$req->hasFile('thumb_impression')) {
+            $customerData['thumb_impression'] = $req->input('existing_thumb_impression');
+        } 
+        
         return $customerData;
     }
     public function addCustomer(Request $req){
@@ -95,7 +150,7 @@ class CustomerController extends Controller
 
             $customer = DB::table('customer')->where('id', $id)->first();
             $avatar = $customer->customer_image;
-            if($avatar && $avatar != 'default.jpg')
+            if($avatar && $avatar != 'blank.png')
             {
                 $avatarPath = public_path('images/customer-images/' . $avatar);
                 if(file_exists($avatarPath))

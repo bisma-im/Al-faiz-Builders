@@ -45,20 +45,43 @@ var KTAccountsList = (function () {
 
     return {
         init: function () {
-            (n = document.querySelector("#kt_accounts_table")) &&
-                ((t = $(n).DataTable({
-                    info: !1,
-                    order: [],
-                    columnDefs: [
-                        { orderable: !1, targets: 2 }, // Actions column is not orderable
-                    ],
-                })).on("draw", function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            n = document.querySelector("#kt_accounts_table");
+            if (n) {
+                t = $(n).DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "/get-accounts",
+                        type: "POST",
+                        data: function (data) {
+                            data.search = $('input[data-kt-accounts-table-filter="search"]').val();
+                        }
+                    },
+                    order: ['1', 'DESC'],
+                    pageLength: 10,
+                    searching: true,
+                    aoColumns: [
+
+                        {
+                            data: 'Account_Code',
+                        },
+                        {
+                            data: 'Account_Title',
+                        },
+                    ]
+                }).on('draw', function () {
                     c(), KTMenu.init();
-                }),
-                c(),
+                });
+                c();
                 document.querySelector('[data-kt-accounts-table-filter="search"]').addEventListener("keyup", function (e) {
-                    t.search(e.target.value).draw();
-                }));
+                    t.search($(this).val()).draw();
+                });
+            }
         },
     };
 })();

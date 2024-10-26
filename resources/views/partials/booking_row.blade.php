@@ -15,5 +15,7 @@
         {{-- <td data-filter="mastercard"> --}}
         <td>{{ $booking->received_amount }}</td>
         <td>{{ $booking->pending_amount }}</td>
+        <td>{{ $booking->demarcation_charges }}</td>
+        <td>{{ $booking->total_dc }}</td>
     </tr>                      
 @endforeach
