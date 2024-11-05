@@ -8,11 +8,11 @@
             <!--begin::Toolbar container-->
             <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
                 <!--begin::Page title-->
-                @if ($isDemarc === 'y')
+                {{-- @if ($isDemarc === 'y') --}}
                     <h3 class="fw-bold m-0">Demarcation Charges</h3>
-                @else
+                {{-- @else
                     <h3 class="fw-bold m-0">Development/Extra Charges</h3>
-                @endif
+                @endif --}}
             </div>
             <!--end::Toolbar container-->
         </div>
@@ -27,11 +27,11 @@
                             <!--begin::Card header-->
                             <div class="card-header">
                                 <div class="card-title">
-                                    @if ($isDemarc === 'y')
+                                    {{-- @if ($isDemarc === 'y') --}}
                                     <h2>Add Demarcation Charges</h2>
-                                    @else
+                                    {{-- @else
                                     <h2>Add Development/Extra Charges</h2>
-                                    @endif
+                                    @endif --}}
                                 </div>
                             </div>
                             <!--end::Card header-->
@@ -94,5 +94,5 @@
 </div>
 @endsection
 @push('scripts')
-<script src="{{ URL::asset('assets/js/custom/account/settings/add-development-charges.js') }}"></script>
+<script src="{{ URL::asset('assets/js/custom/account/settings/add-demarcation-charges.js') }}"></script>
 @endpush

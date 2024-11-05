@@ -78,17 +78,15 @@ var KTNewBooking = (function () {
         for (let i = 0; i <= numberOfInstallments; i++) {
             let dueDate = new Date(initialBookingDate);
             let installmentValue;
+
             if (i === 0) {
                 installmentValue = parseFloat(document.getElementById('token_amount').value) + parseFloat(document.getElementById('advance_amount').value);
-            }
-            else if (i === 1) {
-                dueDate.setDate(dueDate.getDate() + 7); // First installment one week later
-                installmentValue = partPayment - lastInstallmentsAdjustment[i];
+                dueDate = new Date(); // Set due date for the first installment to today's date
             } else {
                 dueDate.setMonth(dueDate.getMonth() + i, 15); // Subsequent installments on the 15th of each month
-                installmentValue = installmentAmount - lastInstallmentsAdjustment[i];
+                installmentValue = (i === 1 ? partPayment : installmentAmount) - lastInstallmentsAdjustment[i];
             }
-
+    
             let intimationDate = new Date(dueDate.getTime());
 
             if (i !== 0) {
@@ -98,10 +96,9 @@ var KTNewBooking = (function () {
             let formattedDueDate = formatDate(dueDate); // Format due date
             let formattedIntimationDate = formatDate(intimationDate);
 
-            if (installmentValue <= 0) {
+            if (i !== 0 && installmentValue <= 0) {
                 break;
             }
-
             let row = `
                 <tr>
                     <td><span>${i + 1}</span></td>
@@ -617,7 +614,7 @@ var KTNewBooking = (function () {
                                 // if(plot.id==selectedPlot)
                                 //     var option = $('<option>').val(plot.id).text(plot.plot_no).attr('selected','selected');
                                 // else
-                                var option = $('<option>').val(plot.id).text(plot.plot_no);
+                                var option = $('<option>').val(plot.id).text(`${plot.plot_no} (${plot.category})`);
 
                                 $('#plotDropdown').append(option);
                             });

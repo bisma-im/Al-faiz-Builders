@@ -162,7 +162,7 @@
                                                     class="form-select form-select-solid form-select-lg fw-semibold"
                                                     data-placeholder="Select plot number.." data-control="select2">
                                                     <option value="{{ $bookingData->plot_id }}" selected>
-                                                        {{ $bookingData->plot_no }}
+                                                        {{ $bookingData->plot_no . ' (' . $bookingData->category . ')' }}
                                                     </option>
                                                 </select>
                                                 @else

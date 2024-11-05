@@ -39,6 +39,26 @@
         <div id="kt_app_content" class="app-content flex-column-fluid">
             <!--begin::Content container-->
             <div id="kt_app_content_container" class="app-container container-xxl">
+                <div class="card">
+                    <!--begin::Card header-->
+                    <div class="card-header border-0 pt-6" style="background: transparent;">
+                        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+                            <!--begin::Nav item-->
+                            <li class="nav-item mt-2">
+                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'paid' ? 'active' : '' }}"
+                                    href="{{ route('showPaidInvoices') }}">Paid</a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'unpaid' ? 'active' : '' }}"
+                                    href="{{ route('showUnpaidInvoices') }}">Unpaid</a>
+                            </li>
+                            <li class="nav-item mt-2">
+                                <a class="nav-link text-active-primary ms-0 me-10 py-5 {{ $selectedStatus == 'cancelled' ? 'active' : '' }}"
+                                    href="{{ route('showCancelledInvoices') }}">Cancelled</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <!--begin::Card-->
                 <div class="card">
                     <!--begin::Card header-->
@@ -51,7 +71,7 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                 </i>
-                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Users" />
+                                <input type="text" data-kt-customer-table-filter="search" class="form-control form-control-solid w-250px ps-12" placeholder="Search Invoices" />
                             </div>
                             <!--end::Search-->
                         </div>
@@ -177,11 +197,12 @@
                                     </th>
                                     <th class="min-w-125px">Customer</th>
                                     <th class="min-w-125px">Invoice ID</th>
+                                    <th class="min-w-125px">Invoice Type</th>
                                     <th class="min-w-125px">Booking ID</th>
                                     <th class="min-w-125px">Plot No</th>
                                     <th class="min-w-125px">Created At</th>
-                                    <th class="min-w-125px">Total Amount</th>
-                                    <th class="text-end min-w-70px">Actions</th>
+                                    <th class="text-end min-w-70px">Total Amount</th>
+                                    {{-- <th class="">Actions</th> --}}
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
@@ -196,12 +217,13 @@
                                         <a href="{{ route('updateInvoiceForm', ['id' => $invoice->id]) }}" class="text-gray-600 text-hover-primary mb-1">{{ $invoice->name }}</a>
                                     </td>
                                     <td>{{ $invoice->id }}</td>
+                                    <td>{{ $invoice->type }}</td>
                                     <td>{{ $invoice->booking_id }}</td>
                                     <td>{{ $invoice->plot_no }}</td>
                                     {{-- <td data-filter="mastercard"> --}}
                                     <td>{{ $invoice->created_at }}</td>
-                                    <td>{{ $invoice->total_amount }}</td>
-                                    <td class="text-end">
+                                    <td class="text-end">{{ $invoice->total_amount }}</td>
+                                    {{-- <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
                                         <!--begin::Menu-->
@@ -218,7 +240,7 @@
                                             <!--end::Menu item-->
                                         </div>
                                         <!--end::Menu-->
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 @endforeach
                             </tbody>

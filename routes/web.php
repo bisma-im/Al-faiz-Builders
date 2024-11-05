@@ -96,17 +96,21 @@ Route::get('/add-invoice-form', [InvoiceController::class, 'showAddInvoiceForm']
 Route::post('/get-plots', [InvoiceController::class, 'getPlotsForProject'])->middleware('admin.auth');
 Route::post('/get-booking-details', [InvoiceController::class, 'getBookingDetails'])->middleware('admin.auth');
 Route::post('/add-invoice', [InvoiceController::class, 'addInvoice'])->name('addInvoice')->middleware('admin.auth');
-Route::get('/invoices', [InvoiceController::class, 'showInvoices'])->name('showInvoices')->middleware('admin.auth');
+Route::get('/paid-invoices', [InvoiceController::class, 'showInvoices'])->name('showPaidInvoices')->middleware('admin.auth');
 Route::get('/invoices/{id}', [InvoiceController::class, 'showAddInvoiceForm'])->name('updateInvoiceForm')->middleware('admin.auth');
 Route::post('/update-invoice', [InvoiceController::class, 'updateInvoice'])->name('updateInvoice')->middleware('admin.auth');
 Route::get('/generate-invoice-pdf', [InvoiceController::class, 'generateInvoicePdf'])->name('generateInvoicePdf')->middleware('admin.auth');
+Route::get('/cancelled-invoices', [InvoiceController::class, 'showInvoices'])->name('showCancelledInvoices')->middleware('admin.auth');
+// Route::get('/paid-invoices', [InvoiceController::class, 'showInvoices'])->name('showPaidInvoices')->middleware('admin.auth');
+Route::get('/unpaid-invoices', [InvoiceController::class, 'showInvoices'])->name('showUnpaidInvoices')->middleware('admin.auth');
+
 
 Route::post('/installment-invoice', [InvoiceController::class, 'addInstallmentInvoice'])->name('addInstallmentInvoice')->middleware('admin.auth');
 Route::post('/charges-invoice', [InvoiceController::class, 'addChargesInvoice'])->name('addInstallmentInvoice')->middleware('admin.auth');
 
 Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm')->middleware('admin.auth');
 Route::get('/add-dev-charges-form', [BookingController::class, 'addDevChargesForm'])->name('addDevChargesForm')->middleware('admin.auth');
-Route::get('/add-demarcation-charges-form', [BookingController::class, 'addDevChargesForm'])->name('addDemarcationChargesForm')->middleware('admin.auth');
+Route::get('/add-demarcation-charges-form', [BookingController::class, 'addDemarcChargesForm'])->name('addDemarcationChargesForm')->middleware('admin.auth');
 Route::post('/add-booking', [BookingController::class, 'addBooking'])->name('addBooking')->middleware('admin.auth');
 Route::get('/active-bookings/{phaseId?}/{projectId?}', [BookingController::class, 'showBookings'])->name('showActiveBookings')->middleware('admin.auth');
 Route::get('/cancelled-bookings', [BookingController::class, 'showBookings'])->name('showCancelledBookings')->middleware('admin.auth');
@@ -118,7 +122,8 @@ Route::post('/get-phases-for-booking', [BookingController::class, 'getPhasesForB
 Route::get('/get-installments/{bookingId}', [BookingController::class, 'getInstallments'])->middleware('admin.auth');
 Route::get('/get-customer/{customerId}', [BookingController::class, 'getCustomer'])->middleware('admin.auth');
 Route::get('/get-registration-number/{plotId}', [BookingController::class, 'getRegistrationNumber'])->middleware('admin.auth');
-Route::post('/add-charges', [BookingController::class, 'addDevCharges'])->name('addDevCharges')->middleware('admin.auth');
+Route::post('/add-charges', [BookingController::class, 'addDemarcCharges'])->name('addDemarcCharges')->middleware('admin.auth');
+Route::post('/add-dev-charges', [BookingController::class, 'addDevCharges'])->name('addDevCharges')->middleware('admin.auth');
 Route::get('/download-booking-media/{docName}', [BookingController::class, 'downloadBookingMedia'])->name('downloadBookingMedia')->middleware('admin.auth');
 
 Route::post('/add-account', [AccountsController::class, 'addAccount'])->name('addAccount')->middleware('admin.auth');

@@ -30,7 +30,7 @@
                     <!--begin::Content-->
                     <div id="kt_new_account" class="collapse show">
                         <!--begin::Form-->
-                        <form id="kt_new_invoice_form" class="form" data-kt-redirect="/invoices" action="{{ route('addInvoice') }}" method="POST">
+                        <form id="kt_new_invoice_form" class="form" data-kt-redirect="/paid-invoices" action="{{ route('addInvoice') }}" method="POST">
                         {{-- <form id="kt_new_invoice_form" class="form" > --}}
                             @csrf
                             <!--begin::Card body-->
@@ -65,7 +65,8 @@
                                     <!--end::Label-->
                                     <!--begin::Col-->
                                     <div class="col-lg-9 fv-row">
-                                        <select name="booking_id" id="bookingDropdown" aria-label="Select Booking" class="form-select form-select-lg fw-semibold" data-control="select2" data-placeholder="Select Booking...">
+                                        <select name="booking_id" id="bookingDropdown" aria-label="Select Booking" class="form-select form-select-lg fw-semibold" data-control="select2" data-placeholder="Select Booking..."
+                                        {{ (isset($invoiceData) && $invoiceData->booking_id) ? 'disabled' : '' }}>
                                             <option value="">Select Booking...</option>
                                             @foreach ($bookings as $booking)
                                                 <option value="{{ $booking->id }}" {{ (isset($invoiceData) && $invoiceData->booking_id == $booking->id) ? 'selected' : '' }}>

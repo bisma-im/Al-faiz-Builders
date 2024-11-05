@@ -43,7 +43,7 @@ class BookingController extends Controller
 
             // dd($phaseId, $projectId, $selectedProjectId, $selectedPhaseId);
             $routeName = $req->route()->getName();
-            $selectedStatus = $routeName == 'showCancelledBookings' ? 'cancelled' : 'active';
+            $selectedStatus = $routeName === 'showCancelledBookings' ? 'cancelled' : 'active';
 
             $query = DB::table('booking as b')
                 ->join('customer as c', 'c.id', '=', 'b.customer_id')
@@ -133,6 +133,7 @@ class BookingController extends Controller
                         'ph.phase_title',
                         'pr.project_title',
                         'pl.plot_no',
+                        'pl.category',
                         'pl.file_reg_number'
                     )
                     ->where('booking.id', $id)
@@ -176,6 +177,22 @@ class BookingController extends Controller
 
     public function addDevChargesForm(Request $req)
     {
+        $bookings = null;
+        try {
+            $bookings = DB::table('booking')
+                ->join('customer as c', 'c.id', '=', 'booking.customer_id')
+                ->join('plots_inventory as pl', 'pl.id', '=', 'booking.plot_id')
+                ->select('booking.id', 'c.name as customer_name', 'c.cnic_number', 'pl.plot_no')
+                ->where('booking.status', 'active')->get();
+
+            return view('pages.development-charges', compact('bookings'));
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function addDemarcChargesForm(Request $req)
+    {
         $currentRouteName = $req->route()->getName();
         $bookings = null;
         $isDemarc = 'n';
@@ -194,9 +211,6 @@ class BookingController extends Controller
                     $query->whereNull('booking.demarcation_charges')
                         ->orWhere('booking.demarcation_charges', '');
                 })->get();
-            } else {
-                // For other routes, fetch all active bookings
-                $bookings = $temp->get();
             }
 
             return view('pages.add-dev-charges', compact('bookings', 'isDemarc'));
@@ -242,7 +256,7 @@ class BookingController extends Controller
             // ->where('project_id', $project_id)
             ->where('phase_id', $phase_id)
             ->where('isBooked', 'n')
-            ->get(['id', 'plot_no']);
+            ->get(['id', 'plot_no', 'category']);
 
         return response()->json($availablePlots);
     }
@@ -372,7 +386,6 @@ class BookingController extends Controller
     public function getInstallmentsData(Request $request, $bookingId, $customerId)
     {
         $installmentsData = [];
-        $today = now()->format('Y-m-d');
 
         $dueDates = $request->input('due_dates', []);
 
@@ -584,11 +597,11 @@ class BookingController extends Controller
         }
     }
 
-    public function addDevCharges(Request $req)
+    public function addDemarcCharges(Request $req)
     {
         $bookingId = $req->booking_id;
 
-        if ($req->input('isDemarc') === 'y') {
+        if ($req->input('isDemarc') && $req->input('isDemarc') === 'y') {
             // This block handles demarcation charges
             DB::table('booking')->where('id', $bookingId)->update(['demarcation_charges' => $req->dev_charges]);
             return response()->json(['success' => 'Demarcation charges added successfully', 'devChargesId' => null, 'bookingId' => $bookingId]);
@@ -607,10 +620,39 @@ class BookingController extends Controller
         try {
             $devChargesId = DB::table('development_charges')->insertGetId($devChargesData);
             DB::commit();
-            return response()->json(['success' => 'charges added successfully', 'devChargesId' => $devChargesId, 'bookingId' => $bookingId]);
+            return response()->json(['success' => 'Charges added successfully', 'devChargesId' => $devChargesId, 'bookingId' => $bookingId]);
         } catch (\Exception $e) {
             DB::rollBack();
             return new JsonResponse(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function addDevCharges(Request $request) {
+        $installmentsData = [];
+
+        $dueDates = $request->input('due_dates', []);
+
+        // Assuming you have installment data in the request...
+        foreach ($request->input('amounts', []) as $key => $amount) {
+            $dueDate = $dueDates[$key];
+
+            $installmentsData[] = [
+                'booking_id' => $request->input('booking_id'),
+                'amount' => $amount,
+                'due_date' => $dueDate,
+                'timestamp' => now(),
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table('development_charges')->insert($installmentsData);
+            DB::commit();
+            return response()->json(['success' => 'Development charges added successfully'], 201);
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }

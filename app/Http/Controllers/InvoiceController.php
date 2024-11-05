@@ -14,15 +14,35 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
-    public function showInvoices()
+    public function showInvoices(Request $req)
     {
+        $selectedStatus = 'paid';
+        $routeName = $req->route()->getName();
+        if($routeName === 'showPaidInvoices'){ $selectedStatus = 'paid'; }
+        else if($routeName === 'showUnpaidInvoices'){ $selectedStatus = 'unpaid'; }
+        else if($routeName === 'showCancelledInvoices'){ $selectedStatus = 'cancelled'; }
+
         $invoices = DB::table('invoice')
             ->join('booking as b', 'b.id', '=', 'invoice.booking_id')
             ->join('customer as c', 'c.id', '=', 'b.customer_id')
             ->join('plots_inventory as pl', 'pl.id', '=', 'b.plot_id')
-            ->select('invoice.id', 'invoice.booking_id', 'c.name', 'invoice.created_at', 'pl.plot_no', 'invoice.total_amount')
+            ->select(
+                    'invoice.id', 
+                    'invoice.booking_id',   
+                    'c.name', 
+                    'invoice.created_at', 
+                    'pl.plot_no', 
+                    'invoice.total_amount',
+                    DB::raw("CASE 
+                        WHEN invoice.isInstallment = 'y' THEN 'Installment'
+                        WHEN invoice.isCharges = 'dev' THEN 'Development Charges'
+                        WHEN invoice.isCharges = 'demarc' THEN 'Demarcation Charges'
+                        ELSE 'Other'
+                    END AS type")
+                )
+            ->where('payment_status', $selectedStatus)
             ->get();
-        return view('pages.invoices', ['invoiceData' => $invoices]);
+        return view('pages.invoices', ['invoiceData' => $invoices, 'selectedStatus' => $selectedStatus]);
     }
 
     public function showAddInvoiceForm(Request $req, $id = null)
@@ -200,6 +220,7 @@ class InvoiceController extends Controller
                 $devCharge = DB::table('development_charges')->where('id', $devChargesId)->first();
                 $amount = $devCharge->amount;
                 $chargeName = 'Development/Extra Charges';
+                $isCharges = 'dev';
             } else {
                 // If devChargesId is null, generate invoice for demarcation charges
                 $booking = DB::table('booking')
@@ -210,6 +231,7 @@ class InvoiceController extends Controller
                     throw new \Exception("Demarcation charges have already been invoiced or booking not found.");
                 }
                 $amount = $booking->demarcation_charges;
+                $isCharges = 'demarc';
                 $chargeName = 'Demarcation Charges';
             }
             
@@ -222,7 +244,7 @@ class InvoiceController extends Controller
                     'total_amount' => $amount,
                     'payment_status' => 'unpaid',
                     'isInstallment' => 'n',
-                    'isCharges' => 'y',
+                    'isCharges' => $isCharges,
                     'due_date' => Carbon::now()->addWeek()->toDateString(),
                 ];
 

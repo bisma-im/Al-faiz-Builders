@@ -52,7 +52,7 @@ var KTNewInvoice = (function () {
 
         // Redirect the current window after a short delay.
         setTimeout(function () {
-            window.location.href = '/invoices';
+            window.location.href = '/paid-invoices';
         }, 500);
     }
     function togglePaymentDate() {
@@ -188,7 +188,7 @@ var KTNewInvoice = (function () {
                                             generatePdf(data.reportId);
                                         }
                                         else {
-                                            window.location.href = '/invoices';
+                                            window.location.href = '/paid-invoices';
                                         }
                                     });
                                 }

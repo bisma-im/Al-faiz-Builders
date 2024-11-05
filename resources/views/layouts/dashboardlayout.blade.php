@@ -5010,7 +5010,7 @@ License: For each use you must have a valid license purchased only from above li
 											@if (in_array('invoicing', session('permissions', [])))
 											<div class="menu-item">
 												<!--begin:Menu link-->
-												<a class="menu-link" href="{{ route('showInvoices') }}">
+												<a class="menu-link" href="{{ route('showPaidInvoices') }}">
 													<span class="menu-bullet">
 														<span class="bullet bullet-dot"></span>
 													</span>
