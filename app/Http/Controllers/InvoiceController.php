@@ -18,28 +18,32 @@ class InvoiceController extends Controller
     {
         $selectedStatus = 'paid';
         $routeName = $req->route()->getName();
-        if($routeName === 'showPaidInvoices'){ $selectedStatus = 'paid'; }
-        else if($routeName === 'showUnpaidInvoices'){ $selectedStatus = 'unpaid'; }
-        else if($routeName === 'showCancelledInvoices'){ $selectedStatus = 'cancelled'; }
+        if ($routeName === 'showPaidInvoices') {
+            $selectedStatus = 'paid';
+        } else if ($routeName === 'showUnpaidInvoices') {
+            $selectedStatus = 'unpaid';
+        } else if ($routeName === 'showCancelledInvoices') {
+            $selectedStatus = 'cancelled';
+        }
 
         $invoices = DB::table('invoice')
             ->join('booking as b', 'b.id', '=', 'invoice.booking_id')
             ->join('customer as c', 'c.id', '=', 'b.customer_id')
             ->join('plots_inventory as pl', 'pl.id', '=', 'b.plot_id')
             ->select(
-                    'invoice.id', 
-                    'invoice.booking_id',   
-                    'c.name', 
-                    'invoice.created_at', 
-                    'pl.plot_no', 
-                    'invoice.total_amount',
-                    DB::raw("CASE 
+                'invoice.id',
+                'invoice.booking_id',
+                'c.name',
+                'invoice.created_at',
+                'pl.plot_no',
+                'invoice.total_amount',
+                DB::raw("CASE 
                         WHEN invoice.isInstallment = 'y' THEN 'Installment'
                         WHEN invoice.isCharges = 'dev' THEN 'Development Charges'
                         WHEN invoice.isCharges = 'demarc' THEN 'Demarcation Charges'
                         ELSE 'Other'
                     END AS type")
-                )
+            )
             ->where('payment_status', $selectedStatus)
             ->get();
         return view('pages.invoices', ['invoiceData' => $invoices, 'selectedStatus' => $selectedStatus]);
@@ -234,19 +238,19 @@ class InvoiceController extends Controller
                 $isCharges = 'demarc';
                 $chargeName = 'Demarcation Charges';
             }
-            
-                // Prepare invoice data for development charges
-                $invoiceData = [
-                    'booking_id' => $bookingId,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                    'created_by' => session()->get('username'),
-                    'total_amount' => $amount,
-                    'payment_status' => 'unpaid',
-                    'isInstallment' => 'n',
-                    'isCharges' => $isCharges,
-                    'due_date' => Carbon::now()->addWeek()->toDateString(),
-                ];
+
+            // Prepare invoice data for development charges
+            $invoiceData = [
+                'booking_id' => $bookingId,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'created_by' => session()->get('username'),
+                'total_amount' => $amount,
+                'payment_status' => 'unpaid',
+                'isInstallment' => 'n',
+                'isCharges' => $isCharges,
+                'due_date' => Carbon::now()->addWeek()->toDateString(),
+            ];
 
             // Insert the invoice and retrieve the invoice ID
             $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
@@ -293,6 +297,86 @@ class InvoiceController extends Controller
                 'reportId' => $reportId,
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
+            return new JsonResponse(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function devChargeInvoice(Request $req, $id = null)
+    {
+        try {
+            DB::beginTransaction();
+
+            if ($id) {
+                // If devChargesId is provided, fetch development charges
+                $devCharge = DB::table('development_charges')->where('id', $id)->first();
+                $amount = $devCharge->amount;
+                $chargeName = 'Development/Extra Charges';
+                $isCharges = 'dev';
+            }
+
+            $bookingId = $devCharge->booking_id;
+
+            // Prepare invoice data for development charges
+            $invoiceData = [
+                'booking_id' => $bookingId,
+                'created_at' => now(),
+                'updated_at' => now(),
+                'created_by' => session()->get('username'),
+                'total_amount' => $amount,
+                'payment_status' => 'unpaid',
+                'isInstallment' => 'n',
+                'isCharges' => $isCharges,
+                'due_date' => $devCharge->due_date,
+            ];
+
+            // Insert the invoice and retrieve the invoice ID
+            $invoiceId = DB::table('invoice')->insertGetId($invoiceData);
+
+            // If handling development charges, update the development_charges table
+            if ($id) {
+                DB::table('development_charges')->where('id', $id)->update(['invoice_id' => $invoiceId]);
+            }
+
+            // Insert the invoice items
+            $invoiceItems[] = [
+                'invoice_id' => $invoiceId,
+                'description' => $chargeName . ' due for booking ' . $bookingId,
+                'amount' => (float)$invoiceData['total_amount'],
+            ];
+
+            DB::table('invoice_item')->insert($invoiceItems);
+
+            DB::commit();
+
+            // Prepare data for the invoice report
+            $customerData = DB::table('customer')
+                ->join('booking as b', 'b.customer_id', '=', 'customer.id')
+                ->join('plots_inventory as pl', 'b.plot_id', '=', 'pl.id')
+                ->where('b.id', $bookingId)
+                ->select('customer.name', 'customer.id', 'pl.plot_no')
+                ->get();
+
+            $imageData = base64_encode(file_get_contents(public_path('assets/media/logos/faysalbanklogo.png')));
+            $imageSrc = 'data:image/png;base64,' . $imageData;
+
+            $data = [
+                'invoiceData' => array_merge($invoiceData, ['id' => $invoiceId]),
+                'customerData' => $customerData,
+                'invoiceItems' => $invoiceItems,
+                'imageSrc' => $imageSrc,
+            ];
+
+            $reportId = Str::random(40);
+            Cache::put($reportId, $data, now()->addMinutes(30));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invoice added successfully. Your invoice ID is ' . $invoiceId,
+                'reportId' => $reportId,
+            ]);
+        } 
+        catch (\Exception $e) {
             DB::rollBack();
             return new JsonResponse(['error' => $e->getMessage()], 500);
         }

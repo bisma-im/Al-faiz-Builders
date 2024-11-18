@@ -808,6 +808,7 @@
                             <!--end::Payment Details Card-->
                             <!--begin::Dev Charges Details Card-->
                             @if ($isLockedMode)
+                            <input type="hidden" name="development_charges" id="development_charges" value="{{ $bookingData->development_charges }}"/>
                             <div class="d-flex flex-column gap-7 gap-lg-10">
                                 <div class="card card-flush py-4" id="devChargesCard" style="display: none;">
                                     <!--begin::Card header-->
@@ -824,26 +825,58 @@
                                             class="table align-middle table-row-dashed fs-6 gy-5">
                                             <thead>
                                                 <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 ">
-                                                    <th class="min-w-125px">Id</th>
+                                                    <th class="min-w-125px">S.No</th>
                                                     <th class="min-w-125px">Amount</th>
-                                                    <th class="min-w-125px">Description</th>
-                                                    <th class="min-w-125px">Timestamp</th>
+                                                    <th class="min-w-125px">Due Date</th>
+                                                    <th class="min-w-125px">Intimation Date</th>
+                                                    <th class="min-w-125px">Payment Date</th>
+                                                    <th class="min-w-125px">Payment Status</th>
+                                                    <th class="text-end min-w-125px">Invoice</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="fw-semibold text-gray-600">
-                                                @forelse ($devCharges as $devCharge)
+                                                @forelse ($devCharges as $index => $devCharge)
                                                 <tr>
-                                                    <td>{{ $devCharge->id }}</td>
-                                                    <td>{{ $devCharge->amount }}</td>
-                                                    <td>{{ $devCharge->description }}</td>
-                                                    <td>{{ $devCharge->timestamp }}</td>
+                                                    <input type="hidden" name="dev_installment_ids[]" value="{{ $devCharge->id }}" />
+                                                    {{-- <input type="hidden" name="dev_installment_ids[]" value="1"> --}}
+                                                    <td>
+                                                        {{ $index + 1 }}
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="devAmounts[]" class="form-control editable-devcharge" value="{{ $devCharge->amount }}" data-index={{ $index }} {{ $devCharge->payment_status === 'paid' ? 'readonly' : '' }}>
+                                                    </td>
+                                                    <td>{{ $devCharge->due_date }}</td>
+                                                    <td>{{ $devCharge->intimation_date }}</td>
+                                                    <td>
+                                                        {{ $devCharge->payment_date }}
+                                                        <input type="hidden" name="devPaymentDates[]" value="{{ $devCharge->payment_date }}"/>
+                                                    </td>
+                                                    <td>
+                                                        {{ $devCharge->payment_status }}
+                                                        <input type="hidden" name="devStatuses[]" value="{{ $devCharge->payment_status }}"/>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        @if($devCharge->invoice_id && $devCharge->payment_status !== 'cancelled')
+                                                            <a class="btn btn-light disabled-link" style="pointer-events: none; opacity: 0.6;">
+                                                                Generate Invoice
+                                                            </a>
+                                                        @else
+                                                            <form class="devChargeInvoiceForm" method="POST" style="display: inline;">
+                                                                @csrf
+                                                                <button type="submit" data-devChargeId = "{{ $devCharge->id ?? '' }}" id="{{'myButton' . $devCharge->id }}" class="btn btn-light generate-invoice-button">
+                                                                    Generate Invoice
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                                 @empty
                                                 <tr>
-                                                    <td colspan="4" class="text-center">No entries found</td>
+                                                    <td colspan="6" class="text-center">No entries found</td>
                                                 </tr>
                                                 @endforelse
                                             </tbody>
+                                            
                                         </table>
                                     </div>
                                     <!--end::Card body-->
@@ -1089,5 +1122,31 @@
 <script src="{{ URL::asset('assets/js/custom/account/settings/add-booking.js') }}"></script>
 @if ($isLockedMode)
 <script src="{{ URL::asset('assets/js/custom/account/settings/cancel-booking.js') }}"></script>
+{{-- <script>
+    function updateAmount(input, id) {
+        const newAmount = parseFloat(input.value);
+        let totalRemaining = 0;
+        const rows = document.querySelectorAll('#devChargesTable tbody tr');
+        let startIndex = 0;
+        rows.forEach((row, index) => {
+            const currentId = parseFloat(row.querySelector('.generate-invoice-button').dataset.devchargeid);
+            if (currentId === id) {
+                startIndex = index + 1; // Start adjusting from the next row
+            }
+            if (index >= startIndex) {
+                totalRemaining += parseFloat(row.cells[1].querySelector('input').value);
+            }
+        });
+    
+        // Assuming the total amount remains fixed, adjust the following installments
+        const remainingInstallments = rows.length - startIndex;
+        const averageAdjustment = totalRemaining / remainingInstallments;
+    
+        for (let i = startIndex; i < rows.length; i++) {
+            rows[i].cells[1].querySelector('input').value = averageAdjustment.toFixed(2);
+        }
+    }
+</script> --}}
+    
 @endif
 @endpush

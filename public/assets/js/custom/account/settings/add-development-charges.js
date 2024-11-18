@@ -9,6 +9,12 @@ var KTModalChargesAdd = (function () {
     //     const pdfUrl = `/generate-invoice-pdf?reportId=${reportId}`;
     //     window.open(pdfUrl, '_blank');
     // }
+    $("#kt_ecommerce_booking_datepicker").flatpickr({
+        enableTime: false,
+        altInput: true,
+        defaultDate: new Date(),
+        dateFormat: "Y-m-d",
+    });
 
     function handleInstallments() {
         const totalAmount = parseFloat(document.getElementById('dev_charge').value);
@@ -20,8 +26,8 @@ var KTModalChargesAdd = (function () {
         tableBody.empty();
 
         // Prepare dates for installments
-        let currentDate = new Date(); // Set to 15th of the next month
-
+        var selectedBookingDate = document.getElementById('kt_ecommerce_booking_datepicker').value;
+        let currentDate = new Date(selectedBookingDate); // Set to 15th of the next month
         // Loop to create each row for the installments
         for (let i = 0; i < numberOfInstallments; i++) {
             // Format the due date
@@ -61,41 +67,6 @@ var KTModalChargesAdd = (function () {
         const options = { day: 'numeric', month: 'short', year: 'numeric' };
         return date.toLocaleDateString('en-GB', options);  // Adjust the locale as needed
     }
-
-    // function generateInvoice(devChargesId, bookingId) {
-    //     console.log(devChargesId);
-    //     // Example: Suppose you need to send this ID to a server
-    //     $.ajax({
-    //         url: '/charges-invoice',  // Your server endpoint to handle the invoice generation
-    //         type: 'POST',
-    //         data: {
-    //             bookingId: bookingId,
-    //             devChargesId: devChargesId,
-    //             _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-    //         },
-    //         success: function (response) {
-    //             Swal.fire({
-    //                 title: 'Success!',
-    //                 text: 'Invoice generated successfully',
-    //                 icon: 'success',
-    //                 confirmButtonText: 'OK'
-    //             }).then((result) => {
-    //                 if (result.isConfirmed) {
-    //                     generateInvoicePdf(response.reportId);
-    //                     location.reload();
-    //                 }
-    //             });
-    //         },
-    //         error: function (response) {
-    //             Swal.fire({
-    //                 title: 'Error!',
-    //                 text: response.message,
-    //                 icon: 'error',
-    //                 confirmButtonText: 'OK'
-    //             });
-    //         }
-    //     });
-    // }
     return {
         init: function () {
             r = document.querySelector("#development_charges_form");
@@ -154,15 +125,6 @@ var KTModalChargesAdd = (function () {
                     });
                 }
             });
-
-            // $('#devChargesTable').on('click', 'a.btn-light', function(event) {
-            //     event.preventDefault();  // Prevent the default anchor click behavior
-            //     var devChargesId = this.getAttribute('data-devChargesId');  // Get the installment ID from the data attribute
-            //     var bookingId = this.getAttribute('data-bookingId');
-            //     generateInvoice(devChargesId, bookingId);
-            //     // Now you can use the installmentId to do whatever you need, like making an AJAX call
-            //     console.log('devChargesId:', devChargesId);
-            // });
         },
 
     };

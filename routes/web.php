@@ -107,6 +107,7 @@ Route::get('/unpaid-invoices', [InvoiceController::class, 'showInvoices'])->name
 
 Route::post('/installment-invoice', [InvoiceController::class, 'addInstallmentInvoice'])->name('addInstallmentInvoice')->middleware('admin.auth');
 Route::post('/charges-invoice', [InvoiceController::class, 'addChargesInvoice'])->name('addInstallmentInvoice')->middleware('admin.auth');
+Route::post('/devcharge-invoice/{id}', [InvoiceController::class, 'devChargeInvoice'])->name('devChargeInvoice')->middleware('admin.auth');
 
 Route::get('/add-booking-form', [BookingController::class, 'showBookingForm'])->name('addBookingForm')->middleware('admin.auth');
 Route::get('/add-dev-charges-form', [BookingController::class, 'addDevChargesForm'])->name('addDevChargesForm')->middleware('admin.auth');

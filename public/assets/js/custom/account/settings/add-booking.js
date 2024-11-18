@@ -54,6 +54,7 @@ var KTNewBooking = (function () {
         tableBody.empty(); // Clear existing rows
 
         numberOfInstallments = partPayment === null ? numberOfInstallments : (numberOfInstallments + 1);
+        // numberOfInstallments = numberOfInstallments + 1;
         partPayment = partPayment === null ? installmentAmount : partPayment;
 
         let discountAmount;
@@ -65,13 +66,17 @@ var KTNewBooking = (function () {
 
         let adjustedInstallmentsCount = Math.ceil(discountAmount / installmentAmount);
         let lastInstallmentsAdjustment = Array(numberOfInstallments + 1).fill(0);
-
-        for (let i = 1; i <= adjustedInstallmentsCount; i++) {
-            let index = numberOfInstallments - i; // Start adjusting from the last installment backwards
+        // if ($('#payment_plan').val() === 'part_payment'){
+            
+        // }
+        for (let i = 0; i < adjustedInstallmentsCount; i++) {
+            let index = numberOfInstallments - i;  // Adjust to start from the very last installment
+            if (index < 2) break;  // Ensure that the first two installments are not adjusted
             let adjustment = (discountAmount > installmentAmount) ? installmentAmount : discountAmount;
             lastInstallmentsAdjustment[index] = adjustment;
             discountAmount -= adjustment;
         }
+        console.log(lastInstallmentsAdjustment);
 
         let initialBookingDate = new Date(bookingDate);
 
@@ -169,16 +174,58 @@ var KTNewBooking = (function () {
         if (changedStatus !== 'pending') {
             return;
         }
+        console.log('changedIndex: ', changedIndex);
+        // Compute the total paid or fixed up to the changed installment
+        const paidTotal = inputs.slice(1, changedIndex + 1).reduce((acc, input, index) => {
+            return acc + parseFloat(input.value);
+        }, 0);
+        console.log('paidTotal: ', paidTotal);
 
+        let remainingAmount = totalAmountforInstallment - paidTotal;
+
+        console.log('remainingAmount: ', remainingAmount);
+        const unpaidIndexes = inputs.slice(changedIndex + 1).reduce((acc, input, index) => {
+            const realIndex = changedIndex + 1 + index;
+            if (statuses[realIndex].value === 'pending') {
+                acc.push(realIndex);
+            }
+            return acc;
+        }, []);
+
+        // Adjust future 'pending' installments
+        if (unpaidIndexes.length > 0) {
+            const newInstallmentAmount = remainingAmount / unpaidIndexes.length;
+            unpaidIndexes.forEach(index => {
+                inputs[index].value = newInstallmentAmount.toFixed(2);
+            });
+        }
+    }
+
+    function updateDevelopmentInstallments(inputElement, totalAmountforInstallment) { // Total contract value
+        const inputs = Array.from(document.querySelectorAll('input[name="devAmounts[]"]'));
+        const statuses = Array.from(document.querySelectorAll('input[name="devStatuses[]"]'));
+        const paymentDates = Array.from(document.querySelectorAll('input[name="devPaymentDates[]"]'));
+
+        const changedIndex = parseInt(inputElement.getAttribute('data-index'));
+        const changedStatus = statuses[changedIndex].value;
+        const changedPaymentDate = paymentDates[changedIndex].value;
+        // Exit if the changed installment is not pending
+        if (changedStatus !== 'N/A' && changedPaymentDate !== 'N/A') {
+            return;
+        }
+        console.log('changedIndex: ', changedIndex);
         // Compute the total paid or fixed up to the changed installment
         const paidTotal = inputs.slice(0, changedIndex + 1).reduce((acc, input, index) => {
             return acc + parseFloat(input.value);
         }, 0);
+        console.log('paidTotal: ', paidTotal);
 
         let remainingAmount = totalAmountforInstallment - paidTotal;
+
+        console.log('remainingAmount: ', remainingAmount);
         const unpaidIndexes = inputs.slice(changedIndex + 1).reduce((acc, input, index) => {
             const realIndex = changedIndex + 1 + index;
-            if (statuses[realIndex].value === 'pending') {
+            if (statuses[realIndex].value === 'N/A') {
                 acc.push(realIndex);
             }
             return acc;
@@ -197,6 +244,10 @@ var KTNewBooking = (function () {
         // Attach the change event listener to only editable (pending) installment inputs
         $('#installmentTable').on('change', 'input.installment-input', function () {
             updateInstallments(this);
+        });
+        $('#devChargesTable').on('change', 'input.editable-devcharge', function () {
+            totalAmountforInstallment = parseFloat(document.getElementById('development_charges').value, 10);
+            updateDevelopmentInstallments(this, totalAmountforInstallment);
         });
     }
 
@@ -227,7 +278,7 @@ var KTNewBooking = (function () {
                         <input type="hidden" name="statuses[]" value="${installment.installment_status}">
                         <span class="date-display">${formattedPayDate}</span>
                     </td>
-                    <td><a href="#" data-installmentId = "${installment.id || ''}" class="btn btn-light">Generate Invoice</a></td>
+                    <td><a href="#" data-installmentId = "${installment.id || ''}" class="btn btn-light generate-invoice-link">Generate Invoice</a></td>
                 </tr>
             `;
             tableBody.append(row);
@@ -440,7 +491,7 @@ var KTNewBooking = (function () {
                 defaultDate: bookingDate ? bookingDate : new Date(),
                 dateFormat: "Y-m-d",
             });
-            $('#installmentTable').on('click', 'a.btn-light', function (event) {
+            $('#installmentTable').on('click', 'a.generate-invoice-link', function (event) {
                 event.preventDefault();  // Prevent the default anchor click behavior
                 var installmentId = this.getAttribute('data-installmentId');  // Get the installment ID from the data attribute
                 generateInvoice(installmentId);
@@ -452,6 +503,7 @@ var KTNewBooking = (function () {
             isLocked = document.getElementById('isLocked').value;
             function makeInputsReadonly() {
                 $('form#kt_new_booking_form').find('input, select, textarea')
+                .not('.editable-devcharge, .editable-devcharge *')
                     .attr('readonly', true)
                     .attr('disabled', 'disabled');
             };
@@ -624,11 +676,11 @@ var KTNewBooking = (function () {
                 $('#paymentPlan').on('change', updatePaymentPlanDisplay);
                 numberOfInstallmentsInput.addEventListener('focusout', handleInstallments);
                 discountAmountInput.addEventListener('focusout', function () {
-                    let pendingAmount = parseFloat(document.getElementById('total_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
+                    let pendingAmount = parseFloat(document.getElementById('remaining_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
                     document.getElementById('pending_amount').value = pendingAmount;
                 });
                 discountPercentageInput.addEventListener('focusout', function () {
-                    let pendingAmount = parseFloat(document.getElementById('total_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
+                    let pendingAmount = parseFloat(document.getElementById('remaining_amount').value, 10) - parseFloat(document.getElementById('part_payment_amount').value, 10);
                     document.getElementById('pending_amount').value = pendingAmount;
                 });
             });
@@ -650,7 +702,12 @@ var KTNewBooking = (function () {
                         e.setAttribute("data-kt-indicator", "on");
                         e.disabled = true;
                         var formData = new FormData(t);
-                        console.log(formData);
+                        var devInstallmentIds = document.querySelectorAll('input[name="dev_installment_ids[]"]');
+
+                        // Loop through each input element and append its value to the FormData
+                        devInstallmentIds.forEach(function(input) {
+                            formData.append('dev_installment_ids[]', input.value);
+                        });
                         bookingId = $('#id').val();
                         var url = bookingId ? '/update-booking' : '/add-booking';
                         const dropzoneElement = document.querySelector('#kt_ecommerce_add_booking_media');
@@ -716,6 +773,53 @@ var KTNewBooking = (function () {
                     }
                 });
             });
+            
+            $('#devChargesTable').on('click', 'button.generate-invoice-button', function (event) {
+                event.preventDefault();  // Prevent the default anchor click behavior
+                const devChargeId = this.getAttribute('data-devChargeId'); 
+                fetch(`/devcharge-invoice/${devChargeId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ id: devChargeId })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Call the function to handle PDF generation with the returned report ID
+                        generateInvoicePdf(data.reportId);
+                        document.getElementById(`myButton${devChargeId}`).disabled = true;
+                        const inputElement = $(this).closest('tr').find('input[name="devAmounts[]"]');
+                if (inputElement.length > 0) {
+                    inputElement.prop('readonly', true); // Make input readonly
+                    console.log('Input is now readonly:', inputElement);
+                }
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Error generating invoice.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: `There was an error with the fetch operation: ${error.message}`,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            });
+            
             $(t.querySelector('[name="project_id"]')).on("change", function () {
                 r.revalidateField("project_id");
             });

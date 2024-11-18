@@ -66,7 +66,7 @@
                                     <!--begin::Col-->
                                     <div class="col-lg-9 fv-row">
                                         <select name="booking_id" id="bookingDropdown" aria-label="Select Booking" class="form-select form-select-lg fw-semibold" data-control="select2" data-placeholder="Select Booking..."
-                                        {{ (isset($invoiceData) && $invoiceData->booking_id) ? 'disabled' : '' }}>
+                                        {{ (isset($invoiceData) && $invoiceData->booking_id) ? 'readonly' : '' }}>
                                             <option value="">Select Booking...</option>
                                             @foreach ($bookings as $booking)
                                                 <option value="{{ $booking->id }}" {{ (isset($invoiceData) && $invoiceData->booking_id == $booking->id) ? 'selected' : '' }}>
@@ -74,6 +74,10 @@
                                                 </option>
                                             @endforeach
                                         </select>
+
+                                        @if(isset($invoiceData) && $invoiceData->booking_id)
+                                            <input type="hidden" name="booking_id" value="{{ $invoiceData->booking_id }}">
+                                        @endif
                                     </div>    
                                 </div>
                                 <!--end::Input group-->

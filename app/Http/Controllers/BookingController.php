@@ -143,7 +143,34 @@ class BookingController extends Controller
 
                 // dd($bookingMedia);
 
-                $devCharges = DB::table('development_charges')->where('booking_id', $id)->get();
+                $devCharges = DB::table('development_charges')
+                ->where('booking_id', $id)
+                ->get()
+                ->map(function ($devCharge) {
+                    // Format due date and calculate intimation date
+                    $devCharge->due_date = Carbon::parse($devCharge->due_date)->format('d-M-Y');
+                    $devCharge->intimation_date = Carbon::parse($devCharge->due_date)->subDays(5)->format('d-M-Y');
+                    
+                    // Check for invoice and get payment_date and payment_status if invoice exists
+                    if ($devCharge->invoice_id) {
+                        $invoice = DB::table('invoice')->where('id', $devCharge->invoice_id)->first();
+                        
+                        // Set payment date
+                        $devCharge->payment_date = $invoice && $invoice->payment_date
+                            ? Carbon::parse($invoice->payment_date)->format('d-M-Y')
+                            : 'N/A';
+                
+                        // Set payment status
+                        $devCharge->payment_status = $invoice && $invoice->payment_status
+                            ? $invoice->payment_status
+                            : 'N/A';
+                    } else {
+                        $devCharge->payment_date = 'N/A';
+                        $devCharge->payment_status = 'N/A';
+                    }
+                
+                    return $devCharge;
+                });
 
                 if ($bookingData->isLocked === 1) {
                     $isLockedMode = true;
@@ -570,22 +597,29 @@ class BookingController extends Controller
 
     public function updateBooking(Request $req)
     {
-        // $bookingData = $this->getBookingData($req);
-        // $customerData =$this->getCustomerData($req);
-
         $id = $req->input('id');
         // $customerId = $req->input('customer_id');
         $installmentIds = $req->input('installment_ids', []);
         $amounts = $req->input('amounts', []);
 
+        $devInstallmentIds = $req->input('dev_installment_ids', []);
+        $devAmounts = $req->input('devAmounts', []);
+
+        // dd($devInstallmentIds, $devAmounts);
+
         DB::beginTransaction();
         try {
-            // DB::table('customer')->where('id', $customerId)->update($customerData);
-            // DB::table('booking')->where('id', $id)->update($bookingData);
             foreach ($installmentIds as $index => $installmentId) {
                 if (isset($amounts[$index])) { // Check if the amount index exists to avoid index errors
                     DB::table('installment')->where('id', $installmentId)
                         ->update(['amount' => $amounts[$index], 'updated_at' => now()]);
+                }
+            }
+
+            foreach ($devInstallmentIds as $index => $devInstallmentId) {
+                if (isset($devAmounts[$index])) { // Check if the amount index exists to avoid index errors
+                    DB::table('development_charges')->where('id', $devInstallmentId)
+                        ->update(['amount' => $devAmounts[$index], 'timestamp' => now()]);
                 }
             }
 
@@ -631,13 +665,14 @@ class BookingController extends Controller
         $installmentsData = [];
 
         $dueDates = $request->input('due_dates', []);
-
+        $totalAmount = $request->input('dev_charge');
+        $bookingId = $request->input('booking_id');
         // Assuming you have installment data in the request...
         foreach ($request->input('amounts', []) as $key => $amount) {
             $dueDate = $dueDates[$key];
 
             $installmentsData[] = [
-                'booking_id' => $request->input('booking_id'),
+                'booking_id' => $bookingId,
                 'amount' => $amount,
                 'due_date' => $dueDate,
                 'timestamp' => now(),
@@ -647,6 +682,7 @@ class BookingController extends Controller
         DB::beginTransaction();
         try {
             DB::table('development_charges')->insert($installmentsData);
+            DB::table('booking')->where('id', $bookingId)->update(['development_charges' => $totalAmount]);
             DB::commit();
             return response()->json(['success' => 'Development charges added successfully'], 201);
         }

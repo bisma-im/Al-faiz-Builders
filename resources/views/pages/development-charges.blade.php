@@ -33,18 +33,30 @@
                                     @csrf
                                     <!--begin::Input group-->
                                     <div class="row mb-7">
-                                        <label for="booking_id" class="form-label required">Booking</label>
-                                        <select name="booking_id" id="booking_id" aria-label="Select Booking"
-                                            class="form-select form-select-lg fw-semibold" data-control="select2"
-                                            data-placeholder="Select booking...">
-                                            <option value="" selected disabled>Select Booking...</option>
-                                            @foreach ($bookings as $booking)
-                                            <option value="{{ $booking->id }}">{{ $booking->plot_no . ' - ' .
-                                                $booking->customer_name . ' - ' . $booking->cnic_number }}</option>
-                                            @endforeach
-                                        </select>
+                                        <div class="col-lg-6 fv-row">
+                                            <label for="booking_id" class="form-label required">Booking</label>
+                                            <select name="booking_id" id="booking_id" aria-label="Select Booking"
+                                                class="form-select form-select-lg fw-semibold" data-control="select2"
+                                                data-placeholder="Select booking...">
+                                                <option value="" selected disabled>Select Booking...</option>
+                                                @foreach ($bookings as $booking)
+                                                <option value="{{ $booking->id }}">{{ $booking->plot_no . ' - ' .
+                                                    $booking->customer_name . ' - ' . $booking->cnic_number }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-lg-6 fv-row">
+                                            <!--booking date-->
+                                            <!--begin::Label-->
+                                            <label class="form-label required">Development Date</label>
+                                            <!--end::Label-->
+                                            <input name="booking_date" id="kt_ecommerce_booking_datepicker"
+                                                class="form-control form-control-lg" placeholder="Pick date & time" />
+                                        </div>
                                     </div>
                                     <!--end::Input group-->
+
                                     <!--begin::Input group-->
                                     <div class="row mb-7">
                                         <div class="col-lg-4 fv-row">
@@ -68,7 +80,7 @@
                                         </div>
                                     </div>
                                     <!--end::Input group-->
-                                    <div id="installmentTableCard"  style="display: none;">
+                                    <div id="installmentTableCard" style="display: none;">
                                         <div class="d-flex flex-column gap-7 gap-lg-10">
                                             <!--begin::Card header-->
                                             <div class="card-header p-0">
